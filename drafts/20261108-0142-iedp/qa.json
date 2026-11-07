@@ -1,0 +1,45 @@
+{
+ "pass": false,
+ "score": 5,
+ "issues": [
+  {
+   "scene": "2 (who)",
+   "severity": "blocker",
+   "problem": "The on-screen stat reads \"12 CATS\". The narration, caption and fact sheet all say 14 cats. A viewer will see the number contradict the voice-over.",
+   "fix": "Change the stat text from \"12 CATS\" to \"14 CATS\". Also check that the count-up animation ends on 14."
+  },
+  {
+   "scene": "5 (return)",
+   "severity": "blocker",
+   "problem": "The big stat reads \"<10 MIN\". The narration and caption say \"under twenty minutes\" and the fact sheet says under 20 minutes. The on-screen figure is wrong and contradicts the audio.",
+   "fix": "Change the stat to \"<20 MIN\", matching the narration. Alternatively use \"~15 MIN\", but then change the narration to match."
+  },
+  {
+   "scene": "5 (return)",
+   "severity": "major",
+   "problem": "The parachute graphic is an emoji of a human skydiver. The cat floats separately below it with no connection to the canopy, so \"she drifted down by parachute\" looks odd. The scene also has no visible heart-monitor stat after the first beat.",
+   "fix": "Attach the cat to the parachute. Place the cat directly under the canopy at the same x and move with the canopy, or use a canopy-only drawing with the cat hanging from it. Replace the human skydiver emoji."
+  },
+  {
+   "scene": "3 (launch)",
+   "severity": "minor",
+   "problem": "The narration says the launch was from the Sahara in Algeria. The background is green hills with a sunset sky, not a desert, and there is no Algeria label. Only a French flag is shown.",
+   "fix": "Swap the green hills for sand dunes. Add a small \"SAHARA, ALGERIA\" chip, e.g. at y≈0.55 under the date."
+  },
+  {
+   "scene": "6 (only)",
+   "severity": "minor",
+   "problem": "A sparkle overlaps the \"KNOWN TO SURVIVE\" text. A streak line crosses the medal emoji beside \"BRONZE STATUE\". The sub-labels sit tightly between the title and the cat.",
+   "fix": "Keep sparkles away from the text zones y 0.15–0.27. Add about 20 px of spacing between the \"BRONZE STATUE\" chip and the cat's ears."
+  },
+  {
+   "scene": "1 (hook)",
+   "severity": "minor",
+   "problem": "In the later frame the cat sits on the rocket's nose cone and overlaps it. The \"1963\" text floats alone in the middle. The hook works, but the visual is a little cluttered.",
+   "fix": "Move the cat to about x 0.3, y 0.45 and keep it clear of the rocket tip. Or place the cat inside or beside the rocket window."
+  }
+ ],
+ "fact_check": "Two on-screen numbers contradict the narration and fact sheet. Scene 2 shows \"12 CATS\" but the sheet says 14. Scene 5 shows \"<10 MIN\" but the sheet and narration say under 20 minutes.\nSupported by the fact sheet: the 18 Oct 1963 date, the Véronique rocket, the Sahara/Algeria launch, the French flag, 9.5 g being almost double Apollo, the Paris stray tuxedo cat, the Strasbourg bronze statue, the NASA-funded cat twist research, kittens floating upside-down, the 25–150 Hz purr, and lions and tigers roaring.\nThe \"7.9 g → 9.5 g\" frames are a count-up animation and are fine.\nThe script avoids the \"first animal\" claim, the euthanasia detail and an IST launch time.",
+ "made_for_kids_correct": true,
+ "hook_score": 7
+}

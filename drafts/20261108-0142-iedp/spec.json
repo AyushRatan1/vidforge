@@ -1,0 +1,1267 @@
+{
+ "title": "The Only Cat Known to Survive Space 🐱🚀 #Shorts",
+ "description": "On 18 October 1963, France launched Félicette, a stray tuxedo cat from Paris, on a Véronique rocket from the Sahara in Algeria. She took about 9.5 g and landed by parachute after a flight of under 20 minutes. She is still the only cat known to have flown to space and survived. We also cover how a cat's mid-air twist shaped astronaut research, why cats can't land on their feet in zero gravity, and a bonus fact about purring.\n\nSources:\n- Britannica: Who was the first cat in space?\n- Nautilus: 63 years ago this week, Félicette became the first cat in space\n- BBC Sky at Night Magazine: Félicette, the first cat in space\n- Space.com: On this day in space, Oct. 18\n- CBC: Statue of Félicette unveiled\n- ScienceAlert: Scientists put cats in microgravity\n- Nagoya J. Med. Sci. (1995): Disorientation of animals in microgravity\n- Scientific American: Why do cats purr?\n- Science World: The secret power of a cat's purr\n\nPart of the Space Is Weird series. Visuals and voice are AI-assisted.",
+ "tags": [
+  "Felicette",
+  "first cat in space",
+  "cats in space",
+  "cat facts",
+  "space history",
+  "France space program",
+  "falling cat",
+  "cat purr",
+  "space facts",
+  "shorts"
+ ],
+ "language": "en",
+ "voice": "af_heart",
+ "speed": 1.08,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "category": "science",
+ "music": {
+  "mood": "cosmic",
+  "volume": 0.16,
+  "seed": 34
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.745,
+  "size": 0.07,
+  "max_words": 3,
+  "highlight": "#ffd400",
+  "uppercase": true
+ },
+ "overlay": {
+  "handle": "@vidforge.cosmos",
+  "progress_bar": true,
+  "bar_color": "#a78bfa"
+ },
+ "thumbnail": {
+  "scene": 0,
+  "t": 1.8
+ },
+ "transition": "fade",
+ "scenes": [
+  {
+   "id": "hook",
+   "narration": "In nineteen sixty-three, a stray cat from Paris rode a rocket to space, and came back alive.",
+   "caption": "In 1963, a stray cat from Paris rode a rocket to space, and came back alive.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "nebula": [
+     "#5b2a86",
+     "#1b4b8a"
+    ],
+    "shooting": true
+   },
+   "camera": {
+    "zoom": [
+     1.0,
+     1.08
+    ]
+   },
+   "sfx": [
+    {
+     "kind": "whoosh",
+     "at": 0
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "SPACE IS WEIRD · CATS",
+     "y": 0.085,
+     "size": 0.038,
+     "style": "label",
+     "bg": "#7c3aed",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "fade",
+     "at": 0
+    },
+    {
+     "type": "text",
+     "text": "A CAT IN SPACE?! 🐱",
+     "y": 0.16,
+     "size": 0.08,
+     "width": 0.92,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "text",
+     "text": "1963",
+     "y": 0.235,
+     "size": 0.07,
+     "enter": "slide_up",
+     "at": 0.8
+    },
+    {
+     "type": "prop",
+     "name": "rocket",
+     "x": 0.6,
+     "y": 0.5,
+     "size": 0.16,
+     "flame": true,
+     "rot": 10,
+     "enter": "none",
+     "at": 0,
+     "keys": [
+      {
+       "t": 0,
+       "y": 0.6
+      },
+      {
+       "t": 5,
+       "y": 0.42,
+       "ease": "in_out"
+      }
+     ],
+     "behaviors": [
+      {
+       "kind": "shake"
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "felicette",
+     "species": "cat",
+     "color": "#2b2b2b",
+     "expression": "surprised",
+     "x": 0.6,
+     "r": 0.06,
+     "enter": "pop",
+     "at": 0.6,
+     "keys": [
+      {
+       "t": 0,
+       "y": 0.4
+      },
+      {
+       "t": 5,
+       "y": 0.3,
+       "ease": "in_out"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "…AND CAME BACK ✅",
+     "y": 0.87,
+     "size": 0.05,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "alive",
+     "sfx": "ding"
+    },
+    {
+     "type": "character",
+     "id": "bolt",
+     "species": "robot",
+     "color": "#8fa3b8",
+     "talking": true,
+     "x": 0.15,
+     "y": 0.62,
+     "r": 0.06,
+     "look": [
+      0.6,
+      -0.4
+     ],
+     "enter": "pop",
+     "at": 0.3
+    }
+   ]
+  },
+  {
+   "id": "who",
+   "narration": "Her name was Félicette, a tuxedo cat picked from a group of fourteen, apparently for her calm temperament.",
+   "caption": "Her name was Félicette, a tuxedo cat picked from a group of 14, apparently for her calm temperament.",
+   "background": {
+    "type": "space",
+    "stars": 260,
+    "nebula": [
+     "#5b2a86",
+     "#1b4b8a"
+    ]
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "FÉLICETTE",
+     "y": 0.14,
+     "size": 0.11,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.3
+    },
+    {
+     "type": "text",
+     "text": "a.k.a. C341",
+     "y": 0.21,
+     "size": 0.045,
+     "color": "#c4b5fd",
+     "stroke": false,
+     "enter": "fade",
+     "at": 1.2
+    },
+    {
+     "type": "character",
+     "id": "felicette",
+     "species": "cat",
+     "color": "#2b2b2b",
+     "expression": "happy",
+     "x": 0.5,
+     "y": 0.42,
+     "r": 0.12,
+     "enter": "grow",
+     "at": 0,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.008,
+       "period": 3
+      }
+     ]
+    },
+    {
+     "type": "counter",
+     "from": 1,
+     "to": 14,
+     "suffix": " CATS",
+     "grouping": "none",
+     "x": 0.5,
+     "y": 0.61,
+     "size": 0.08,
+     "color": "#ffffff",
+     "enter": "pop",
+     "at_word": "fourteen",
+     "count_dur": 1.0
+    },
+    {
+     "type": "text",
+     "text": "CHOSEN FOR: CALM 😌",
+     "y": 0.86,
+     "size": 0.05,
+     "bg": "#7c3aed",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "slide_up",
+     "at_word": "calm"
+    }
+   ]
+  },
+  {
+   "id": "launch",
+   "narration": "On October eighteenth, nineteen sixty-three, France launched her on a Véronique rocket from the Sahara, in Algeria.",
+   "caption": "On October 18th, 1963, France launched her on a Véronique rocket from the Sahara, in Algeria.",
+   "background": {
+    "type": "sky",
+    "time": "dawn",
+    "clouds": 1,
+    "ground": true
+   },
+   "camera": {
+    "zoom": [
+     1.0,
+     1.06
+    ]
+   },
+   "elements": [
+    {
+     "type": "svg",
+     "svg": "<svg viewBox='0 0 200 40'><path d='M0 40 L0 22 Q30 6 60 20 Q90 32 120 16 Q150 2 200 18 L200 40 Z' fill='#e0b36a'/><path d='M0 40 L0 30 Q40 18 80 30 Q120 40 160 26 Q185 20 200 28 L200 40 Z' fill='#c98f45'/></svg>",
+     "x": 0.5,
+     "y": 0.6,
+     "w": 1.1,
+     "enter": "none",
+     "at": 0
+    },
+    {
+     "type": "text",
+     "text": "18 OCT 1963",
+     "y": 0.13,
+     "size": 0.1,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "svg",
+     "svg": "<svg viewBox='0 0 90 60'><rect x='0' y='0' width='30' height='60' fill='#0055a4'/><rect x='30' y='0' width='30' height='60' fill='#ffffff'/><rect x='60' y='0' width='30' height='60' fill='#ef4135'/></svg>",
+     "x": 0.2,
+     "y": 0.21,
+     "w": 0.1,
+     "enter": "pop",
+     "at_word": "France"
+    },
+    {
+     "type": "text",
+     "text": "📍 SAHARA, ALGERIA",
+     "x": 0.58,
+     "y": 0.21,
+     "size": 0.045,
+     "width": 0.6,
+     "bg": "#7c3aed",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "slide_left",
+     "at_word": "Sahara"
+    },
+    {
+     "type": "prop",
+     "name": "rocket",
+     "x": 0.5,
+     "size": 0.18,
+     "flame": true,
+     "enter": "none",
+     "at": 0,
+     "keys": [
+      {
+       "t": 0,
+       "y": 0.44
+      },
+      {
+       "t": 3.5,
+       "y": 0.44
+      },
+      {
+       "t": 7,
+       "y": 0.2,
+       "ease": "in"
+      }
+     ],
+     "behaviors": [
+      {
+       "kind": "shake"
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "cloud",
+     "x": 0.36,
+     "y": 0.56,
+     "size": 0.14,
+     "color": "#e8e4dc",
+     "enter": "grow",
+     "at": 3.2,
+     "behaviors": [
+      {
+       "kind": "drift",
+       "v": [
+        -0.02,
+        -0.005
+       ]
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "cloud",
+     "x": 0.64,
+     "y": 0.56,
+     "size": 0.14,
+     "color": "#e8e4dc",
+     "enter": "grow",
+     "at": 3.3,
+     "sfx": "whoosh",
+     "behaviors": [
+      {
+       "kind": "drift",
+       "v": [
+        0.02,
+        -0.005
+       ]
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "🚀 VÉRONIQUE ROCKET",
+     "y": 0.645,
+     "size": 0.045,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Véronique"
+    }
+   ]
+  },
+  {
+   "id": "gforce",
+   "narration": "At launch she felt about nine and a half g. That's almost double what Apollo astronauts felt heading to the Moon.",
+   "caption": "At launch she felt about 9.5 g. That's almost double what Apollo astronauts felt heading to the Moon.",
+   "background": {
+    "type": "space",
+    "stars": 260,
+    "nebula": [
+     "#5b2a86",
+     "#1b4b8a"
+    ]
+   },
+   "camera": {
+    "zoom": [
+     1.0,
+     1.1
+    ],
+    "shake": true
+   },
+   "elements": [
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 9.5,
+     "decimals": 1,
+     "suffix": " g",
+     "grouping": "none",
+     "y": 0.17,
+     "size": 0.15,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.6,
+     "count_dur": 1.4
+    },
+    {
+     "type": "character",
+     "id": "felicette",
+     "species": "cat",
+     "color": "#2b2b2b",
+     "expression": "surprised",
+     "x": 0.27,
+     "y": 0.45,
+     "r": 0.09,
+     "enter": "pop",
+     "at": 0.1,
+     "behaviors": [
+      {
+       "kind": "squash"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "FÉLICETTE",
+     "x": 0.27,
+     "y": 0.6,
+     "size": 0.045,
+     "enter": "fade",
+     "at": 0.4
+    },
+    {
+     "type": "character",
+     "id": "apollo",
+     "species": "astronaut",
+     "x": 0.73,
+     "y": 0.45,
+     "r": 0.09,
+     "expression": "thinking",
+     "enter": "pop",
+     "at_word": "Apollo"
+    },
+    {
+     "type": "text",
+     "text": "APOLLO ≈ ½",
+     "x": 0.73,
+     "y": 0.6,
+     "size": 0.045,
+     "enter": "fade",
+     "at_word": "Apollo"
+    },
+    {
+     "type": "text",
+     "text": "ALMOST 2× 🤯",
+     "y": 0.87,
+     "size": 0.055,
+     "bg": "#ff3b5c",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "double",
+     "sfx": "pop"
+    }
+   ]
+  },
+  {
+   "id": "return",
+   "narration": "Sensors tracked her heart the whole way. In under twenty minutes, she drifted down by parachute, alive.",
+   "caption": "Sensors tracked her heart the whole way. In under 20 minutes, she drifted down by parachute, alive.",
+   "background": {
+    "type": "sky",
+    "time": "day",
+    "clouds": 0,
+    "ground": true
+   },
+   "elements": [
+    {
+     "type": "prop",
+     "name": "cloud",
+     "x": 0.12,
+     "y": 0.42,
+     "size": 0.12,
+     "color": "#ffffff",
+     "opacity": 0.85,
+     "behaviors": [
+      {
+       "kind": "drift",
+       "v": [
+        0.008,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "cloud",
+     "x": 0.88,
+     "y": 0.5,
+     "size": 0.1,
+     "color": "#ffffff",
+     "opacity": 0.85,
+     "behaviors": [
+      {
+       "kind": "drift",
+       "v": [
+        -0.006,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "❤️ HEART MONITORED",
+     "y": 0.12,
+     "size": 0.055,
+     "bg": "#1d2b53",
+     "bg_alpha": 1.0,
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.1,
+     "until": 3.6,
+     "exit": "fade",
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.05,
+       "period": 0.8
+      }
+     ]
+    },
+    {
+     "type": "svg",
+     "svg": "<svg viewBox='0 0 200 50'><rect x='0' y='0' width='200' height='50' rx='8' fill='#0b1a2e'/><polyline points='5,28 45,28 55,28 62,10 70,44 78,28 115,28 122,12 130,42 138,28 195,28' fill='none' stroke='#3dff8a' stroke-width='4' stroke-linejoin='round'/></svg>",
+     "x": 0.5,
+     "y": 0.2,
+     "w": 0.4,
+     "enter": "fade",
+     "at": 0.3,
+     "until": 3.6,
+     "exit": "fade",
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.04,
+       "period": 0.8
+      }
+     ]
+    },
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 20,
+     "prefix": "< ",
+     "suffix": " MIN",
+     "grouping": "none",
+     "y": 0.15,
+     "size": 0.09,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 3.8,
+     "count_dur": 1.0
+    },
+    {
+     "type": "emoji",
+     "text": "🪂",
+     "x": 0.5,
+     "size": 0.16,
+     "enter": "none",
+     "at": 0,
+     "keys": [
+      {
+       "t": 0,
+       "y": 0.22
+      },
+      {
+       "t": 6.5,
+       "y": 0.48,
+       "ease": "out"
+      }
+     ],
+     "behaviors": [
+      {
+       "kind": "sway",
+       "amp": 6
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "felicette",
+     "species": "cat",
+     "color": "#2b2b2b",
+     "expression": "happy",
+     "x": 0.5,
+     "r": 0.06,
+     "enter": "none",
+     "at": 0,
+     "keys": [
+      {
+       "t": 0,
+       "y": 0.32
+      },
+      {
+       "t": 6.5,
+       "y": 0.6,
+       "ease": "out"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "ALIVE ✅",
+     "y": 0.87,
+     "size": 0.055,
+     "bg": "#16a34a",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "alive",
+     "sfx": "ding"
+    }
+   ]
+  },
+  {
+   "id": "only",
+   "narration": "To this day, she's the only cat known to have flown to space and survived. A bronze statue of her stands in Strasbourg, France.",
+   "background": {
+    "type": "space",
+    "stars": 260,
+    "nebula": [
+     "#5b2a86",
+     "#1b4b8a"
+    ]
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "THE ONLY ONE 🏆",
+     "y": 0.14,
+     "size": 0.09,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "text",
+     "text": "KNOWN TO SURVIVE",
+     "y": 0.21,
+     "size": 0.045,
+     "color": "#c4b5fd",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "survived"
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.5,
+     "y": 0.47,
+     "w": 0.24,
+     "h": 0.07,
+     "gradient": [
+      "#8a8f99",
+      "#4b505a"
+     ],
+     "radius": 0.008,
+     "enter": "none",
+     "at": 0
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.5,
+     "y": 0.43,
+     "w": 0.28,
+     "h": 0.018,
+     "color": "#a3a8b2",
+     "radius": 0.006,
+     "enter": "none",
+     "at": 0
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.5,
+     "y": 0.505,
+     "w": 0.3,
+     "h": 0.018,
+     "color": "#5d626c",
+     "radius": 0.006,
+     "enter": "none",
+     "at": 0
+    },
+    {
+     "type": "character",
+     "id": "statue",
+     "species": "cat",
+     "color": "#b08d57",
+     "expression": "happy",
+     "x": 0.5,
+     "y": 0.34,
+     "r": 0.09,
+     "enter": "none",
+     "at": 0,
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.015,
+       "period": 3
+      }
+     ]
+    },
+    {
+     "type": "particles",
+     "kind": "sparkles",
+     "count": 20,
+     "colors": [
+      "#ffd400",
+      "#fff3b0"
+     ],
+     "at_word": "bronze"
+    },
+    {
+     "type": "text",
+     "text": "🥉 BRONZE STATUE",
+     "x": 0.5,
+     "y": 0.255,
+     "size": 0.04,
+     "color": "#e8c48a",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "bronze"
+    },
+    {
+     "type": "text",
+     "text": "📍 STRASBOURG, FRANCE",
+     "y": 0.57,
+     "size": 0.05,
+     "bg": "#7c3aed",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "slide_up",
+     "at_word": "Strasbourg",
+     "sfx": "pop"
+    }
+   ]
+  },
+  {
+   "id": "twist",
+   "narration": "Cats helped astronauts too. NASA-funded research studied their mid-air twist, and astronauts still twist like cats to turn around in zero-g.",
+   "background": {
+    "type": "grid",
+    "colors": [
+     "#0b0620",
+     "#1f0f45"
+    ],
+    "line": "#7c3aed"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "THE CAT TWIST 🌀",
+     "y": 0.14,
+     "size": 0.09,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "character",
+     "id": "flipcat",
+     "species": "cat",
+     "color": "#f2a65a",
+     "expression": "thinking",
+     "x": 0.28,
+     "r": 0.08,
+     "enter": "pop",
+     "at": 0.2,
+     "keys": [
+      {
+       "t": 0.2,
+       "y": 0.32,
+       "rot": 180
+      },
+      {
+       "t": 2.6,
+       "y": 0.5,
+       "rot": 0,
+       "ease": "back"
+      }
+     ]
+    },
+    {
+     "type": "shape",
+     "shape": "arrow",
+     "x": 0.5,
+     "y": 0.45,
+     "from": [
+      -0.08,
+      0
+     ],
+     "to": [
+      0.08,
+      0
+     ],
+     "color": "#ffd400",
+     "stroke_w": 0.008,
+     "enter": "draw",
+     "at": 2.8
+    },
+    {
+     "type": "character",
+     "id": "astro",
+     "species": "astronaut",
+     "x": 0.72,
+     "y": 0.45,
+     "r": 0.08,
+     "enter": "pop",
+     "at": 2.9,
+     "behaviors": [
+      {
+       "kind": "spin",
+       "speed": 40
+      },
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 3
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "NASA-FUNDED RESEARCH",
+     "y": 0.86,
+     "size": 0.045,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "research"
+    }
+   ]
+  },
+  {
+   "id": "nofeet",
+   "narration": "But with no gravity, cats can't really land on their feet. In tests, young kittens just floated upside-down.",
+   "background": {
+    "type": "space",
+    "stars": 220,
+    "nebula": [
+     "#5b2a86",
+     "#1b4b8a"
+    ]
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "NO GRAVITY = NO \"DOWN\"",
+     "y": 0.15,
+     "size": 0.065,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "character",
+     "id": "flipcat",
+     "species": "cat",
+     "color": "#f2a65a",
+     "expression": "surprised",
+     "x": 0.5,
+     "r": 0.08,
+     "enter": "pop",
+     "at": 0,
+     "until": 2.8,
+     "exit": "fade",
+     "keys": [
+      {
+       "t": 0,
+       "y": 0.4,
+       "rot": 0
+      },
+      {
+       "t": 1.2,
+       "y": 0.45,
+       "rot": 120,
+       "ease": "out"
+      },
+      {
+       "t": 2.6,
+       "y": 0.43,
+       "rot": 60,
+       "ease": "in_out"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "❌ NO FEET LANDING",
+     "y": 0.6,
+     "size": 0.045,
+     "color": "#ffffff",
+     "stroke": true,
+     "enter": "fade",
+     "at": 1.0,
+     "until": 2.8,
+     "exit": "fade"
+    },
+    {
+     "type": "character",
+     "id": "kitten1",
+     "species": "cat",
+     "color": "#d9d9d9",
+     "expression": "surprised",
+     "x": 0.5,
+     "r": 0.08,
+     "enter": "pop",
+     "at": 2.9,
+     "keys": [
+      {
+       "t": 2.9,
+       "y": 0.45,
+       "rot": 0
+      },
+      {
+       "t": 6.5,
+       "y": 0.45,
+       "rot": 180,
+       "ease": "in_out"
+      }
+     ],
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.02,
+       "period": 3
+      }
+     ]
+    },
+    {
+     "type": "particles",
+     "kind": "sparkles",
+     "count": 12,
+     "colors": [
+      "#c4b5fd",
+      "#ffffff"
+     ],
+     "at": 2.9
+    },
+    {
+     "type": "text",
+     "text": "🙃 UPSIDE-DOWN",
+     "y": 0.87,
+     "size": 0.05,
+     "bg": "#7c3aed",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "upside-down",
+     "sfx": "pop"
+    }
+   ]
+  },
+  {
+   "id": "purr",
+   "narration": "Bonus: a house cat's purr rumbles at about twenty-five to a hundred and fifty hertz. Lions and tigers? They roar instead.",
+   "caption": "Bonus: a house cat's purr rumbles at about 25 to 150 hertz. Lions and tigers? They roar instead.",
+   "background": {
+    "type": "grid",
+    "colors": [
+     "#0b0620",
+     "#1f0f45"
+    ],
+    "line": "#7c3aed"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "BONUS: THE PURR 🔊",
+     "y": 0.13,
+     "size": 0.075,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "counter",
+     "from": 25,
+     "to": 150,
+     "prefix": "25–",
+     "suffix": " Hz",
+     "grouping": "none",
+     "y": 0.22,
+     "size": 0.09,
+     "color": "#ffffff",
+     "enter": "pop",
+     "at": 1.6,
+     "count_dur": 1.4
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.32,
+     "y": 0.42,
+     "w": 0.04,
+     "h": 0.1,
+     "color": "#a78bfa",
+     "radius": 0.01,
+     "enter": "grow",
+     "at": 0.8,
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.3,
+       "period": 0.5
+      }
+     ]
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.41,
+     "y": 0.42,
+     "w": 0.04,
+     "h": 0.16,
+     "color": "#c4b5fd",
+     "radius": 0.01,
+     "enter": "grow",
+     "at": 0.9,
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.3,
+       "period": 0.4
+      }
+     ]
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.5,
+     "y": 0.42,
+     "w": 0.04,
+     "h": 0.2,
+     "color": "#ffd400",
+     "radius": 0.01,
+     "enter": "grow",
+     "at": 1.0,
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.3,
+       "period": 0.6
+      }
+     ]
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.59,
+     "y": 0.42,
+     "w": 0.04,
+     "h": 0.14,
+     "color": "#c4b5fd",
+     "radius": 0.01,
+     "enter": "grow",
+     "at": 1.1,
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.3,
+       "period": 0.45
+      }
+     ]
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.68,
+     "y": 0.42,
+     "w": 0.04,
+     "h": 0.08,
+     "color": "#a78bfa",
+     "radius": 0.01,
+     "enter": "grow",
+     "at": 1.2,
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.3,
+       "period": 0.55
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "lion",
+     "species": "lion",
+     "x": 0.5,
+     "y": 0.6,
+     "r": 0.07,
+     "expression": "surprised",
+     "talking": false,
+     "enter": "pop",
+     "at_word": "Lions"
+    },
+    {
+     "type": "text",
+     "text": "🦁 ROAR, NOT PURR",
+     "y": 0.87,
+     "size": 0.05,
+     "bg": "#ff3b5c",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "roar",
+     "sfx": "pop"
+    }
+   ]
+  },
+  {
+   "id": "next",
+   "narration": "Félicette wasn't the first animal in space, though. Next up: the dogs and monkeys who flew before her. Follow so you don't miss it.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "nebula": [
+     "#5b2a86",
+     "#1b4b8a"
+    ],
+    "shooting": true
+   },
+   "hold": 0.5,
+   "elements": [
+    {
+     "type": "text",
+     "text": "NEXT ▶",
+     "y": 0.12,
+     "size": 0.05,
+     "bg": "#7c3aed",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at": 0
+    },
+    {
+     "type": "text",
+     "text": "WHO FLEW BEFORE HER?",
+     "y": 0.2,
+     "size": 0.07,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at_word": "Next"
+    },
+    {
+     "type": "character",
+     "id": "felicette",
+     "species": "cat",
+     "color": "#2b2b2b",
+     "expression": "wink",
+     "x": 0.5,
+     "y": 0.42,
+     "r": 0.07,
+     "enter": "pop",
+     "at": 0,
+     "until": 3.0,
+     "exit": "fade"
+    },
+    {
+     "type": "emoji",
+     "text": "🐕",
+     "x": 0.36,
+     "y": 0.43,
+     "size": 0.14,
+     "enter": "pop",
+     "at_word": "dogs",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.012,
+       "period": 3
+      }
+     ]
+    },
+    {
+     "type": "emoji",
+     "text": "🐒",
+     "x": 0.64,
+     "y": 0.43,
+     "size": 0.14,
+     "enter": "pop",
+     "at_word": "monkeys",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.012,
+       "period": 2.7
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "bolt",
+     "species": "robot",
+     "color": "#8fa3b8",
+     "talking": true,
+     "x": 0.15,
+     "y": 0.62,
+     "r": 0.06,
+     "wave": true,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "text",
+     "text": "FOLLOW FOR PART 2",
+     "y": 0.62,
+     "x": 0.58,
+     "size": 0.055,
+     "bg": "#ff3b5c",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Follow",
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.04,
+       "period": 1.2
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "_lint": [
+  "estimated length 75s; Shorts work best under 58s"
+ ]
+}

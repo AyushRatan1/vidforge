@@ -1,0 +1,101 @@
+{
+ "summary": "Cats have a real space story. In 1963 France launched a Paris stray tuxedo cat, Félicette, on a rocket. She is still the only cat known to have flown to space and survived. Cats' mid-air twisting reflex also inspired how NASA-funded researchers studied body rotation for astronauts. A cat's purr is a low rumble of about 25–150 Hz, but the \"purring heals bones\" claim is not proven. Suggested angle for Space Is Weird: cats in space, with a purr fact as a bonus.",
+ "facts": [
+  {
+   "claim": "Félicette, a French tuxedo cat, became the first cat in space on 18 October 1963, launched on a Véronique rocket by France's CERMA. She is still the only cat known to have completed and survived a spaceflight.",
+   "source_url": "https://www.britannica.com/topic/Who-was-the-first-cat-in-space",
+   "source_title": "Britannica – Who was the first cat in space?",
+   "confidence": "high"
+  },
+  {
+   "claim": "She was a Paris stray chosen from a group of 14 cats, apparently for her calm temperament. She was known as C341 before the flight.",
+   "source_url": "https://nautil.us/63-years-ago-this-week-felicette-became-the-first-cat-in-space-1285981",
+   "source_title": "Nautilus",
+   "confidence": "high"
+  },
+  {
+   "claim": "The launch was from the Sahara in Algeria, just after 8am local time (8:09 am per Wikipedia). She experienced about 9.5 g, almost double the g-force Apollo astronauts felt at launch to the Moon. Local time was not verified against IST, so avoid giving an IST launch time.",
+   "source_url": "https://www.skyatnightmagazine.com/space-missions/felicette-first-cat-space",
+   "source_title": "BBC Sky at Night Magazine",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Electrodes were implanted in her skull and probes monitored her heart during launch, flight and re-entry. She survived re-entry and landed safely by parachute after a trip of under 20 minutes.",
+   "source_url": "https://www.britannica.com/topic/Who-was-the-first-cat-in-space",
+   "source_title": "Britannica",
+   "confidence": "high"
+  },
+  {
+   "claim": "A story says another cat, Felix, was meant to fly but escaped on launch day and Félicette replaced him. This is a retelling, not firmly documented, so present it as 'reportedly'.",
+   "source_url": "https://www.space.com/space-exploration/on-this-day-in-space-october-18-2026",
+   "source_title": "Space.com – On this day in space, Oct. 18",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Félicette was euthanized about two months after the flight so scientists could examine her brain and body. Mention gently or skip. A bronze statue of her now stands at the International Space University in Strasbourg, France.",
+   "source_url": "https://amp.cbc.ca/lite/story/1.5437576",
+   "source_title": "CBC – Statue of Félicette unveiled",
+   "confidence": "high"
+  },
+  {
+   "claim": "The 'falling cat' righting reflex was studied by NASA-funded researchers in the 1960s. In 1968 a gymnast on a trampoline mimicked a falling cat (photographed by Ralph Crane for LIFE), and astronauts are still trained to twist their bodies like cats to turn around in microgravity.",
+   "source_url": "https://www.sciencealert.com/scientists-put-cats-in-microgravity-to-see-what-would-happen",
+   "source_title": "ScienceAlert",
+   "confidence": "medium"
+  },
+  {
+   "claim": "In parabolic-flight microgravity tests, cats with a developed righting reflex kept orienting for the first few seconds. Kittens whose reflex was not yet developed floated upside-down. Without gravity, cats cannot properly 'land on their feet'.",
+   "source_url": "https://www.med.nagoya-u.ac.jp/medlib/nagoya_j_med_sci/5834/NJ580301071.pdf",
+   "source_title": "Nagoya J. Med. Sci. 1995 – Disorientation of animals in microgravity",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Cats purr through intermittent signalling of the laryngeal and diaphragmatic muscles, on both inhale and exhale, at roughly 25–150 Hz.",
+   "source_url": "https://www.scientificamerican.com/article/why-do-cats-purr/",
+   "source_title": "Scientific American – Why do cats purr?",
+   "confidence": "high"
+  },
+  {
+   "claim": "Purring is not only a sign of happiness. It is more plausibly communication and possible self-soothing/self-healing. The 'purr heals bones' idea is a hypothesis based on low-frequency vibration studies, not proven.",
+   "source_url": "https://www.scientificamerican.com/article/why-do-cats-purr/",
+   "source_title": "Scientific American",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Big cats such as lions, tigers, leopards and jaguars roar rather than purr.",
+   "source_url": "https://www.scienceworld.ca/stories/secret-power-cats-purr/",
+   "source_title": "Science World",
+   "confidence": "medium"
+  }
+ ],
+ "avoid": [
+  "Do not say Félicette launched on 24 or 21 October 1963. Gizmodo gives Oct 24 and a CBC snippet gives a different date, while Britannica, Space.com, Sky at Night and Wikipedia say 18 October.",
+  "Altitude differs by source: about 130 miles (~209 km) per Space.com and Gizmodo, 157 km per CatCognition. Say 'roughly 150–200 km' or 'well above the 100 km space boundary' instead of an exact figure.",
+  "Flight duration varies by source: under 20 minutes (Nautilus), about 15 minutes (Gizmodo), 13 minutes (CBC), ~5 minutes of weightlessness (CatCognition). Say 'a quarter-hour or so', or avoid a precise number.",
+  "Do not claim 'cats purr to heal their bones' as fact. It is unproven. Also avoid 'purring helps astronauts', since the VetRadar claim is unverified.",
+  "Do not say Félicette was the first animal in space. Fruit flies flew in 1947, and many animals including dogs and monkeys came before her.",
+  "Do not call her 'Félix' without context. Media nicknamed her Félix after the flight, and the original named candidate was a different cat, Felix.",
+  "Do not claim there was a successful cat flight after Félicette. Reports of a follow-up cat flight that killed the cat come from a single blog (CatCognition) and are unverified.",
+  "Do not state a precise Indian-time launch time. The local-time-to-IST conversion for Algeria in 1963 was not verified.",
+  "Avoid the 'cats have nine lives because of purring' folk claim."
+ ],
+ "dates_ist": [
+  "18 Oct 1963 (local time ~8:09 am in Algeria; IST equivalent not verified): Félicette's launch",
+  "Space.com ran its 'On this day' piece on 18 Oct 2026, the 63rd anniversary"
+ ],
+ "key_numbers": [
+  "18 October 1963 – Félicette's flight",
+  "14 cats in the training group",
+  "~9.5 g peak acceleration",
+  "about 2 months between her flight and her euthanasia",
+  "25–150 Hz – domestic cat purr range",
+  "~1968–69 – NASA-linked falling-cat research and gymnast demo"
+ ],
+ "visual_ideas": [
+  "Vintage-style photo or illustration of Félicette in her launch harness (use licensed or public-domain images or redraw them)",
+  "Animated cat flipping mid-air, then floating with no 'down' in microgravity",
+  "Waveform or sound bar showing the 25–150 Hz purr range",
+  "Map of Algeria's Sahara launch site and a Véronique rocket graphic",
+  "Statue of Félicette at the International Space University, Strasbourg"
+ ]
+}
