@@ -1,0 +1,25 @@
+services:
+  vidforge:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/app/data          # database, encrypted keys, rendered videos
+    ports:
+      - "127.0.0.1:8000:8000"     # only Caddy talks to it from outside
+
+  caddy:                          # automatic HTTPS for your domain
+    image: caddy:2
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on:
+      - vidforge
+
+volumes:
+  caddy_data:

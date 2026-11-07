@@ -1,0 +1,15 @@
+anthropic>=0.75
+skia-python>=138
+numpy
+scipy
+soundfile
+kokoro-onnx>=0.4
+fastapi
+uvicorn
+python-multipart
+apscheduler>=3.10,<4
+cryptography
+requests
+feedparser
+google-api-python-client
+google-auth-oauthlib

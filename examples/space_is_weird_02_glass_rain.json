@@ -1,0 +1,529 @@
+{
+ "title": "The Planet Where It Rains Glass… Sideways 🌧️ #Shorts",
+ "description": "HD 189733b is a blue gas giant about 64 light-years away. Its sky is full of glass (silicate) particles, it's around 930 °C, and winds of about 5,400 mph blow the glass sideways.\nSources: NASA, Space.com.\n\nPart of the Space Is Weird series. Visuals and voice are AI-assisted.",
+ "tags": [
+  "HD 189733b",
+  "exoplanet",
+  "glass rain",
+  "hot Jupiter",
+  "space",
+  "space facts",
+  "astronomy",
+  "shorts"
+ ],
+ "language": "en",
+ "voice": "af_heart",
+ "speed": 1.05,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "category": "science",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.16,
+  "seed": 5
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.745,
+  "size": 0.07,
+  "max_words": 3,
+  "highlight": "#ffd400",
+  "uppercase": true
+ },
+ "overlay": {
+  "handle": "@vidforge.cosmos",
+  "progress_bar": true,
+  "bar_color": "#a78bfa"
+ },
+ "thumbnail": {
+  "scene": 0,
+  "t": 1.6
+ },
+ "transition": "fade",
+ "scenes": [
+  {
+   "id": "hook",
+   "narration": "There's a planet where it rains glass. Sideways.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "camera": {
+    "zoom": [
+     1.0,
+     1.1
+    ]
+   },
+   "sfx": [
+    {
+     "kind": "whoosh",
+     "at": 0
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "SPACE IS WEIRD · #2",
+     "y": 0.085,
+     "size": 0.038,
+     "style": "label",
+     "bg": "#7c3aed",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "fade",
+     "at": 0
+    },
+    {
+     "type": "planet",
+     "style": "exoplanet",
+     "color": "#2f6bff",
+     "x": 0.5,
+     "y": 0.43,
+     "r": 0.22
+    },
+    {
+     "type": "particles",
+     "kind": "stream",
+     "y": 0.43,
+     "angle": 8,
+     "thickness": 0.6,
+     "speed": 1.2,
+     "streak": 0.05,
+     "color": "#d9f3ff",
+     "count": 120
+    },
+    {
+     "type": "text",
+     "text": "IT RAINS GLASS",
+     "y": 0.16,
+     "size": 0.11,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "text",
+     "text": "SIDEWAYS 💨",
+     "y": 0.245,
+     "size": 0.07,
+     "enter": "slide_left",
+     "at_word": "Sideways"
+    },
+    {
+     "type": "character",
+     "id": "bolt",
+     "species": "robot",
+     "color": "#8fa3b8",
+     "talking": true,
+     "x": 0.15,
+     "y": 0.63,
+     "r": 0.06,
+     "expression": "surprised",
+     "enter": "pop",
+     "at": 0.3
+    }
+   ]
+  },
+  {
+   "id": "name",
+   "narration": "Meet H D one eight nine seven three three b. A giant gas planet, about sixty-four light-years away.",
+   "caption": "Meet HD 189733b. A giant gas planet, about 64 light-years away.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "planet",
+     "style": "sun",
+     "x": -0.05,
+     "y": 0.4,
+     "r": 0.22
+    },
+    {
+     "type": "text",
+     "text": "HD 189733 b",
+     "y": 0.14,
+     "size": 0.07,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop"
+    },
+    {
+     "type": "planet",
+     "style": "exoplanet",
+     "color": "#2f6bff",
+     "x": 0.6,
+     "y": 0.4,
+     "r": 0.15,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 64,
+     "suffix": " LIGHT-YEARS",
+     "grouping": "none",
+     "y": 0.6,
+     "size": 0.075,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at_word": "sixty",
+     "count_dur": 1.2
+    }
+   ]
+  },
+  {
+   "id": "looks",
+   "narration": "From far away, it looks calm and blue. A lot like Earth.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "LOOKS FAMILIAR?",
+     "y": 0.15,
+     "size": 0.085,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "planet",
+     "style": "earth",
+     "x": 0.28,
+     "y": 0.4,
+     "r": 0.1,
+     "enter": "pop",
+     "at": 0.8
+    },
+    {
+     "type": "planet",
+     "style": "exoplanet",
+     "color": "#2f6bff",
+     "x": 0.7,
+     "y": 0.4,
+     "r": 0.17
+    },
+    {
+     "type": "text",
+     "text": "EARTH",
+     "x": 0.28,
+     "y": 0.55,
+     "size": 0.045,
+     "width": 0.4,
+     "enter": "fade",
+     "at": 1.0
+    },
+    {
+     "type": "text",
+     "text": "HD 189733b",
+     "x": 0.7,
+     "y": 0.58,
+     "size": 0.045,
+     "width": 0.5,
+     "enter": "fade",
+     "at": 0.4
+    }
+   ]
+  },
+  {
+   "id": "heat",
+   "narration": "But it's nearly a thousand degrees Celsius there. Hot enough to melt aluminum.",
+   "caption": "But it's nearly 1,000 °C there. Hot enough to melt aluminum.",
+   "background": {
+    "type": "space",
+    "stars": 200,
+    "shooting": false,
+    "nebula": [
+     "#7a1d0b",
+     "#5a1226",
+     "#2a0b3a"
+    ]
+   },
+   "elements": [
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 930,
+     "suffix": " °C",
+     "grouping": "none",
+     "y": 0.18,
+     "size": 0.15,
+     "color": "#ff7a3d",
+     "enter": "pop",
+     "at": 0.3,
+     "count_dur": 1.6
+    },
+    {
+     "type": "planet",
+     "style": "exoplanet",
+     "color": "#2f6bff",
+     "x": 0.5,
+     "y": 0.42,
+     "r": 0.14,
+     "glow": true
+    },
+    {
+     "type": "emoji",
+     "text": "🔥",
+     "x": 0.8,
+     "y": 0.33,
+     "size": 0.1,
+     "enter": "pop",
+     "at": 1.0,
+     "behaviors": [
+      {
+       "kind": "wiggle",
+       "amp": 4,
+       "period": 2
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "MELTS ALUMINUM",
+     "y": 0.6,
+     "size": 0.055,
+     "bg": "#b4321a",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "melt"
+    }
+   ]
+  },
+  {
+   "id": "blue",
+   "narration": "Its deep blue color likely comes from tiny particles of glass, called silicates, floating in its sky.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "planet",
+     "style": "exoplanet",
+     "color": "#2f6bff",
+     "x": 0.5,
+     "y": 0.4,
+     "r": 0.26
+    },
+    {
+     "type": "text",
+     "text": "WHY SO BLUE?",
+     "y": 0.14,
+     "size": 0.085,
+     "color": "#7fb2ff",
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "shape",
+     "shape": "ring",
+     "x": 0.5,
+     "y": 0.4,
+     "w": 0.6,
+     "color": "#9fd3ff",
+     "stroke_w": 0.012,
+     "enter": "grow",
+     "at": 0.5
+    },
+    {
+     "type": "particles",
+     "kind": "stream",
+     "y": 0.4,
+     "angle": 8,
+     "thickness": 0.12,
+     "speed": 0.15,
+     "color": "#d9f3ff",
+     "count": 45
+    },
+    {
+     "type": "particles",
+     "kind": "sparkles",
+     "count": 20,
+     "color": "#cfe8ff",
+     "at_word": "glass"
+    },
+    {
+     "type": "text",
+     "text": "GLASS = SILICATES",
+     "y": 0.6,
+     "size": 0.055,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "silicates"
+    }
+   ]
+  },
+  {
+   "id": "wind",
+   "narration": "And winds of about fifty-four hundred miles per hour hurl that glass sideways. That's around seven times the speed of sound.",
+   "caption": "And winds of about 5,400 mph hurl that glass sideways. That's around 7× the speed of sound.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "camera": {
+    "zoom": [
+     1.0,
+     1.06
+    ],
+    "shake": true
+   },
+   "elements": [
+    {
+     "type": "planet",
+     "style": "exoplanet",
+     "color": "#2f6bff",
+     "x": 0.5,
+     "y": 0.45,
+     "r": 0.15
+    },
+    {
+     "type": "particles",
+     "kind": "stream",
+     "y": 0.45,
+     "angle": 8,
+     "thickness": 0.6,
+     "speed": 1.6,
+     "streak": 0.05,
+     "color": "#d9f3ff",
+     "count": 160
+    },
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 5400,
+     "suffix": " MPH",
+     "grouping": "none",
+     "y": 0.16,
+     "size": 0.13,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at_word": "fifty",
+     "count_dur": 1.4
+    },
+    {
+     "type": "text",
+     "text": "(about 8,700 km/h)",
+     "y": 0.23,
+     "size": 0.042,
+     "color": "#9fb3d1",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "miles"
+    },
+    {
+     "type": "text",
+     "text": "7× THE SPEED OF SOUND",
+     "y": 0.62,
+     "size": 0.055,
+     "bg": "#ff3b5c",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "seven"
+    }
+   ]
+  },
+  {
+   "id": "next",
+   "narration": "Next: a star so dense, a single sugar cube of it weighs a billion tons. Follow for part three.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "hold": 0.5,
+   "elements": [
+    {
+     "type": "text",
+     "text": "NEXT ▶",
+     "y": 0.12,
+     "size": 0.05,
+     "bg": "#7c3aed",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop"
+    },
+    {
+     "type": "text",
+     "text": "A BILLION-TON SUGAR CUBE",
+     "y": 0.2,
+     "size": 0.07,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.3
+    },
+    {
+     "type": "planet",
+     "style": "neutron_star",
+     "x": 0.5,
+     "y": 0.42,
+     "r": 0.035,
+     "beam_speed": 80
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.78,
+     "y": 0.3,
+     "w": 0.08,
+     "h": 0.08,
+     "radius": 0.01,
+     "gradient": [
+      "#ffffff",
+      "#d9dee6"
+     ],
+     "stroke": "#aab4c0",
+     "stroke_w": 0.003,
+     "enter": "drop",
+     "at_word": "sugar"
+    },
+    {
+     "type": "character",
+     "id": "bolt",
+     "species": "robot",
+     "color": "#8fa3b8",
+     "talking": true,
+     "x": 0.15,
+     "y": 0.6,
+     "r": 0.06,
+     "wave": true,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "text",
+     "text": "FOLLOW FOR PART 3",
+     "y": 0.62,
+     "size": 0.055,
+     "bg": "#ff3b5c",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Follow",
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.04,
+       "period": 1.2
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,745 @@
+{
+ "title": "गप्पू हाथी के साथ 1 से 5 तक गिनती | Hindi Counting for Kids",
+ "description": "गप्पू हाथी के साथ रंग-बिरंगे गुब्बारों से 1 से 5 तक गिनती सीखिए। Original song-free counting video for toddlers.\n\nVisuals and voice are AI-assisted.",
+ "tags": [
+  "hindi counting",
+  "गिनती",
+  "kids learning hindi",
+  "1 se 5 tak ginti",
+  "balloons",
+  "nursery"
+ ],
+ "language": "hi",
+ "voice": "hf_alpha",
+ "speed": 1.0,
+ "aspect": "9:16",
+ "made_for_kids": true,
+ "category": "education",
+ "music": {
+  "mood": "playful",
+  "volume": 0.15,
+  "seed": 4
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.745,
+  "size": 0.085,
+  "max_words": 3,
+  "highlight": "#ffd400"
+ },
+ "overlay": {
+  "handle": "@vidforge.kids",
+  "progress_bar": true,
+  "bar_color": "#ff3b5c"
+ },
+ "thumbnail": {
+  "scene": 5,
+  "t": 2.6
+ },
+ "transition": "slide_left",
+ "scenes": [
+  {
+   "id": "hello",
+   "narration": "नमस्ते बच्चो! मैं हूँ गप्पू हाथी। चलो, साथ में गिनती गिनें!",
+   "background": {
+    "type": "sunburst",
+    "colors": [
+     "#ffe27a",
+     "#ffc93c"
+    ],
+    "center": [
+     0.5,
+     0.42
+    ]
+   },
+   "sfx": [
+    {
+     "kind": "pop",
+     "at": 0.2
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "गिनती गिनें! 🎈",
+     "y": 0.14,
+     "size": 0.11,
+     "color": "#ff3b5c",
+     "stroke_color": "#ffffff",
+     "enter": "pop",
+     "at": 0.3,
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.03,
+       "period": 1.6
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "gappu",
+     "species": "elephant",
+     "color": "#9fb3c8",
+     "talking": true,
+     "x": 0.5,
+     "y": 0.44,
+     "r": 0.2,
+     "wave": true,
+     "enter": "pop",
+     "at": 0.0,
+     "behaviors": [
+      {
+       "kind": "bounce",
+       "amp": 0.015,
+       "period": 1.2
+      }
+     ]
+    },
+    {
+     "type": "particles",
+     "kind": "stars",
+     "count": 14,
+     "color": "#ffffff"
+    }
+   ]
+  },
+  {
+   "id": "n1",
+   "narration": "एक! एक लाल गुब्बारा।",
+   "caption": "1! एक लाल गुब्बारा।",
+   "background": {
+    "type": "sky",
+    "time": "day",
+    "clouds": 3,
+    "ground": true
+   },
+   "transition": "slide_left",
+   "min_duration": 3.2,
+   "sfx": [
+    {
+     "kind": "ding",
+     "at": 0.05
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "1",
+     "x": 0.3,
+     "y": 0.15,
+     "size": 0.22,
+     "color": "#ff4d4d",
+     "stroke_color": "#ffffff",
+     "enter": "pop",
+     "at": 0.05
+    },
+    {
+     "type": "text",
+     "text": "एक",
+     "x": 0.62,
+     "y": 0.155,
+     "size": 0.13,
+     "color": "#3a2a7a",
+     "stroke_color": "#ffffff",
+     "enter": "slide_left",
+     "at": 0.25
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#ff4d4d",
+     "x": 0.5,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 0.5,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.0
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "gappu",
+     "species": "elephant",
+     "color": "#9fb3c8",
+     "talking": true,
+     "x": 0.14,
+     "y": 0.62,
+     "r": 0.075,
+     "enter": "pop",
+     "at": 0.0,
+     "look": [
+      0.6,
+      -0.4
+     ]
+    }
+   ]
+  },
+  {
+   "id": "n2",
+   "narration": "दो! दो पीले गुब्बारे।",
+   "caption": "2! दो पीले गुब्बारे।",
+   "background": {
+    "type": "sky",
+    "time": "day",
+    "clouds": 3,
+    "ground": true
+   },
+   "transition": "slide_left",
+   "min_duration": 3.2,
+   "sfx": [
+    {
+     "kind": "ding",
+     "at": 0.05
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "2",
+     "x": 0.3,
+     "y": 0.15,
+     "size": 0.22,
+     "color": "#ffc93c",
+     "stroke_color": "#ffffff",
+     "enter": "pop",
+     "at": 0.05
+    },
+    {
+     "type": "text",
+     "text": "दो",
+     "x": 0.62,
+     "y": 0.155,
+     "size": 0.13,
+     "color": "#3a2a7a",
+     "stroke_color": "#ffffff",
+     "enter": "slide_left",
+     "at": 0.25
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#ffc93c",
+     "x": 0.37,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 0.5,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.0
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#ffc93c",
+     "x": 0.63,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 0.85,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.2
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "gappu",
+     "species": "elephant",
+     "color": "#9fb3c8",
+     "talking": true,
+     "x": 0.14,
+     "y": 0.62,
+     "r": 0.075,
+     "enter": "pop",
+     "at": 0.0,
+     "look": [
+      0.6,
+      -0.4
+     ]
+    }
+   ]
+  },
+  {
+   "id": "n3",
+   "narration": "तीन! तीन हरे गुब्बारे।",
+   "caption": "3! तीन हरे गुब्बारे।",
+   "background": {
+    "type": "sky",
+    "time": "day",
+    "clouds": 3,
+    "ground": true
+   },
+   "transition": "slide_left",
+   "min_duration": 3.2,
+   "sfx": [
+    {
+     "kind": "ding",
+     "at": 0.05
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "3",
+     "x": 0.3,
+     "y": 0.15,
+     "size": 0.22,
+     "color": "#3ecf6e",
+     "stroke_color": "#ffffff",
+     "enter": "pop",
+     "at": 0.05
+    },
+    {
+     "type": "text",
+     "text": "तीन",
+     "x": 0.62,
+     "y": 0.155,
+     "size": 0.13,
+     "color": "#3a2a7a",
+     "stroke_color": "#ffffff",
+     "enter": "slide_left",
+     "at": 0.25
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#3ecf6e",
+     "x": 0.24,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 0.5,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.0
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#3ecf6e",
+     "x": 0.5,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 0.85,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.2
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#3ecf6e",
+     "x": 0.76,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 1.2,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.4
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "gappu",
+     "species": "elephant",
+     "color": "#9fb3c8",
+     "talking": true,
+     "x": 0.14,
+     "y": 0.62,
+     "r": 0.075,
+     "enter": "pop",
+     "at": 0.0,
+     "look": [
+      0.6,
+      -0.4
+     ]
+    }
+   ]
+  },
+  {
+   "id": "n4",
+   "narration": "चार! चार नीले गुब्बारे।",
+   "caption": "4! चार नीले गुब्बारे।",
+   "background": {
+    "type": "sky",
+    "time": "day",
+    "clouds": 3,
+    "ground": true
+   },
+   "transition": "slide_left",
+   "min_duration": 3.2,
+   "sfx": [
+    {
+     "kind": "ding",
+     "at": 0.05
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "4",
+     "x": 0.3,
+     "y": 0.15,
+     "size": 0.22,
+     "color": "#3d8bff",
+     "stroke_color": "#ffffff",
+     "enter": "pop",
+     "at": 0.05
+    },
+    {
+     "type": "text",
+     "text": "चार",
+     "x": 0.62,
+     "y": 0.155,
+     "size": 0.13,
+     "color": "#3a2a7a",
+     "stroke_color": "#ffffff",
+     "enter": "slide_left",
+     "at": 0.25
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#3d8bff",
+     "x": 0.24,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 0.5,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.0
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#3d8bff",
+     "x": 0.5,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 0.85,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.2
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#3d8bff",
+     "x": 0.76,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 1.2,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.4
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#3d8bff",
+     "x": 0.5,
+     "y": 0.53,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 1.55,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.6000000000000001
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "gappu",
+     "species": "elephant",
+     "color": "#9fb3c8",
+     "talking": true,
+     "x": 0.14,
+     "y": 0.62,
+     "r": 0.075,
+     "enter": "pop",
+     "at": 0.0,
+     "look": [
+      0.6,
+      -0.4
+     ]
+    }
+   ]
+  },
+  {
+   "id": "n5",
+   "narration": "पाँच! पाँच गुलाबी गुब्बारे। वाह!",
+   "caption": "5! पाँच गुलाबी गुब्बारे। वाह!",
+   "background": {
+    "type": "sky",
+    "time": "day",
+    "clouds": 3,
+    "ground": true
+   },
+   "transition": "slide_left",
+   "min_duration": 3.2,
+   "sfx": [
+    {
+     "kind": "ding",
+     "at": 0.05
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "5",
+     "x": 0.3,
+     "y": 0.15,
+     "size": 0.22,
+     "color": "#ff6fb5",
+     "stroke_color": "#ffffff",
+     "enter": "pop",
+     "at": 0.05
+    },
+    {
+     "type": "text",
+     "text": "पाँच",
+     "x": 0.62,
+     "y": 0.155,
+     "size": 0.13,
+     "color": "#3a2a7a",
+     "stroke_color": "#ffffff",
+     "enter": "slide_left",
+     "at": 0.25
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#ff6fb5",
+     "x": 0.24,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 0.5,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.0
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#ff6fb5",
+     "x": 0.5,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 0.85,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.2
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#ff6fb5",
+     "x": 0.76,
+     "y": 0.36,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 1.2,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.4
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#ff6fb5",
+     "x": 0.37,
+     "y": 0.53,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 1.55,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.6000000000000001
+      }
+     ]
+    },
+    {
+     "type": "prop",
+     "name": "balloon",
+     "color": "#ff6fb5",
+     "x": 0.63,
+     "y": 0.53,
+     "size": 0.11,
+     "enter": "slide_up",
+     "at": 1.9,
+     "sfx": "pop",
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.4,
+       "phase": 0.8
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "gappu",
+     "species": "elephant",
+     "color": "#9fb3c8",
+     "talking": true,
+     "x": 0.14,
+     "y": 0.62,
+     "r": 0.075,
+     "enter": "pop",
+     "at": 0.0,
+     "look": [
+      0.6,
+      -0.4
+     ]
+    },
+    {
+     "type": "particles",
+     "kind": "confetti",
+     "count": 50,
+     "at_word": "वाह"
+    }
+   ]
+  },
+  {
+   "id": "bye",
+   "narration": "शाबाश! आपने पाँच तक गिनती सीख ली। फिर मिलेंगे!",
+   "background": {
+    "type": "sunburst",
+    "colors": [
+     "#ffe27a",
+     "#ffc93c"
+    ]
+   },
+   "transition": "circle",
+   "hold": 0.6,
+   "elements": [
+    {
+     "type": "text",
+     "text": "शाबाश! ⭐",
+     "y": 0.14,
+     "size": 0.12,
+     "color": "#ff3b5c",
+     "stroke_color": "#ffffff",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "character",
+     "id": "gappu",
+     "species": "elephant",
+     "color": "#9fb3c8",
+     "talking": true,
+     "x": 0.5,
+     "y": 0.45,
+     "r": 0.2,
+     "wave": true,
+     "expression": "happy",
+     "enter": "pop",
+     "at": 0.0,
+     "behaviors": [
+      {
+       "kind": "bounce",
+       "amp": 0.015,
+       "period": 1.2
+      }
+     ]
+    },
+    {
+     "type": "particles",
+     "kind": "confetti",
+     "count": 40
+    }
+   ]
+  }
+ ]
+}

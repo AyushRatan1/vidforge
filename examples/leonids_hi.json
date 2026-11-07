@@ -1,0 +1,823 @@
+{
+ "title": "17-18 नवंबर को आसमान से बरसेंगे तारे! Leonids 2026 कब और कैसे देखें #Shorts",
+ "description": "17-18 नवंबर 2026 की रात लियोनिड्स उल्का वर्षा (Leonids meteor shower) अपने पीक पर होगी। सबसे अच्छा समय: 18 नवंबर, रात 2 से सुबह 5 बजे, पूर्व दिशा में। दूरबीन की ज़रूरत नहीं!\n\nFacts: parent comet 55P/Tempel-Tuttle (~33 साल का चक्कर), speed ~71 km/s, peak rate ~15 meteors/hour.\n\nVisuals and voice are AI-assisted.",
+ "tags": [
+  "Leonids 2026",
+  "meteor shower",
+  "उल्का वर्षा",
+  "टूटता तारा",
+  "space facts hindi",
+  "astronomy india",
+  "night sky",
+  "shorts"
+ ],
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.12,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "category": "science",
+ "music": {
+  "mood": "cosmic",
+  "volume": 0.16,
+  "seed": 11
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.745,
+  "size": 0.074,
+  "max_words": 3,
+  "highlight": "#ffd400"
+ },
+ "overlay": {
+  "handle": "@vidforge.space",
+  "progress_bar": true
+ },
+ "thumbnail": {
+  "scene": 0,
+  "t": 1.8
+ },
+ "transition": "fade",
+ "scenes": [
+  {
+   "id": "hook",
+   "narration": "सत्रह-अठारह नवंबर की रात, आसमान से तारे बरसेंगे! इन्हें कहते हैं लियोनिड्स।",
+   "caption": "17-18 नवंबर की रात, आसमान से तारे बरसेंगे! इन्हें कहते हैं लियोनिड्स।",
+   "background": {
+    "type": "space",
+    "stars": 260,
+    "shooting": false
+   },
+   "camera": {
+    "zoom": [
+     1.0,
+     1.07
+    ]
+   },
+   "sfx": [
+    {
+     "kind": "whoosh",
+     "at": 0.0
+    }
+   ],
+   "elements": [
+    {
+     "type": "particles",
+     "kind": "meteors",
+     "radiant": [
+      0.66,
+      0.16
+     ],
+     "count": 14,
+     "period": 2.0
+    },
+    {
+     "type": "text",
+     "text": "17-18 नवंबर",
+     "y": 0.15,
+     "size": 0.14,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1,
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.03,
+       "period": 2.2
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "टूटते तारों की बारिश",
+     "y": 0.245,
+     "size": 0.075,
+     "enter": "slide_up",
+     "at": 0.5
+    },
+    {
+     "type": "character",
+     "id": "mascot",
+     "species": "astronaut",
+     "x": 0.5,
+     "y": 0.5,
+     "r": 0.16,
+     "talking": true,
+     "look": [
+      0.4,
+      -0.5
+     ],
+     "enter": "pop",
+     "at": 0.2,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 3
+      }
+     ]
+    },
+    {
+     "type": "emoji",
+     "text": "🌠",
+     "x": 0.82,
+     "y": 0.4,
+     "size": 0.13,
+     "enter": "pop",
+     "at": 0.9,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.012,
+       "period": 2.6
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dust",
+   "narration": "पर ये असली तारे नहीं, रेत जितने छोटे धूल के कण हैं।",
+   "background": {
+    "type": "space",
+    "stars": 200,
+    "nebula": [
+     "#2a1b5e",
+     "#16375f"
+    ],
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "❌ तारे नहीं",
+     "y": 0.14,
+     "size": 0.09,
+     "color": "#ff6b6b",
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "shape",
+     "shape": "ring",
+     "x": 0.5,
+     "y": 0.4,
+     "w": 0.62,
+     "color": "#9fd3ff",
+     "stroke_w": 0.012,
+     "enter": "grow",
+     "at": 0.5
+    },
+    {
+     "type": "shape",
+     "shape": "circle",
+     "x": 0.42,
+     "y": 0.36,
+     "w": 0.08,
+     "h": 0.07,
+     "color": "#b08968",
+     "enter": "pop",
+     "at": 1.0,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.008,
+       "period": 2.4
+      }
+     ]
+    },
+    {
+     "type": "shape",
+     "shape": "circle",
+     "x": 0.58,
+     "y": 0.34,
+     "w": 0.06,
+     "h": 0.05,
+     "color": "#8d6e63",
+     "enter": "pop",
+     "at": 1.15,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 2.9,
+       "phase": 0.3
+      }
+     ]
+    },
+    {
+     "type": "shape",
+     "shape": "circle",
+     "x": 0.5,
+     "y": 0.43,
+     "w": 0.1,
+     "h": 0.085,
+     "color": "#c9a27e",
+     "enter": "pop",
+     "at": 1.3,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.007,
+       "period": 3.1,
+       "phase": 0.6
+      }
+     ]
+    },
+    {
+     "type": "shape",
+     "shape": "circle",
+     "x": 0.38,
+     "y": 0.46,
+     "w": 0.05,
+     "h": 0.045,
+     "color": "#a1887f",
+     "enter": "pop",
+     "at": 1.45,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.009,
+       "period": 2.2,
+       "phase": 0.1
+      }
+     ]
+    },
+    {
+     "type": "shape",
+     "shape": "circle",
+     "x": 0.62,
+     "y": 0.47,
+     "w": 0.07,
+     "h": 0.06,
+     "color": "#bcaaa4",
+     "enter": "pop",
+     "at": 1.6,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.008,
+       "period": 2.7,
+       "phase": 0.8
+      }
+     ]
+    },
+    {
+     "type": "particles",
+     "kind": "sparkles",
+     "count": 18,
+     "at": 1.0
+    },
+    {
+     "type": "text",
+     "text": "धूल के कण ✨",
+     "y": 0.62,
+     "size": 0.08,
+     "color": "#ffd400",
+     "enter": "slide_up",
+     "at_word": "धूल"
+    }
+   ]
+  },
+  {
+   "id": "comet",
+   "narration": "ये धूल छोड़ी है टेम्पल-टटल धूमकेतु ने, जो हर तैंतीस साल में सूरज का चक्कर लगाता है।",
+   "caption": "ये धूल छोड़ी है टेम्पल-टटल धूमकेतु ने, जो हर 33 साल में सूरज का चक्कर लगाता है।",
+   "transition": "slide_left",
+   "background": {
+    "type": "space",
+    "stars": 220,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "planet",
+     "style": "sun",
+     "x": 1.04,
+     "y": 0.42,
+     "r": 0.2
+    },
+    {
+     "type": "particles",
+     "kind": "stream",
+     "y": 0.425,
+     "angle": -4,
+     "thickness": 0.05,
+     "count": 60,
+     "speed": -0.03,
+     "color": "#bfe6ff"
+    },
+    {
+     "type": "prop",
+     "name": "comet",
+     "x": 0.25,
+     "y": 0.42,
+     "size": 0.085,
+     "tail": 4.2,
+     "rot": -4,
+     "enter": "fade",
+     "at": 0.0,
+     "move": {
+      "to": [
+       0.6,
+       0.41
+      ],
+      "start": 0,
+      "end": 7,
+      "ease": "linear"
+     }
+    },
+    {
+     "type": "text",
+     "text": "धूमकेतु 55P/टेम्पल-टटल",
+     "y": 0.15,
+     "size": 0.06,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.9,
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.4
+    },
+    {
+     "type": "text",
+     "text": "हर 33 साल में 1 चक्कर ☀️",
+     "y": 0.6,
+     "size": 0.065,
+     "color": "#9fe7ff",
+     "enter": "slide_up",
+     "at_word": "तैंतीस"
+    }
+   ]
+  },
+  {
+   "id": "crossing",
+   "narration": "हर नवंबर, हमारी धरती इसी धूल के रास्ते से गुज़रती है।",
+   "background": {
+    "type": "space",
+    "stars": 220,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "particles",
+     "kind": "stream",
+     "y": 0.4,
+     "angle": -20,
+     "thickness": 0.16,
+     "count": 150,
+     "speed": 0.02,
+     "color": "#ffd9a0"
+    },
+    {
+     "type": "text",
+     "text": "धूल का रास्ता",
+     "x": 0.3,
+     "y": 0.31,
+     "size": 0.05,
+     "color": "#ffd9a0",
+     "rot": -20,
+     "enter": "fade",
+     "at": 0.6,
+     "stroke_w": 0.12
+    },
+    {
+     "type": "planet",
+     "style": "earth",
+     "r": 0.13,
+     "x": 0.18,
+     "y": 0.6,
+     "keys": [
+      {
+       "t": 0,
+       "x": 0.18,
+       "y": 0.6
+      },
+      {
+       "t": 4.5,
+       "x": 0.64,
+       "y": 0.38,
+       "ease": "in_out"
+      }
+     ],
+     "spin_speed": 0.12
+    },
+    {
+     "type": "text",
+     "text": "हर साल नवंबर में",
+     "y": 0.13,
+     "size": 0.08,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.2
+    }
+   ]
+  },
+  {
+   "id": "speed",
+   "narration": "ये कण इकहत्तर किलोमीटर प्रति सेकंड की रफ़्तार से वायुमंडल में घुसकर जल उठते हैं।",
+   "caption": "ये कण 71 किलोमीटर प्रति सेकंड की रफ़्तार से वायुमंडल में घुसकर जल उठते हैं।",
+   "transition": "zoom",
+   "background": {
+    "type": "space",
+    "stars": 220,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "particles",
+     "kind": "meteors",
+     "radiant": [
+      0.5,
+      -0.1
+     ],
+     "count": 18,
+     "period": 1.6
+    },
+    {
+     "type": "planet",
+     "style": "earth",
+     "x": 0.5,
+     "y": 1.06,
+     "r": 0.58,
+     "spin_speed": 0.03
+    },
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 71,
+     "suffix": " km/s",
+     "grouping": "none",
+     "y": 0.2,
+     "size": 0.16,
+     "color": "#ffd400",
+     "enter": "pop",
+     "count_dur": 2.0,
+     "at_word": "इकहत्तर"
+    },
+    {
+     "type": "text",
+     "text": "बंदूक की गोली से ~70 गुना तेज़ 🔥",
+     "y": 0.3,
+     "size": 0.06,
+     "enter": "slide_up",
+     "at": 2.6
+    }
+   ]
+  },
+  {
+   "id": "rate",
+   "narration": "पीक पर, सिंह तारामंडल की ओर से, हर घंटे पंद्रह तक टूटते तारे दिख सकते हैं।",
+   "caption": "पीक पर, सिंह तारामंडल (Leo) की ओर से, हर घंटे 15 तक टूटते तारे दिख सकते हैं।",
+   "background": {
+    "type": "space",
+    "stars": 300,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "constellation",
+     "x": 0.55,
+     "y": 0.28,
+     "enter": "draw",
+     "at": 0.2,
+     "enter_dur": 1.4,
+     "label": "सिंह (Leo)",
+     "label_pos": [
+      0.02,
+      0.2
+     ],
+     "points": [
+      [
+       -0.12,
+       0.12
+      ],
+      [
+       -0.13,
+       0.02
+      ],
+      [
+       -0.08,
+       -0.06
+      ],
+      [
+       -0.1,
+       -0.14
+      ],
+      [
+       -0.17,
+       -0.17
+      ],
+      [
+       -0.22,
+       -0.12
+      ],
+      [
+       0.12,
+       -0.05
+      ],
+      [
+       0.24,
+       0.03
+      ],
+      [
+       0.12,
+       0.07
+      ]
+     ],
+     "lines": [
+      [
+       0,
+       1
+      ],
+      [
+       1,
+       2
+      ],
+      [
+       2,
+       3
+      ],
+      [
+       3,
+       4
+      ],
+      [
+       4,
+       5
+      ],
+      [
+       2,
+       6
+      ],
+      [
+       6,
+       7
+      ],
+      [
+       7,
+       8
+      ],
+      [
+       8,
+       0
+      ]
+     ]
+    },
+    {
+     "type": "particles",
+     "kind": "meteors",
+     "radiant": [
+      0.47,
+      0.25
+     ],
+     "count": 12,
+     "period": 2.2,
+     "at": 1.2
+    },
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 15,
+     "y": 0.52,
+     "size": 0.17,
+     "color": "#ffd400",
+     "enter": "pop",
+     "count_dur": 1.4,
+     "at_word": "पंद्रह"
+    },
+    {
+     "type": "text",
+     "text": "टूटते तारे / घंटा",
+     "y": 0.6,
+     "size": 0.06,
+     "enter": "fade",
+     "at_word": "टूटते"
+    }
+   ]
+  },
+  {
+   "id": "when",
+   "narration": "सबसे अच्छा समय: अठारह नवंबर, रात दो से सुबह पाँच बजे तक, पूर्व दिशा में। तब तक चाँद भी डूब चुका होगा।",
+   "caption": "सबसे अच्छा समय: 18 नवंबर, रात 2 से सुबह 5 बजे तक, पूर्व दिशा में। तब तक चाँद भी डूब चुका होगा।",
+   "transition": "slide_up",
+   "background": {
+    "type": "sky",
+    "time": "night",
+    "clouds": 0,
+    "ground": true
+   },
+   "elements": [
+    {
+     "type": "particles",
+     "kind": "meteors",
+     "radiant": [
+      0.78,
+      0.12
+     ],
+     "count": 8,
+     "period": 2.6
+    },
+    {
+     "type": "text",
+     "text": "कब देखें? 👀",
+     "y": 0.62,
+     "size": 0.09,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "text",
+     "text": "📅 18 नवंबर",
+     "y": 0.15,
+     "size": 0.068,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.88,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "अठारह"
+    },
+    {
+     "type": "text",
+     "text": "⏰ रात 2 से सुबह 5",
+     "y": 0.25,
+     "size": 0.068,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.88,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "रात"
+    },
+    {
+     "type": "text",
+     "text": "🌙 चाँद डूब चुका होगा",
+     "y": 0.45,
+     "size": 0.062,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.88,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "चाँद"
+    },
+    {
+     "type": "text",
+     "text": "🧭 पूर्व (East) की ओर",
+     "y": 0.35,
+     "size": 0.068,
+     "bg": "#ff7a2f",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "pop",
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.03,
+       "period": 1.4
+      }
+     ],
+     "at_word": "पूर्व"
+    }
+   ]
+  },
+  {
+   "id": "tips",
+   "narration": "दूरबीन की ज़रूरत नहीं। शहर से दूर जाइए, लेटिए, और आँखों को बीस मिनट अंधेरे की आदत डालने दीजिए।",
+   "caption": "दूरबीन की ज़रूरत नहीं। शहर से दूर जाइए, लेटिए, और आँखों को 20 मिनट अंधेरे की आदत डालने दीजिए।",
+   "background": {
+    "type": "sky",
+    "time": "night",
+    "clouds": 0,
+    "ground": true
+   },
+   "elements": [
+    {
+     "type": "prop",
+     "name": "telescope",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.14,
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "emoji",
+     "text": "❌",
+     "x": 0.5,
+     "y": 0.21,
+     "size": 0.2,
+     "enter": "pop",
+     "at": 0.7
+    },
+    {
+     "type": "text",
+     "text": "🌃 शहर से दूर",
+     "y": 0.42,
+     "size": 0.066,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.88,
+     "stroke": false,
+     "enter": "slide_left",
+     "at_word": "शहर"
+    },
+    {
+     "type": "text",
+     "text": "🛏️ लेटकर देखें",
+     "y": 0.51,
+     "size": 0.066,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.88,
+     "stroke": false,
+     "enter": "slide_left",
+     "at_word": "लेटिए"
+    },
+    {
+     "type": "text",
+     "text": "⏳ 20 मिनट अंधेरे में",
+     "y": 0.6,
+     "size": 0.066,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.88,
+     "stroke": false,
+     "enter": "slide_left",
+     "at_word": "बीस"
+    }
+   ]
+  },
+  {
+   "id": "cta",
+   "narration": "दिसंबर में आएगा इससे भी बड़ा शो, जेमिनिड्स! फ़ॉलो कीजिए, ताकि मिस न हो।",
+   "background": {
+    "type": "space",
+    "stars": 260,
+    "shooting": false
+   },
+   "hold": 0.6,
+   "elements": [
+    {
+     "type": "particles",
+     "kind": "meteors",
+     "radiant": [
+      0.5,
+      0.18
+     ],
+     "count": 22,
+     "period": 1.8
+    },
+    {
+     "type": "text",
+     "text": "अगला शो: जेमिनिड्स 🌠",
+     "y": 0.14,
+     "size": 0.075,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.3
+    },
+    {
+     "type": "text",
+     "text": "13-14 दिसंबर",
+     "y": 0.22,
+     "size": 0.06,
+     "enter": "slide_up",
+     "at": 0.8
+    },
+    {
+     "type": "character",
+     "id": "mascot",
+     "species": "astronaut",
+     "x": 0.5,
+     "y": 0.45,
+     "r": 0.15,
+     "talking": true,
+     "wave": true,
+     "enter": "pop",
+     "at": 0.2,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 3
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "फ़ॉलो करें ✅",
+     "y": 0.63,
+     "size": 0.075,
+     "bg": "#ff3b5c",
+     "bg_alpha": 0.95,
+     "stroke": false,
+     "enter": "pop",
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.04,
+       "period": 1.2
+      }
+     ],
+     "at_word": "फ़ॉलो"
+    }
+   ]
+  }
+ ]
+}

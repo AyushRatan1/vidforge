@@ -1,0 +1,443 @@
+{
+ "title": "A Sugar Cube of This Star Weighs a Billion Tons 😳 #Shorts",
+ "description": "Neutron stars pack the mass of the Sun (or more) into a ball about 20 km wide. A sugar cube of neutron-star matter would weigh around a billion tons, and the fastest known one spins 716 times a second.\nSource: Space.com.\n\nPart of the Space Is Weird series. Visuals and voice are AI-assisted.",
+ "tags": [
+  "neutron star",
+  "pulsar",
+  "dense",
+  "supernova",
+  "space",
+  "space facts",
+  "astronomy",
+  "shorts"
+ ],
+ "language": "en",
+ "voice": "af_heart",
+ "speed": 1.05,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "category": "science",
+ "music": {
+  "mood": "epic",
+  "volume": 0.16,
+  "seed": 9
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.745,
+  "size": 0.07,
+  "max_words": 3,
+  "highlight": "#ffd400",
+  "uppercase": true
+ },
+ "overlay": {
+  "handle": "@vidforge.cosmos",
+  "progress_bar": true,
+  "bar_color": "#a78bfa"
+ },
+ "thumbnail": {
+  "scene": 0,
+  "t": 1.6
+ },
+ "transition": "fade",
+ "scenes": [
+  {
+   "id": "hook",
+   "narration": "A sugar cube made of this star would weigh about a billion tons.",
+   "caption": "A sugar cube made of this star would weigh about 1 billion tons.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "camera": {
+    "zoom": [
+     1.0,
+     1.08
+    ]
+   },
+   "sfx": [
+    {
+     "kind": "whoosh",
+     "at": 0
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "SPACE IS WEIRD · #3",
+     "y": 0.085,
+     "size": 0.038,
+     "style": "label",
+     "bg": "#7c3aed",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "fade",
+     "at": 0
+    },
+    {
+     "type": "planet",
+     "style": "neutron_star",
+     "x": 0.5,
+     "y": 0.4,
+     "r": 0.05,
+     "beam_speed": 70
+    },
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 1000000000,
+     "suffix": " TONS",
+     "grouping": "none",
+     "y": 0.17,
+     "size": 0.085,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.2,
+     "count_dur": 2.2
+    },
+    {
+     "type": "shape",
+     "shape": "rect",
+     "x": 0.5,
+     "y": 0.6,
+     "w": 0.1,
+     "h": 0.1,
+     "radius": 0.012,
+     "gradient": [
+      "#ffffff",
+      "#d9dee6"
+     ],
+     "stroke": "#aab4c0",
+     "stroke_w": 0.003,
+     "enter": "drop",
+     "at_word": "sugar"
+    },
+    {
+     "type": "text",
+     "text": "1 SUGAR CUBE",
+     "x": 0.77,
+     "y": 0.6,
+     "size": 0.04,
+     "width": 0.4,
+     "enter": "fade",
+     "at_word": "sugar"
+    },
+    {
+     "type": "character",
+     "id": "bolt",
+     "species": "robot",
+     "color": "#8fa3b8",
+     "talking": true,
+     "x": 0.15,
+     "y": 0.63,
+     "r": 0.06,
+     "expression": "surprised",
+     "enter": "pop",
+     "at": 0.3
+    }
+   ]
+  },
+  {
+   "id": "collapse",
+   "narration": "It's a neutron star, the crushed core left behind when a giant star explodes.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "planet",
+     "style": "sun",
+     "color": "#ff6b3d",
+     "x": 0.5,
+     "y": 0.4,
+     "r": 0.2,
+     "until": 2.9,
+     "exit": "pop",
+     "keys": [
+      {
+       "t": 0,
+       "scale": 1.0
+      },
+      {
+       "t": 1.6,
+       "scale": 1.08
+      },
+      {
+       "t": 2.9,
+       "scale": 0.12,
+       "ease": "in"
+      }
+     ]
+    },
+    {
+     "type": "particles",
+     "kind": "confetti",
+     "count": 60,
+     "colors": [
+      "#ffd166",
+      "#ff7a3d",
+      "#ffffff"
+     ],
+     "at": 2.9,
+     "until": 4.2
+    },
+    {
+     "type": "planet",
+     "style": "neutron_star",
+     "x": 0.5,
+     "y": 0.4,
+     "r": 0.04,
+     "enter": "pop",
+     "at": 2.9,
+     "beam_speed": 90
+    },
+    {
+     "type": "text",
+     "text": "SUPERNOVA 💥",
+     "y": 0.15,
+     "size": 0.09,
+     "color": "#ff9a3d",
+     "enter": "pop",
+     "at": 2.8
+    },
+    {
+     "type": "text",
+     "text": "NEUTRON STAR",
+     "y": 0.6,
+     "size": 0.07,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 3.2
+    }
+   ]
+  },
+  {
+   "id": "size",
+   "narration": "It packs the mass of our Sun, or more, into a ball about twenty kilometers wide. Roughly the size of a city.",
+   "caption": "It packs the mass of our Sun, or more, into a ball about 20 km wide. Roughly the size of a city.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "SAME MASS ⚖️",
+     "y": 0.13,
+     "size": 0.085,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "planet",
+     "style": "sun",
+     "x": 0.27,
+     "y": 0.38,
+     "r": 0.19
+    },
+    {
+     "type": "text",
+     "text": "=",
+     "x": 0.6,
+     "y": 0.38,
+     "size": 0.12,
+     "enter": "pop",
+     "at": 1.0
+    },
+    {
+     "type": "planet",
+     "style": "neutron_star",
+     "x": 0.8,
+     "y": 0.38,
+     "r": 0.02,
+     "beams": false,
+     "enter": "pop",
+     "at": 1.2
+    },
+    {
+     "type": "text",
+     "text": "THE SUN",
+     "x": 0.27,
+     "y": 0.56,
+     "size": 0.045,
+     "width": 0.4,
+     "enter": "fade",
+     "at": 0.6
+    },
+    {
+     "type": "text",
+     "text": "~20 KM 🏙️",
+     "x": 0.8,
+     "y": 0.47,
+     "size": 0.05,
+     "width": 0.4,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at_word": "twenty"
+    }
+   ]
+  },
+  {
+   "id": "spin",
+   "narration": "And some of them spin over seven hundred times every second.",
+   "caption": "And some of them spin over 700 times every second.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "planet",
+     "style": "neutron_star",
+     "x": 0.5,
+     "y": 0.42,
+     "r": 0.05,
+     "beam_speed": 540,
+     "beam_length": 12
+    },
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 716,
+     "suffix": " SPINS / SEC",
+     "grouping": "none",
+     "y": 0.16,
+     "size": 0.09,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at_word": "seven",
+     "count_dur": 1.4
+    },
+    {
+     "type": "text",
+     "text": "FASTEST KNOWN: 716 PER SECOND",
+     "y": 0.63,
+     "size": 0.045,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "second"
+    }
+   ]
+  },
+  {
+   "id": "pulsar",
+   "narration": "Their beams sweep across space like a lighthouse, so we see them blink. We call them pulsars.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "planet",
+     "style": "neutron_star",
+     "x": 0.5,
+     "y": 0.4,
+     "r": 0.04,
+     "beam_speed": 110,
+     "beam_length": 14
+    },
+    {
+     "type": "planet",
+     "style": "earth",
+     "x": 0.85,
+     "y": 0.6,
+     "r": 0.03
+    },
+    {
+     "type": "text",
+     "text": "LIKE A LIGHTHOUSE 🔦",
+     "y": 0.14,
+     "size": 0.065,
+     "enter": "pop",
+     "at_word": "lighthouse"
+    },
+    {
+     "type": "text",
+     "text": "PULSAR",
+     "y": 0.62,
+     "size": 0.1,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at_word": "pulsars"
+    }
+   ]
+  },
+  {
+   "id": "next",
+   "narration": "Next time: what really happens if you fall into a black hole. Follow so you don't miss it.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "hold": 0.5,
+   "elements": [
+    {
+     "type": "text",
+     "text": "NEXT ▶",
+     "y": 0.12,
+     "size": 0.05,
+     "bg": "#7c3aed",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop"
+    },
+    {
+     "type": "text",
+     "text": "FALLING INTO A BLACK HOLE",
+     "y": 0.2,
+     "size": 0.065,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.3
+    },
+    {
+     "type": "planet",
+     "style": "black_hole",
+     "x": 0.5,
+     "y": 0.42,
+     "r": 0.09
+    },
+    {
+     "type": "character",
+     "id": "bolt",
+     "species": "robot",
+     "color": "#8fa3b8",
+     "talking": true,
+     "x": 0.15,
+     "y": 0.6,
+     "r": 0.06,
+     "wave": true,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "text",
+     "text": "FOLLOW FOR PART 4",
+     "y": 0.62,
+     "size": 0.055,
+     "bg": "#ff3b5c",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Follow",
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.04,
+       "period": 1.2
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

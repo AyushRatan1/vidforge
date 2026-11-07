@@ -1,0 +1,575 @@
+{
+ "title": "This Spacecraft Is Now One Light-Day From Earth 🤯 #Shorts",
+ "description": "On 18 November 2026, Voyager 1 becomes the first human-made object one light-day (25.9 billion km) from Earth. Launched in 1977, it still phones home.\nSource: NASA via EarthSky.\n\nPart of the Space Is Weird series. Visuals and voice are AI-assisted.",
+ "tags": [
+  "Voyager 1",
+  "light day",
+  "NASA",
+  "deep space",
+  "space",
+  "space facts",
+  "astronomy",
+  "shorts"
+ ],
+ "language": "en",
+ "voice": "af_heart",
+ "speed": 1.05,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "category": "science",
+ "music": {
+  "mood": "cosmic",
+  "volume": 0.16,
+  "seed": 21
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.745,
+  "size": 0.07,
+  "max_words": 3,
+  "highlight": "#ffd400",
+  "uppercase": true
+ },
+ "overlay": {
+  "handle": "@vidforge.cosmos",
+  "progress_bar": true,
+  "bar_color": "#a78bfa"
+ },
+ "thumbnail": {
+  "scene": 0,
+  "t": 1.6
+ },
+ "transition": "fade",
+ "scenes": [
+  {
+   "id": "hook",
+   "narration": "On November eighteenth, a spacecraft launched in nineteen seventy-seven will be one full light-day from Earth.",
+   "caption": "On November 18th, a spacecraft launched in 1977 will be one full light-day from Earth.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "camera": {
+    "zoom": [
+     1.0,
+     1.08
+    ]
+   },
+   "sfx": [
+    {
+     "kind": "whoosh",
+     "at": 0
+    }
+   ],
+   "elements": [
+    {
+     "type": "text",
+     "text": "SPACE IS WEIRD · #1",
+     "y": 0.085,
+     "size": 0.038,
+     "style": "label",
+     "bg": "#7c3aed",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "fade",
+     "at": 0
+    },
+    {
+     "type": "text",
+     "text": "NOV 18, 2026",
+     "y": 0.16,
+     "size": 0.12,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.1
+    },
+    {
+     "type": "text",
+     "text": "1 LIGHT-DAY FROM EARTH",
+     "y": 0.24,
+     "size": 0.06,
+     "enter": "slide_up",
+     "at": 0.5
+    },
+    {
+     "type": "prop",
+     "name": "voyager",
+     "x": 0.55,
+     "y": 0.47,
+     "size": 0.16,
+     "enter": "fade",
+     "at": 0,
+     "keys": [
+      {
+       "t": 0,
+       "scale": 1.15
+      },
+      {
+       "t": 7,
+       "scale": 0.85
+      }
+     ],
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 3.5
+      }
+     ]
+    },
+    {
+     "type": "character",
+     "id": "bolt",
+     "species": "robot",
+     "color": "#8fa3b8",
+     "talking": true,
+     "x": 0.15,
+     "y": 0.62,
+     "r": 0.06,
+     "look": [
+      0.6,
+      -0.4
+     ],
+     "enter": "pop",
+     "at": 0.3
+    }
+   ]
+  },
+  {
+   "id": "signal",
+   "narration": "That's Voyager one. It's so far away that a radio message, moving at the speed of light, takes a whole day to reach it.",
+   "caption": "That's Voyager 1. It's so far away that a radio message, moving at the speed of light, takes a whole day to reach it.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "planet",
+     "style": "earth",
+     "x": 0.13,
+     "y": 0.42,
+     "r": 0.075
+    },
+    {
+     "type": "prop",
+     "name": "voyager",
+     "x": 0.87,
+     "y": 0.42,
+     "size": 0.06
+    },
+    {
+     "type": "shape",
+     "shape": "line",
+     "x": 0.5,
+     "y": 0.42,
+     "from": [
+      -0.3,
+      0
+     ],
+     "to": [
+      0.3,
+      0
+     ],
+     "dashed": true,
+     "color": "#7dd3fc",
+     "stroke_w": 0.005,
+     "enter": "draw",
+     "at": 0.3,
+     "enter_dur": 1.0
+    },
+    {
+     "type": "shape",
+     "shape": "circle",
+     "w": 0.035,
+     "color": "#7dff9a",
+     "y": 0.42,
+     "keys": [
+      {
+       "t": 1.2,
+       "x": 0.2
+      },
+      {
+       "t": 6.5,
+       "x": 0.8,
+       "ease": "linear"
+      }
+     ],
+     "at": 1.2,
+     "enter": "pop",
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.25,
+       "period": 0.5
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "AT LIGHT SPEED ⚡",
+     "y": 0.3,
+     "size": 0.05,
+     "enter": "fade",
+     "at_word": "speed"
+    },
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 24,
+     "suffix": " HOURS",
+     "grouping": "none",
+     "y": 0.58,
+     "size": 0.12,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at_word": "whole",
+     "count_dur": 1.6
+    }
+   ]
+  },
+  {
+   "id": "distance",
+   "narration": "One light-day is about twenty-six billion kilometers. That's a hundred and seventy-three times farther than the Sun.",
+   "caption": "One light-day is about 26 billion km. That's 173 times farther than the Sun.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 25.9,
+     "decimals": 1,
+     "suffix": " BILLION KM",
+     "grouping": "none",
+     "y": 0.16,
+     "size": 0.085,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.3,
+     "count_dur": 1.8
+    },
+    {
+     "type": "text",
+     "text": "(16.1 billion miles)",
+     "y": 0.225,
+     "size": 0.042,
+     "color": "#9fb3d1",
+     "stroke": false,
+     "enter": "fade",
+     "at": 1.6
+    },
+    {
+     "type": "planet",
+     "style": "sun",
+     "x": 0.1,
+     "y": 0.43,
+     "r": 0.04
+    },
+    {
+     "type": "planet",
+     "style": "earth",
+     "x": 0.18,
+     "y": 0.43,
+     "r": 0.015,
+     "glow": false
+    },
+    {
+     "type": "text",
+     "text": "SUN TO EARTH = 1×",
+     "x": 0.3,
+     "y": 0.36,
+     "size": 0.04,
+     "width": 0.5,
+     "enter": "fade",
+     "at": 0.8
+    },
+    {
+     "type": "shape",
+     "shape": "arrow",
+     "x": 0.5,
+     "y": 0.5,
+     "from": [
+      -0.4,
+      0
+     ],
+     "to": [
+      0.38,
+      0
+     ],
+     "color": "#ffd400",
+     "stroke_w": 0.008,
+     "enter": "draw",
+     "at_word": "hundred",
+     "enter_dur": 1.4
+    },
+    {
+     "type": "prop",
+     "name": "voyager",
+     "x": 0.92,
+     "y": 0.5,
+     "size": 0.035,
+     "enter": "fade",
+     "at_word": "hundred"
+    },
+    {
+     "type": "text",
+     "text": "VOYAGER = 173×",
+     "y": 0.59,
+     "size": 0.07,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at_word": "times"
+    }
+   ]
+  },
+  {
+   "id": "speed",
+   "narration": "It's flying at about seventeen kilometers every second. That's London to New York in under six minutes.",
+   "caption": "It's flying at about 17 km every second. That's London to New York in under 6 minutes.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "particles",
+     "kind": "stream",
+     "y": 0.42,
+     "angle": 0,
+     "thickness": 0.5,
+     "speed": -0.9,
+     "streak": 0.05,
+     "color": "#ffffff",
+     "count": 60
+    },
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 17,
+     "suffix": " KM/S",
+     "grouping": "none",
+     "y": 0.17,
+     "size": 0.14,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.2,
+     "count_dur": 1.4
+    },
+    {
+     "type": "prop",
+     "name": "voyager",
+     "y": 0.42,
+     "size": 0.09,
+     "rot": -8,
+     "keys": [
+      {
+       "t": 0,
+       "x": 0.25
+      },
+      {
+       "t": 6,
+       "x": 0.75,
+       "ease": "in_out"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "text": "LONDON ✈️ NEW YORK: < 6 MIN",
+     "y": 0.6,
+     "size": 0.055,
+     "bg": "#1d2b53",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "London"
+    }
+   ]
+  },
+  {
+   "id": "power",
+   "narration": "After forty-nine years in space, most of its instruments are switched off to save power. But it still phones home.",
+   "caption": "After 49 years in space, most of its instruments are switched off to save power. But it still phones home.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "49 YEARS",
+     "y": 0.15,
+     "size": 0.12,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "prop",
+     "name": "voyager",
+     "x": 0.5,
+     "y": 0.4,
+     "size": 0.14,
+     "behaviors": [
+      {
+       "kind": "float",
+       "amp": 0.01,
+       "period": 3
+      }
+     ]
+    },
+    {
+     "type": "emoji",
+     "text": "🔋",
+     "x": 0.22,
+     "y": 0.6,
+     "size": 0.1,
+     "enter": "pop",
+     "at_word": "power"
+    },
+    {
+     "type": "emoji",
+     "text": "📡",
+     "x": 0.78,
+     "y": 0.6,
+     "size": 0.1,
+     "enter": "pop",
+     "at_word": "phones"
+    }
+   ]
+  },
+  {
+   "id": "record",
+   "narration": "And on board is a golden record, with sounds and pictures of Earth, for anyone who might find it.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "THE GOLDEN RECORD",
+     "y": 0.14,
+     "size": 0.075,
+     "color": "#ffcf4a",
+     "enter": "pop",
+     "at_word": "golden"
+    },
+    {
+     "type": "prop",
+     "name": "record",
+     "x": 0.5,
+     "y": 0.4,
+     "size": 0.19,
+     "enter": "spin_in",
+     "at_word": "golden"
+    },
+    {
+     "type": "particles",
+     "kind": "sparkles",
+     "count": 22,
+     "at_word": "golden"
+    },
+    {
+     "type": "text",
+     "text": "🎵 SOUNDS  •  🖼️ PICTURES",
+     "y": 0.6,
+     "size": 0.05,
+     "enter": "slide_up",
+     "at_word": "sounds"
+    }
+   ]
+  },
+  {
+   "id": "next",
+   "narration": "Next up: a blue planet where it rains glass. Sideways. Follow so you don't miss it.",
+   "background": {
+    "type": "space",
+    "stars": 280,
+    "shooting": false
+   },
+   "hold": 0.5,
+   "elements": [
+    {
+     "type": "text",
+     "text": "NEXT ▶",
+     "y": 0.12,
+     "size": 0.05,
+     "bg": "#7c3aed",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop"
+    },
+    {
+     "type": "text",
+     "text": "IT RAINS GLASS 🌧️",
+     "y": 0.2,
+     "size": 0.085,
+     "color": "#ffd400",
+     "enter": "pop",
+     "at": 0.3
+    },
+    {
+     "type": "planet",
+     "style": "exoplanet",
+     "color": "#2f6bff",
+     "x": 0.5,
+     "y": 0.42,
+     "r": 0.15
+    },
+    {
+     "type": "particles",
+     "kind": "stream",
+     "y": 0.42,
+     "angle": 8,
+     "thickness": 0.35,
+     "speed": 1.1,
+     "streak": 0.045,
+     "color": "#d9f3ff",
+     "count": 70,
+     "at_word": "Sideways"
+    },
+    {
+     "type": "character",
+     "id": "bolt",
+     "species": "robot",
+     "color": "#8fa3b8",
+     "talking": true,
+     "x": 0.15,
+     "y": 0.6,
+     "r": 0.06,
+     "wave": true,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "text",
+     "text": "FOLLOW FOR PART 2",
+     "y": 0.62,
+     "size": 0.055,
+     "bg": "#ff3b5c",
+     "bg_alpha": 0.92,
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Follow",
+     "behaviors": [
+      {
+       "kind": "pulse",
+       "amp": 0.04,
+       "period": 1.2
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

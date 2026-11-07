@@ -1,0 +1,7 @@
+.git
+data
+models
+.env
+__pycache__
+*.pyc
+.pytest_cache

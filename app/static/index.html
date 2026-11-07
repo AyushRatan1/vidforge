@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VidForge Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Mukta:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0f14;--panel:#151821;--panel2:#1b1f2a;--line:#262b38;--text:#e8eaf0;--muted:#8b93a7;--accent:#ffcc33;--accent2:#6c8cff;--ok:#3ecf8e;--warn:#f5a524;--bad:#ff5c5c;--r:12px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,Mukta,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:24px;padding:14px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(13,15,20,.92);backdrop-filter:blur(8px);z-index:5}
+.brand{font-weight:600;letter-spacing:.2px}.brand span{color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;margin-right:18px;padding:6px 0;border-bottom:2px solid transparent;cursor:pointer}
+nav a.on{color:var(--text);border-color:var(--accent)}
+.usage{margin-left:auto;color:var(--muted);font-size:12px}
+main{padding:24px;max-width:1400px;margin:0 auto}
+section{display:none}section.on{display:block}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.card h3{margin:0 0 12px;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.list .item{padding:12px;border-radius:10px;cursor:pointer;border:1px solid transparent;margin-bottom:6px;background:var(--panel2)}
+.list .item:hover{border-color:var(--line)}.list .item.on{border-color:var(--accent)}
+.item .t{font-weight:500;font-family:Mukta,Inter,sans-serif;font-size:15px;line-height:1.3}
+.muted{color:var(--muted)}.small{font-size:12px}
+.chip{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;background:var(--panel2);border:1px solid var(--line);color:var(--muted);margin-right:4px}
+.chip.ok{color:var(--ok);border-color:#1f5c43}.chip.warn{color:var(--warn);border-color:#6b4a12}.chip.bad{color:var(--bad);border-color:#6b2020}.chip.run{color:var(--accent2);border-color:#2c3a74}
+.bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--accent)}
+button,.btn{background:var(--accent);color:#1b1500;border:0;border-radius:9px;padding:9px 14px;font-weight:600;cursor:pointer;font-size:13px;text-decoration:none;display:inline-block}
+button.ghost,.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+button:disabled{opacity:.5;cursor:default}
+input,select,textarea{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit}
+textarea{min-height:90px;resize:vertical}textarea.code{font:12px/1.45 ui-monospace,Menlo,monospace;min-height:340px}
+label{display:block;font-size:12px;color:var(--muted);margin:12px 0 6px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.row>*{flex:1}
+.detail{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:20px;align-items:start}
+video{width:100%;border-radius:12px;background:#000;aspect-ratio:9/16}
+.scenes li{margin-bottom:8px;font-family:Mukta,Inter,sans-serif;font-size:15px}
+.ideas{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.idea .score{font-size:22px;font-weight:600;color:var(--accent)}
+.idea .hook{font-family:Mukta,Inter,sans-serif;font-size:16px;margin:8px 0}
+.checks{display:flex;flex-wrap:wrap;gap:8px}.checks label{display:flex;gap:6px;align-items:center;margin:0;color:var(--text);background:var(--panel2);padding:6px 10px;border-radius:8px;border:1px solid var(--line)}
+.checks input{width:auto}
+.toast{position:fixed;right:20px;bottom:20px;background:var(--panel2);border:1px solid var(--line);padding:12px 16px;border-radius:10px;display:none;max-width:420px}
+.issues li{margin-bottom:6px}.sev-blocker{color:var(--bad)}.sev-major{color:var(--warn)}
+a{color:var(--accent2)}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+@media(max-width:900px){.grid,.detail{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Vid<span>Forge</span> Studio</div>
+  <nav>
+    <a data-tab="studio" class="on">Studio</a><a data-tab="trends">Trends</a><a data-tab="channels">Channels</a><a data-tab="settings">Settings</a>
+  </nav>
+  <div class="usage" id="usage"></div>
+</header>
+<main>
+<!-- STUDIO -->
+<section id="studio" class="on">
+  <div class="grid">
+    <div class="card"><h3>Videos</h3><div class="list" id="jobList"></div></div>
+    <div class="card" id="jobDetail"><div class="empty">Pick a video, or start one from Trends.</div></div>
+  </div>
+</section>
+
+<!-- TRENDS -->
+<section id="trends">
+  <div class="card">
+    <h3>Find what's hot</h3>
+    <div class="row">
+      <div><label>Channel</label><select id="trendChannel"></select></div>
+      <div style="flex:2"><label>Notes for the scout (optional)</label><input id="scoutNotes" placeholder="e.g. focus on ISRO and sky events this month"></div>
+      <div style="flex:0 0 auto;align-self:end"><button id="scoutBtn">Scout trends</button></div>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <div style="flex:3"><label>Or make a video on your own topic</label><input id="customTopic" placeholder="e.g. NavIC vs GPS: India ka apna GPS"></div>
+      <div style="flex:0 0 auto;align-self:end"><button class="ghost" id="customBtn">Make video</button></div>
+    </div>
+  </div>
+  <div class="ideas" id="ideas" style="margin-top:16px"></div>
+</section>
+
+<!-- CHANNELS -->
+<section id="channels">
+  <div class="grid">
+    <div class="card"><h3>Channels</h3><div class="list" id="chList"></div><button class="ghost" id="newCh" style="width:100%;margin-top:8px">+ New channel</button></div>
+    <div class="card" id="chForm"></div>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings">
+  <div class="grid">
+    <div class="card">
+      <h3>Keys</h3>
+      <label>Anthropic API key</label><input id="s_anthropic_api_key" type="password" placeholder="sk-ant-...">
+      <label>YouTube Data API key (trends, free quota)</label><input id="s_youtube_api_key" type="password">
+      <label>NASA API key (optional, space ideas)</label><input id="s_nasa_api_key" type="password" placeholder="DEMO_KEY works for light use">
+      <label>Google OAuth client JSON (for uploading to YouTube)</label>
+      <input type="file" id="clientFile" accept=".json"><div class="small muted" id="clientState"></div>
+      <div style="margin-top:14px"><button id="saveSettings">Save</button></div>
+    </div>
+    <div class="card">
+      <h3>Models and quality</h3>
+      <div id="roleModels"></div>
+      <div class="checks" style="margin-top:14px">
+        <label><input type="checkbox" id="s_qa_enabled"> QA review of frames before render</label>
+        <label><input type="checkbox" id="s_auto_fix"> Auto-fix QA blockers once</label>
+      </div>
+      <p class="small muted">Writer does the creative heavy lifting, so it gets the strongest model. Research uses Claude's web search ($10 per 1,000 searches). Rendering, voice and music run free on this machine.</p>
+    </div>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const api = async (p, o = {}) => {
+  const r = await fetch(p, {headers: o.body && !(o.body instanceof FormData) ? {'Content-Type': 'application/json'} : {}, ...o});
+  if (!r.ok) { let m = r.statusText; try { m = (await r.json()).detail || m } catch (e) {} ; throw new Error(m) }
+  return r.json();
+};
+const toast = (m, bad) => { const t = $('#toast'); t.textContent = m; t.style.display = 'block'; t.style.borderColor = bad ? 'var(--bad)' : 'var(--line)'; clearTimeout(t._h); t._h = setTimeout(() => t.style.display = 'none', 5000) };
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let META = {}, CHANNELS = [], CUR_JOB = null, CUR_CH = null;
+
+function tab(name) {
+  $$('nav a').forEach(a => a.classList.toggle('on', a.dataset.tab === name));
+  $$('section').forEach(s => s.classList.toggle('on', s.id === name));
+  location.hash = name;
+  if (name === 'channels') renderChannels();
+  if (name === 'trends') loadIdeas();
+}
+$$('nav a').forEach(a => a.onclick = () => tab(a.dataset.tab));
+
+const statusChip = s => {
+  const cls = {review: 'ok', published: 'ok', failed: 'bad', running: 'run', queued: 'run'}[s] || '';
+  const label = {review: 'ready to review'}[s] || s;
+  return `<span class="chip ${cls}">${esc(label)}</span>`;
+};
+
+// ------------------------------------------------ studio
+async function loadJobs() {
+  const js = await api('/api/jobs');
+  $('#jobList').innerHTML = js.length ? js.map(j => `
+    <div class="item ${j.id === CUR_JOB ? 'on' : ''}" onclick="openJob('${j.id}')">
+      <div class="t">${esc(j.title || 'Untitled')}</div>
+      <div class="small muted" style="margin-top:4px">${statusChip(j.status)} ${esc(chName(j.channel_id))} ${j.qa_score ? '· QA ' + j.qa_score + '/10' : ''}</div>
+      ${['running', 'queued'].includes(j.status) ? `<div class="bar"><i style="width:${Math.round(j.progress * 100)}%"></i></div><div class="small muted">${esc(j.stage)}</div>` : ''}
+      ${j.status === 'failed' ? `<div class="small" style="color:var(--bad)">${esc((j.error || '').slice(0, 140))}</div>` : ''}
+    </div>`).join('') : '<div class="empty">No videos yet.</div>';
+  if (!CUR_JOB && js.length) return openJob(js[0].id);
+  if (CUR_JOB) { const j = js.find(x => x.id === CUR_JOB); if (j && j.updated > ((window._seen || {})[j.id] || 0)) openJob(CUR_JOB, true) }
+}
+const chName = id => (CHANNELS.find(c => c.id === id) || {}).name || '';
+
+async function openJob(id, quiet) {
+  CUR_JOB = id;
+  const j = await api('/api/jobs/' + id);
+  window._seen = window._seen || {}; window._seen[id] = j.updated;
+  const d = j.data || {}, spec = d.spec || {}, qa = d.qa || {}, facts = d.facts || {}, rnd = d.render || {};
+  const ch = CHANNELS.find(c => c.id === j.channel_id) || {connected: {}};
+  const v = rnd.video ? `/media/${id}/${rnd.video.split('/').pop()}?t=${j.updated}` : null;
+  const busy = ['running', 'queued'].includes(j.status);
+  $('#jobDetail').innerHTML = `
+  <div class="detail">
+    <div>
+      ${v ? `<video src="${v}" controls playsinline poster="/media/${id}/thumbnail.jpg?t=${j.updated}"></video>` :
+        `<div class="card" style="aspect-ratio:9/16;display:flex;align-items:center;justify-content:center;flex-direction:column">${statusChip(j.status)}<div class="small muted" style="margin-top:8px">${esc(j.stage)}</div><div class="bar" style="width:70%"><i style="width:${Math.round(j.progress * 100)}%"></i></div></div>`}
+      ${rnd.duration ? `<div class="small muted" style="margin-top:8px">${rnd.duration}s · ${rnd.size} · rendered in ${rnd.render_seconds}s</div>` : ''}
+      ${j.error ? `<div class="small" style="color:var(--bad);margin-top:8px">${esc(j.error)}</div>` : ''}
+    </div>
+    <div>
+      <div class="t" style="font-family:Mukta,Inter;font-size:20px;font-weight:700">${esc(spec.title || (d.idea || {}).title || 'Untitled')}</div>
+      <div class="small muted" style="margin:6px 0 14px">${statusChip(j.status)} ${spec.made_for_kids ? '<span class="chip warn">made for kids</span>' : ''} ${spec.language ? `<span class="chip">${esc(spec.language)}</span>` : ''} ${d.usage ? `<span class="chip">$${d.usage.usd} Claude</span>` : ''}</div>
+
+      ${qa.score ? `<div class="card" style="margin-bottom:14px"><h3>QA review · ${qa.score}/10 ${qa.pass ? '<span class="chip ok">pass</span>' : '<span class="chip warn">needs work</span>'}</h3>
+        <ul class="issues small">${(qa.issues || []).map(i => `<li class="sev-${i.severity}"><b>${esc(i.scene)}</b> ${esc(i.problem)} <span class="muted">→ ${esc(i.fix)}</span></li>`).join('') || '<li class="muted">No issues</li>'}</ul>
+        <div class="small muted">Facts: ${esc(qa.fact_check || '')}</div></div>` : ''}
+
+      <div class="card" style="margin-bottom:14px"><h3>Publish</h3>
+        <div class="checks">
+          <label><input type="checkbox" id="pubYT" ${ch.connected.youtube ? 'checked' : 'disabled'}> YouTube ${ch.connected.youtube ? '' : '(not connected)'}</label>
+          <label><input type="checkbox" id="pubIG" ${ch.connected.instagram ? '' : 'disabled'}> Instagram Reels ${ch.connected.instagram ? '' : '(not connected)'}</label>
+        </div>
+        <div class="row"><div><label>YouTube visibility</label><select id="pubPrivacy"><option>public</option><option>unlisted</option><option>private</option></select></div>
+          <div><label>Schedule (optional, YouTube)</label><input type="datetime-local" id="pubAt"></div></div>
+        <div style="margin-top:12px"><button id="pubBtn" ${!rnd.video || busy ? 'disabled' : ''}>Publish</button></div>
+        <div class="small" style="margin-top:8px">${(j.publishes || []).map(p => `<div>${esc(p.platform)}: <a href="${esc(p.url)}" target="_blank">${esc(p.url || p.remote_id)}</a> <span class="chip">${esc(p.status)}</span></div>`).join('')}</div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px"><h3>Ask Claude for changes</h3>
+        <textarea id="revText" placeholder="e.g. Make the hook punchier, add a counter for 33 years, use a female voice"></textarea>
+        <div style="margin-top:8px" class="row"><div style="flex:0 0 auto"><button id="revBtn" ${busy || !spec.scenes ? 'disabled' : ''}>Revise and re-render</button></div><div style="flex:0 0 auto"><button class="ghost" id="rrBtn" ${busy || !spec.scenes ? 'disabled' : ''}>Re-render</button></div></div>
+      </div>
+
+      ${spec.scenes ? `<div class="card" style="margin-bottom:14px"><h3>Script</h3><ol class="scenes">${spec.scenes.map(s => `<li>${esc(s.narration)}</li>`).join('')}</ol></div>` : ''}
+      ${facts.facts ? `<div class="card" style="margin-bottom:14px"><h3>Fact sheet</h3><div class="small muted" style="margin-bottom:8px">${esc(facts.summary || '')}</div>
+        <ul class="small">${facts.facts.map(f => `<li>${esc(f.claim)} <span class="chip ${f.confidence === 'high' ? 'ok' : f.confidence === 'low' ? 'bad' : 'warn'}">${esc(f.confidence)}</span> <a href="${esc(f.source_url)}" target="_blank">${esc(f.source_title || 'source')}</a></li>`).join('')}</ul></div>` : ''}
+      ${spec.scenes ? `<details class="card"><summary class="muted">Edit scene spec (JSON)</summary><textarea class="code" id="specText">${esc(JSON.stringify(spec, null, 1))}</textarea><div style="margin-top:8px"><button class="ghost" id="specBtn">Save and re-render</button></div></details>` : ''}
+    </div>
+  </div>`;
+  if ($('#pubBtn')) $('#pubBtn').onclick = async () => {
+    const platforms = []; if ($('#pubYT').checked) platforms.push('youtube'); if ($('#pubIG').checked) platforms.push('instagram');
+    if (!platforms.length) return toast('Pick a platform', true);
+    const at = $('#pubAt').value ? new Date($('#pubAt').value).toISOString() : null;
+    $('#pubBtn').disabled = true; $('#pubBtn').textContent = 'Publishing…';
+    try { const r = await api(`/api/jobs/${id}/publish`, {method: 'POST', body: JSON.stringify({platforms, privacy: $('#pubPrivacy').value, publish_at: at})}); toast('Published: ' + r.map(x => x.url).join('  ')); openJob(id) }
+    catch (e) { toast(e.message, true); $('#pubBtn').disabled = false; $('#pubBtn').textContent = 'Publish' }
+  };
+  if ($('#revBtn')) $('#revBtn').onclick = async () => { if (!$('#revText').value.trim()) return; await api(`/api/jobs/${id}/revise`, {method: 'POST', body: JSON.stringify({instructions: $('#revText').value})}); toast('Revising…'); loadJobs() };
+  if ($('#rrBtn')) $('#rrBtn').onclick = async () => { await api(`/api/jobs/${id}/rerender`, {method: 'POST'}); toast('Re-rendering…'); loadJobs() };
+  if ($('#specBtn')) $('#specBtn').onclick = async () => {
+    try { const r = await api(`/api/jobs/${id}/spec`, {method: 'POST', body: $('#specText').value}); toast('Saved. Re-rendering…' + (r.warnings.length ? ' Warnings: ' + r.warnings.join('; ') : '')); loadJobs() } catch (e) { toast(e.message, true) }
+  };
+  if (!quiet) loadJobs();
+}
+
+// ------------------------------------------------ trends
+function fillChannelSelect() {
+  $('#trendChannel').innerHTML = CHANNELS.map(c => `<option value="${c.id}">${esc(c.name)} · ${esc(c.niche)}</option>`).join('') || '<option value="">Create a channel first</option>';
+}
+async function loadIdeas() {
+  const cid = $('#trendChannel').value; if (!cid) { $('#ideas').innerHTML = '<div class="empty">Create a channel first.</div>'; return }
+  const ideas = await api(`/api/channels/${cid}/ideas`);
+  $('#ideas').innerHTML = ideas.length ? ideas.map(i => `
+    <div class="card idea">
+      <div class="row" style="justify-content:space-between"><div class="score" style="flex:0">${i.score ?? ''}</div>
+        <div style="flex:0 0 auto"><span class="chip">${esc((META.formats || {})[i.format] || i.format)}</span><span class="chip ${i.risk === 'low' ? 'ok' : i.risk === 'high' ? 'bad' : 'warn'}">${esc(i.risk)} risk</span>${i.evergreen ? '<span class="chip">evergreen</span>' : ''}</div></div>
+      <div class="t" style="font-family:Mukta,Inter;font-size:17px;font-weight:700;margin-top:6px">${esc(i.title || i.topic)}</div>
+      <div class="hook">“${esc(i.hook)}”</div>
+      <div class="small muted">${esc(i.angle)}</div>
+      <div class="small" style="margin:8px 0">${esc(i.why_now)} ${i.publish_by ? `· publish by ${esc(i.publish_by)}` : ''}</div>
+      ${i.risk_note ? `<div class="small muted">${esc(i.risk_note)}</div>` : ''}
+      <div style="margin-top:10px">${i.status === 'new' ? `<button onclick="makeFromIdea('${i.id}')">Make video</button>` : `<span class="chip">${esc(i.status)}</span>`}</div>
+    </div>`).join('') : '<div class="empty">No ideas yet. Hit “Scout trends”.</div>';
+}
+$('#trendChannel').onchange = loadIdeas;
+$('#scoutBtn').onclick = async () => {
+  const cid = $('#trendChannel').value; if (!cid) return toast('Create a channel first', true);
+  $('#scoutBtn').disabled = true; $('#scoutBtn').textContent = 'Scouting… (~1 min)';
+  try { await api(`/api/channels/${cid}/scout`, {method: 'POST', body: JSON.stringify({notes: $('#scoutNotes').value})}); loadIdeas() }
+  catch (e) { toast(e.message, true) } finally { $('#scoutBtn').disabled = false; $('#scoutBtn').textContent = 'Scout trends' }
+};
+async function makeFromIdea(iid) {
+  try { const r = await api('/api/jobs', {method: 'POST', body: JSON.stringify({channel_id: $('#trendChannel').value, idea_id: iid})}); toast('Started. Watch it in Studio.'); tab('studio'); openJob(r.id) } catch (e) { toast(e.message, true) }
+}
+$('#customBtn').onclick = async () => {
+  const topic = $('#customTopic').value.trim(); if (!topic) return;
+  try { const r = await api('/api/jobs', {method: 'POST', body: JSON.stringify({channel_id: $('#trendChannel').value, topic})}); tab('studio'); openJob(r.id) } catch (e) { toast(e.message, true) }
+};
+
+// ------------------------------------------------ channels
+function renderChannels() {
+  $('#chList').innerHTML = CHANNELS.map(c => `<div class="item ${c.id === CUR_CH ? 'on' : ''}" onclick="editChannel('${c.id}')"><div class="t">${esc(c.name)}</div>
+    <div class="small muted">${esc(c.niche)} · ${esc(c.language)} · ${c.connected.youtube ? '<span class="chip ok">YouTube</span>' : ''}${c.connected.instagram ? '<span class="chip ok">Instagram</span>' : ''}${c.schedule_enabled ? `<span class="chip run">daily ${esc(c.schedule_time)}</span>` : ''}</div></div>`).join('') || '<div class="empty small">No channels yet.</div>';
+  if (!CUR_CH) editChannel(null);
+}
+function editChannel(id) {
+  CUR_CH = id; const c = CHANNELS.find(x => x.id === id) || {name: '', niche: 'space', language: 'hi', audience: 'general', formats: ['space_facts'], voice: 'hm_omega', handle: '', schedule_time: '10:30', default_privacy: 'public', connected: {}};
+  const fm = Object.entries(META.formats || {}).map(([k, v]) => `<label><input type="checkbox" name="fmt" value="${k}" ${(c.formats || []).includes(k) ? 'checked' : ''}> ${esc(v)}</label>`).join('');
+  $('#chForm').innerHTML = `<h3>${id ? 'Edit channel' : 'New channel'}</h3>
+   <div class="row"><div><label>Name</label><input id="c_name" value="${esc(c.name)}" placeholder="Aasmaan Ki Baatein"></div><div><label>Handle (shown on video)</label><input id="c_handle" value="${esc(c.handle)}" placeholder="@aasmaankibaatein"></div></div>
+   <div class="row">
+     <div><label>Niche</label><select id="c_niche">${(META.niches || []).map(n => `<option ${n === c.niche ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+     <div><label>Language</label><select id="c_language">${['hi', 'hinglish', 'en'].map(n => `<option ${n === c.language ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+     <div><label>Audience</label><select id="c_audience"><option ${c.audience === 'general' ? 'selected' : ''}>general</option><option ${c.audience === 'kids' ? 'selected' : ''}>kids</option></select></div>
+     <div><label>Voice</label><select id="c_voice">${(META.voices || []).map(n => `<option ${n === c.voice ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+   </div>
+   <label>Formats this channel makes</label><div class="checks">${fm}</div>
+   <label>Mascot (keeps the channel recognisable)</label><input id="c_mascot" value="${esc(c.mascot || '')}" placeholder="astronaut id=mascot, white suit, navy visor, waves at the end">
+   <label>Palette / style notes</label><input id="c_palette" value="${esc(c.palette || '')}" placeholder="deep purple space, gold #ffd400 headlines">
+   <label>Seed searches for niche trends (comma separated)</label><input id="c_seeds" value="${esc((c.seed_queries || []).join(', '))}" placeholder="space facts hindi, isro news, universe facts">
+   <label>Notes for Claude</label><textarea id="c_notes" placeholder="Tone, do's and don'ts, recurring segments">${esc(c.notes || '')}</textarea>
+   <div class="row">
+     <div class="checks" style="flex:2"><label><input type="checkbox" id="c_sched" ${c.schedule_enabled ? 'checked' : ''}> Daily autopilot at</label></div>
+     <div><input id="c_time" type="time" value="${esc(c.schedule_time || '10:30')}"></div>
+     <div class="checks" style="flex:2"><label><input type="checkbox" id="c_auto" ${c.autopublish ? 'checked' : ''}> Auto-publish when QA passes</label></div>
+   </div>
+   <div class="checks" style="margin-top:8px"><label><input type="checkbox" id="c_upper" ${(c.captions || {}).uppercase ? 'checked' : ''}> UPPERCASE captions (punchy English Shorts style)</label></div>
+   <p class="small muted">Without auto-publish, autopilot videos wait for your approval in Studio. Keep a human in the loop at the start; it is also your best defence against YouTube's inauthentic-content rules.</p>
+   <h3 style="margin-top:18px">Accounts</h3>
+   <div class="row"><div>${id ? `<a class="btn ghost" href="/oauth/youtube/start?channel_id=${id}">${c.connected.youtube ? 'Reconnect' : 'Connect'} YouTube</a> <span class="small muted">${esc(c.youtube_account || '')}</span>` : '<span class="small muted">Save the channel, then connect YouTube.</span>'}</div></div>
+   <div class="row"><div><label>Instagram long-lived access token</label><input id="c_igtoken" type="password" placeholder="${c.connected.instagram ? 'connected as @' + esc(c.instagram_account || '') : 'IGAA...'}"></div></div>
+   <div class="row" style="margin-top:16px"><div style="flex:0 0 auto"><button id="c_save">Save channel</button></div>${id ? `<div style="flex:0 0 auto"><button class="ghost" id="c_del">Delete</button></div>` : ''}</div>`;
+  $('#c_save').onclick = async () => {
+    const body = {id: id || undefined, name: $('#c_name').value, handle: $('#c_handle').value, niche: $('#c_niche').value, language: $('#c_language').value,
+      audience: $('#c_audience').value, voice: $('#c_voice').value, formats: $$('input[name=fmt]:checked').map(x => x.value), mascot: $('#c_mascot').value,
+      palette: $('#c_palette').value, seed_queries: $('#c_seeds').value.split(',').map(s => s.trim()).filter(Boolean), notes: $('#c_notes').value,
+      captions: {uppercase: $('#c_upper').checked},
+      schedule_enabled: $('#c_sched').checked, schedule_time: $('#c_time').value, autopublish: $('#c_auto').checked, default_privacy: 'public',
+      _secrets: $('#c_igtoken').value ? {ig_token: $('#c_igtoken').value} : null};
+    if (!body.name) return toast('Name the channel', true);
+    try { const r = await api('/api/channels', {method: 'POST', body: JSON.stringify(body)}); CUR_CH = r.id; await loadChannels(); renderChannels(); editChannel(r.id); toast('Saved') } catch (e) { toast(e.message, true) }
+  };
+  if ($('#c_del')) $('#c_del').onclick = async () => { if (!confirm('Delete this channel?')) return; await api('/api/channels/' + id, {method: 'DELETE'}); CUR_CH = null; await loadChannels(); renderChannels() };
+  $$('#chList .item').forEach(el => el.classList.toggle('on', el.getAttribute('onclick').includes(`'${id}'`)));
+}
+$('#newCh').onclick = () => editChannel(null);
+async function loadChannels() { CHANNELS = await api('/api/channels'); fillChannelSelect() }
+
+// ------------------------------------------------ settings
+async function loadSettings() {
+  const s = await api('/api/settings');
+  ['anthropic_api_key', 'youtube_api_key', 'nasa_api_key'].forEach(k => $('#s_' + k).value = s[k] || '');
+  $('#s_qa_enabled').checked = s.qa_enabled ?? true; $('#s_auto_fix').checked = s.auto_fix ?? true;
+  const models = s.models || {};
+  $('#roleModels').innerHTML = Object.entries(META.default_roles).map(([role, def]) => `<label>${role}</label><select data-role="${role}">${Object.entries(META.models).map(([id, name]) => `<option value="${id}" ${(models[role] || def) === id ? 'selected' : ''}>${esc(name)}</option>`).join('')}</select>`).join('');
+  $('#clientState').textContent = META.google_client_secret ? 'Client JSON uploaded.' : 'Not uploaded yet.';
+}
+$('#saveSettings').onclick = async () => {
+  const body = {anthropic_api_key: $('#s_anthropic_api_key').value, youtube_api_key: $('#s_youtube_api_key').value, nasa_api_key: $('#s_nasa_api_key').value,
+    qa_enabled: $('#s_qa_enabled').checked, auto_fix: $('#s_auto_fix').checked, models: Object.fromEntries($$('#roleModels select').map(s => [s.dataset.role, s.value]))};
+  await api('/api/settings', {method: 'POST', body: JSON.stringify(body)});
+  const f = $('#clientFile').files[0];
+  if (f) { const fd = new FormData(); fd.append('file', f); await api('/api/settings/google-client', {method: 'POST', body: fd}); META = await api('/api/meta') }
+  toast('Settings saved'); loadSettings();
+};
+$('#s_qa_enabled').onchange = $('#s_auto_fix').onchange = () => $('#saveSettings').click();
+
+async function loadUsage() { try { const u = await api('/api/usage'); $('#usage').textContent = `${u.videos} videos · Claude ≈ $${u.usd} · ${u.web_searches} searches` } catch (e) {} }
+
+(async () => {
+  META = await api('/api/meta');
+  await loadChannels(); await loadSettings(); loadJobs(); loadUsage();
+  const h = location.hash.slice(1); if (h) tab(h);
+  setInterval(() => { if ($('#studio').classList.contains('on')) loadJobs() }, 3000);
+  setInterval(loadUsage, 30000);
+})();
+</script>
+</body>
+</html>
