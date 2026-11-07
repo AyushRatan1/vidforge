@@ -1,0 +1,119 @@
+name: draft-video
+run-name: "draft ${{ inputs.request_id || github.run_id }} (${{ inputs.language || 'en' }}, ${{ inputs.topic || 'trending' }})"
+
+# Makes one video: Claude finds a trend (or uses your topic), researches it, writes and directs it, reviews the
+# frames, then the free engine renders it. The result is published to the `drafts` branch, where the web UI
+# (GitHub Pages) picks it up. Needs the repo secret ANTHROPIC_API_KEY. Each run spends Claude credits.
+on:
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: "ID used for the drafts folder (the web UI sets this)"
+        default: ""
+      language:
+        description: "Narration language"
+        type: choice
+        options: [en, hi, hinglish]
+        default: en
+      niche:
+        type: choice
+        options: [space, science, tech, stories, mythology, kids, news, sports, general]
+        default: space
+      format:
+        type: choice
+        options: [auto, space_facts, trend_explainer, story, facts_list, festival, quiz, kids_learning, kids_story]
+        default: auto
+      topic:
+        description: "Optional topic. Leave blank to let Claude pick a trending one."
+        default: ""
+      writer:
+        description: "Model that writes and directs"
+        type: choice
+        options: [claude-opus-5-5, claude-fable-5-1, claude-sonnet-5-5]
+        default: claude-opus-5-5
+  # schedule:
+  #   - cron: "0 4 * * *"   # 09:30 IST daily
+
+permissions:
+  contents: write
+
+concurrency:
+  group: draft-video        # one video at a time; extra requests wait in the queue
+  cancel-in-progress: false
+
+env:
+  RID: ${{ inputs.request_id || github.run_id }}
+  LANGUAGE: ${{ inputs.language || 'en' }}
+  NICHE: ${{ inputs.niche || 'space' }}
+  FORMAT: ${{ inputs.format || 'auto' }}
+  TOPIC: ${{ inputs.topic }}
+  WRITER: ${{ inputs.writer || 'claude-opus-5-5' }}
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Cache voice model
+        uses: actions/cache@v4
+        with:
+          path: models
+          key: kokoro-v1.0
+      - name: Install tools
+        run: |
+          [[ "$RID" =~ ^[A-Za-z0-9_-]{1,64}$ ]] || { echo "request_id must be letters, digits, - or _"; exit 1; }
+          sudo apt-get update -q && sudo apt-get install -y -q ffmpeg libgl1 libegl1 fonts-noto-color-emoji
+          pip install -q -r requirements.txt
+          python run.py setup
+          echo "OUT=data/out/$RID" >> "$GITHUB_ENV"
+      - name: Find trend
+        run: python run.py e2e --stage scout --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT" --topic "$TOPIC" --writer "$WRITER"
+      - name: Research
+        run: python run.py e2e --stage research --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT" --writer "$WRITER"
+      - name: Write and direct
+        run: python run.py e2e --stage write --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT" --writer "$WRITER"
+      - name: Review frames
+        run: python run.py e2e --stage qa --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT" --writer "$WRITER"
+      - name: Render video
+        run: python run.py e2e --stage render --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT"
+      - name: Publish draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          WORK=$(mktemp -d)
+          mkdir -p "$WORK/drafts"
+          if git ls-remote --exit-code origin drafts >/dev/null 2>&1; then
+            git fetch -q --depth 1 origin drafts
+            git archive FETCH_HEAD drafts | tar -x -C "$WORK"
+          fi
+          mkdir -p "$WORK/drafts/$RID"
+          for f in final.mp4 thumbnail.jpg summary.json spec.json facts.json qa.json idea.json; do
+            [ -f "$OUT/$f" ] && cp "$OUT/$f" "$WORK/drafts/$RID/"
+          done
+          python tools/drafts_index.py "$WORK/drafts" --keep 20 > /dev/null
+          cd "$WORK"
+          git init -q -b drafts
+          git config user.name "vidforge-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "draft $RID"
+          # history is replaced each time so old videos don't bloat the repo (newest 20 are kept)
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" drafts:drafts
+      - name: Keep a copy as an artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: draft-${{ env.RID }}
+          path: |
+            data/out/${{ env.RID }}/final.mp4
+            data/out/${{ env.RID }}/*.json
+            data/out/${{ env.RID }}/thumbnail.jpg
+          if-no-files-found: ignore

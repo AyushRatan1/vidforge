@@ -97,9 +97,22 @@ docker compose up -d --build
 Security: the dashboard refuses to listen publicly without `VIDFORGE_PASSWORD`, keys are encrypted at rest
 in `data/`, and `.env` / `data/` are git-ignored.
 
-**GitHub Actions drafts:** `.github/workflows/daily-draft.yml` can run the end-to-end flow on GitHub's runners and
-attach the video as a downloadable artifact (add `ANTHROPIC_API_KEY` as a repo secret). It's manual-run only by
-default; uncomment the schedule to make it daily. Nothing is published from Actions.
+## Web UI on GitHub Pages (no server needed)
+
+`ui/` is a static page that starts the `draft-video` workflow, shows each stage live, and plays the finished
+video. GitHub's free runners do all the work; finished videos land on the `drafts` branch (newest 20 kept).
+
+One-time setup:
+1. Repo **Settings → Secrets and variables → Actions**: add `ANTHROPIC_API_KEY` (optional: `YOUTUBE_API_KEY`).
+2. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**. The `pages` workflow deploys `ui/`
+   on every push to `main` (or run it from the Actions tab once).
+3. Create a [fine-grained token](https://github.com/settings/personal-access-tokens/new) for only this repo with
+   **Actions: read and write** and **Contents: read**.
+4. Open `https://<user>.github.io/vidforge/`, click Settings, paste the token. It stays in your browser.
+
+Each run spends Claude credits and takes about 8 to 12 minutes; requests queue one at a time. Because the repo is
+public, the `drafts` branch is publicly readable too. Preview the UI with sample data: `ui/index.html?demo`
+(serve `ui/` locally with a `demo/` folder).
 
 ## Connecting accounts
 
@@ -134,7 +147,8 @@ engine/   pipeline (spec -> mp4), renderer (Skia compositor), draw (all visuals)
 trends/   free trend feeds
 publish/  youtube.py, instagram.py
 app/      FastAPI server, SQLite (secrets encrypted), job queue, scheduler, dashboard (static/index.html)
-tools/    e2e.py live end-to-end test
+tools/    e2e.py (staged end-to-end flow), drafts_index.py
+ui/       GitHub Pages web UI (index.html)
 examples/ Space Is Weird #1-3 (English), Leonids (Hindi), kids counting (Hindi), build_space_is_weird.py
 tests/    offline tests (engine + agents against a fake Claude)
 ```

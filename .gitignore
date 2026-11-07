@@ -9,3 +9,4 @@ models/
 assets/fonts/NotoColorEmoji.ttf
 .DS_Store
 .pytest_cache/
+ui/demo/

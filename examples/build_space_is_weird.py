@@ -184,6 +184,7 @@ ep3 = base(3, "A Sugar Cube of This Star Weighs a Billion Tons 😳 #Shorts",
            "Neutron stars pack the mass of the Sun (or more) into a ball about 20 km wide. A sugar cube of neutron-star matter "
            "would weigh around a billion tons, and the fastest known one spins 716 times a second.\nSource: Space.com.",
            ["neutron star", "pulsar", "dense", "supernova"], "epic", 9)
+ep3["thumbnail"] = {"scene": 0, "t": 2.8}
 ep3["scenes"] = [
     {"id": "hook", "narration": "A sugar cube made of this star would weigh about a billion tons.",
      "caption": "A sugar cube made of this star would weigh about 1 billion tons.", "background": SPACE,

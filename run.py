@@ -64,8 +64,10 @@ def main():
     e.add_argument("--niche", default="space")
     e.add_argument("--language", default="en", choices=["en", "hi", "hinglish"])
     e.add_argument("--topic", default="", help="skip scouting and use this topic")
-    e.add_argument("--format", default="space_facts")
+    e.add_argument("--format", default="auto")
     e.add_argument("--writer", default="", help="override writer model, e.g. claude-fable-5-1")
+    e.add_argument("--stage", default="all", choices=["all", "scout", "research", "write", "qa", "render"])
+    e.add_argument("--out", default="", help="working folder (needed when running single stages)")
     for name in ("render", "stills", "validate"):
         p = sub.add_parser(name)
         p.add_argument("spec")
@@ -86,7 +88,8 @@ def main():
         return
     if a.cmd == "e2e":
         from tools.e2e import run_e2e
-        return run_e2e(a.niche, a.language, a.topic, a.format, a.writer)
+        run_e2e(a.niche, a.language, a.topic, a.format, a.writer, a.stage, a.out)
+        return
     if a.cmd == "trends":
         from app import db
         from trends.sources import gather
