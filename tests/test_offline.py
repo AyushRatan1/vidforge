@@ -112,6 +112,27 @@ def test_writer_repairs_invalid_spec_once():
     assert len(c.calls) == 2 and c.calls[1]["n_messages"] == 3
 
 
+def test_forced_tool_choice_fallback():
+    """Opus/Fable reject a forced tool_choice; json_tool must fall back to auto and still get the tool call."""
+    import anthropic
+
+    class Picky(FakeClaude):
+        def create(self, role, system, messages, tools=None, tool_choice=None, max_tokens=16000):
+            if tool_choice and tool_choice.get("type") == "tool":
+                resp = SimpleNamespace(request=SimpleNamespace(method="POST", url="https://api.anthropic.com/v1/messages"),
+                                       status_code=400, headers={})
+                raise anthropic.BadRequestError('tool_choice: type "tool" and "any" are not supported for this model.',
+                                                response=resp, body=None)
+            return super().create(role, system, messages, tools, tool_choice, max_tokens)
+
+    c = Picky([msg([FakeBlock(type="text", text="Here is my idea")], stop="end_turn"),
+               msg([tool("submit_ideas", {"ideas": []})])])
+    c.roles["scout"] = "claude-test-picky"
+    out = scout.scout(c, {"name": "x"}, [])
+    assert out == [] and all(call["choice"] == {"type": "auto"} for call in c.calls)
+    assert "claude-test-picky" in llm.NO_FORCED_TOOL
+
+
 def test_qa_sends_images(tmp_path=None):
     d = tempfile.mkdtemp()
     p = os.path.join(d, "still_01_18.jpg")

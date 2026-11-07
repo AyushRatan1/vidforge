@@ -20,6 +20,9 @@ DEFAULT_ROLES = {
     "qa": "claude-sonnet-5-5",         # vision review of frames
 }
 
+# Models seen to reject a forced tool_choice (adaptive thinking always on). Learned at runtime too.
+NO_FORCED_TOOL = {"claude-opus-5-5", "claude-fable-5-1"}
+
 WEB_SEARCH = {"type": "web_search_20250305", "name": "web_search", "max_uses": 6,
               "user_location": {"type": "approximate", "country": "IN", "timezone": "Asia/Kolkata"}}
 
@@ -58,21 +61,38 @@ class Claude:
 
     def json_tool(self, role: str, system: str, content, name: str, description: str, schema: dict,
                   max_tokens=16000, extra_tools=None, history=None) -> dict:
-        """Ask Claude to answer by calling `name`. Handles web search pauses when extra_tools include it."""
+        """Ask Claude to answer by calling `name`. Handles web search pauses when extra_tools include it.
+
+        Models with always-on thinking (Opus 5.5, Fable 5.1) reject a forced tool_choice, so for those we use
+        tool_choice "auto" plus an explicit instruction, and nudge if the model answers in text instead.
+        """
+        model = self.roles[role]
         tool = {"name": name, "description": description, "input_schema": schema}
         tools = [tool] + list(extra_tools or [])
         messages = list(history or []) + [{"role": "user", "content": content}]
-        choice = {"type": "tool", "name": name} if not extra_tools else {"type": "auto"}
+        system = f"{system}\n\nAlways deliver your final answer by calling the `{name}` tool. Do not answer in plain text."
+
+        def pick_choice(force: bool):
+            return {"type": "tool", "name": name} if force and model not in NO_FORCED_TOOL else {"type": "auto"}
+
+        choice = pick_choice(not extra_tools)
         for _ in range(8):
-            msg = self.create(role, system, messages, tools=tools, tool_choice=choice, max_tokens=max_tokens)
+            try:
+                msg = self.create(role, system, messages, tools=tools, tool_choice=choice, max_tokens=max_tokens)
+            except anthropic.BadRequestError as e:
+                if choice.get("type") in ("tool", "any") and "tool_choice" in str(e):
+                    NO_FORCED_TOOL.add(model)
+                    choice = {"type": "auto"}
+                    continue
+                raise
             for block in msg.content:
                 if block.type == "tool_use" and block.name == name:
                     return block.input
             messages.append({"role": "assistant", "content": [b.model_dump(exclude_none=True) for b in msg.content]})
             if msg.stop_reason == "pause_turn":
                 continue
-            messages.append({"role": "user", "content": f"Now call the `{name}` tool with your final answer."})
-            choice = {"type": "tool", "name": name}
+            messages.append({"role": "user", "content": f"Now call the `{name}` tool with your complete final answer."})
+            choice = pick_choice(True)
         raise RuntimeError(f"Claude did not return {name}")
 
 

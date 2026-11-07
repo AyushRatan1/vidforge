@@ -388,13 +388,15 @@ async function track(job) {
 
 function stageView(steps, run) {
   const byName = Object.fromEntries(steps.map(s => [s.name, s]));
+  const firstWork = steps.findIndex(s => s.name === "Find trend");
+  const prepSteps = firstWork > 0 ? steps.slice(0, firstWork) : [];
   const view = {};
   for (const st of STAGES) {
-    const ss = st.steps.map(n => byName[n]).filter(Boolean);
+    const ss = st.id === "prepare" && prepSteps.length ? prepSteps : st.steps.map(n => byName[n]).filter(Boolean);
     let status = "wait", start = null, end = null;
     if (ss.length) {
       if (ss.some(s => s.conclusion === "failure")) status = "fail";
-      else if (ss.length === st.steps.length && ss.every(s => s.status === "completed")) status = ss.every(s => s.conclusion === "skipped") ? "skip" : "done";
+      else if ((st.id === "prepare" || ss.length === st.steps.length) && ss.every(s => s.status === "completed")) status = ss.every(s => s.conclusion === "skipped") ? "skip" : "done";
       else if (ss.some(s => s.status === "in_progress" || s.status === "completed")) status = "run";
       start = ss.map(s => s.started_at).filter(Boolean).sort()[0] || null;
       end = status === "done" ? ss.map(s => s.completed_at).filter(Boolean).sort().pop() : null;
