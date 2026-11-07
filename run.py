@@ -52,6 +52,18 @@ def setup(fonts_only: bool = False):
     print("\nDone. Next: python run.py serve")
 
 
+def youtube_auth(client_secret: str):
+    """Opens a browser to sign in to the YouTube channel, then prints the three values to save as GitHub secrets."""
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from publish.youtube import SCOPES
+    flow = InstalledAppFlow.from_client_secrets_file(client_secret, SCOPES)
+    creds = flow.run_local_server(port=0, prompt="consent", access_type="offline")
+    print("\nSave these as repository secrets (Settings > Secrets and variables > Actions), or paste them in the web UI:\n")
+    print(f"YOUTUBE_CLIENT_ID={creds.client_id}")
+    print(f"YOUTUBE_CLIENT_SECRET={creds.client_secret}")
+    print(f"YOUTUBE_REFRESH_TOKEN={creds.refresh_token}")
+
+
 def main():
     ap = argparse.ArgumentParser(description="VidForge")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -61,18 +73,28 @@ def main():
     s.add_argument("--port", type=int, default=int(os.environ.get("PORT", 8000)))
     s.add_argument("--host", default=os.environ.get("VIDFORGE_HOST", "127.0.0.1"))
     e = sub.add_parser("e2e", help="live end-to-end test with your Claude key: trends -> scout -> research -> write -> QA -> render")
-    e.add_argument("--niche", default="space")
-    e.add_argument("--language", default="en", choices=["en", "hi", "hinglish"])
+    e.add_argument("--options", default="{}", help="JSON options (see tools/e2e.py); flags below override it")
+    e.add_argument("--niche", default="")
+    e.add_argument("--language", default="", help="en, hi, hinglish, es, fr, it, pt or any language")
     e.add_argument("--topic", default="", help="skip scouting and use this topic")
-    e.add_argument("--format", default="auto")
+    e.add_argument("--format", default="")
     e.add_argument("--writer", default="", help="override writer model, e.g. claude-fable-5-1")
-    e.add_argument("--stage", default="all", choices=["all", "scout", "research", "write", "qa", "render"])
+    e.add_argument("--stage", default="all", choices=["all", "scout", "research", "write", "qa", "render", "package", "publish"])
     e.add_argument("--out", default="", help="working folder (needed when running single stages)")
     for name in ("render", "stills", "validate"):
         p = sub.add_parser(name)
         p.add_argument("spec")
         p.add_argument("--out")
         p.add_argument("--preview", action="store_true", help="half resolution, faster")
+    pv = sub.add_parser("publish-video", help="post a rendered folder to YouTube/Instagram using env credentials")
+    pv.add_argument("out")
+    pv.add_argument("--youtube", action="store_true")
+    pv.add_argument("--instagram", action="store_true")
+    pv.add_argument("--privacy", default="public", choices=["public", "unlisted", "private"])
+    pv.add_argument("--publish-at", default="")
+    pv.add_argument("--overrides", default="{}", help='JSON {"youtube": {"title":..}, "instagram": {"caption":..}}')
+    ya = sub.add_parser("youtube-auth", help="one-time: get a YouTube refresh token for the GitHub secrets")
+    ya.add_argument("client_secret", help="OAuth client JSON (type: Desktop app) from Google Cloud Console")
     t = sub.add_parser("trends")
     t.add_argument("--niche", default="general")
     a = ap.parse_args()
@@ -88,8 +110,14 @@ def main():
         return
     if a.cmd == "e2e":
         from tools.e2e import run_e2e
-        run_e2e(a.niche, a.language, a.topic, a.format, a.writer, a.stage, a.out)
+        run_e2e(a.niche, a.language, a.topic, a.format, a.writer, a.stage, a.out, a.options)
         return
+    if a.cmd == "publish-video":
+        from tools.publish import publish
+        publish(a.out, a.youtube, a.instagram, a.privacy, a.publish_at or None, json.loads(a.overrides or "{}"))
+        return
+    if a.cmd == "youtube-auth":
+        return youtube_auth(a.client_secret)
     if a.cmd == "trends":
         from app import db
         from trends.sources import gather

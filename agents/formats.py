@@ -61,6 +61,9 @@ FORMATS = {
 
 
 def format_brief(fmt_id: str) -> str:
+    if fmt_id and fmt_id not in FORMATS and fmt_id != "auto":
+        return (f"Format: custom, as the owner described it: \"{fmt_id}\"\nInterpret it faithfully; pick the music mood, "
+                f"backgrounds and pacing that suit it. Default aspect 9:16 unless the description implies long-form.")
     f = FORMATS.get(fmt_id) or FORMATS["space_facts"]
     return (f"Format: {f['name']} ({fmt_id})\nAudience: {f['audience']} (made_for_kids={f['made_for_kids']})\n"
             f"Default aspect: {f['aspect']}, music mood: {f['music']}\nLook: {f['look']}\nStructure: {f['structure']}")

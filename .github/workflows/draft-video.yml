@@ -1,38 +1,22 @@
 name: draft-video
-run-name: "draft ${{ inputs.request_id || github.run_id }} (${{ inputs.language || 'en' }}, ${{ inputs.topic || 'trending' }})"
+run-name: "draft ${{ inputs.request_id || github.run_id }}"
 
-# Makes one video: Claude finds a trend (or uses your topic), researches it, writes and directs it, reviews the
-# frames, then the free engine renders it. The result is published to the `drafts` branch, where the web UI
-# (GitHub Pages) picks it up. Needs the repo secret ANTHROPIC_API_KEY. Each run spends Claude credits.
+# Makes one video and saves it to the library (a GitHub Release named video-<id>), then optionally posts it.
+# Claude finds a trend (or uses your topic), researches it, writes and directs it, reviews the frames; the free
+# engine renders it; Claude writes the captions and hashtags. Started from the web UI or the Actions tab.
+# Secrets: ANTHROPIC_API_KEY (required); YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET, YOUTUBE_REFRESH_TOKEN,
+# IG_ACCESS_TOKEN, IG_USER_ID (optional, for posting). Variable RUNNER picks the machine (default ubuntu-latest).
 on:
   workflow_dispatch:
     inputs:
       request_id:
-        description: "ID used for the drafts folder (the web UI sets this)"
+        description: "ID for this video (the web UI sets it; leave blank when running by hand)"
         default: ""
-      language:
-        description: "Narration language"
-        type: choice
-        options: [en, hi, hinglish]
-        default: en
-      niche:
-        type: choice
-        options: [space, science, tech, stories, mythology, kids, news, sports, general]
-        default: space
-      format:
-        type: choice
-        options: [auto, space_facts, trend_explainer, story, facts_list, festival, quiz, kids_learning, kids_story]
-        default: auto
-      topic:
-        description: "Optional topic. Leave blank to let Claude pick a trending one."
-        default: ""
-      writer:
-        description: "Model that writes and directs"
-        type: choice
-        options: [claude-opus-5-5, claude-fable-5-1, claude-sonnet-5-5]
-        default: claude-opus-5-5
+      options:
+        description: 'JSON options, e.g. {"language":"en","niche":"space","topic":"","format":"auto","publish":{"youtube":false}}'
+        default: '{"language":"en","niche":"space"}'
   # schedule:
-  #   - cron: "0 4 * * *"   # 09:30 IST daily
+  #   - cron: "0 4 * * *"   # 09:30 IST daily, trending topic with the default options
 
 permissions:
   contents: write
@@ -43,17 +27,18 @@ concurrency:
 
 env:
   RID: ${{ inputs.request_id || github.run_id }}
-  LANGUAGE: ${{ inputs.language || 'en' }}
-  NICHE: ${{ inputs.niche || 'space' }}
-  FORMAT: ${{ inputs.format || 'auto' }}
-  TOPIC: ${{ inputs.topic }}
-  WRITER: ${{ inputs.writer || 'claude-opus-5-5' }}
+  OPTIONS: ${{ inputs.options || '{"language":"en","niche":"space"}' }}
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+  YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+  YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+  YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+  IG_USER_ID: ${{ secrets.IG_USER_ID }}
 
 jobs:
   draft:
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -69,51 +54,53 @@ jobs:
       - name: Install tools
         run: |
           [[ "$RID" =~ ^[A-Za-z0-9_-]{1,64}$ ]] || { echo "request_id must be letters, digits, - or _"; exit 1; }
+          echo "$OPTIONS" | python -c "import json,sys; json.load(sys.stdin)" || { echo "options is not valid JSON"; exit 1; }
           sudo apt-get update -q && sudo apt-get install -y -q ffmpeg libgl1 libegl1 fonts-noto-color-emoji
           pip install -q -r requirements.txt
           python run.py setup
           echo "OUT=data/out/$RID" >> "$GITHUB_ENV"
+          mkdir -p "data/out/$RID" && echo "$OPTIONS" > "data/out/$RID/options.json"
       - name: Find trend
-        run: python run.py e2e --stage scout --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT" --topic "$TOPIC" --writer "$WRITER"
+        run: python run.py e2e --stage scout --out "$OUT" --options "$OPTIONS"
       - name: Research
-        run: python run.py e2e --stage research --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT" --writer "$WRITER"
+        run: python run.py e2e --stage research --out "$OUT" --options "$OPTIONS"
       - name: Write and direct
-        run: python run.py e2e --stage write --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT" --writer "$WRITER"
+        run: python run.py e2e --stage write --out "$OUT" --options "$OPTIONS"
       - name: Review frames
-        run: python run.py e2e --stage qa --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT" --writer "$WRITER"
+        run: python run.py e2e --stage qa --out "$OUT" --options "$OPTIONS"
       - name: Render video
-        run: python run.py e2e --stage render --out "$OUT" --language "$LANGUAGE" --niche "$NICHE" --format "$FORMAT"
-      - name: Publish draft
+        run: python run.py e2e --stage render --out "$OUT" --options "$OPTIONS"
+      - name: Write captions and hashtags
+        run: python run.py e2e --stage package --out "$OUT" --options "$OPTIONS"
+      - name: Save to library
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -e
-          WORK=$(mktemp -d)
-          mkdir -p "$WORK/drafts"
-          if git ls-remote --exit-code origin drafts >/dev/null 2>&1; then
-            git fetch -q --depth 1 origin drafts
-            git archive FETCH_HEAD drafts | tar -x -C "$WORK"
-          fi
-          mkdir -p "$WORK/drafts/$RID"
-          for f in final.mp4 thumbnail.jpg summary.json spec.json facts.json qa.json idea.json; do
-            [ -f "$OUT/$f" ] && cp "$OUT/$f" "$WORK/drafts/$RID/"
+          python tools/library.py notes "$OUT" > "$RUNNER_TEMP/notes.md"
+          TITLE=$(python -c "import json; print(json.load(open('$OUT/summary.json'))['title'][:120])")
+          FILES=""
+          for f in final.mp4 thumbnail.jpg summary.json meta.json spec.json facts.json qa.json idea.json options.json; do
+            [ -f "$OUT/$f" ] && FILES="$FILES $OUT/$f"
           done
-          python tools/drafts_index.py "$WORK/drafts" --keep 20 > /dev/null
-          cd "$WORK"
-          git init -q -b drafts
-          git config user.name "vidforge-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -q -m "draft $RID"
-          # history is replaced each time so old videos don't bloat the repo (newest 20 are kept)
-          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" drafts:drafts
-      - name: Keep a copy as an artifact
-        if: always()
+          gh release create "video-$RID" $FILES --title "$TITLE" --notes-file "$RUNNER_TEMP/notes.md" --latest=false
+      - name: Post to YouTube and Instagram
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python run.py e2e --stage publish --out "$OUT" --options "$OPTIONS" || STATUS=$?
+          if [ -f "$OUT/published.json" ]; then
+            python tools/library.py notes "$OUT" > "$RUNNER_TEMP/notes.md"
+            gh release edit "video-$RID" --notes-file "$RUNNER_TEMP/notes.md"
+            gh release upload "video-$RID" "$OUT/published.json" --clobber
+          fi
+          exit ${STATUS:-0}
+      - name: Keep a copy for debugging
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: draft-${{ env.RID }}
           path: |
-            data/out/${{ env.RID }}/final.mp4
             data/out/${{ env.RID }}/*.json
-            data/out/${{ env.RID }}/thumbnail.jpg
+            data/out/${{ env.RID }}/*.jpg
+            data/out/${{ env.RID }}/final.mp4
           if-no-files-found: ignore

@@ -187,15 +187,29 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
     if stills_only:
         return {"stills": stills, "thumbnail": thumb, "duration": duration, "timeline": tl}
 
-    # 4. scenes (cached by content hash so editing one scene only re-renders it)
-    files = []
+    # 4. scenes (cached by content hash so editing one scene only re-renders it; parallel on multi-core machines)
+    files, todo = [], []
     for i in range(len(tl)):
-        p("render", i / len(tl))
         key = _scene_key(spec, i, tl, voices[i])
         path = os.path.join(work, f"scene_{i + 1:02d}_{key}.mp4")
-        if not os.path.exists(path):
-            rnd.encode_scene(i, path)
         files.append(path)
+        if not os.path.exists(path):
+            todo.append((i, path))
+    workers = render_workers(len(todo))
+    if workers <= 1:
+        for k, (i, path) in enumerate(todo):
+            p("render", k / max(1, len(todo)))
+            rnd.encode_scene(i, path)
+    else:
+        import multiprocessing as mp
+        from concurrent.futures import ProcessPoolExecutor, as_completed
+        ctx = mp.get_context("fork")
+        threads = max(1, (os.cpu_count() or 2) // workers)
+        with ProcessPoolExecutor(workers, mp_context=ctx, initializer=_init_worker, initargs=(spec, tl, amp)) as ex:
+            futs = [ex.submit(_encode_worker, i, path, threads) for i, path in todo]
+            for k, f in enumerate(as_completed(futs)):
+                f.result()
+                p("render", (k + 1) / len(todo))
 
     # 5. concat + mux
     p("assemble", 0)
@@ -220,6 +234,27 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
     with open(os.path.join(out_dir, "manifest.json"), "w") as f:
         json.dump(manifest, f, indent=2, ensure_ascii=False)
     return manifest
+
+
+def render_workers(n_scenes: int) -> int:
+    """Parallel scene renders: one Python drawer per spare core (env VIDFORGE_WORKERS overrides)."""
+    env = os.environ.get("VIDFORGE_WORKERS")
+    if env:
+        return max(1, min(int(env), n_scenes))
+    cores = os.cpu_count() or 2
+    return max(1, min(n_scenes, cores - 1 if cores > 2 else 1, 6))
+
+
+_W = {}
+
+
+def _init_worker(spec, tl, amp):
+    _W["r"] = Renderer(spec, tl, amp)
+
+
+def _encode_worker(i, path, threads):
+    _W["r"].encode_scene(i, path, threads=threads)
+    return path
 
 
 def _ff(args):

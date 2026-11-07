@@ -18,6 +18,7 @@ DEFAULT_ROLES = {
     "research": "claude-sonnet-5-5",   # web search fact sheet
     "writer": "claude-opus-5-5",       # script + scene direction
     "qa": "claude-sonnet-5-5",         # vision review of frames
+    "metadata": "claude-sonnet-5-5",   # titles, captions, hashtags
 }
 
 # Models seen to reject a forced tool_choice (adaptive thinking always on). Learned at runtime too.

@@ -1,0 +1,71 @@
+name: publish-video
+run-name: "publish ${{ inputs.request_id || github.run_id }} (${{ inputs.video_id }})"
+
+# Posts a video that is already in the library to YouTube and/or Instagram and records the links on its release.
+on:
+  workflow_dispatch:
+    inputs:
+      video_id:
+        description: "Library video id (the part after video- in the release tag)"
+        required: true
+      request_id:
+        description: "Tracking id (the web UI sets it)"
+        default: ""
+      options:
+        description: 'JSON: {"youtube":true,"instagram":false,"privacy":"public","publish_at":"","overrides":{}}'
+        default: '{"youtube":true,"instagram":false,"privacy":"public"}'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-video
+  cancel-in-progress: false
+
+env:
+  VID: ${{ inputs.video_id }}
+  OPTIONS: ${{ inputs.options }}
+  YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+  YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+  YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+  IG_USER_ID: ${{ secrets.IG_USER_ID }}
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install tools
+        run: |
+          [[ "$VID" =~ ^[A-Za-z0-9_-]{1,64}$ ]] || { echo "bad video_id"; exit 1; }
+          pip install -q requests google-api-python-client google-auth-oauthlib
+      - name: Fetch from library
+        run: |
+          mkdir -p "data/out/$VID"
+          gh release download "video-$VID" -D "data/out/$VID" --clobber
+      - name: Post
+        run: |
+          ARGS=$(python - <<'PY'
+          import json, os
+          o = json.loads(os.environ.get("OPTIONS") or "{}")
+          a = []
+          if o.get("youtube"): a.append("--youtube")
+          if o.get("instagram"): a.append("--instagram")
+          a += ["--privacy", o.get("privacy", "public")]
+          if o.get("publish_at"): a += ["--publish-at", o["publish_at"]]
+          print(" ".join(a))
+          PY
+          )
+          OVR=$(python -c "import json,os; print(json.dumps(json.loads(os.environ.get('OPTIONS') or '{}').get('overrides') or {}))")
+          python run.py publish-video "data/out/$VID" $ARGS --overrides "$OVR" || STATUS=$?
+          python tools/library.py notes "data/out/$VID" > "$RUNNER_TEMP/notes.md"
+          gh release edit "video-$VID" --notes-file "$RUNNER_TEMP/notes.md"
+          [ -f "data/out/$VID/published.json" ] && gh release upload "video-$VID" "data/out/$VID/published.json" --clobber
+          exit ${STATUS:-0}

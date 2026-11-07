@@ -14,13 +14,27 @@ MODEL_DIR = os.path.join(ROOT, "models")
 CACHE = os.path.join(ROOT, "data", "cache", "tts")
 SR = 48000
 
-# voice id -> kokoro language code
+# voice id -> kokoro language code (Kokoro v1.0 voices are prefixed by language)
 VOICES = {
     "hf_alpha": "hi", "hf_beta": "hi", "hm_omega": "hi", "hm_psi": "hi",
-    "af_heart": "en-us", "af_bella": "en-us", "af_nicole": "en-us", "af_sky": "en-us",
-    "am_michael": "en-us", "am_fenrir": "en-us", "am_puck": "en-us", "am_adam": "en-us",
-    "bf_emma": "en-gb", "bm_george": "en-gb", "bm_fable": "en-gb",
+    "af_heart": "en-us", "af_bella": "en-us", "af_nicole": "en-us", "af_sky": "en-us", "af_nova": "en-us",
+    "af_sarah": "en-us", "af_aoede": "en-us", "af_kore": "en-us", "af_jessica": "en-us", "af_river": "en-us",
+    "af_alloy": "en-us", "am_michael": "en-us", "am_fenrir": "en-us", "am_puck": "en-us", "am_adam": "en-us",
+    "am_echo": "en-us", "am_eric": "en-us", "am_liam": "en-us", "am_onyx": "en-us", "am_santa": "en-us",
+    "bf_emma": "en-gb", "bf_alice": "en-gb", "bf_isabella": "en-gb", "bf_lily": "en-gb", "bm_george": "en-gb",
+    "bm_fable": "en-gb", "bm_daniel": "en-gb", "bm_lewis": "en-gb",
+    "ef_dora": "es", "em_alex": "es", "em_santa": "es", "ff_siwis": "fr-fr", "if_sara": "it", "im_nicola": "it",
+    "pf_dora": "pt-br", "pm_alex": "pt-br", "pm_santa": "pt-br",
 }
+LANG_BY_PREFIX = {"a": "en-us", "b": "en-gb", "h": "hi", "e": "es", "f": "fr-fr", "i": "it", "p": "pt-br"}
+# default narrator per channel language
+DEFAULT_VOICE = {"en": "af_heart", "hi": "hm_omega", "hinglish": "hm_omega", "es": "ef_dora", "fr": "ff_siwis",
+                 "it": "if_sara", "pt": "pf_dora"}
+
+
+def voice_lang(voice: str) -> str:
+    return VOICES.get(voice) or LANG_BY_PREFIX.get((voice or "a")[0], "en-us")
+
 
 _kokoro = None
 
@@ -38,7 +52,7 @@ def tts(text: str, voice: str = "hm_omega", speed: float = 1.0, lang: str | None
     text = (text or "").strip()
     if not text:
         return np.zeros(0, dtype=np.float32)
-    lang = lang or VOICES.get(voice, "en-us")
+    lang = lang if lang and "-" in lang or lang in ("hi", "es", "it") else voice_lang(voice)
     key = hashlib.sha1(f"{voice}|{speed}|{lang}|{text}".encode()).hexdigest()[:20]
     os.makedirs(CACHE, exist_ok=True)
     path = os.path.join(CACHE, key + ".wav")

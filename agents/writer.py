@@ -35,7 +35,10 @@ LANGUAGE
 - "hi": natural spoken Hindi (Devanagari), the way a friendly teacher talks, English technical words are fine
   when Indians actually say them (e.g. "पीक", "ISRO" -> "इसरो"). Short sentences.
 - "hinglish": narration still in Devanagari for the voice; captions may be Roman Hinglish via the caption field.
-- "en": Indian-English friendly tone; use voices af_heart or am_michael unless the channel says otherwise.
+- "en": natural international English; voice af_heart unless the channel says otherwise.
+- "es", "fr", "it", "pt": write narration and on-screen text in that language (voices ef_dora, ff_siwis, if_sara,
+  pf_dora). Any other language: write in it, but warn in the description that the voice may sound foreign.
+- Respect the target length and aspect in OWNER NOTES when given (e.g. "about 60 seconds", "16:9 long-form").
 
 TRUTH
 - Use ONLY the facts in the fact sheet. If a number is approximate say "करीब"/"about". Never invent quotes,

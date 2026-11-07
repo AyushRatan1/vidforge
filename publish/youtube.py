@@ -53,8 +53,17 @@ def channel_info(creds_json: str) -> dict:
     return {"id": it["id"], "title": it["snippet"]["title"], "subscribers": it["statistics"].get("subscriberCount")}
 
 
+def creds_from_env() -> str | None:
+    """Build an authorized-user credential from YOUTUBE_CLIENT_ID / _CLIENT_SECRET / _REFRESH_TOKEN (Actions secrets)."""
+    cid, sec, ref = (os.environ.get(k, "") for k in ("YOUTUBE_CLIENT_ID", "YOUTUBE_CLIENT_SECRET", "YOUTUBE_REFRESH_TOKEN"))
+    if not (cid and sec and ref):
+        return None
+    return json.dumps({"type": "authorized_user", "client_id": cid, "client_secret": sec, "refresh_token": ref,
+                       "token_uri": "https://oauth2.googleapis.com/token"})
+
+
 def upload(creds_json: str, video_path: str, spec: dict, privacy: str = "private", publish_at: str | None = None,
-           thumbnail: str | None = None, progress=None) -> dict:
+           thumbnail: str | None = None, progress=None, meta: dict | None = None) -> dict:
     """Upload a rendered video. privacy: private | unlisted | public. publish_at: RFC3339 (forces private until then).
 
     Note: until your Google Cloud project passes the YouTube API compliance audit, YouTube locks every
@@ -62,8 +71,9 @@ def upload(creds_json: str, video_path: str, spec: dict, privacy: str = "private
     """
     from googleapiclient.http import MediaFileUpload
     yt, refreshed = _service(creds_json)
-    title = (spec.get("title") or "Untitled")[:100]
-    desc = (spec.get("description") or "")[:4900]
+    meta = meta or {}
+    title = (meta.get("title") or spec.get("title") or "Untitled")[:100]
+    desc = (meta.get("description") or spec.get("description") or "")[:4900]
     is_short = spec.get("aspect", "9:16") == "9:16"
     if is_short and "#shorts" not in (title + desc).lower():
         desc += "\n\n#Shorts"
@@ -72,7 +82,7 @@ def upload(creds_json: str, video_path: str, spec: dict, privacy: str = "private
         "snippet": {
             "title": title,
             "description": desc,
-            "tags": [t[:30] for t in (spec.get("tags") or [])][:15],
+            "tags": [t[:100] for t in (meta.get("tags") or spec.get("tags") or [])][:30],
             "categoryId": CATEGORY_IDS.get(spec.get("category", "education"), "27"),
             "defaultLanguage": lang,
             "defaultAudioLanguage": lang,

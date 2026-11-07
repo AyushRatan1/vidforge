@@ -1,10 +1,17 @@
 """End-to-end flow, runnable all at once or one stage at a time (GitHub Actions runs it stage by stage so the
 web UI can show live progress).
 
-    ANTHROPIC_API_KEY=sk-ant-... python run.py e2e --language en                       # everything
-    python run.py e2e --stage scout --out data/out/x --language en --niche space       # one stage
+    ANTHROPIC_API_KEY=sk-ant-... python run.py e2e --language en                     # everything, local
+    python run.py e2e --stage write --out data/out/x --options '{"language":"en"}'   # one stage
 
-Stages: scout -> research -> write -> qa -> render. State lives in the --out folder as JSON files.
+Stages: scout -> research -> write -> qa -> render -> package (posting copy + hashtags) -> publish (optional).
+Options (JSON, every value optional, custom values welcome):
+  language  en | hi | hinglish | es | fr | it | pt | <any language name>
+  niche     space | science | tech | stories | mythology | kids | news | sports | general | <any channel idea>
+  format    auto | space_facts | trend_explainer | story | facts_list | festival | quiz | kids_learning |
+            kids_story | <describe your own format>
+  topic, notes (extra instructions), writer (model id), voice (Kokoro voice id), music (mood), aspect (9:16|16:9|1:1),
+  length (seconds), hashtags (list or space-separated string), handle, publish {youtube, instagram, privacy, publish_at}
 """
 from __future__ import annotations
 
@@ -13,17 +20,22 @@ import json
 import os
 import time
 
+from agents.formats import FORMATS
 from agents.llm import Claude
+from agents.metadata import fallback_metadata, write_metadata
 from agents.qa import issues_to_instructions, review
 from agents.research import research
 from agents.scout import scout
 from agents.writer import revise, write_episode
 from app import db
 from app.jobs import PRICES, channel_overrides
+from engine.audio import DEFAULT_VOICE
 from engine.pipeline import render_episode
-from trends.sources import gather
+from trends.sources import NICHE_SOURCES, gather
 
-STAGES = ["scout", "research", "write", "qa", "render"]
+STAGES = ["scout", "research", "write", "qa", "render", "package", "publish"]
+
+BRAND = {"space": "#SpaceIsWeird", "kids": "#VidForgeKids"}
 
 CHANNELS = {
     "en": {"name": "Space Is Weird", "language": "en", "audience": "general", "voice": "af_heart",
@@ -52,23 +64,59 @@ NICHE_FORMATS = {
 }
 
 
-def build_channel(language: str, niche: str, fmt: str = "auto") -> dict:
-    ch = json.loads(json.dumps(CHANNELS.get(language, CHANNELS["en"])))
-    ch["niche"] = niche
+def parse_options(raw) -> dict:
+    o = raw if isinstance(raw, dict) else json.loads(raw or "{}")
+    o = {k: (v.strip() if isinstance(v, str) else v) for k, v in o.items()}
+    tags = o.get("hashtags") or []
+    if isinstance(tags, str):
+        tags = [t for t in tags.replace(",", " ").split() if t]
+    o["hashtags"] = tags
+    o.setdefault("language", "en")
+    o.setdefault("niche", "space")
+    o.setdefault("format", "auto")
+    o["publish"] = o.get("publish") or {}
+    return o
+
+
+def build_channel(o: dict) -> dict:
+    lang, niche, fmt = o["language"], o["niche"], o["format"]
+    base_lang = lang if lang in CHANNELS else ("hi" if lang == "hinglish" else "en")
+    ch = json.loads(json.dumps(CHANNELS[base_lang]))
+    ch["language"] = lang
+    custom_niche = niche not in NICHE_SOURCES
+    ch["niche"] = "general" if custom_niche else niche
     if niche != "space":
-        ch["name"] = {"en": "VidForge Explains", "hi": "VidForge Hindi", "hinglish": "VidForge Hindi"}[language]
-        ch["notes"] = ("International English audience. " if language == "en" else "Indian viewers, IST times. ") + \
+        ch["name"] = "VidForge" + ("" if lang == "en" else f" ({lang})")
+        ch["notes"] = ("International audience. " if lang not in ("hi", "hinglish") else "Indian viewers, IST times. ") + \
                       "End with a teaser for the next video."
         ch["mascot"] = "robot id=bolt, colour #8fa3b8, small, talking=true"
+        ch["captions"] = {"uppercase": lang == "en"}
+    if custom_niche:
+        ch["notes"] += f" Channel focus (set by the owner): {niche}."
+        ch["seed_queries"] = [niche]
     if niche == "kids":
-        ch.update({"name": "VidForge Kids", "audience": "kids", "voice": "hf_alpha" if language != "en" else "af_bella",
-                   "handle": "@vidforge.kids", "mascot": "elephant id=gappu, colour #9fb3c8, talking=true",
-                   "captions": {"uppercase": False},
+        ch.update({"name": "VidForge Kids", "audience": "kids", "handle": "@vidforge.kids",
+                   "mascot": "elephant id=gappu, colour #9fb3c8, talking=true", "captions": {"uppercase": False},
                    "notes": "Toddlers and pre-schoolers. Gentle, slow, repetitive, bright. Original content only."})
-    formats = list(NICHE_FORMATS.get(niche, ch["formats"]))
+    ch["voice"] = o.get("voice") or (("hf_alpha" if lang in ("hi", "hinglish") else "af_bella") if niche == "kids"
+                                     else DEFAULT_VOICE.get(lang, ch["voice"]))
+    formats = list(NICHE_FORMATS.get(niche, ["trend_explainer", "facts_list"]))
     if fmt and fmt != "auto":
         formats = [fmt] + [f for f in formats if f != fmt]
     ch["formats"] = formats
+    if o.get("handle"):
+        ch["handle"] = o["handle"]
+    ch["brand_hashtags"] = [BRAND[niche]] if niche in BRAND else []
+    if o.get("music"):
+        ch["music_mood"] = o["music"]
+    notes = []
+    if o.get("length"):
+        notes.append(f"Target length about {o['length']} seconds.")
+    if o.get("aspect") and o["aspect"] != "9:16":
+        notes.append(f"Aspect {o['aspect']} (long-form layout: wider compositions, more scenes).")
+    if o.get("notes"):
+        notes.append(o["notes"])
+    ch["owner_notes"] = " ".join(notes)
     return ch
 
 
@@ -76,7 +124,7 @@ def _client(writer_model: str = "") -> Claude:
     db.init()
     key = db.get_setting("anthropic_api_key", "")
     if not key:
-        raise SystemExit("Set ANTHROPIC_API_KEY (or save the key in the dashboard Settings) first.")
+        raise SystemExit("ANTHROPIC_API_KEY is not set. Add it as a repo secret (Actions) or env var.")
     roles = dict(db.get_setting("models", {}) or {})
     if writer_model:
         roles["writer"] = writer_model
@@ -106,31 +154,45 @@ def _add_usage(out, c: Claude):
     c.usage = {"input_tokens": 0, "output_tokens": 0, "web_searches": 0}
 
 
+def _finish_spec(spec: dict, o: dict, ch: dict) -> dict:
+    spec = channel_overrides(spec, ch)
+    if o.get("aspect"):
+        spec["aspect"] = o["aspect"]
+    if o.get("music"):
+        spec.setdefault("music", {})["mood"] = o["music"]
+    if o.get("voice"):
+        spec["voice"] = o["voice"]
+    return spec
+
+
 # ------------------------------------------------------------------ stages
-def stage_scout(out, ch, topic="", fmt="auto", writer=""):
-    if topic:
-        idea = {"topic": topic, "angle": topic, "hook": "", "format": ch["formats"][0], "why_now": "requested",
-                "evergreen": True, "risk": "low", "score": 0, "title": topic}
-        print(f"   using your topic: {topic}")
+def stage_scout(out, o, ch):
+    fmt = o["format"]
+    if o.get("topic"):
+        idea = {"topic": o["topic"], "angle": o["topic"], "hook": "", "format": ch["formats"][0], "why_now": "requested",
+                "evergreen": True, "risk": "low", "score": 0, "title": o["topic"]}
+        print(f"   using your topic: {o['topic']}")
     else:
-        c = _client(writer)
-        seeds = {"space": ["space facts", "astronomy news"], "kids": ["kids learning"], "stories": ["story"],
-                 "mythology": ["mythology stories"]}.get(ch["niche"], [])
-        signals = gather(ch["niche"], db.get_setting("youtube_api_key", ""), seeds)
+        c = _client(o.get("writer"))
+        signals = gather(ch["niche"], db.get_setting("youtube_api_key", ""), ch.get("seed_queries"))
         ok = [s for s in signals if not s.get("error")]
         print(f"   {len(ok)} trend signals ({len(signals) - len(ok)} feeds unavailable)")
-        ideas = scout(c, ch, signals, n=6)
+        ideas = scout(c, ch, signals, n=6, extra_notes=ch.get("owner_notes", ""))
         _save(out, "ideas.json", ideas)
         for i in ideas:
             print(f"   [{i.get('score')}] {i.get('risk'):6} {i.get('title')}")
         idea = next((i for i in ideas if i.get("risk") == "low"), ideas[0])
         _add_usage(out, c)
+    if fmt and fmt != "auto" and fmt not in FORMATS:
+        idea["format"] = fmt                      # owner's own format description
+    elif fmt in FORMATS:
+        idea["format"] = fmt
     _save(out, "idea.json", idea)
-    print(f"   picked: {idea.get('title')}")
+    print(f"   picked: {idea.get('title')} [{idea.get('format')}]")
 
 
-def stage_research(out, ch, writer=""):
-    c = _client(writer)
+def stage_research(out, o, ch):
+    c = _client(o.get("writer"))
     facts = research(c, _load(out, "idea.json"), ch)
     _save(out, "facts.json", facts)
     print(f"   {len(facts.get('facts', []))} sourced facts, {c.usage['web_searches']} web searches")
@@ -139,16 +201,17 @@ def stage_research(out, ch, writer=""):
     _add_usage(out, c)
 
 
-def stage_write(out, ch, writer=""):
-    c = _client(writer)
-    spec = channel_overrides(write_episode(c, _load(out, "idea.json"), _load(out, "facts.json"), ch), ch)
+def stage_write(out, o, ch):
+    c = _client(o.get("writer"))
+    spec = write_episode(c, _load(out, "idea.json"), _load(out, "facts.json"), ch, ch.get("owner_notes", ""))
+    spec = _finish_spec(spec, o, ch)
     _save(out, "spec.json", spec)
     print(f"   '{spec.get('title')}': {len(spec.get('scenes', []))} scenes, lint: {spec.get('_lint') or 'clean'}")
     _add_usage(out, c)
 
 
-def stage_qa(out, ch, writer=""):
-    c = _client(writer)
+def stage_qa(out, o, ch):
+    c = _client(o.get("writer"))
     spec, facts = _load(out, "spec.json"), _load(out, "facts.json")
     stills = render_episode(spec, out, stills_only=True)["stills"]
     rv = review(c, spec, stills, facts)
@@ -159,7 +222,7 @@ def stage_qa(out, ch, writer=""):
     if not rv.get("pass") and fix:
         print("   fixing and re-checking...")
         _save(out, "qa_first.json", rv)
-        spec = channel_overrides(revise(c, spec, fix, facts, ch), ch)
+        spec = _finish_spec(revise(c, spec, fix, facts, ch), o, ch)
         _save(out, "spec.json", spec)
         stills = render_episode(spec, out, stills_only=True)["stills"]
         rv = review(c, spec, stills, facts)
@@ -168,43 +231,70 @@ def stage_qa(out, ch, writer=""):
     _add_usage(out, c)
 
 
-def stage_render(out, ch, **_):
+def stage_render(out, o, ch):
     spec = _load(out, "spec.json")
     t = time.time()
     res = render_episode(spec, out, progress=lambda s, f: None)
-    print(f"   {res['video']} {res['duration']}s, rendered in {time.time() - t:.0f}s")
+    print(f"   {res['video']} {res['duration']}s, rendered in {time.time() - t:.0f}s on {os.cpu_count()} cores")
+    _save(out, "render.json", res)
+
+
+def stage_package(out, o, ch):
+    spec, facts = _load(out, "spec.json"), _load(out, "facts.json", {})
+    try:
+        c = _client(o.get("writer"))
+        meta = write_metadata(c, spec, facts, ch, o.get("hashtags"))
+        _add_usage(out, c)
+    except SystemExit:
+        meta = fallback_metadata(spec, ch.get("brand_hashtags"), o.get("hashtags"))
+    _save(out, "meta.json", meta)
+    print(f"   YouTube: {meta['youtube']['title']}  {' '.join(meta['youtube']['hashtags'])}")
+    print(f"   Instagram: {' '.join(meta['instagram']['hashtags'])}")
+    res = _load(out, "render.json", {})
     u = _load(out, "usage.json", {"input_tokens": 0, "output_tokens": 0, "web_searches": 0, "writer": "claude-opus-5-5"})
     pin, pout = PRICES.get(u.get("writer"), (4, 20))
     qa = _load(out, "qa.json", {})
+    idea = _load(out, "idea.json", {})
     summary = {
-        "id": os.path.basename(os.path.normpath(out)), "title": spec.get("title"), "description": spec.get("description"),
-        "tags": spec.get("tags"), "language": spec.get("language"), "made_for_kids": spec.get("made_for_kids"),
-        "aspect": spec.get("aspect", "9:16"), "duration": res["duration"], "scenes": res["scenes"],
-        "qa_score": qa.get("score"), "qa_pass": qa.get("pass"), "render_seconds": res["render_seconds"],
+        "id": os.path.basename(os.path.normpath(out)), "title": meta["youtube"]["title"] or spec.get("title"),
+        "topic": idea.get("topic"), "format": idea.get("format"), "language": spec.get("language"),
+        "niche": o.get("niche"), "made_for_kids": spec.get("made_for_kids"), "aspect": spec.get("aspect", "9:16"),
+        "duration": res.get("duration"), "scenes": res.get("scenes"), "qa_score": qa.get("score"),
+        "qa_pass": qa.get("pass"), "render_seconds": res.get("render_seconds"),
         "input_tokens": u["input_tokens"], "output_tokens": u["output_tokens"], "web_searches": u["web_searches"],
         "usd": round(u["input_tokens"] / 1e6 * pin + u["output_tokens"] / 1e6 * pout + u["web_searches"] * 0.01, 3),
         "created": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
     }
     _save(out, "summary.json", summary)
     print(json.dumps(summary, ensure_ascii=False, indent=1))
-    return summary
 
 
-RUNNERS = {"scout": stage_scout, "research": stage_research, "write": stage_write, "qa": stage_qa, "render": stage_render}
+def stage_publish(out, o, ch):
+    from tools.publish import publish
+    p = o.get("publish") or {}
+    if not (p.get("youtube") or p.get("instagram")):
+        print("   not publishing (no platform selected)")
+        return
+    publish(out, youtube=bool(p.get("youtube")), instagram=bool(p.get("instagram")),
+            privacy=p.get("privacy", "public"), publish_at=p.get("publish_at") or None)
 
 
-def run_e2e(niche="space", language="en", topic="", fmt="auto", writer_model="", stage="all", out=""):
-    ch = build_channel(language, niche, fmt)
+RUNNERS = {"scout": stage_scout, "research": stage_research, "write": stage_write, "qa": stage_qa,
+           "render": stage_render, "package": stage_package, "publish": stage_publish}
+
+
+def run_e2e(niche="", language="", topic="", fmt="", writer_model="", stage="all", out="", options=None):
+    o = parse_options(options or "{}")
+    for k, v in (("niche", niche), ("language", language), ("topic", topic), ("format", fmt), ("writer", writer_model)):
+        if v:
+            o[k] = v
+    ch = build_channel(o)
     out = out or os.path.join(db.DATA, "out", "e2e_" + dt.datetime.now().strftime("%Y%m%d_%H%M%S"))
     os.makedirs(out, exist_ok=True)
     stages = STAGES if stage == "all" else [stage]
-    result = None
     for s in stages:
         t = time.time()
         print(f"\n== {s}", flush=True)
-        kw = {"writer": writer_model}
-        if s == "scout":
-            kw.update(topic=topic, fmt=fmt)
-        result = RUNNERS[s](out, ch, **kw)
+        RUNNERS[s](out, o, ch)
         print(f"   ({time.time() - t:.0f}s)", flush=True)
-    return result
+    return out

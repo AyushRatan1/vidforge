@@ -12,8 +12,9 @@ ENTERS = {None, "none", "pop", "fade", "grow", "drop", "slide_up", "slide_down",
 BEHAVIORS = {"float", "bob", "spin", "pulse", "sway", "bounce", "squash", "wiggle", "orbit", "twinkle", "drift", "shake"}
 PARTICLES = {"confetti", "sparkles", "snow", "bubbles", "fireflies", "rain", "hearts", "stars", "leaves", "meteors", "stream"}
 TRANSITIONS = {None, "fade", "slide_left", "slide_up", "zoom", "circle", "none"}
-VOICES = {"hf_alpha", "hf_beta", "hm_omega", "hm_psi", "af_heart", "af_bella", "af_nicole", "af_sky", "am_michael",
-          "am_fenrir", "am_puck", "am_adam", "bf_emma", "bm_george", "bm_fable"}
+from .audio import VOICES as _VOICE_MAP
+
+VOICES = set(_VOICE_MAP)
 MOODS = {"cosmic", "playful", "mystery", "epic", "calm", "upbeat", "indian", "devotional", "none"}
 
 
@@ -30,6 +31,8 @@ def validate(spec: dict) -> tuple[list[str], list[str]]:
     if not spec.get("title"):
         warns.append("missing title")
     hindi = spec.get("language") in ("hi", "hinglish") or str(spec.get("voice", "")).startswith("h")
+    if spec.get("language") not in (None, "en", "hi", "hinglish", "es", "fr", "it", "pt"):
+        warns.append(f"language {spec.get('language')!r} has no matching voice; narration will use {spec.get('voice')}")
     total_chars = 0
     for i, sc in enumerate(scenes):
         where = f"scene {i + 1} ({sc.get('id', '?')})"

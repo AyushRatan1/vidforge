@@ -145,6 +145,37 @@ def test_qa_sends_images(tmp_path=None):
     assert out["score"] == 6 and "text cut" in qa.issues_to_instructions(out)
 
 
+def test_metadata_limits():
+    """Hashtag and length rules hold whatever the model returns."""
+    from agents import metadata
+    many = [f"#tag{i}" for i in range(12)] + ["#Shorts", "#space facts", "#SPACE-facts"]
+    raw = {"youtube": {"title": "A very long title " * 10 + "#viral", "description": "Desc #extra",
+                       "hashtags": many, "tags": ["x" * 90] * 8 + ["space"]},
+           "instagram": {"caption": "Caption #inline", "hashtags": many}}
+    m = metadata.finalize(raw, {"aspect": "9:16"}, brand_tags=["#SpaceIsWeird"], extra_tags=["my tag"])
+    yt, ig = m["youtube"], m["instagram"]
+    assert len(yt["title"]) <= 100 and yt["title"].endswith("#Shorts") and "#viral" not in yt["title"]
+    assert len(yt["hashtags"]) <= 5 and "#Shorts" not in yt["hashtags"]
+    assert yt["hashtags"][:2] == ["#MyTag", "#SpaceIsWeird"]
+    assert sum(len(t) + 1 for t in yt["tags"]) <= 480
+    assert len(ig["hashtags"]) <= 5 and ig["caption"].count("#") == len(ig["hashtags"])
+    assert metadata.AI_LINE in yt["description"] and metadata.AI_LINE in ig["caption"]
+    assert metadata.clean_tag("#space facts!") == "#SpaceFacts" and metadata.clean_tag("अंतरिक्ष") == "#अंतरिक्ष"
+
+
+def test_library_notes_roundtrip():
+    from tools import library
+    d = tempfile.mkdtemp()
+    json.dump({"id": "abc", "title": "T", "duration": 31.6, "language": "en", "qa_score": 9, "usd": 0.5},
+              open(os.path.join(d, "summary.json"), "w"))
+    json.dump({"youtube": {"title": "T #Shorts", "description": "Line one --> tricky\n\nmore"}},
+              open(os.path.join(d, "meta.json"), "w"))
+    body = library.notes(d, {"niche": "space"})
+    data = library.parse(body)
+    assert data["summary"]["id"] == "abc" and data["options"]["niche"] == "space"
+    assert "tricky" in data["meta"]["youtube"]["description"]
+
+
 if __name__ == "__main__":
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_") and callable(v)]
     for f in fns:

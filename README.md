@@ -2,7 +2,8 @@
 
 Trend-to-video studio. Claude finds what's hot, researches it with sources, writes and directs the episode, and
 reviews its own frames. A free CPU engine renders the video with voice, music and karaoke captions in Hindi or
-English. You approve, and it posts to YouTube and Instagram Reels.
+English, Spanish, French, Italian or Portuguese. It saves every video to a library and posts to YouTube
+Shorts and Instagram Reels with platform-safe captions and hashtags.
 
 ```
 Trends (Google Trends, Google News, YouTube trending, niche searches, NASA APOD)
@@ -99,35 +100,72 @@ in `data/`, and `.env` / `data/` are git-ignored.
 
 ## Web UI on GitHub Pages (no server needed)
 
-`ui/` is a static page that starts the `draft-video` workflow, shows each stage live, and plays the finished
-video. GitHub's free runners do all the work; finished videos land on the `drafts` branch (newest 20 kept).
+`ui/` is a static dark-mode studio at `https://<user>.github.io/vidforge/`. It starts the `draft-video` workflow,
+shows each stage live, plays the finished video, and posts it. GitHub's runners do all the work.
+
+- **Create**: topic (or leave empty for a trending one), narration language, channel, format, writer model, voice,
+  music, aspect, length, handle, extra hashtags and notes. Every choice has a *Custom* option for your own value.
+  Turn on *Post when it's ready* to publish to YouTube and Instagram as soon as the render passes review.
+- **Library**: every video is kept forever as a GitHub Release (`video-<id>`) with the MP4, thumbnail, script,
+  fact sheet with sources, review notes and ready-made captions. Search, filter to *Not posted yet*, edit the
+  title, description and caption, then *Post now* or schedule.
+- **Connect**: paste your keys once. They are encrypted in the browser (libsodium sealed box) and saved as
+  GitHub Actions secrets; the page never stores them.
 
 One-time setup:
-1. Repo **Settings → Secrets and variables → Actions**: add `ANTHROPIC_API_KEY` (optional: `YOUTUBE_API_KEY`).
-2. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**. The `pages` workflow deploys `ui/`
-   on every push to `main` (or run it from the Actions tab once).
-3. Create a [fine-grained token](https://github.com/settings/personal-access-tokens/new) for only this repo with
-   **Actions: read and write** and **Contents: read**.
-4. Open `https://<user>.github.io/vidforge/`, click Settings, paste the token. It stays in your browser.
+1. Repo **Settings → Pages → Source: GitHub Actions**. The `pages` workflow deploys `ui/` on every push to `main`.
+2. Create a [fine-grained token](https://github.com/settings/personal-access-tokens/new) for only this repo with
+   **Actions: read and write**, **Contents: read**, **Secrets: read and write**, **Variables: read and write**.
+3. Open the page, go to **Connect**, paste the token, then add Claude, YouTube and Instagram there.
 
-Each run spends Claude credits and takes about 8 to 12 minutes; requests queue one at a time. Because the repo is
-public, the `drafts` branch is publicly readable too. Preview the UI with sample data: `ui/index.html?demo`
-(serve `ui/` locally with a `demo/` folder).
+Each run spends Claude credits (the Library shows the cost of every video) and takes 8 to 12 minutes; runs queue
+one at a time.
+The repo is public, so the library releases are public too. Preview with sample data: serve `ui/` locally and
+open `index.html?demo` (needs a `ui/demo/` folder).
+
+### Hashtags and captions
+
+A metadata step writes platform-specific copy for every video, then hard rules are applied whatever the model says:
+
+| | YouTube Shorts | Instagram Reels |
+|---|---|---|
+| Hashtags | 5 max in the description (the first 3 can show above the title), plus `#Shorts` in the title | 5 max (Instagram's cap since late 2025) |
+| Text | title up to 100 chars, description up to 5,000, tags up to 480 chars | caption up to 2,200 chars |
+| Always | your extra hashtags first, then the channel's brand tag, then topic tags; AI-assisted line | same |
+
+Over-tagging gets Shorts ignored, so fewer, specific tags win.
+
+### Faster machines
+
+Public repos get GitHub's standard 4-core runners free and unlimited, and the renderer uses every core. To try
+another runner, set it in **Connect → Machine** (stored as the `RUNNER` repo variable). Blacksmith has 3,000
+free minutes a month but only works for GitHub organizations, not personal repos: move the repo into a free
+org first, install Blacksmith there, then pick a label such as `blacksmith-4vcpu-ubuntu-2404`.
 
 ## Connecting accounts
 
-**YouTube**
-1. Google Cloud Console: new project, enable *YouTube Data API v3*, create an OAuth client (*Web application*)
-   with redirect URI `http://127.0.0.1:8000/oauth/youtube/callback` (local) or `https://your-domain/oauth/youtube/callback`.
-2. Upload the client JSON in Settings, then *Connect YouTube* on each channel.
+**YouTube** (for the GitHub Pages UI)
+1. Google Cloud Console: new project, enable *YouTube Data API v3*, OAuth consent screen (add yourself as a test
+   user), then create an OAuth client of type **Desktop app** and download its JSON.
+2. On your computer: `python run.py youtube-auth client_secret.json`. Sign in with the channel's Google account.
+   It prints `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET` and `YOUTUBE_REFRESH_TOKEN`; paste them in **Connect**.
 3. Until the project passes Google's **YouTube API compliance audit**, every API upload is locked to private.
    Submit the audit on day one. Default quota: 10,000 units/day, 1,600 per upload, so about 6 uploads/day.
+   Publish the consent screen to *In production* or the refresh token expires after 7 days.
+
+For the local dashboard instead, create a *Web application* client with redirect URI
+`http://127.0.0.1:8000/oauth/youtube/callback` (or `https://your-domain/...`), upload it in Settings and click
+*Connect YouTube* on each channel.
 
 **Instagram Reels**
 1. Make the account Professional (Creator or Business).
 2. Create a Meta app with *Instagram API with Instagram Login*, add the account as a tester, grant
    `instagram_business_basic` + `instagram_business_content_publish`, generate a long-lived token.
-3. Paste the token into the channel. Tokens last about 60 days. Limit: 50 API posts per 24 hours.
+3. Paste the token in **Connect** (the account ID is looked up for you). Tokens last about 60 days.
+   Limit: 50 API posts per 24 hours.
+
+**From the command line**: `python run.py publish-video data/out/<id> --youtube --instagram --privacy public`
+posts a finished folder using the same environment variables.
 
 ## Staying monetisable
 
@@ -142,13 +180,14 @@ public, the `drafts` branch is publicly readable too. Preview the UI with sample
 ## Layout
 
 ```
-agents/   llm (Claude client + model routing), scout, research, writer, qa, formats, scene_guide
+agents/   llm (Claude client + model routing), scout, research, writer, qa, metadata, formats, scene_guide
 engine/   pipeline (spec -> mp4), renderer (Skia compositor), draw (all visuals), anim, audio, fonts, validate
 trends/   free trend feeds
 publish/  youtube.py, instagram.py
 app/      FastAPI server, SQLite (secrets encrypted), job queue, scheduler, dashboard (static/index.html)
-tools/    e2e.py (staged end-to-end flow), drafts_index.py
-ui/       GitHub Pages web UI (index.html)
+tools/    e2e.py (staged end-to-end flow), publish.py (post a folder), library.py (release notes)
+ui/       GitHub Pages studio (index.html, app.js, styles.css, seal.js, vendor/)
+.github/  draft-video (make), publish-video (post from library), pages, ci
 examples/ Space Is Weird #1-3 (English), Leonids (Hindi), kids counting (Hindi), build_space_is_weird.py
 tests/    offline tests (engine + agents against a fake Claude)
 ```
