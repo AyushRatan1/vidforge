@@ -1,123 +1,93 @@
-/* VidForge design tokens. Source of truth: design-system/vidforge/MASTER.md (VidForge overrides).
-   Every colour, radius, space, type size, shadow, blur and duration used by the UI lives here. No raw hex elsewhere. */
+/* VidForge design tokens. Source of truth: design-system/vidforge/MASTER.md, "VidForge overrides (revised 2026-11-08)".
+   Monochrome, boxy, macOS-like. Every colour, radius, space, type size, shadow and duration used by the UI lives here.
+   No raw hex anywhere else. The only non-grey colour is --err (errors and destructive actions). */
 :root {
   color-scheme: dark;
 
-  /* Background: OLED base with a slight midnight radial */
-  --bg-0: #07091A;
-  --bg-1: #0B0E24;
-  --bg-2: #12163A;
+  /* Surfaces */
+  --bg: #000000;              /* window */
+  --sidebar: #0A0A0A;         /* sidebar, tab bar, input wells */
+  --surface: #111111;         /* boxes */
+  --surface-2: #161616;       /* secondary buttons, popovers, raised controls */
+  --hover: #1C1C1C;           /* hover, selected sidebar item */
+  --selected: #2A2A2A;        /* selected segment */
+  --sep: #262626;             /* hairline separators, box borders */
+  --border: #333333;          /* strong border: controls, popovers */
+  --border-hover: #4D4D4D;
+  --scrim: rgba(0, 0, 0, 0.6);
 
-  /* Glass surfaces */
-  --glass: rgba(255, 255, 255, 0.06);
-  --glass-strong: rgba(255, 255, 255, 0.09);
-  --glass-hover: rgba(255, 255, 255, 0.085);
-  --glass-sunken: rgba(0, 0, 0, 0.22);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --glass-border-strong: rgba(255, 255, 255, 0.18);
-  --blur: 16px;
-  --blur-sm: 8px;
-  --scrim: rgba(3, 4, 14, 0.66);
+  /* Labels */
+  --fg: #FFFFFF;
+  --fg-2: #A1A1A1;            /* secondary */
+  --fg-3: #6B6B6B;            /* tertiary */
+  --fg-inv: #000000;          /* text on white */
+  --primary-hover: #E0E0E0;
 
-  /* Text */
-  --fg: #F8FAFC;
-  --fg-2: #AEB6CC;    /* secondary, 8.6:1 on bg-1 */
-  --fg-3: #7F89A6;    /* tertiary, 5.1:1 on bg-1 */
-  --fg-on-accent: #FFFFFF;
-  --fg-on-status: #07091A;
+  /* Errors and destructive actions */
+  --err: #FF453A;
+  --err-line: rgba(255, 69, 58, 0.45);
 
-  /* Creator gradient (primary action, live chart) */
-  --accent-a: #7C5CFF;
-  --accent-b: #FF4FD8;
-  --accent: var(--accent-a);
-  --accent-soft: rgba(124, 92, 255, 0.18);
-  --accent-ring: rgba(124, 92, 255, 0.55);
-  --gradient: linear-gradient(135deg, var(--accent-a) 0%, var(--accent-b) 100%);
-  --gradient-text: linear-gradient(90deg, #B7A6FF 0%, #FF8BE6 100%);
+  /* Data */
+  --chart-1: #FFFFFF;         /* YouTube: solid white line */
+  --chart-2: #8A8A8A;         /* Instagram: grey dashed line */
+  --chart-fill: rgba(255, 255, 255, 0.06);
+  --chart-grid: #1F1F1F;
+  --chart-dash: 4 3;
 
-  /* Status */
-  --ok: #22C55E;
-  --warn: #F59E0B;
-  --err: #EF4444;
-  --info: #38BDF8;
-  --ok-soft: rgba(34, 197, 94, 0.16);
-  --warn-soft: rgba(245, 158, 11, 0.16);
-  --err-soft: rgba(239, 68, 68, 0.16);
-  --info-soft: rgba(56, 189, 248, 0.16);
-  --ok-text: #86EFAC;
-  --warn-text: #FCD34D;
-  --err-text: #FCA5A5;
-  --info-text: #7DD3FC;
-
-  /* Platform marks */
-  --yt: #FF0033;
-  --ig: #E1306C;
-  --yt-chart: #FF4D6D;
-  --ig-chart: #F472B6;
-
-  /* Aurora glow (decorative) */
-  --aurora-a: rgba(124, 92, 255, 0.28);
-  --aurora-b: rgba(255, 79, 216, 0.18);
+  /* Focus */
+  --focus: rgba(255, 255, 255, 0.4);
 
   /* Radii */
-  --r-xs: 6px;
-  --r-sm: 10px;
-  --r-md: 12px;
-  --r-lg: 16px;
-  --r-xl: 20px;
-  --r-2xl: 28px;
-  --r-pill: 999px;
+  --r-control: 6px;           /* buttons, inputs, boxes */
+  --r-sheet: 8px;             /* sheets, popovers */
+  --r-chip: 4px;              /* chips, tags, segments, thumbs */
+  --r-table: 0;
+  --r-round: 999px;           /* switch track, avatar, status dot */
 
-  /* Spacing (4px rhythm) */
+  /* Spacing, 8pt grid (4 is the half step) */
   --s-1: 4px;
   --s-2: 8px;
   --s-3: 12px;
   --s-4: 16px;
-  --s-5: 20px;
-  --s-6: 24px;
-  --s-8: 32px;
-  --s-10: 40px;
-  --s-12: 48px;
-  --s-16: 64px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
 
-  /* Type */
-  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Type: system stack, Inter only as fallback */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Inter, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --t-display: 40px;
-  --t-h1: 28px;
-  --t-h2: 22px;
-  --t-h3: 17px;
-  --t-body: 15px;
-  --t-body-lg: 16px;
-  --t-label: 13px;
-  --t-micro: 12px;
-  --t-stat: 32px;
-  --lh-tight: 1.15;
-  --lh-body: 1.55;
+  --t-large: 26px;            /* large title 26/700 */
+  --t-title: 20px;            /* title 20/600 */
+  --t-headline: 15px;         /* headline 15/600 */
+  --t-body: 14px;             /* body 14/400 */
+  --t-control: 13px;          /* buttons, segments, chips */
+  --t-label: 12px;            /* label 12/500 */
+  --t-caption: 11px;          /* chart axes, tab bar */
+  --lh-tight: 1.2;
+  --lh-body: 1.5;
+  --track-tight: -0.02em;
 
-  /* Shadows */
-  --sh-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
-  --sh-md: 0 8px 24px rgba(0, 0, 0, 0.32);
-  --sh-lg: 0 20px 48px rgba(0, 0, 0, 0.45);
-  --sh-glow: 0 10px 30px rgba(124, 92, 255, 0.35);
+  /* Shadow: popovers and sheets only */
+  --sh-pop: 0 8px 24px rgba(0, 0, 0, 0.6);
 
-  /* Motion */
-  --d-fast: 150ms;
-  --d-base: 220ms;
-  --d-slow: 350ms;
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --stagger: 60ms;
+  /* Motion: hover, press and sheet open only */
+  --d-fast: 120ms;
+  --d-base: 160ms;
+  --d-slow: 180ms;
+  --ease: cubic-bezier(0, 0, 0.2, 1);
 
   /* Layout */
-  --sidebar-w: 248px;
-  --rail-w: 76px;
-  --topbar-h: 64px;
-  --tabbar-h: 64px;
-  --gutter: 16px;
-  --tile-h: 196px;
-  --tile-gap: 16px;
-  --content-max: 1360px;
+  --sidebar-w: 220px;
+  --rail-w: 56px;
+  --toolbar-h: 52px;
+  --tabbar-h: 56px;
+  --content-max: 1280px;
+  --gutter: 24px;
+  --gap: 16px;
+  --control-h: 32px;
+  --control-h-sm: 28px;
+  --control-h-lg: 40px;
   --touch: 44px;
 
   /* Z scale */
@@ -128,9 +98,6 @@
   --z-toast: 1000;
 }
 
-@media (min-width: 1024px) {
-  :root { --gutter: 28px; --tile-gap: 20px; }
-}
-@media (min-width: 1440px) {
-  :root { --gutter: 36px; }
+@media (max-width: 767px) {
+  :root { --gutter: 16px; --gap: 12px; }
 }

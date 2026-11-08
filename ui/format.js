@@ -13,8 +13,8 @@ export const fmt = {
 };
 
 export const LANGS = [["en", "English"], ["hi", "Hindi"], ["hinglish", "Hinglish"], ["es", "Spanish"], ["fr", "French"], ["it", "Italian"], ["pt", "Portuguese"]];
-export const NICHES = [["space", "Space"], ["science", "Science"], ["tech", "Tech"], ["stories", "Stories"], ["mythology", "Mythology"], ["kids", "Kids"], ["news", "News explained"], ["sports", "Sports"], ["animals", "Animals"], ["food", "Food"], ["travel", "Travel"], ["trending", "Anything trending"]];
-export const FORMATS = [["auto", "Auto"], ["facts", "Facts explainer"], ["trend", "Trend explained"], ["story", "Story"], ["toplist", "Top list"], ["festival", "Festival story"], ["quiz", "Quiz"], ["kids_learning", "Kids learning"], ["kids_story", "Kids story"]];
+export const NICHES = [["space", "Space"], ["science", "Science"], ["tech", "Tech"], ["stories", "Stories"], ["mythology", "Mythology"], ["kids", "Kids"], ["news", "News explained"], ["sports", "Sports"], ["animals", "Animals"], ["food", "Food"], ["travel", "Travel"], ["history", "History"], ["architecture", "Architecture"], ["trending", "Anything trending"]];
+export const FORMATS = [["auto", "Auto"], ["3d_build", "3D build"], ["facts", "Facts explainer"], ["trend", "Trend explained"], ["story", "Story"], ["toplist", "Top list"], ["festival", "Festival story"], ["quiz", "Quiz"], ["kids_learning", "Kids learning"], ["kids_story", "Kids story"]];
 export const WRITERS = [["claude-opus-5-5", "Opus 5.5"], ["claude-fable-5-1", "Fable 5.1"], ["claude-sonnet-5-5", "Sonnet 5.5"]];
 export const VOICES = [["auto", "Auto"], ["af_heart", "Heart (warm)"], ["af_bella", "Bella (bright)"], ["am_adam", "Adam (deep)"], ["hf_alpha", "Alpha (Hindi)"], ["hm_omega", "Omega (Hindi)"]];
 export const MUSIC = [["auto", "Auto"], ["none", "None"], ["calm", "Calm"], ["upbeat", "Upbeat"], ["epic", "Epic"], ["playful", "Playful"]];

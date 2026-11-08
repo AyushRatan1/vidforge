@@ -2,7 +2,7 @@
 // Pages live in pages/*.js and talk to the data layer (db.js) only.
 import {connectSupabase, connectDemo, DbError} from "./db.js";
 import {DEFAULTS} from "./config.js";
-import {h, clear, Button, Avatar, Card, toast, icon} from "./components.js";
+import {h, clear, Button, Avatar, Card, Status, toast, icon} from "./components.js";
 import {startPage, loadSample, brand} from "./pages/start.js";
 import {dashboardPage} from "./pages/dashboard.js";
 import {createPage} from "./pages/create.js";
@@ -14,10 +14,10 @@ export const DEMO = params.has("demo");
 const root = document.getElementById("root");
 
 const PAGES = [
-  {id: "dashboard", title: "Dashboard", icon: "layout", make: dashboardPage},
-  {id: "create", title: "Create", icon: "sparkles", make: createPage},
-  {id: "library", title: "Library", icon: "library", make: libraryPage},
-  {id: "settings", title: "Settings", icon: "settings", make: settingsPage},
+  {id: "dashboard", title: "Dashboard", icon: "grid", section: "Workspace", make: dashboardPage},
+  {id: "create", title: "Create", icon: "plusSquare", section: "Workspace", make: createPage},
+  {id: "library", title: "Library", icon: "stack", section: "Workspace", make: libraryPage},
+  {id: "settings", title: "Settings", icon: "settings", section: "Account", make: settingsPage},
 ];
 
 // ------------------------------------------------------------------ routing
@@ -94,47 +94,54 @@ async function main() {
 
 function connectError(e) {
   const cdn = /dynamically imported module/i.test(e.message || "");
-  clear(root).append(h("div", {class: "start"}, h("div", {class: "aurora", "aria-hidden": "true"}), h("div", {class: "section", style: {maxWidth: "520px"}},
-    Card({class: "signin", title: "Could not connect", body: h("div", {class: "stack"}, brand(DEMO),
+  clear(root).append(h("div", {class: "start"}, h("nav", {class: "start-nav"}, brand(DEMO)), h("div", {class: "start-wrap", style: {maxWidth: "520px"}},
+    Card({title: "Could not connect", body: h("div", {class: "stack"},
       h("p", {class: "secondary"}, cdn ? "The Supabase client did not load from cdn.jsdelivr.net. Check your connection or any blocker, then reload." : (e.message + (e.hint ? " " + e.hint : ""))),
-      Button({label: "Reload", variant: "primary", onClick: () => location.reload()}),
-      cdn ? null : Button({label: "Forget this project and start over", variant: "ghost", onClick: () => { forgetProject(); location.reload(); }}))}))));
+      h("div", {class: "actions"}, Button({label: "Reload", variant: "primary", onClick: () => location.reload()}),
+        cdn ? null : Button({label: "Forget this project and start over", variant: "ghost", onClick: () => { forgetProject(); location.reload(); }})))}))));
 }
 
 // ------------------------------------------------------------------ app shell
 async function buildShell(db, session, host) {
   const user = session?.user || (await db.user());
   const ctx = {db, user, demo: DEMO, go: (id, arg) => navigate(id, arg), settings: await db.getSettings().catch(() => ({})), videosCache: []};
+  const email = user?.email || (DEMO ? "demo@vidforge.app" : "");
 
-  let collapsed = false;
-  try { collapsed = localStorage.getItem("vf.rail") === "1"; } catch {}
-  const navItem = p => h("a", {class: "nav-item", href: "#/" + p.id, "data-page": p.id, title: p.title}, icon(p.icon, {size: 20}), h("span", {}, p.title));
-  const railToggle = Button({variant: "icon", icon: collapsed ? "chevronRight" : "chevronLeft", ariaLabel: collapsed ? "Expand sidebar" : "Collapse sidebar", cls: "rail-toggle", onClick: () => { collapsed = !collapsed; app.classList.toggle("rail", collapsed); railToggle.setAttribute("aria-label", collapsed ? "Expand sidebar" : "Collapse sidebar"); clear(railToggle).append(icon(collapsed ? "chevronRight" : "chevronLeft", {size: 18})); try { localStorage.setItem("vf.rail", collapsed ? "1" : "0"); } catch {} }});
+  // sidebar: brand, sections, sign-in status
+  const navItem = p => h("a", {class: "nav-item", href: "#/" + p.id, "data-page": p.id, title: p.title}, icon(p.icon, {size: 16}), h("span", {}, p.title));
+  const sections = [...new Set(PAGES.map(p => p.section))];
   const sidebar = h("aside", {class: "sidebar"}, brand(DEMO),
-    h("nav", {class: "sidebar-nav", "aria-label": "Main"}, ...PAGES.map(navItem)),
-    h("div", {class: "sidebar-foot"}, h("p", {class: "sidebar-note"}, DEMO ? "Demo mode. Nothing here is saved." : "Stats refresh daily at 07:45 IST."), railToggle));
+    h("nav", {class: "sidebar-nav", "aria-label": "Main"}, ...sections.map(sec => h("div", {class: "nav-section"}, h("div", {class: "nav-label"}, sec), ...PAGES.filter(p => p.section === sec).map(navItem)))),
+    h("div", {class: "sidebar-foot", title: email}, Avatar(email || "?", {size: 24}),
+      h("div", {class: "account-text"}, h("span", {class: "account-name"}, email || "Signed in"), h("span", {class: "account-sub"}, DEMO ? "Demo, nothing is saved" : "Signed in"))));
   const tabbar = h("nav", {class: "tabbar", "aria-label": "Main"}, ...PAGES.map(navItem));
 
-  // top bar
-  const title = h("h1", {class: "topbar-title", id: "page-title"});
-  const pageActions = h("div", {class: "topbar-actions", id: "page-actions"});
+  // unified toolbar: title left, page controls, then search, refresh, new video, account
+  const title = h("h1", {class: "toolbar-title", id: "page-title"});
+  const pageActions = h("div", {class: "toolbar-actions", id: "page-actions"});
   const search = globalSearch(ctx);
-  const makeBtn = Button({label: "Make video", variant: "primary", icon: "sparkles", ariaLabel: "Make video", onClick: () => navigate("create")});
+  let current = null;
+  const refreshBtn = Button({variant: "secondary", icon: "refresh", ariaLabel: "Refresh", onClick: async () => {
+    if (!current?.inst?.refresh) return;
+    refreshBtn.disabled = true;
+    try { await current.inst.refresh(); } finally { refreshBtn.disabled = false; }
+  }});
+  const newBtn = Button({label: "New video", variant: "primary", icon: "plus", ariaLabel: "New video", onClick: () => navigate("create")});
   const menuPanel = h("div", {class: "menu-panel", role: "menu", "data-open": "false"},
-    h("div", {class: "menu-head"}, h("strong", {}, user?.email?.split("@")[0] || "Team"), h("span", {class: "micro"}, user?.email || "")),
-    h("button", {class: "menu-item", role: "menuitem", onClick: () => { closeMenu(); navigate("settings"); }}, icon("settings", {size: 18}), "Settings"),
-    h("a", {class: "menu-item", role: "menuitem", href: "https://github.com/ayushratan1/vidforge#readme", target: "_blank", rel: "noopener"}, icon("bookOpen", {size: 18}), "Setup guide"),
-    h("button", {class: "menu-item", role: "menuitem", onClick: () => { closeMenu(); navigate(""); }}, icon("zap", {size: 18}), "Start page"),
-    h("button", {class: "menu-item danger", role: "menuitem", onClick: async () => { await db.signOut(); location.hash = "#/"; location.reload(); }}, icon("logout", {size: 18}), "Sign out"));
-  const avatarBtn = h("button", {class: "btn btn-icon", type: "button", "aria-haspopup": "menu", "aria-expanded": "false", "aria-label": "Account menu", onClick: () => { const open = menuPanel.dataset.open !== "true"; menuPanel.dataset.open = String(open); avatarBtn.setAttribute("aria-expanded", String(open)); }}, Avatar(user?.email || "demo", {size: 32}));
+    h("div", {class: "menu-head"}, h("strong", {}, email.split("@")[0] || "Team"), h("span", {class: "micro"}, email)),
+    h("button", {class: "menu-item", role: "menuitem", onClick: () => { closeMenu(); navigate("settings"); }}, icon("settings"), "Settings"),
+    h("a", {class: "menu-item", role: "menuitem", href: "https://github.com/ayushratan1/vidforge#readme", target: "_blank", rel: "noopener"}, icon("bookOpen"), "Setup guide"),
+    h("button", {class: "menu-item", role: "menuitem", onClick: () => { closeMenu(); navigate(""); }}, icon("home"), "Start page"),
+    h("button", {class: "menu-item danger", role: "menuitem", onClick: async () => { await db.signOut(); location.hash = "#/"; location.reload(); }}, icon("logout"), "Sign out"));
+  const avatarBtn = h("button", {class: "avatar-btn", type: "button", "aria-haspopup": "menu", "aria-expanded": "false", "aria-label": "Account menu", onClick: () => { const open = menuPanel.dataset.open !== "true"; menuPanel.dataset.open = String(open); avatarBtn.setAttribute("aria-expanded", String(open)); }}, Avatar(email || "?", {size: 28}));
   const closeMenu = () => { menuPanel.dataset.open = "false"; avatarBtn.setAttribute("aria-expanded", "false"); };
   document.addEventListener("click", e => { if (!menu.contains(e.target)) closeMenu(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
   const menu = h("div", {class: "menu"}, avatarBtn, menuPanel);
-  const topbar = h("header", {class: "topbar"}, title, pageActions, search, makeBtn, menu);
+  const toolbar = h("header", {class: "toolbar"}, title, pageActions, h("div", {class: "toolbar-spacer"}), search, refreshBtn, newBtn, menu);
 
-  const main = h("main", {class: "main", id: "main", tabIndex: -1}, topbar);
-  const app = h("div", {class: "app" + (collapsed ? " rail" : "")}, sidebar, main);
+  const main = h("main", {class: "main", id: "main", tabIndex: -1}, toolbar);
+  const app = h("div", {class: "app"}, sidebar, main);
   clear(host).append(app, tabbar);
 
   const pages = {};
@@ -143,6 +150,7 @@ async function buildShell(db, session, host) {
   let currentId = null;
   async function go(id, arg) {
     const page = pages[id] || pages.dashboard;
+    current = page;
     for (const [k, p] of Object.entries(pages)) p.el.classList.toggle("active", k === page.def.id);
     for (const a of document.querySelectorAll(".nav-item")) a.dataset.page === page.def.id ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current");
     title.textContent = page.def.title;
@@ -150,6 +158,7 @@ async function buildShell(db, session, host) {
     clear(pageActions);
     if (!page.inst) page.inst = page.def.make(ctx, page.el, pageActions);
     else page.inst.mount?.(pageActions);
+    refreshBtn.disabled = !page.inst.refresh;
     await page.inst.show?.(arg);
     if (currentId !== page.def.id) { window.scrollTo({top: 0}); main.focus({preventScroll: true}); }
     currentId = page.def.id;
@@ -160,7 +169,7 @@ async function buildShell(db, session, host) {
 function globalSearch(ctx) {
   const input = h("input", {class: "input", type: "search", placeholder: "Search videos", "aria-label": "Search videos", autocomplete: "off"});
   const results = h("div", {class: "search-results", role: "listbox", "aria-label": "Results"});
-  const wrap = h("div", {class: "search"}, icon("search", {size: 18}), input, h("kbd", {}, "/"), results);
+  const wrap = h("div", {class: "search"}, icon("search", {size: 14}), input, h("kbd", {}, "/"), results);
   let videos = null;
   const run = async () => {
     const q = input.value.trim().toLowerCase();
@@ -170,7 +179,7 @@ function globalSearch(ctx) {
     const hits = videos.filter(v => `${v.title || ""} ${v.topic || ""} ${v.niche || ""}`.toLowerCase().includes(q)).slice(0, 8);
     if (!hits.length) { results.append(h("div", {class: "search-hit", role: "option"}, h("span", {class: "search-hit-title secondary"}, "No videos match"))); return; }
     for (const v of hits) results.append(h("button", {class: "search-hit", role: "option", type: "button", onClick: () => { input.value = ""; clear(results); navigate("library", v.id); }},
-      v.thumb_url ? h("img", {class: "thumb-xs", src: v.thumb_url, alt: ""}) : h("span", {class: "thumb-xs"}), h("span", {class: "search-hit-title"}, v.title || v.topic || v.id), h("span", {class: "micro"}, v.status)));
+      v.thumb_url ? h("img", {class: "thumb-xs", src: v.thumb_url, alt: ""}) : h("span", {class: "thumb-xs"}), h("span", {class: "search-hit-title"}, v.title || v.topic || v.id), Status(v.status)));
   };
   input.addEventListener("input", run);
   input.addEventListener("focus", () => { videos = null; run(); });

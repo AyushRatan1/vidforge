@@ -1,4 +1,5 @@
-// Settings: grouped glass cards. Keys and the exported .env names are the contract with the worker; do not rename them.
+// Settings: macOS System Settings style. Titled groups, each a box of rows with the label on the left and the control on the right.
+// Keys and the exported .env names are the contract with the worker; do not rename them.
 import {h, clear, Button, Card, Segmented, Field, Input, Select, SecretInput, ListRow, Pill, toast, icon} from "../components.js";
 import {forgetProject} from "../app.js";
 import {DEFAULTS} from "../config.js";
@@ -19,8 +20,8 @@ export function settingsPage(ctx, el, actions) {
   const saveBtn = Button({label: "Save changes", variant: "primary", onClick: save});
   const discardBtn = Button({label: "Discard", variant: "ghost", onClick: () => { draft = {...saved}; delete draft.__updated; if (!draft.github_repo) draft.github_repo = DEFAULTS.githubRepo; render(); updateSaveState(); }});
   const saveNote = h("span", {class: "secondary"});
-  const savebar = h("div", {class: "savebar glass", hidden: true, role: "region", "aria-label": "Unsaved changes"}, h("div", {class: "cluster", style: {gap: "10px"}}, icon("info", {size: 18}), saveNote), h("div", {class: "actions"}, discardBtn, saveBtn));
-  el.append(h("div", {class: "page-intro"}, h("p", {}, "Keys are stored in your private Supabase project and read by the GitHub worker at run time.")), body, savebar);
+  const savebar = h("div", {class: "savebar", hidden: true, role: "region", "aria-label": "Unsaved changes"}, saveNote, h("div", {class: "actions"}, discardBtn, saveBtn));
+  el.append(h("p", {class: "page-intro settings-intro"}, "Keys are stored in your private Supabase project and read by the GitHub worker at run time."), body, savebar);
 
   async function load(force) {
     if (loaded && !force) return;
@@ -42,8 +43,8 @@ export function settingsPage(ctx, el, actions) {
   const states = {};
   function stateFor(key) {
     const el = h("span", {class: "saved-state"});
-    if ((draft[key] || "") !== (saved[key] || "")) { el.classList.add("is-dirty"); el.append(icon("dot", {size: 12}), "Not saved yet"); }
-    else if (saved[key]) { el.classList.add("is-saved"); el.append(icon("check", {size: 14}), "Saved", saved.__updated?.[key] ? " " + fmt.date(saved.__updated[key]) : ""); }
+    if ((draft[key] || "") !== (saved[key] || "")) { el.classList.add("is-dirty"); el.append("Not saved yet"); }
+    else if (saved[key]) { el.classList.add("is-saved"); el.append(icon("check", {size: 12}), "Saved", saved.__updated?.[key] ? " " + fmt.date(saved.__updated[key]) : ""); }
     else el.append("Not set");
     return el;
   }
@@ -52,10 +53,13 @@ export function settingsPage(ctx, el, actions) {
     const onInput = e => { draft[key] = e.target.value; updateSaveState(); states[key].replaceWith(states[key] = stateFor(key)); };
     const control = SECRET.has(key) ? SecretInput({value: draft[key] || "", placeholder, onInput, ariaLabel: label, mono}) : Input({class: "input" + (mono ? " mono" : ""), placeholder, autocomplete: "off", spellcheck: "false", value: draft[key] || "", "aria-label": label, onInput});
     states[key] = stateFor(key);
-    return h("div", {class: "field"}, h("div", {class: "cluster-between"}, h("span", {class: "field-label"}, title), states[key]), control, hint ? h("div", {class: "hint"}, hint) : null, after);
+    return h("div", {class: "field"}, h("div", {class: "field-label"}, h("div", {}, title), states[key]), control, hint ? h("div", {class: "hint"}, hint) : null, after);
   }
   const link = (href, text) => h("a", {href, target: "_blank", rel: "noopener"}, text);
-  const groupCard = (title, subtitle, ic, foot, ...rows) => Card({title, subtitle, actions: h("span", {class: "stat-icon"}, icon(ic, {size: 18})), body: h("div", {class: "form"}, ...rows), footer: foot});
+  const groupCard = (title, subtitle, ic, foot, ...rows) => h("section", {class: "settings-group", "aria-label": title},
+    h("h2", {class: "settings-group-title"}, title, h("span", {class: "micro", style: {fontWeight: 400, marginLeft: "8px"}}, subtitle)),
+    Card({flush: true, body: h("div", {class: "rows"}, ...rows)}),
+    foot ? h("p", {class: "settings-note"}, foot) : null);
 
   function render() {
     const models = parseModels(draft.models);
@@ -66,7 +70,7 @@ export function settingsPage(ctx, el, actions) {
     const runner = Segmented([{value: "", label: "GitHub standard"}, {value: "custom", label: "Custom"}], isCustom ? "custom" : "", v => { draft.runner = v ? (saved.runner && saved.runner !== "ubuntu-latest" ? saved.runner : "self-hosted") : ""; runnerWrap.hidden = !v; runnerName.value = draft.runner; updateSaveState(); }, {size: "sm", ariaLabel: "Runner"});
 
     const lookupOut = h("span", {class: "micro"});
-    const lookup = Button({label: "Look up", variant: "secondary", size: "sm", icon: "search", onClick: async () => {
+    const lookup = Button({label: "Look up", variant: "secondary", size: "sm", onClick: async () => {
       const tok = draft.ig_access_token; if (!tok) { lookupOut.textContent = "Add an access token first."; return; }
       lookupOut.textContent = "Looking up";
       try { const r = await fetch(`https://graph.instagram.com/v26.0/me?fields=user_id,username&access_token=${encodeURIComponent(tok)}`); const j = await r.json(); if (j.error) throw new Error(j.error.message); draft.ig_user_id = String(j.user_id || j.id || ""); body.querySelector('[aria-label="ig user id"]').value = draft.ig_user_id; lookupOut.textContent = `@${j.username}`; updateSaveState(); states.ig_user_id.replaceWith(states.ig_user_id = stateFor("ig_user_id")); }
@@ -76,8 +80,7 @@ export function settingsPage(ctx, el, actions) {
     clear(body).append(
       groupCard("Claude", "Writes, directs, reviews and scouts", "sparkles", "The writer model can also be chosen per video on the Create page.",
         settingRow("anthropic_api_key", "API key", "sk-ant-...", h("span", {}, "From ", link("https://console.anthropic.com/settings/keys", "console.anthropic.com"), ". Every video costs about $0.50."), {mono: true}),
-        h("div", {class: "field"}, h("div", {class: "cluster-between"}, h("span", {class: "field-label"}, "Models per role"), Pill("Optional", "neutral", {small: true})),
-          h("div", {class: "form-row"}, ...["writer", "director", "reviewer", "scout"].map(r => Field({label: r.charAt(0).toUpperCase() + r.slice(1), control: modelSel(r)}))))),
+        ...["writer", "director", "reviewer", "scout"].map(r => Field({label: r.charAt(0).toUpperCase() + r.slice(1) + " model", control: modelSel(r), hint: r === "writer" ? "Optional. Default uses the model the worker picks for each role." : null}))),
       groupCard("GitHub", "Runs the worker", "github", "The token is used only to start workflows from this page. The worker itself uses the repository's own token.",
         settingRow("github_repo", "Repository", DEFAULTS.githubRepo, "The repository that runs the workflows, as owner/name.", {mono: true}),
         settingRow("github_token", "Token", "github_pat_...", h("span", {}, link("https://github.com/settings/personal-access-tokens/new", "Create a fine-grained token"), " for only this repository with Actions read and write, Contents read."), {mono: true})),
@@ -90,17 +93,16 @@ export function settingsPage(ctx, el, actions) {
         settingRow("ig_user_id", "User id", "1784...", h("span", {class: "cluster", style: {gap: "8px"}}, "Optional. ", lookup, lookupOut), {mono: true})),
       groupCard("Footage", "Free stock clips", "image", "Both are free for commercial use with no attribution required. Without a key, videos use drawn frames only.",
         settingRow("pixabay_api_key", "Pixabay API key", "", link("https://pixabay.com/api/docs/", "Get a free Pixabay key"), {mono: true}),
-        settingRow("pexels_api_key", "Pexels API key", "", h("span", {class: "cluster", style: {gap: "8px"}}, Pill("Paused for new keys", "warn", {small: true}), "Pexels paused new API keys in Nov 2026. Leave empty unless you already have one."), {mono: true})),
+        settingRow("pexels_api_key", "Pexels API key", "", h("span", {class: "cluster", style: {gap: "8px"}}, Pill("Paused for new keys"), "Pexels paused new API keys in Nov 2026. Leave empty unless you already have one."), {mono: true})),
       groupCard("Machine", "Where renders run", "server", "A GitHub standard runner is free for public repositories. A larger or self-hosted runner renders faster.",
-        h("div", {class: "field"}, h("div", {class: "cluster-between"}, h("span", {class: "field-label"}, "Runner"), runner), runnerWrap)),
+        h("div", {class: "field"}, h("div", {class: "field-label"}, "Runner"), h("div", {}, runner), runnerWrap)),
       groupCard("Trend data", "What the scout can read", "compass", "Lets the scout read what is rising on YouTube in your channels.",
         settingRow("youtube_api_key", "YouTube Data API key", "AIza...", link("https://console.cloud.google.com/apis/credentials", "Google Cloud credentials"), {mono: true})),
       groupCard("Team", "This device and project", "users", ctx.demo ? "Demo mode. Nothing is saved." : "Add or remove team members in Supabase, Authentication.",
-        h("div", {class: "list"},
-          ListRow({title: "Signed in as", value: ctx.user?.email || "", icon: "user"}),
-          ListRow({title: "Sign out", sub: "This device only", icon: "logout", onClick: async () => { await db.signOut(); location.hash = "#/"; location.reload(); }}),
-          ListRow({title: "Forget this project on this device", sub: "Goes back to the built-in project on next sign-in. Data stays in Supabase.", icon: "trash", iconTone: "err", onClick: () => { if (confirm("Forget the project connection on this device?")) { forgetProject(); location.reload(); } }}))),
-      h("p", {class: "hint"}, "Settings keys are read by the GitHub worker at run time. ", link(README, "Setup guide")));
+        ListRow({title: "Signed in as", value: ctx.user?.email || ""}),
+        ListRow({title: "Sign out", sub: "This device only", onClick: async () => { await db.signOut(); location.hash = "#/"; location.reload(); }}),
+        ListRow({title: "Forget this project on this device", sub: "Goes back to the built-in project on next sign-in. Data stays in Supabase.", iconTone: "err", onClick: () => { if (confirm("Forget the project connection on this device?")) { forgetProject(); location.reload(); } }})),
+      h("p", {class: "settings-note"}, "Settings keys are read by the GitHub worker at run time. ", link(README, "Setup guide")));
   }
 
   async function save() {
@@ -116,7 +118,7 @@ export function settingsPage(ctx, el, actions) {
     const a = h("a", {href: URL.createObjectURL(blob), download: ".env"}); document.body.append(a); a.click(); a.remove();
     toast("Downloaded .env", "ok");
   }
-  return {mount, async show() { await load(); }};
+  return {mount, refresh: () => changed().length ? toast("Save or discard your changes first.", "info") : load(true), async show() { await load(); }};
 }
 
 function parseModels(s) { try { return {...JSON.parse(s || "{}")}; } catch { return {}; } }

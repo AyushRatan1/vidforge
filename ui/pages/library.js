@@ -1,5 +1,5 @@
-// Library: every video as a glass card, with a detail Sheet for playback, captions and the Post now flow.
-import {h, clear, Button, Card, Segmented, Switch, ChipGroup, Field, Input, Textarea, Status, Pill, PlatformMark, ListRow, Sheet, EmptyState, toast, icon} from "../components.js";
+// Library: every video as a plain box (grid) or a table row (list), with a detail Sheet for playback, captions and the Post now flow.
+import {h, clear, Button, Card, Segmented, Switch, ChipGroup, Field, Input, Textarea, Status, Pill, PlatformMark, ListRow, Table, Sheet, EmptyState, toast, icon} from "../components.js";
 import {PUBLISH_WF} from "../db.js";
 import {fmt, langName, compactTs, rand4} from "../format.js";
 
@@ -9,13 +9,16 @@ const PRIVACY = [{value: "public", label: "Public"}, {value: "unlisted", label: 
 export function libraryPage(ctx, el, actions) {
   const {db} = ctx;
   let videos = [], filter = "all", q = "", loaded = false;
+  let view = "grid";
+  try { view = localStorage.getItem("vf.libview") === "list" ? "list" : "grid"; } catch {}
   const searchInput = Input({type: "search", placeholder: "Search titles and topics", "aria-label": "Search the library", onInput: e => { q = e.target.value.toLowerCase(); renderGrid(); }});
-  const search = h("div", {class: "search"}, icon("search", {size: 18}), searchInput);
+  const search = h("div", {class: "search"}, icon("search", {size: 14}), searchInput);
   const chips = ChipGroup(FILTERS, filter, {onChange: v => { filter = v; renderGrid(); }, ariaLabel: "Filter by status"});
-  const count = h("span", {class: "micro num"});
-  const mount = tb => tb.append(count);
+  const count = h("span", {class: "toolbar-count num"});
+  const viewSeg = Segmented([{value: "grid", icon: "grid", ariaLabel: "Grid view"}, {value: "list", icon: "list", ariaLabel: "List view"}], view, v => { view = v; try { localStorage.setItem("vf.libview", v); } catch {} renderGrid(); }, {size: "sm", ariaLabel: "View"});
+  const mount = tb => tb.append(viewSeg, count);
   mount(actions);
-  const grid = h("div", {class: "vid-grid stagger"});
+  const grid = h("div", {});
   el.append(h("div", {class: "lib-tools"}, chips, search), grid);
 
   async function load() { videos = await db.listVideos(); loaded = true; renderGrid(); }
@@ -27,21 +30,35 @@ export function libraryPage(ctx, el, actions) {
     if (q && !`${v.title || ""} ${v.topic || ""} ${v.niche || ""}`.toLowerCase().includes(q)) return false;
     return true;
   }
+  const shown = v => v.status === "queued" ? "making" : v.status;
+  const titleOf = v => v.title || v.topic || "Working title pending";
+  const metaOf = v => [langName(v.language), fmt.date(v.created_at), v.duration ? fmt.dur(v.duration) : null].filter(Boolean).join(", ");
+  const marks = v => h("span", {class: "marks"}, PlatformMark("youtube", v.youtube_url, {size: 14}), PlatformMark("instagram", v.instagram_url, {size: 14}));
   function renderGrid() {
     const list = videos.filter(matches);
     count.textContent = `${list.length} of ${videos.length}`;
     clear(grid);
-    if (!videos.length) { grid.append(h("div", {style: {gridColumn: "1 / -1"}}, EmptyState({icon: "library", title: "No videos yet", text: "Every video you make is kept here as a GitHub Release with its MP4, captions and sources.", action: Button({label: "Make the first one", variant: "primary", onClick: () => ctx.go("create")})}))); return; }
-    if (!list.length) { grid.append(h("div", {style: {gridColumn: "1 / -1"}}, EmptyState({icon: "search", title: "Nothing matches", text: q ? "Try a different search." : "No videos with this status yet.", compact: true}))); return; }
-    for (const v of list) grid.append(card(v));
+    if (!videos.length) { grid.append(Card({body: EmptyState({title: "No videos yet.", text: "Every video you make is kept here as a GitHub Release with its MP4, captions and sources.", action: Button({label: "Make the first one", variant: "primary", onClick: () => ctx.go("create")})})})); return; }
+    if (!list.length) { grid.append(Card({body: EmptyState({compact: true, title: "Nothing matches.", text: q ? "Try a different search." : "No videos with this status yet."})})); return; }
+    if (view === "list") {
+      grid.append(Card({flush: true, body: Table({caption: "Videos", rows: list, onRow: v => openSheet(v.id), columns: [
+        {key: "thumb", label: "", width: "62px", render: v => v.thumb_url ? h("img", {class: "thumb-sm", src: v.thumb_url, alt: "", loading: "lazy"}) : h("span", {class: "thumb-sm"})},
+        {key: "title", label: "Title", render: v => h("span", {class: "cell-title"}, titleOf(v))},
+        {key: "status", label: "Status", width: "110px", render: v => Status(shown(v))},
+        {key: "meta", label: "Details", class: "hide-sm", width: "200px", render: v => h("span", {class: "muted num"}, metaOf(v))},
+        {key: "platforms", label: "Platforms", class: "hide-sm", width: "96px", render: marks},
+      ]})}));
+      return;
+    }
+    grid.append(h("div", {class: "vid-grid"}, ...list.map(card)));
   }
   function card(v) {
-    const status = v.status === "queued" ? "making" : v.status;
-    return h("button", {class: "vid glass", type: "button", onClick: () => openSheet(v.id), "aria-label": `${v.title || v.topic || v.id}, ${status}`},
-      h("div", {class: "vid-thumb"}, v.thumb_url ? h("img", {src: v.thumb_url, alt: "", loading: "lazy"}) : h("div", {class: "ph"}, icon("film", {size: 22}), h("span", {}, status === "making" ? "Rendering" : status === "failed" ? "No render" : "No thumbnail")),
-        Status(status, {small: true}), v.duration ? h("span", {class: "vid-dur num"}, fmt.dur(v.duration)) : null),
-      h("div", {class: "vid-body"}, h("div", {class: "vid-title"}, v.title || v.topic || "Working title pending"),
-        h("div", {class: "vid-meta"}, h("span", {}, [langName(v.language), fmt.date(v.created_at)].filter(Boolean).join(", ")), h("span", {class: "marks"}, v.youtube_url ? PlatformMark("youtube", v.youtube_url, {size: 12}) : null, v.instagram_url ? PlatformMark("instagram", v.instagram_url, {size: 12}) : null))));
+    const status = shown(v);
+    return h("button", {class: "card vid is-clickable", type: "button", onClick: () => openSheet(v.id), "aria-label": `${titleOf(v)}, ${status}`},
+      h("div", {class: "vid-thumb"}, v.thumb_url ? h("img", {src: v.thumb_url, alt: "", loading: "lazy"}) : h("div", {class: "ph"}, status === "making" ? "Rendering" : status === "failed" ? "No render" : "No thumbnail")),
+      h("div", {class: "vid-body"}, h("div", {class: "vid-title"}, titleOf(v)),
+        h("div", {class: "vid-meta num"}, metaOf(v)),
+        h("div", {class: "vid-foot"}, Status(status), marks(v))));
   }
 
   // ---------------------------------------------------------------- detail sheet
@@ -75,16 +92,16 @@ export function libraryPage(ctx, el, actions) {
     const postBtn = Button({label: "Post now", variant: "primary", icon: "upload", disabled: !canPost, onClick: () => postNow(v, pub, {youtube: {title: ytTitle.value.trim(), description: ytDesc.value}, instagram: {caption: igCap.value}}, postBtn)});
 
     const issues = v.qa?.issues || [];
-    const player = h("div", {class: "sheet-player"}, v.video_url ? h("video", {src: v.video_url, poster: v.thumb_url || null, controls: true, playsinline: true}) : h("div", {class: "phone-idle"}, icon("film", {size: 24}), v.status === "failed" ? "No video was produced." : "The video appears here when the render finishes."));
+    const player = h("div", {class: "sheet-player"}, v.video_url ? h("video", {src: v.video_url, poster: v.thumb_url || null, controls: true, playsinline: true}) : h("div", {class: "phone-idle"}, v.status === "failed" ? "No video was produced." : "The video appears here when the render finishes."));
     const left = h("div", {class: "stack"}, player,
       h("div", {class: "actions"},
         v.video_url ? Button({label: "Download", variant: "secondary", size: "sm", icon: "download", href: v.video_url, download: `${v.id}.mp4`}) : null,
         v.release_url ? Button({label: "Open on GitHub", variant: "secondary", size: "sm", icon: "github", href: v.release_url, target: "_blank"}) : null,
         Button({label: "Copy caption", variant: "secondary", size: "sm", icon: "copy", onClick: () => navigator.clipboard.writeText(igCap.value || ytDesc.value).then(() => toast("Caption copied", "ok"), () => toast("Could not copy. Select the text and copy it.", "err"))})),
       h("dl", {class: "facts"},
-        h("dt", {}, "Status"), h("dd", {}, Status(v.status), v.error ? h("span", {class: "micro", style: {color: "var(--err-text)"}}, v.error) : null),
+        h("dt", {}, "Status"), h("dd", {}, Status(v.status), v.error ? h("span", {class: "err-text"}, v.error) : null),
         h("dt", {}, "Topic"), h("dd", {}, v.topic || h("span", {class: "tertiary"}, "Trending pick")),
-        h("dt", {}, "Made"), h("dd", {}, fmt.dateTime(v.created_at), v.source === "autopilot" ? Pill("Autopilot", "accent", {small: true}) : null),
+        h("dt", {}, "Made"), h("dd", {}, fmt.dateTime(v.created_at), v.source === "autopilot" ? Pill("Autopilot") : null),
         h("dt", {}, "Details"), h("dd", {class: "num"}, [langName(v.language), v.format ? v.format.replaceAll("_", " ") : null, v.aspect, v.duration ? fmt.dur(v.duration) : null].filter(Boolean).join(", ")),
         h("dt", {}, "Cost"), h("dd", {class: "num"}, v.usd != null ? fmt.usd(v.usd) : "Unknown"),
         h("dt", {}, "Review"), h("dd", {}, v.qa_score != null ? h("span", {class: "num"}, `${v.qa_score} of 10`) : "Not reviewed", issues.length ? h("ul", {class: "sources", style: {width: "100%"}}, ...issues.map(i => h("li", {}, i))) : null),
@@ -96,9 +113,9 @@ export function libraryPage(ctx, el, actions) {
         Field({label: "YouTube title", control: ytTitle}),
         Field({label: "YouTube description", control: ytDesc, hint: ytCount}),
         Field({label: "Instagram caption", control: igCap, hint: igCount}))}),
-      Card({title: "Post now", subtitle: canPost ? "Choose where this video goes" : "Available once the video is ready", body: h("div", {class: "list"},
-        ListRow({title: "YouTube Shorts", sub: v.youtube_url ? "Already posted. Posting again makes a second video." : null, icon: "youtube", iconTone: "yt", control: ytT}),
-        ListRow({title: "Instagram Reels", icon: "instagram", iconTone: "ig", control: igT}),
+      Card({title: "Post now", subtitle: canPost ? "Choose where this video goes" : "Available once the video is ready", flush: true, body: h("div", {class: "rows"},
+        ListRow({title: "YouTube Shorts", sub: v.youtube_url ? "Already posted. Posting again makes a second video." : null, icon: "youtube", control: ytT}),
+        ListRow({title: "Instagram Reels", icon: "instagram", control: igT}),
         ListRow({title: "Privacy", control: privacy}),
         ListRow({title: "Schedule", sub: "Leave empty to post right away", control: h("div", {style: {width: "220px", maxWidth: "50vw"}}, when)})),
         footer: h("div", {class: "cluster-between"}, h("span", {}, canPost ? "Posting starts a GitHub run. Links appear here when it finishes." : "Wait for the render to pass review."), postBtn)}));
@@ -125,6 +142,7 @@ export function libraryPage(ctx, el, actions) {
   let unsub = null;
   return {
     mount,
+    refresh: () => load(),
     async show(arg) {
       if (!loaded) await load();
       unsub ||= db.subscribe("videos", null, (rowObj, type) => {
