@@ -456,6 +456,47 @@ def test_publish_gate_skips_failed_review(monkeypatch, capsys):
     e2e.stage_publish(d, {"publish": {"youtube": True, "force": True}}, {})
     assert called
 
+def test_world3d_time_refs_and_stepwell():
+    from engine import world3d as W3
+    spec = json.load(open(os.path.join(ROOT, "examples", "built_rani_ki_vav.json"), encoding="utf-8"))
+    errs, warns = validate(spec)
+    assert errs == [], errs
+    tl = [{"start": 5.0 * i, "dur": 5.0, "voice_start": 0.2, "voice_dur": 4.0} for i in range(len(spec["scenes"]))]
+    w = W3.prepare_world(spec, tl)
+    dig = w["terrain"]["digs"][0]
+    assert dig["from"] == 5.0 + 0.25 and dig["to"] == 5.0 + 4.25       # scene "well" is the second scene
+    types = [o["type"] for o in w["objects"]]
+    assert "stepwell" not in types and types.count("stairs") == 6 and "water" in types and "pavilion" in types
+    assert len(w["terrain"]["digs"]) == 2                               # the macro added the big trench
+    cam = w["camera"]
+    assert all(isinstance(k["at"], float) for k in cam) and cam == sorted(cam, key=lambda k: k["at"])
+    bad = dict(spec, world3d=dict(spec["world3d"], objects=[{"type": "dragon"}],
+                                  camera=[{"at": {"scene": "nope"}, "pos": [0, 0, 0]}]))
+    e2, _ = validate(bad)
+    assert any("dragon" in e for e in e2) and any("nope" in e for e in e2)
+
+
+def test_world3d_renders_a_frame():
+    """Smoke test of the browser renderer when a Chromium is available (skipped otherwise)."""
+    import pytest
+    pytest.importorskip("playwright")
+    from engine.world3d import World3DRenderer, expand
+    world = expand({"terrain": {"width": 20, "length": 20, "cut": 4,
+                                "digs": [{"x0": -2, "x1": 2, "z0": -6, "z1": 4, "depth": 4, "from": 0, "to": 1}]},
+                    "objects": [{"type": "stepwell", "x0": -3, "x1": 3, "z_front": 4, "length": 12, "depth": 5, "levels": 3},
+                                {"type": "person", "pos": [5, 0, 2], "action": "dig"}, {"type": "trees", "count": 4, "seed": 2}],
+                    "camera": [{"at": 0, "pos": [10, 8, 20], "look": [0, -2, -2]}]})
+    d = tempfile.mkdtemp()
+    try:
+        with World3DRenderer(216, 384, scale=0.5) as r:
+            r.setup(world)
+            out = r.render_range(0.5, 0.5, 4, os.path.join(d, "w.mp4"))
+            still = r.still(1.0, os.path.join(d, "w.jpg"))
+    except RuntimeError as e:
+        pytest.skip(f"no browser: {e}")
+    from PIL import Image
+    assert os.path.getsize(out) > 1000 and Image.open(still).size == (216, 384)
+
 if __name__ == "__main__":
     import inspect
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_") and callable(v)]

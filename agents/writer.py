@@ -6,16 +6,18 @@ import os
 
 from engine.validate import validate
 
-from .formats import format_brief
+from .formats import FORMATS, format_brief
 from .llm import Claude
 from .scene_guide import SCENE_GUIDE
 
 EXAMPLES_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "examples")
 
 
-def _example_for(channel: dict) -> str:
-    """Show the writer a finished spec in the same language/audience as the channel."""
-    if channel.get("audience") == "kids":
+def _example_for(channel: dict, fmt: str = "") -> str:
+    """Show the writer a finished spec in the same format or language/audience as the channel."""
+    if fmt == "3d_build":
+        name = "built_rani_ki_vav.json"
+    elif channel.get("audience") == "kids":
         name = "kids_counting_hi.json"
     elif channel.get("language") == "en":
         name = "space_is_weird_01_voyager.json"
@@ -71,6 +73,7 @@ SCHEMA = {
         "music": {"type": "object"}, "captions": {"type": "object"}, "overlay": {"type": "object"},
         "thumbnail": {"type": "object"}, "transition": {"type": "string"},
         "footage": {"type": "string", "enum": ["auto", "off"]},
+        "world3d": {"type": "object", "description": "3D build world for the 3d_build format (see the guide)"},
         "scenes": {"type": "array", "items": {"type": "object", "properties": {
             "id": {"type": "string"}, "narration": {"type": "string"}, "caption": {"type": "string"},
             "background": {"type": "object"}, "camera": {"type": "object"}, "transition": {"type": "string"},
@@ -82,8 +85,8 @@ SCHEMA = {
 }
 
 
-def _system(channel: dict | None = None):
-    return SYSTEM_TMPL.format(guide=SCENE_GUIDE, example=_example_for(channel or {}))
+def _system(channel: dict | None = None, fmt: str = ""):
+    return SYSTEM_TMPL.format(guide=SCENE_GUIDE, example=_example_for(channel or {}, fmt))
 
 
 def write_episode(claude: Claude, idea: dict, facts: dict, channel: dict, notes: str = "") -> dict:
@@ -97,10 +100,12 @@ def write_episode(claude: Claude, idea: dict, facts: dict, channel: dict, notes:
         + ("Stock footage is OFF for this channel: drawn backgrounds only.\n\n" if footage_off else "")
         + "Write and direct the episode now."
     )
-    system = _system(channel)
+    system = _system(channel, fmt)
     spec = claude.json_tool("writer", system, prompt, "submit_episode", "Submit the complete episode spec",
                             SCHEMA, max_tokens=32000)
     spec = _repair_loop(claude, spec, prompt, system)
+    if fmt in FORMATS:
+        spec.setdefault("format", fmt)
     if footage_off:
         spec["footage"] = "off"
     else:
@@ -128,6 +133,8 @@ def footage_shortfall(spec: dict, channel: dict | None, min_share: float = 0.6) 
     ch = channel or {}
     if str(ch.get("footage", "auto")).lower() == "off" or spec.get("footage") == "off" or spec.get("made_for_kids"):
         return []
+    if spec.get("world3d"):            # 3D build videos draw their own world
+        return []
     niche = str(ch.get("niche", "")).lower()
     if not niche or niche in DRAWN_NICHES:
         return []
@@ -148,7 +155,8 @@ def revise(claude: Claude, spec: dict, instructions: str, facts: dict | None = N
         + f"Revise it. Keep everything that works; change what this asks for:\n{instructions}\n\n"
           "Return the complete revised spec via submit_episode."
     )
-    system = _system(channel or {"language": spec.get("language"), "audience": "kids" if spec.get("made_for_kids") else "general"})
+    system = _system(channel or {"language": spec.get("language"), "audience": "kids" if spec.get("made_for_kids") else "general"},
+                     spec.get("format", ""))
     out = claude.json_tool("writer", system, prompt, "submit_episode", "Submit the complete episode spec",
                            SCHEMA, max_tokens=32000)
     return _repair_loop(claude, out, prompt, system)

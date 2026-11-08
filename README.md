@@ -65,6 +65,24 @@ draws every frame.
 - Audio: Kokoro TTS on CPU (Hindi hm_omega, hm_psi, hf_alpha, hf_beta; English af_heart, am_michael, bf_emma...),
   royalty-free procedural music in 8 moods (incl. `indian`, `devotional`), ducking, sound effects, -14 LUFS.
 - Scenes are cached by content hash, so a revision only re-renders the scenes that changed.
+- Real footage: stock clips from Pixabay (and Pexels if you have a key) play under the drawn layer.
+
+### 3D "how it was built" videos (format `3d_build`)
+
+Low-poly 3D dioramas that build themselves, like the cutaway architecture reels: the ground is cut open in
+cross-section, a trench is dug, stone walls rise course by course, flights of steps drop in, pillared halls appear and
+water fills the bottom while the camera glides through. Claude writes a `world3d` block (terrain, digs, objects, build
+timings tied to the narration, camera path); `engine/world3d.py` renders it with three.js in headless Chrome (software
+WebGL, no GPU) and the 2D engine adds voice, captions and labels on top.
+
+- Kit: terrain with animated digs, walls, stairs, pillars, pavilions, temple spires, arches, domes, water, wells,
+  ladders, houses, trees, grass, rocks, villagers (dig, pull, walk, carry, climb) and a `stepwell` macro.
+- Styles: desert, golden, green, overcast, night.
+- Try it: `python run.py render examples/built_rani_ki_vav.json` (Rani ki Vav, about 50 s).
+- Speed: about 0.25 to 0.5 s per frame on a 4-core runner at the default `VIDFORGE_3D_SCALE=0.75` (rendered at 75 percent
+  size, upscaled to 1080x1920), so a 50 s Short adds roughly 6 to 12 minutes to a run.
+- Pick it in Create (Format: 3D build) or let the scout choose it for history, architecture, travel, mythology and
+  tech channels.
 
 ## Hosting
 

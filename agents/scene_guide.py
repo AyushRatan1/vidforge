@@ -99,4 +99,39 @@ exit (fade | pop | fly_up), behaviors [ ... ], keys [ ... ], move {...}, overlay
 5. End with a payoff and a reason to follow (a teaser for the next video beats "please subscribe").
 6. Shorts: 7-10 scenes, 35-58 seconds total. Long-form: chapters of 6-10 scenes each.
 7. Use the channel's palette, mascot and handle consistently.
+
+## 3D build worlds (format 3d_build: "how it was built" low-poly dioramas)
+Add a top-level "world3d" and give scenes {"type":"world3d"} backgrounds (scenes without a background default to it).
+The whole video is ONE continuous diorama; each scene shows its own slice of the timeline, so the build and the camera
+flow across scenes while the 2D layer adds captions and labels. Keep 2D elements sparse: 0-2 per scene, mostly yellow
+callout labels {"type":"text","text":"STEPWELL","bg":"#ffd54a","color":"#1c1a17","style":"label","stroke":false,"size":0.056,"y":0.2}.
+Captions for this format: {"y":0.6,"size":0.084,"max_words":2,"highlight":"#ffd54a","uppercase":false}; spec "transition":"none".
+
+Units are metres-ish; y is up, the ground surface is y=0, people are ~1.4 tall. The terrain block is cut open at its
+front face (z = terrain.cut, facing the camera on +z), so anything dug up to that face is seen in cross-section with
+coloured soil layers, like an architectural cutaway. Put the camera at +z looking towards -z.
+world3d = {
+  "style": "desert|golden|green|overcast|night",
+  "terrain": {"width":44,"length":56,"cut":6,"strata":[["#d9bf8f",0.35],["#b98a5c",1.6],...] (optional),
+              "digs":[{"x0":-1.2,"x1":1.2,"z0":3.4,"z1":6,"depth":5,"from":TIME,"to":TIME}]},   dig animates 0 -> depth
+  "objects":[...], "camera":[{"at":TIME,"pos":[x,y,z],"look":[x,y,z],"fov":38,"ease":"inout|linear"}, ...]
+}
+TIME is seconds or a scene reference: {"scene":"dig","t":0.5} (fraction of that scene), {"scene":"dig","at":1.2},
+or {"scene":"dig","word":"water","offset":0.2}. Prefer scene references so the build follows the narration.
+Every object takes "pos":[x,y,z] (its base), "rot" (degrees around y), "build":{"op":"rise|grow|drop|slide|stagger",
+"from":TIME,"to":TIME} (stagger reveals parts one by one: wall courses, steps, pillars) and "hide":{"at":TIME}.
+Kit:
+- box/slab {w,h,d,color,texture:"stone"} | cylinder {r,h,r_top,segments} | cone/pyramid {r,h} | dome {r} | sphere {r}
+- mound {r,h,stretch} dirt pile | wall {from:[x,z],to:[x,z],h,thickness,courses,color} stone courses (stagger = laid row by row)
+- stairs {from:[x,y,z] top,to:[x,y,z] bottom,width,steps} solid flight (stagger = steps drop in one by one)
+- pillar {h,w} | pavilion {w,d,h,cols,rows,roof} pillared hall | spire {w,h,tiers} temple shikhara | arch {w,h,thickness}
+- water {x0,x1,z0,z1,y_bottom,level_from,level,from,to} rising water | well {w,h,rope_from,rope_to,rope_start,rope_end} frame, pulley, bucket
+- ladder {h,lean} | house {w,d,h,color,roof} | tree {scale,color} | trees/grass/rocks {count,area:[x0,z0,x1,z1],seed,avoid:[[x0,z0,x1,z1]]}
+- person {action:"dig|pull|walk|carry|climb|wave|stand",path:[[x,y,z],...],from,to,cloth,skin,turban} | people {count,area,y,action}
+- macro stepwell {x0,x1,z_front,length,depth,levels,phases:{dig,walls,stairs,halls,water}} expands into a lined trench,
+  flights of steps, pillared halls on each landing and water (see the example).
+Recipe that works: (1) hook: wide three-quarter shot of the site as it was, a tiny human-scale start (a well, a hut, a
+mound); (2) one scene per build stage, each stage animating within its own scene; (3) the camera moves on every scene
+(push in to the cutaway, glide along the structure, dip inside, rise out); (4) a wide reveal with the real name and one
+hard fact; (5) a teaser. 8-10 scenes, 40-55 s. Build what the facts say; never invent features of a real monument.
 """.strip()

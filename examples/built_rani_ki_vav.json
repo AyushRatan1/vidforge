@@ -1,0 +1,782 @@
+{
+ "title": "This Hole in the Ground Is a 1,000-Year-Old Palace #Shorts",
+ "description": "How Rani ki Vav, the stepwell in Patan, Gujarat, went from a village well to seven levels of stone: 64 m long, 20 m wide and 27 m deep. Built in the 11th century in memory of King Bhima I, and a UNESCO World Heritage Site since 2014.\nSource: UNESCO World Heritage Centre, Rani-ki-Vav (the Queen's Stepwell) at Patan, Gujarat.\n\nVisuals and voice are AI-assisted.",
+ "tags": [
+  "Rani ki Vav",
+  "stepwell",
+  "Patan",
+  "Gujarat",
+  "Indian architecture",
+  "ancient India",
+  "3D animation",
+  "how it was built",
+  "UNESCO",
+  "shorts"
+ ],
+ "language": "en",
+ "voice": "am_michael",
+ "speed": 1.0,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "category": "education",
+ "format": "3d_build",
+ "music": {
+  "mood": "indian",
+  "volume": 0.13,
+  "seed": 12
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.6,
+  "size": 0.084,
+  "max_words": 2,
+  "highlight": "#ffd54a",
+  "uppercase": false
+ },
+ "overlay": {
+  "progress_bar": false
+ },
+ "thumbnail": {
+  "scene": 7,
+  "t": 2.2
+ },
+ "transition": "none",
+ "world3d": {
+  "style": "desert",
+  "terrain": {
+   "width": 44,
+   "length": 56,
+   "cut": 6,
+   "digs": [
+    {
+     "x0": -1.2,
+     "x1": 1.2,
+     "z0": 3.4,
+     "z1": 6,
+     "depth": 5,
+     "from": {
+      "scene": "well",
+      "t": 0.05
+     },
+     "to": {
+      "scene": "well",
+      "t": 0.85
+     }
+    }
+   ]
+  },
+  "objects": [
+   {
+    "type": "stepwell",
+    "x0": -5.5,
+    "x1": 5.5,
+    "z_front": 6,
+    "length": 30,
+    "depth": 12,
+    "levels": 6,
+    "phases": {
+     "dig": {
+      "from": {
+       "scene": "dig",
+       "t": 0.05
+      },
+      "to": {
+       "scene": "dig",
+       "t": 1
+      }
+     },
+     "walls": {
+      "from": {
+       "scene": "walls",
+       "t": 0
+      },
+      "to": {
+       "scene": "walls",
+       "t": 0.95
+      }
+     },
+     "stairs": {
+      "from": {
+       "scene": "steps",
+       "t": 0
+      },
+      "to": {
+       "scene": "steps",
+       "t": 1
+      }
+     },
+     "halls": {
+      "from": {
+       "scene": "halls",
+       "t": 0
+      },
+      "to": {
+       "scene": "halls",
+       "t": 1
+      }
+     },
+     "water": {
+      "from": {
+       "scene": "water",
+       "t": 0.05
+      },
+      "to": {
+       "scene": "water",
+       "t": 0.9
+      }
+     }
+    }
+   },
+   {
+    "type": "well",
+    "pos": [
+     0,
+     0,
+     4.7
+    ],
+    "w": 3.4,
+    "h": 3.2,
+    "rope_from": 0.6,
+    "rope_to": 4.5,
+    "rope_start": {
+     "scene": "well",
+     "t": 0.1
+    },
+    "rope_end": {
+     "scene": "well",
+     "t": 0.9
+    },
+    "hide": {
+     "at": {
+      "scene": "dig",
+      "t": 0.12
+     }
+    }
+   },
+   {
+    "type": "person",
+    "pos": [
+     -2.2,
+     0,
+     4.2
+    ],
+    "action": "pull",
+    "rot": 60,
+    "hide": {
+     "at": {
+      "scene": "dig",
+      "t": 0.12
+     }
+    }
+   },
+   {
+    "type": "person",
+    "pos": [
+     2.3,
+     0,
+     3.6
+    ],
+    "action": "dig",
+    "rot": -70,
+    "hide": {
+     "at": {
+      "scene": "dig",
+      "t": 0.12
+     }
+    }
+   },
+   {
+    "type": "mound",
+    "pos": [
+     -3.4,
+     0,
+     1.4
+    ],
+    "r": 1.4,
+    "h": 0.9,
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "well",
+      "t": 0.1
+     },
+     "to": {
+      "scene": "well",
+      "t": 0.9
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "dig",
+      "t": 0.12
+     }
+    }
+   },
+   {
+    "type": "mound",
+    "pos": [
+     -10,
+     0,
+     -4
+    ],
+    "r": 3.2,
+    "h": 1.6,
+    "stretch": 2.2,
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "dig",
+      "t": 0.1
+     },
+     "to": {
+      "scene": "dig",
+      "t": 1
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "steps",
+      "t": 0.2
+     }
+    }
+   },
+   {
+    "type": "person",
+    "pos": [
+     -8,
+     0,
+     -1
+    ],
+    "action": "carry",
+    "rot": 90,
+    "path": [
+     [
+      -6.5,
+      0,
+      2
+     ],
+     [
+      -9,
+      0,
+      -2
+     ],
+     [
+      -6.5,
+      0,
+      -8
+     ]
+    ],
+    "from": {
+     "scene": "dig",
+     "t": 0
+    },
+    "to": {
+     "scene": "walls",
+     "t": 1
+    },
+    "hide": {
+     "at": {
+      "scene": "steps",
+      "t": 0
+     }
+    }
+   },
+   {
+    "type": "person",
+    "pos": [
+     8,
+     0,
+     -3
+    ],
+    "action": "walk",
+    "path": [
+     [
+      7,
+      0,
+      4
+     ],
+     [
+      7,
+      0,
+      -14
+     ]
+    ],
+    "from": {
+     "scene": "walls",
+     "t": 0
+    },
+    "to": {
+     "scene": "halls",
+     "t": 1
+    }
+   },
+   {
+    "type": "house",
+    "pos": [
+     13,
+     0,
+     -6
+    ],
+    "rot": -20
+   },
+   {
+    "type": "house",
+    "pos": [
+     -14,
+     0,
+     -16
+    ],
+    "rot": 30,
+    "w": 3,
+    "d": 2.6
+   },
+   {
+    "type": "house",
+    "pos": [
+     16,
+     0,
+     -24
+    ],
+    "rot": 10,
+    "w": 2.6,
+    "d": 3
+   },
+   {
+    "type": "trees",
+    "count": 26,
+    "area": [
+     -21,
+     -48,
+     21,
+     4
+    ],
+    "seed": 4,
+    "avoid": [
+     [
+      -7,
+      -26,
+      7,
+      7
+     ]
+    ]
+   },
+   {
+    "type": "grass",
+    "count": 220,
+    "area": [
+     -21,
+     -48,
+     21,
+     5.5
+    ],
+    "seed": 8
+   },
+   {
+    "type": "rocks",
+    "count": 60,
+    "area": [
+     -21,
+     -48,
+     21,
+     5.5
+    ],
+    "seed": 3
+   },
+   {
+    "type": "people",
+    "count": 4,
+    "area": [
+     -2.5,
+     -9,
+     2.5,
+     -6
+    ],
+    "y": -6,
+    "action": "walk",
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "water",
+      "t": 0.3
+     },
+     "to": {
+      "scene": "water",
+      "t": 0.6
+     }
+    }
+   },
+   {
+    "type": "people",
+    "count": 3,
+    "area": [
+     -2.5,
+     -2,
+     2.5,
+     1
+    ],
+    "y": -10,
+    "action": "stand",
+    "seed": 21,
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "water",
+      "t": 0.5
+     },
+     "to": {
+      "scene": "water",
+      "t": 0.8
+     }
+    }
+   }
+  ],
+  "camera": [
+   {
+    "at": {
+     "scene": "hook",
+     "t": 0
+    },
+    "pos": [
+     17,
+     13,
+     34
+    ],
+    "look": [
+     0,
+     0,
+     -6
+    ],
+    "fov": 38
+   },
+   {
+    "at": {
+     "scene": "hook",
+     "t": 1
+    },
+    "pos": [
+     9,
+     5,
+     21
+    ],
+    "look": [
+     0,
+     0,
+     3
+    ],
+    "fov": 37
+   },
+   {
+    "at": {
+     "scene": "well",
+     "t": 0.45
+    },
+    "pos": [
+     4.5,
+     1.8,
+     17.5
+    ],
+    "look": [
+     0,
+     -1.8,
+     4.5
+    ],
+    "fov": 36
+   },
+   {
+    "at": {
+     "scene": "well",
+     "t": 1
+    },
+    "pos": [
+     2.5,
+     0.8,
+     15.5
+    ],
+    "look": [
+     0,
+     -3.2,
+     4.5
+    ],
+    "fov": 36
+   },
+   {
+    "at": {
+     "scene": "dig",
+     "t": 0.35
+    },
+    "pos": [
+     0,
+     6,
+     31
+    ],
+    "look": [
+     0,
+     -5,
+     -4
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "dig",
+     "t": 1
+    },
+    "pos": [
+     7,
+     10,
+     31
+    ],
+    "look": [
+     0,
+     -6,
+     -6
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "walls",
+     "t": 1
+    },
+    "pos": [
+     5,
+     13,
+     25
+    ],
+    "look": [
+     0,
+     -7,
+     -8
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "steps",
+     "t": 1
+    },
+    "pos": [
+     6.5,
+     3,
+     16
+    ],
+    "look": [
+     0,
+     -6,
+     -6
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "halls",
+     "t": 1
+    },
+    "pos": [
+     -6,
+     0.5,
+     13
+    ],
+    "look": [
+     0,
+     -7,
+     -8
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "water",
+     "t": 0.85
+    },
+    "pos": [
+     0,
+     -5,
+     14
+    ],
+    "look": [
+     0,
+     -11,
+     -2
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "reveal",
+     "t": 1
+    },
+    "pos": [
+     20,
+     24,
+     36
+    ],
+    "look": [
+     0,
+     -4,
+     -10
+    ],
+    "fov": 38
+   },
+   {
+    "at": {
+     "scene": "teaser",
+     "t": 1
+    },
+    "pos": [
+     24,
+     31,
+     44
+    ],
+    "look": [
+     0,
+     -4,
+     -12
+    ],
+    "fov": 38
+   }
+  ]
+ },
+ "scenes": [
+  {
+   "id": "hook",
+   "narration": "A thousand years ago, in a dry corner of India, villagers dug a hole in the ground.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": []
+  },
+  {
+   "id": "well",
+   "narration": "Every summer the water sank deeper, so the well had to go further down.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "WELL",
+     "x": 0.5,
+     "y": 0.3,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.6
+    }
+   ]
+  },
+  {
+   "id": "dig",
+   "narration": "Then a queen ordered something far bigger: a trench sixty four metres long and nearly thirty metres deep.",
+   "caption": "Then a queen ordered something far bigger: a trench 64 metres long and nearly 30 metres deep.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "64 M LONG",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "sixty"
+    }
+   ]
+  },
+  {
+   "id": "walls",
+   "narration": "Its sides were lined with stone, course by course, so the earth could never cave in.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": []
+  },
+  {
+   "id": "steps",
+   "narration": "Then came the steps. Flight after flight, going down seven levels to the water.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "7 LEVELS",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "seven"
+    }
+   ]
+  },
+  {
+   "id": "halls",
+   "narration": "On every level, pillared halls gave shade, and a place to rest on the long walk down.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": []
+  },
+  {
+   "id": "water",
+   "narration": "And at the very bottom: cool water, even in the hottest months.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": []
+  },
+  {
+   "id": "reveal",
+   "narration": "This is Rani ki Vav in Patan, Gujarat. Built in the eleventh century, and today a UNESCO World Heritage Site.",
+   "caption": "This is Rani ki Vav in Patan, Gujarat. Built in the 11th century, and today a UNESCO World Heritage Site.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "STEPWELL",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.062,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.3
+    },
+    {
+     "type": "text",
+     "text": "Rani ki Vav, Patan",
+     "x": 0.5,
+     "y": 0.26,
+     "size": 0.052,
+     "color": "#ffffff",
+     "enter": "fade",
+     "at": 0.8
+    }
+   ]
+  },
+  {
+   "id": "teaser",
+   "narration": "Follow to see how a fort was built on top of a cliff.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": []
+  }
+ ]
+}

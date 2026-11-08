@@ -105,6 +105,8 @@ jobs:
           sudo apt-get update -q && sudo apt-get install -y -q ffmpeg libgl1 libegl1 fonts-noto-color-emoji
           pip install -q -r requirements.txt
           python run.py setup
+          # 3D build videos render in headless Chrome (preinstalled on GitHub runners); fetch Chromium only if missing
+          google-chrome --version || python -m playwright install --with-deps chromium
       - name: Find trend
         if: steps.decide.outputs.skip != 'true'
         run: echo "STEP=Find trend" >> "$GITHUB_ENV" && python run.py e2e --stage scout --out "$OUT" --options "$OPTIONS"

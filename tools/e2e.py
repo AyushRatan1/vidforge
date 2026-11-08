@@ -62,12 +62,15 @@ CHANNELS["hinglish"] = {**CHANNELS["hi"], "language": "hinglish"}
 NICHE_FORMATS = {
     "space": ["space_facts", "facts_list", "quiz"],
     "science": ["space_facts", "facts_list", "quiz"],
-    "tech": ["trend_explainer", "facts_list"],
+    "tech": ["trend_explainer", "facts_list", "3d_build"],
     "news": ["trend_explainer"],
     "sports": ["trend_explainer", "facts_list", "quiz"],
-    "general": ["trend_explainer", "facts_list", "quiz"],
-    "stories": ["story"],
-    "mythology": ["story", "festival"],
+    "general": ["trend_explainer", "facts_list", "quiz", "3d_build"],
+    "stories": ["story", "3d_build"],
+    "mythology": ["story", "festival", "3d_build"],
+    "history": ["3d_build", "story", "facts_list"],
+    "architecture": ["3d_build", "facts_list"],
+    "travel": ["3d_build", "facts_list", "trend_explainer"],
     "kids": ["kids_learning", "kids_story"],
 }
 
@@ -172,6 +175,8 @@ def _add_usage(out, c: Claude):
 
 def _finish_spec(spec: dict, o: dict, ch: dict) -> dict:
     spec = channel_overrides(spec, ch)
+    if spec.get("world3d"):            # build videos use small sentence-case captions, like the format's example
+        spec["captions"] = {**(spec.get("captions") or {}), "uppercase": False}
     if o.get("aspect"):
         spec["aspect"] = o["aspect"]
     if o.get("music"):

@@ -288,6 +288,7 @@ BACKGROUNDS = {
     "solid": bg_solid, "gradient": bg_gradient, "space": bg_space, "sky": bg_sky,
     "sunburst": bg_sunburst, "paper": bg_paper, "grid": bg_grid, "underwater": bg_underwater,
     "image": bg_image, "footage": bg_footage,
+    "world3d": bg_footage,   # resolved into a prepared clip by engine/world3d.py; draws its fallback if that fails
 }
 
 

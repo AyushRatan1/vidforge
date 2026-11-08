@@ -188,8 +188,36 @@ def run() -> int:
         except Exception as e:
             failed.append(name)
             results.append(f"{name}: failed ({type(e).__name__}: {str(e)[:160]})")
-    print(f"stats {day}: " + "; ".join(results))
+    results.append(refresh_instagram_token())
+    print(f"stats {day}: " + "; ".join(r for r in results if r))
     return 1 if len(failed) == 2 else 0
+
+
+def refresh_instagram_token() -> str:
+    """Instagram long-lived tokens expire after 60 days unless refreshed. Refresh at most once every 7 days (the
+    API needs the token to be at least 24 h old) and save the new one, so nobody has to paste a token again."""
+    token = os.environ.get("IG_ACCESS_TOKEN")
+    if not token or not store.enabled():
+        return ""
+    import datetime as dt
+    row = store.one("settings", key="eq.ig_access_token", select="value,updated_at")
+    if row.get("value") != token:
+        return ""                      # the token came from a GitHub secret, not Settings: leave it alone
+    try:
+        age = dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(str(row.get("updated_at")).replace("Z", "+00:00"))
+    except ValueError:
+        age = dt.timedelta(days=30)
+    if age < dt.timedelta(days=7):
+        return ""
+    try:
+        from publish import instagram as ig
+        new = ig.refresh_token(token).get("access_token")
+        if new:
+            store.set_setting("ig_access_token", new)
+            return "instagram token renewed for 60 days"
+        return "instagram token: refresh returned no token"
+    except Exception as e:
+        return f"instagram token refresh failed ({type(e).__name__}: {str(e)[:120]})"
 
 
 if __name__ == "__main__":

@@ -52,6 +52,12 @@ def validate(spec: dict) -> tuple[list[str], list[str]]:
     hindi = spec.get("language") in ("hi", "hinglish") or str(spec.get("voice", "")).startswith("h")
     if spec.get("language") not in (None, "en", "hi", "hinglish", "es", "fr", "it", "pt"):
         warns.append(f"language {spec.get('language')!r} has no matching voice; narration will use {spec.get('voice')}")
+    if spec.get("world3d") is not None:
+        from .world3d import validate_world
+        ids = {str(k + 1) for k in range(len(scenes))} | {str(sc.get("id")) for sc in scenes if sc.get("id")}
+        e3, w3 = validate_world(spec["world3d"], ids)
+        errs += e3
+        warns += w3
     total_chars = 0
     for i, sc in enumerate(scenes):
         where = f"scene {i + 1} ({sc.get('id', '?')})"
@@ -71,7 +77,7 @@ def validate(spec: dict) -> tuple[list[str], list[str]]:
         if sc.get("transition") not in TRANSITIONS:
             warns.append(f"{where}: unknown transition {sc.get('transition')!r}")
         els = sc.get("elements") or []
-        if not els:
+        if not els and not (spec.get("world3d") and bg.get("type", "world3d") == "world3d"):
             warns.append(f"{where}: no elements; the scene will be just a background")
         for j, el in enumerate(els):
             ew = f"{where} element {j + 1}"

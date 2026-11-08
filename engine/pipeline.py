@@ -197,6 +197,8 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
     resolve_word_cues(spec, tl)
     p("footage", 0)
     footage = resolve_footage(spec, tl, out_dir)
+    from .world3d import resolve_world3d
+    world3d = resolve_world3d(spec, tl, out_dir, stills_only=stills_only, progress=p)
     total_frames = sum(s["frames"] for s in tl)
     duration = total_frames / spec["fps"]
 
@@ -237,7 +239,8 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
     thumb = os.path.join(out_dir, "thumbnail.jpg")
     rnd.still(min(int(th.get("scene", 0)), len(tl) - 1), float(th.get("t", 1.4)), thumb)
     if stills_only:
-        return {"stills": stills, "thumbnail": thumb, "duration": duration, "timeline": tl, "footage": footage}
+        return {"stills": stills, "thumbnail": thumb, "duration": duration, "timeline": tl, "footage": footage,
+                "world3d": world3d}
 
     # 4. scenes (cached by content hash so editing one scene only re-renders it; parallel on multi-core machines)
     files, todo = [], []
@@ -282,6 +285,7 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
         "video": final, "thumbnail": thumb, "stills": stills, "duration": round(duration, 2),
         "size": f"{spec['_W']}x{spec['_H']}", "fps": spec["fps"], "scenes": len(tl),
         "render_seconds": round(time.time() - t0, 1), "title": spec.get("title"), "footage": footage,
+        "world3d": world3d,
     }
     with open(os.path.join(out_dir, "manifest.json"), "w") as f:
         json.dump(manifest, f, indent=2, ensure_ascii=False)

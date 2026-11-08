@@ -1,6 +1,16 @@
 """Content formats. A channel picks the formats it is allowed to make; the scout picks one per idea."""
 
 FORMATS = {
+    "3d_build": {
+        "name": "How it was built (3D build animation)",
+        "audience": "general", "made_for_kids": False, "aspect": "9:16", "music": "calm",
+        "look": "a low-poly 3D diorama (world3d) that builds itself: ground cut open in cross-section, digging, walls rising "
+                "course by course, steps dropping in, halls and water; short 2-word captions and yellow callout labels",
+        "structure": "hook on the finished wonder or a tiny start -> the problem it solved -> one scene per build stage "
+                     "(dig, foundations, walls, structure, details) -> people using it -> wide reveal with its real name "
+                     "and one hard fact -> teaser for the next build. Works for monuments, wells, forts, temples, dams, "
+                     "tunnels, bridges, towers, everyday engineering.",
+    },
     "space_facts": {
         "name": "Space and science facts",
         "audience": "general", "made_for_kids": False, "aspect": "9:16", "music": "cosmic",
