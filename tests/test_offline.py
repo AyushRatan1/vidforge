@@ -145,6 +145,31 @@ def test_qa_sends_images(tmp_path=None):
     assert out["score"] == 6 and "text cut" in qa.issues_to_instructions(out)
 
 
+def test_research_tolerates_loose_tool_output():
+    """Seen live: with tool_choice auto the model returned facts as plain strings (and sometimes as a JSON string)."""
+    loose = {"summary": "s", "avoid": "myth one",
+             "facts": ["Mars has two moons (source: https://nasa.gov/mars).",
+                       '{"claim": "Phobos is falling", "source_url": "https://esa.int/p", "confidence": "HIGH"}',
+                       {"claim": "Deimos is small", "url": "https://x.org", "confidence": "sure"}]}
+    c = FakeClaude([msg([tool("submit_facts", loose)])])
+    out = research.research(c, {"title": "Mars"}, {"name": "x"})
+    f = out["facts"]
+    assert [x["claim"] for x in f] == ["Mars has two moons.", "Phobos is falling", "Deimos is small"]
+    assert [x["source_url"] for x in f] == ["https://nasa.gov/mars", "https://esa.int/p", "https://x.org"]
+    assert [x["confidence"] for x in f] == ["medium", "high", "medium"] and out["avoid"] == ["myth one"]
+    as_string = dict(loose, facts=json.dumps([{"claim": "a", "source_url": "https://a.b", "confidence": "low"}]))
+    c = FakeClaude([msg([tool("submit_facts", as_string)])])
+    assert research.research(c, {}, {})["facts"][0]["claim"] == "a"
+
+
+def test_coerce_schema():
+    sch = {"type": "object", "properties": {"n": {"type": "integer"}, "ok": {"type": "boolean"},
+                                            "items": {"type": "array", "items": {"type": "object", "required": ["name"],
+                                                                                 "properties": {"name": {"type": "string"}}}}}}
+    out = llm.coerce({"n": "7", "ok": "true", "items": '[{"name": "a"}, "b"]'}, sch)
+    assert out == {"n": 7, "ok": True, "items": [{"name": "a"}, {"name": "b"}]}
+
+
 def test_metadata_limits():
     """Hashtag and length rules hold whatever the model returns."""
     from agents import metadata

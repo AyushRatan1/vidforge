@@ -88,13 +88,70 @@ class Claude:
                 raise
             for block in msg.content:
                 if block.type == "tool_use" and block.name == name:
-                    return block.input
+                    return coerce(block.input, schema)
             messages.append({"role": "assistant", "content": [b.model_dump(exclude_none=True) for b in msg.content]})
             if msg.stop_reason == "pause_turn":
                 continue
             messages.append({"role": "user", "content": f"Now call the `{name}` tool with your complete final answer."})
             choice = pick_choice(True)
         raise RuntimeError(f"Claude did not return {name}")
+
+
+def _try_json(s: str):
+    try:
+        return json.loads(s)
+    except (ValueError, TypeError):
+        try:
+            return parse_json_loose(s)
+        except (ValueError, TypeError, IndexError):
+            return None
+
+
+def coerce(value, schema: dict | None):
+    """Make a tool answer match its schema. Without a forced tool_choice, models sometimes return a nested
+    object or array as a JSON string, an array item as a bare sentence, or a number as text."""
+    if not isinstance(schema, dict) or "type" not in schema:
+        return value
+    t = schema["type"]
+    if t == "object":
+        if isinstance(value, str):
+            parsed = _try_json(value)
+            if isinstance(parsed, dict):
+                value = parsed
+            else:
+                # a bare sentence where an object was expected: put it in the first required string field
+                props = schema.get("properties") or {}
+                key = next((k for k in schema.get("required", []) if (props.get(k) or {}).get("type") == "string"),
+                           next((k for k, p in props.items() if p.get("type") == "string"), None))
+                return {key: value} if key else {}
+        if not isinstance(value, dict):
+            return {}
+        props = schema.get("properties") or {}
+        return {k: coerce(v, props.get(k)) for k, v in value.items()}
+    if t == "array":
+        if isinstance(value, str):
+            parsed = _try_json(value)
+            value = parsed if isinstance(parsed, list) else [ln.strip(" -*•\t") for ln in value.splitlines() if ln.strip()]
+        elif isinstance(value, dict):
+            value = [value]
+        elif not isinstance(value, list):
+            value = [] if value is None else [value]
+        items = schema.get("items")
+        return [coerce(v, items) for v in value]
+    if t == "string":
+        return value if isinstance(value, str) else ("" if value is None else
+                                                      json.dumps(value, ensure_ascii=False) if isinstance(value, (dict, list)) else str(value))
+    if t in ("number", "integer"):
+        if isinstance(value, str):
+            try:
+                n = float(value.strip().rstrip("%"))
+                return int(n) if t == "integer" else n
+            except ValueError:
+                return value
+        return value
+    if t == "boolean" and isinstance(value, str):
+        return value.strip().lower() in ("true", "yes", "1")
+    return value
 
 
 def parse_json_loose(text: str):

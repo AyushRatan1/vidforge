@@ -197,7 +197,7 @@ def stage_research(out, o, ch):
     _save(out, "facts.json", facts)
     print(f"   {len(facts.get('facts', []))} sourced facts, {c.usage['web_searches']} web searches")
     for f in facts.get("facts", [])[:6]:
-        print(f"   - {f.get('claim')} [{f.get('confidence')}] {f.get('source_url')}")
+        print(f"   - {f['claim'][:140]} [{f['confidence']}] {f['source_url'] or 'no link'}")
     _add_usage(out, c)
 
 
