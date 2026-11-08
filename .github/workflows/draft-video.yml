@@ -29,6 +29,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  VIDFORGE_REQUIRE_VOICE: "1"     # a production video without narration is a failed run, never a silent upload
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

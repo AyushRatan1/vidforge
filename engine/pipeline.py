@@ -193,6 +193,11 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
         p("voice", k / len(spec["scenes"]))
         voices.append(A.tts(sc.get("narration", ""), sc.get("voice", spec["voice"]), float(sc.get("speed", spec["speed"])),
                             sc.get("lang", spec.get("lang"))))
+    if os.environ.get("VIDFORGE_REQUIRE_VOICE"):
+        spoken = [i for i, sc in enumerate(spec["scenes"]) if (sc.get("narration") or "").strip()]
+        silent = [i + 1 for i in spoken if not len(voices[i]) or float(np.abs(voices[i]).max()) < 0.01]
+        if silent:
+            raise RuntimeError(f"no narration audio for scenes {silent}; refusing to make a silent video")
     tl = build_timeline(spec, voices)
     resolve_word_cues(spec, tl)
     p("footage", 0)

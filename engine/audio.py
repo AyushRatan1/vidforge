@@ -52,6 +52,11 @@ def tts(text: str, voice: str = "hm_omega", speed: float = 1.0, lang: str | None
     text = (text or "").strip()
     if not text:
         return np.zeros(0, dtype=np.float32)
+    if voice not in VOICES:              # "auto", a typo or a voice this model lacks: never go silent over it
+        base = (lang or "en").split("-")[0]
+        fixed = DEFAULT_VOICE.get(base, "af_heart")
+        print(f"[tts] unknown voice {voice!r}, using {fixed}")
+        voice = fixed
     lang = lang if lang and "-" in lang or lang in ("hi", "es", "it") else voice_lang(voice)
     key = hashlib.sha1(f"{voice}|{speed}|{lang}|{text}".encode()).hexdigest()[:20]
     os.makedirs(CACHE, exist_ok=True)
@@ -63,9 +68,11 @@ def tts(text: str, voice: str = "hm_omega", speed: float = 1.0, lang: str | None
         samples, sr = _engine().create(text, voice=voice, speed=speed, lang=lang)
         a = resample_poly(np.asarray(samples, dtype=np.float32), SR, sr).astype(np.float32)
         a = _trim(a)
-    except Exception as e:  # keep the pipeline alive without a voice model
+    except Exception as e:  # keep tests alive without a voice model; production runs refuse silence (see below)
+        if os.environ.get("VIDFORGE_REQUIRE_VOICE"):
+            raise RuntimeError(f"text-to-speech failed for voice {voice!r}: {e}") from e
         print(f"[tts] fallback to silence: {e}")
-        a = np.zeros(int(SR * max(1.0, len(text) * 0.065)), dtype=np.float32)
+        return np.zeros(int(SR * max(1.0, len(text) * 0.065)), dtype=np.float32)   # never cached
     sf.write(path, a, SR)
     return a
 
