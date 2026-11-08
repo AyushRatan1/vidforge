@@ -1,0 +1,988 @@
+{
+ "title": "How 2.3 Million Blocks Became the Great Pyramid #Shorts",
+ "description": "How the Great Pyramid of Giza went up for Pharaoh Khufu around 2560 BCE: about 2.3 million blocks averaging about 2.5 tonnes, most of the limestone quarried at Giza itself, fine white Tura limestone for the casing and granite brought from Aswan by Nile boats. It stood about 146 m tall and is about 139 m today. The ramp shown is one theory; how the ramps worked is still debated.\nSources: UNESCO World Heritage Centre (Memphis and its Necropolis, the Pyramid Fields from Giza to Dahshur); Ancient Egypt Research Associates (the Giza workers' town).\n\nVisuals and voice are AI-assisted.",
+ "tags": [
+  "Great Pyramid",
+  "Giza",
+  "Khufu",
+  "ancient Egypt",
+  "pyramids",
+  "3D animation",
+  "how it was built",
+  "history",
+  "shorts"
+ ],
+ "language": "en",
+ "voice": "am_michael",
+ "speed": 1.0,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "category": "education",
+ "format": "3d_build",
+ "captions": {
+  "style": "karaoke",
+  "y": 0.6,
+  "size": 0.084,
+  "max_words": 2,
+  "highlight": "#ffd54a",
+  "uppercase": false
+ },
+ "overlay": {
+  "progress_bar": false
+ },
+ "transition": "none",
+ "music": {
+  "mood": "epic",
+  "volume": 0.13,
+  "seed": 21
+ },
+ "thumbnail": {
+  "scene": 9,
+  "t": 2.0
+ },
+ "world3d": {
+  "style": "desert",
+  "terrain": {
+   "width": 96,
+   "length": 104,
+   "cut": 26,
+   "strata": [
+    [
+     "#dcc28f",
+     0.4
+    ],
+    [
+     "#c9a46a",
+     1.6
+    ],
+    [
+     "#b08550",
+     2.6
+    ],
+    [
+     "#93704a",
+     3.4
+    ],
+    [
+     "#77583a",
+     14
+    ]
+   ],
+   "digs": [
+    {
+     "x0": -29,
+     "x1": -17,
+     "z0": 10,
+     "z1": 26,
+     "depth": 3.2,
+     "from": {
+      "scene": "hook",
+      "t": 0.35
+     },
+     "to": {
+      "scene": "quarry",
+      "t": 0.7
+     }
+    },
+    {
+     "x0": -47,
+     "x1": -38,
+     "z0": -78,
+     "z1": 26,
+     "depth": 1.4
+    }
+   ]
+  },
+  "objects": [
+   {
+    "type": "pyramid",
+    "id": "pyramid",
+    "pos": [
+     0,
+     0,
+     -14
+    ],
+    "base": 22,
+    "courses": 12,
+    "ramp": "right",
+    "ramp_slope": 0.5,
+    "phases": {
+     "courses": {
+      "from": {
+       "scene": "courses",
+       "t": 0.05
+      },
+      "to": {
+       "scene": "ramp",
+       "t": 0.95
+      }
+     },
+     "casing": {
+      "from": {
+       "scene": "casing",
+       "t": 0.05
+      },
+      "to": {
+       "scene": "casing",
+       "t": 0.95
+      }
+     },
+     "capstone": {
+      "from": {
+       "scene": "top",
+       "t": 0.3
+      },
+      "to": {
+       "scene": "top",
+       "t": 0.62
+      }
+     }
+    }
+   },
+   {
+    "type": "water",
+    "x0": -47,
+    "x1": -38,
+    "z0": -78,
+    "z1": 26,
+    "y_bottom": -1.4,
+    "level": -0.35,
+    "color": "#4f8fc9"
+   },
+   {
+    "type": "boat",
+    "id": "barge",
+    "pos": [
+     -42.5,
+     -0.8,
+     -40
+    ],
+    "length": 8,
+    "w": 2.6,
+    "cargo": {
+     "color": "#a3827a",
+     "h": 1.0
+    },
+    "path": [
+     [
+      -42.5,
+      -0.8,
+      -66
+     ],
+     [
+      -42.5,
+      -0.8,
+      4
+     ]
+    ],
+    "from": {
+     "scene": "nile",
+     "t": 0.0
+    },
+    "to": {
+     "scene": "nile",
+     "t": 1.0
+    },
+    "ease": "linear"
+   },
+   {
+    "type": "boat",
+    "pos": [
+     -41,
+     -0.8,
+     14
+    ],
+    "length": 6,
+    "sail": true,
+    "seed": 3,
+    "path": [
+     [
+      -40.5,
+      -0.8,
+      20
+     ],
+     [
+      -40.5,
+      -0.8,
+      -50
+     ]
+    ],
+    "from": {
+     "scene": "hook",
+     "t": 0.0
+    },
+    "to": {
+     "scene": "courses",
+     "t": 1.0
+    },
+    "ease": "linear"
+   },
+   {
+    "type": "trees",
+    "count": 16,
+    "area": [
+     -37,
+     -76,
+     -33,
+     24
+    ],
+    "seed": 11,
+    "scale": 0.9
+   },
+   {
+    "type": "trees",
+    "count": 8,
+    "area": [
+     -48,
+     -76,
+     -47.2,
+     24
+    ],
+    "seed": 12,
+    "scale": 0.8
+   },
+   {
+    "type": "blocks",
+    "id": "quarry",
+    "pos": [
+     -23,
+     0,
+     5.2
+    ],
+    "cols": 4,
+    "rows": 2,
+    "layers": 2,
+    "size": [
+     1.3,
+     0.9,
+     1.0
+    ],
+    "color": "#d8c296",
+    "build": {
+     "op": "stagger",
+     "from": {
+      "scene": "hook",
+      "t": 0.05
+     },
+     "to": {
+      "scene": "quarry",
+      "t": 0.9
+     }
+    }
+   },
+   {
+    "type": "person",
+    "pos": [
+     -25.5,
+     -3.2,
+     18
+    ],
+    "action": "dig",
+    "rot": 30,
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "quarry",
+      "t": 0.55
+     },
+     "to": {
+      "scene": "quarry",
+      "t": 0.7
+     }
+    }
+   },
+   {
+    "type": "person",
+    "pos": [
+     -21,
+     -3.2,
+     15.5
+    ],
+    "action": "dig",
+    "rot": -50,
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "quarry",
+      "t": 0.6
+     },
+     "to": {
+      "scene": "quarry",
+      "t": 0.75
+     }
+    }
+   },
+   {
+    "type": "person",
+    "pos": [
+     -16.2,
+     0,
+     12
+    ],
+    "action": "dig",
+    "rot": -90,
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "hook",
+      "t": 0.3
+     },
+     "to": {
+      "scene": "hook",
+      "t": 0.5
+     }
+    }
+   },
+   {
+    "type": "person",
+    "pos": [
+     -30,
+     0,
+     8
+    ],
+    "action": "walk",
+    "path": [
+     [
+      -30,
+      0,
+      8
+     ],
+     [
+      -24,
+      0,
+      3
+     ]
+    ],
+    "from": {
+     "scene": "hook",
+     "t": 0.2
+    },
+    "to": {
+     "scene": "quarry",
+     "t": 1.0
+    }
+   },
+   {
+    "type": "sledge",
+    "path": [
+     [
+      -20,
+      0,
+      2.5
+     ],
+     [
+      13,
+      0,
+      4
+     ],
+     [
+      25,
+      0,
+      -6
+     ]
+    ],
+    "from": {
+     "scene": "courses",
+     "t": 0.0
+    },
+    "to": {
+     "scene": "ramp",
+     "t": 0.7
+    },
+    "color": "#d8c296",
+    "hide": {
+     "at": {
+      "scene": "ramp",
+      "t": 0.72
+     }
+    }
+   },
+   {
+    "type": "person",
+    "action": "pull",
+    "path": [
+     [
+      -18.4,
+      0,
+      2.2
+     ],
+     [
+      14.6,
+      0,
+      3.7
+     ],
+     [
+      26.2,
+      0,
+      -7.2
+     ]
+    ],
+    "from": {
+     "scene": "courses",
+     "t": 0.0
+    },
+    "to": {
+     "scene": "ramp",
+     "t": 0.7
+    },
+    "turban": false,
+    "hide": {
+     "at": {
+      "scene": "ramp",
+      "t": 0.72
+     }
+    }
+   },
+   {
+    "type": "person",
+    "action": "pull",
+    "path": [
+     [
+      -17.8,
+      0,
+      3.0
+     ],
+     [
+      15.2,
+      0,
+      4.5
+     ],
+     [
+      26.8,
+      0,
+      -6.2
+     ]
+    ],
+    "from": {
+     "scene": "courses",
+     "t": 0.0
+    },
+    "to": {
+     "scene": "ramp",
+     "t": 0.7
+    },
+    "turban": false,
+    "cloth": "#e7d9b8",
+    "hide": {
+     "at": {
+      "scene": "ramp",
+      "t": 0.72
+     }
+    }
+   },
+   {
+    "type": "town",
+    "id": "town",
+    "count": 34,
+    "area": [
+     -34,
+     -66,
+     -16,
+     -46
+    ],
+    "seed": 5,
+    "scale": 1.1,
+    "colors": [
+     "#c9a77a",
+     "#bf9a6c",
+     "#d4b48a",
+     "#b8936a"
+    ],
+    "build": {
+     "op": "rise",
+     "from": {
+      "scene": "town",
+      "t": 0.05
+     },
+     "to": {
+      "scene": "town",
+      "t": 0.45
+     }
+    }
+   },
+   {
+    "type": "people",
+    "count": 7,
+    "area": [
+     -31,
+     -62,
+     -19,
+     -50
+    ],
+    "action": "walk",
+    "seed": 4,
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "town",
+      "t": 0.3
+     },
+     "to": {
+      "scene": "town",
+      "t": 0.5
+     }
+    }
+   },
+   {
+    "type": "rocks",
+    "count": 70,
+    "area": [
+     -36,
+     -76,
+     46,
+     25
+    ],
+    "seed": 3,
+    "avoid": [
+     [
+      -14,
+      -28,
+      30,
+      0
+     ],
+     [
+      -30,
+      9,
+      -16,
+      26
+     ]
+    ]
+   },
+   {
+    "type": "grass",
+    "count": 70,
+    "area": [
+     -36,
+     -76,
+     46,
+     25
+    ],
+    "seed": 8,
+    "avoid": [
+     [
+      -14,
+      -28,
+      30,
+      0
+     ]
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "at": {
+     "scene": "hook",
+     "t": 0.0
+    },
+    "shot": "close",
+    "target": "quarry",
+    "size": [
+     9,
+     3,
+     9
+    ],
+    "angle": 35
+   },
+   {
+    "at": {
+     "scene": "hook",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": "quarry",
+    "size": [
+     12,
+     3,
+     12
+    ],
+    "angle": 22
+   },
+   {
+    "at": {
+     "scene": "quarry",
+     "t": 0.5
+    },
+    "shot": "medium",
+    "target": [
+     -23,
+     0,
+     11
+    ],
+    "size": [
+     16,
+     4,
+     18
+    ],
+    "angle": 18
+   },
+   {
+    "at": {
+     "scene": "quarry",
+     "t": 1.0
+    },
+    "shot": "wide",
+    "target": [
+     -10,
+     2,
+     -2
+    ],
+    "size": [
+     34,
+     8,
+     34
+    ],
+    "angle": 20
+   },
+   {
+    "at": {
+     "scene": "nile",
+     "t": 0.15
+    },
+    "shot": "medium",
+    "target": [
+     -42.5,
+     0,
+     -24
+    ],
+    "size": [
+     14,
+     4,
+     30
+    ],
+    "angle": 22
+   },
+   {
+    "at": {
+     "scene": "nile",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": [
+     -42.5,
+     0,
+     -4
+    ],
+    "size": [
+     14,
+     4,
+     24
+    ],
+    "angle": 35
+   },
+   {
+    "at": {
+     "scene": "courses",
+     "t": 0.3
+    },
+    "shot": "medium",
+    "target": "pyramid.base",
+    "angle": 28
+   },
+   {
+    "at": {
+     "scene": "courses",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": "pyramid",
+    "angle": 42
+   },
+   {
+    "at": {
+     "scene": "ramp",
+     "t": 0.35
+    },
+    "shot": "wide",
+    "target": "pyramid.ramp",
+    "angle": 72
+   },
+   {
+    "at": {
+     "scene": "ramp",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": "pyramid",
+    "angle": 58
+   },
+   {
+    "at": {
+     "scene": "casing",
+     "t": 0.4
+    },
+    "shot": "medium",
+    "target": "pyramid",
+    "angle": 30
+   },
+   {
+    "at": {
+     "scene": "casing",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": "pyramid",
+    "angle": 20
+   },
+   {
+    "at": {
+     "scene": "top",
+     "t": 0.35
+    },
+    "shot": "close",
+    "target": "pyramid.top",
+    "angle": 25
+   },
+   {
+    "at": {
+     "scene": "top",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": "pyramid.top",
+    "size": [
+     14,
+     8,
+     14
+    ],
+    "angle": 15
+   },
+   {
+    "at": {
+     "scene": "town",
+     "t": 0.3
+    },
+    "shot": "medium",
+    "target": "town",
+    "angle": 25
+   },
+   {
+    "at": {
+     "scene": "town",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": "town",
+    "angle": 40
+   },
+   {
+    "at": {
+     "scene": "reveal",
+     "t": 0.0
+    },
+    "shot": "orbit",
+    "target": "pyramid",
+    "angle": -10,
+    "sweep": 75
+   }
+  ]
+ },
+ "scenes": [
+  {
+   "id": "hook",
+   "narration": "About two point three million stone blocks, stacked for one king.",
+   "caption": "About 2.3 million stone blocks, stacked for one king.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "2.3 MILLION BLOCKS",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "million"
+    }
+   ]
+  },
+  {
+   "id": "quarry",
+   "narration": "Most of the limestone was quarried right here at Giza. The blocks average about two and a half tonnes.",
+   "caption": "Most of the limestone was quarried right here at Giza. The blocks average about 2.5 tonnes.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "~2.5 TONNES EACH",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "two"
+    }
+   ]
+  },
+  {
+   "id": "nile",
+   "narration": "Granite for the King's Chamber came by Nile boat from Aswan. Some pieces weigh up to eighty tonnes.",
+   "caption": "Granite for the King's Chamber came by Nile boat from Aswan. Some pieces weigh up to 80 tonnes.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "GRANITE FROM ASWAN",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Aswan"
+    }
+   ]
+  },
+  {
+   "id": "courses",
+   "narration": "Then, course by course, the pyramid rose.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": []
+  },
+  {
+   "id": "ramp",
+   "narration": "How did blocks get up there? One theory: a ramp that grew with the pyramid. It is still debated.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "ONE THEORY",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "theory"
+    }
+   ]
+  },
+  {
+   "id": "casing",
+   "narration": "Then it was faced in fine white Tura limestone.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "TURA LIMESTONE",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Tura"
+    }
+   ]
+  },
+  {
+   "id": "top",
+   "narration": "Finished, it stood about one hundred forty six metres tall. Today, about one thirty nine.",
+   "caption": "Finished, it stood about 146 metres tall. Today, about 139.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "146 M TALL",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "hundred"
+    }
+   ]
+  },
+  {
+   "id": "town",
+   "narration": "Nearby, archaeologists found the workers' town, complete with bakeries.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "WORKERS' TOWN",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "workers"
+    }
+   ]
+  },
+  {
+   "id": "reveal",
+   "narration": "The Great Pyramid of Giza, built for Pharaoh Khufu around twenty-five sixty BCE.",
+   "caption": "The Great Pyramid of Giza, built for Pharaoh Khufu around 2560 BCE.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "GREAT PYRAMID",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.062,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.3
+    },
+    {
+     "type": "text",
+     "text": "Giza, Egypt",
+     "x": 0.5,
+     "y": 0.26,
+     "size": 0.05,
+     "color": "#ffffff",
+     "enter": "fade",
+     "at": 0.8
+    }
+   ]
+  },
+  {
+   "id": "teaser",
+   "narration": "Next: a fort built on top of a cliff. Follow so you don't miss it.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": []
+  }
+ ]
+}
