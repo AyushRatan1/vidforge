@@ -402,6 +402,38 @@ def test_store_noop_without_supabase(monkeypatch):
     assert store.release_urls("abc")["video_url"] == "https://github.com/me/vidforge/releases/download/video-abc/final.mp4"
 
 
+def test_every_element_type_renders():
+    """Smoke test: one still per vocabulary so a missing skia API or a typo in draw.py fails here, not on the runner."""
+    from engine import draw
+    from engine.validate import PARTICLES, BEHAVIORS
+    base = {"title": "smoke", "language": "en", "voice": "af_heart", "aspect": "9:16", "music": {"mood": "none"},
+            "captions": {"enabled": False}, "scenes": []}
+    shapes = ["circle", "rect", "ring", "star", "heart", "triangle", "line", "arrow", "path"]
+    els = [{"type": "shape", "shape": sh, "x": 0.1 + 0.1 * i, "y": 0.2, "w": 0.08, "h": 0.08, "r": 0.04, "color": "#ffd400",
+            "x2": 0.3, "y2": 0.3, "d": "M10 10 L90 10 L50 90 Z", "enter": "pop"} for i, sh in enumerate(shapes)]
+    els += [{"type": "prop", "name": n, "x": 0.1 + 0.08 * (i % 11), "y": 0.4 + 0.1 * (i // 11), "w": 0.07}
+            for i, n in enumerate(sorted(draw.PROPS))]
+    els += [{"type": "character", "species": sp, "x": 0.1 + 0.08 * i, "y": 0.72, "w": 0.07, "behavior": b}
+            for i, (sp, b) in enumerate(zip(sorted(draw.SPECIES), sorted(BEHAVIORS) * 2))]
+    els += [{"type": "particles", "kind": k, "count": 10} for k in sorted(PARTICLES)]
+    els += [{"type": "text", "text": "Smoke test", "x": 0.5, "y": 0.9, "size": 0.05},
+            {"type": "counter", "to": 1234567, "x": 0.5, "y": 0.1, "size": 0.06, "format": "indian"},
+            {"type": "emoji", "text": "🚀", "x": 0.9, "y": 0.1, "size": 0.06},
+            {"type": "constellation", "name": "orion", "x": 0.5, "y": 0.5, "w": 0.4},
+            {"type": "svg", "svg": "<svg viewBox='0 0 10 10'><circle cx='5' cy='5' r='4' fill='red'/></svg>", "x": 0.5, "y": 0.6, "w": 0.1}]
+    for bg in [b for b in draw.BACKGROUNDS if b not in ("image", "footage")]:
+        base["scenes"].append({"id": bg, "narration": "Smoke.", "duration": 2,
+                               "background": {"type": bg, "mood": "night", "color": "#223355", "colors": ["#223355", "#000000"]},
+                               "elements": els[:6] if bg != "space" else els})
+    for pl in sorted(draw.PLANETS) + ["black_hole", "neutron_star", "pulsar"]:
+        base["scenes"][0]["elements"].append({"type": "planet", "style": pl, "x": 0.2, "y": 0.3, "w": 0.1})
+    errs, _ = validate(base)
+    assert not [e for e in errs if "unknown" in e.lower()], errs
+    d = tempfile.mkdtemp()
+    out = render_episode(base, d, stills_only=True)
+    assert len(out["stills"]) >= len(base["scenes"])
+
+
 if __name__ == "__main__":
     import inspect
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_") and callable(v)]

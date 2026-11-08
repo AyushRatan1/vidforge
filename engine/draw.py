@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import re
 import os
 import random
 from functools import lru_cache
@@ -1071,6 +1072,85 @@ def draw_particles(cv, el, t, W, H):
 
 
 # ---------------------------------------------------------------- shapes
+_SVG_TOKEN = re.compile(r"[MmZzLlHhVvCcSsQqTtAa]|[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?")
+_ARGC = {"M": 2, "L": 2, "H": 1, "V": 1, "C": 6, "S": 4, "Q": 4, "T": 2, "A": 7, "Z": 0}
+
+
+def svg_path(d: str) -> "skia.Path":
+    """Parse an SVG path 'd' string into a skia.Path (skia-python 138+ has no ParsePath). Bad input gives an empty path."""
+    path = skia.Path()
+    toks = _SVG_TOKEN.findall(d or "")
+    i, cmd = 0, None
+    cx = cy = sx = sy = 0.0
+    lcx = lcy = None          # last control point for S/T reflection
+    last = ""
+    try:
+        while i < len(toks):
+            t = toks[i]
+            if t.isalpha():
+                cmd = t
+                i += 1
+                if cmd in "Zz":
+                    path.close()
+                    cx, cy = sx, sy
+                    last = "Z"
+                    continue
+            if cmd is None:
+                break
+            up = cmd.upper()
+            n = _ARGC[up]
+            args = [float(x) for x in toks[i:i + n]]
+            if len(args) < n:
+                break
+            i += n
+            rel = cmd.islower()
+            ox, oy = (cx, cy) if rel else (0.0, 0.0)
+            if up == "M":
+                cx, cy = ox + args[0], oy + args[1]
+                path.moveTo(cx, cy)
+                sx, sy = cx, cy
+                cmd = "l" if rel else "L"          # implicit lineto after moveto
+            elif up == "L":
+                cx, cy = ox + args[0], oy + args[1]
+                path.lineTo(cx, cy)
+            elif up == "H":
+                cx = ox + args[0]
+                path.lineTo(cx, cy)
+            elif up == "V":
+                cy = oy + args[0]
+                path.lineTo(cx, cy)
+            elif up == "C":
+                x1, y1, x2, y2, x, y = (ox + args[0], oy + args[1], ox + args[2], oy + args[3], ox + args[4], oy + args[5])
+                path.cubicTo(x1, y1, x2, y2, x, y)
+                lcx, lcy, cx, cy = x2, y2, x, y
+            elif up == "S":
+                x1, y1 = (2 * cx - lcx, 2 * cy - lcy) if last in ("C", "S") and lcx is not None else (cx, cy)
+                x2, y2, x, y = ox + args[0], oy + args[1], ox + args[2], oy + args[3]
+                path.cubicTo(x1, y1, x2, y2, x, y)
+                lcx, lcy, cx, cy = x2, y2, x, y
+            elif up == "Q":
+                x1, y1, x, y = ox + args[0], oy + args[1], ox + args[2], oy + args[3]
+                path.quadTo(x1, y1, x, y)
+                lcx, lcy, cx, cy = x1, y1, x, y
+            elif up == "T":
+                x1, y1 = (2 * cx - lcx, 2 * cy - lcy) if last in ("Q", "T") and lcx is not None else (cx, cy)
+                x, y = ox + args[0], oy + args[1]
+                path.quadTo(x1, y1, x, y)
+                lcx, lcy, cx, cy = x1, y1, x, y
+            elif up == "A":
+                rx, ry, rot, large, sweep, x, y = args
+                x, y = ox + x, oy + y
+                path.arcTo(rx, ry, rot, skia.Path.ArcSize.kLarge_ArcSize if large else skia.Path.ArcSize.kSmall_ArcSize,
+                           skia.PathDirection.kCW if sweep else skia.PathDirection.kCCW, x, y)
+                cx, cy = x, y
+            last = up
+            if up not in ("C", "S", "Q", "T"):
+                lcx = lcy = None
+    except Exception:
+        return skia.Path()
+    return path
+
+
 def draw_shape(cv, el, t, W, reveal=1.0):
     shp = el.get("shape", "circle")
     col = el.get("color", "#ffffff")
@@ -1127,8 +1207,7 @@ def draw_shape(cv, el, t, W, reveal=1.0):
             ah.close()
             cv.drawPath(ah, fill(col))
     elif shp == "path" and el.get("d"):
-        path = skia.Path()
-        skia.ParsePath.FromSVGString(el["d"], path)
+        path = svg_path(el["d"])
         sc = w / float(el.get("view", 100))
         cv.save()
         cv.scale(sc, sc)
