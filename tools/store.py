@@ -31,6 +31,9 @@ SETTING_ENV = {
     "github_repo": "VF_GITHUB_REPO",
     "runner": "VF_RUNNER",
     "models": "VF_MODELS",                # JSON {"writer": "claude-opus-5-5", ...}
+    "brand_name": "VF_BRAND_NAME",        # channel name for series badges
+    "brand_handle": "VF_HANDLE",          # @handle printed on every frame
+    "brand_hashtag": "VF_BRAND_TAG",      # one brand hashtag added to every post
 }
 
 

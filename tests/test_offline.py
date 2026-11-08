@@ -506,6 +506,14 @@ def test_studio_option_aliases():
     assert ch["voice"] != "auto" and ch["formats"][0] == "facts" and ch["footage"] == "auto"
     assert parse_options({"format": "toplist"})["format"] == "facts_list"
     assert parse_options({"format": "trend"})["format"] == "trend_explainer"
+    os.environ.update({"VF_BRAND_NAME": "Hypercurious", "VF_HANDLE": "@hypercurious96", "VF_BRAND_TAG": "#Hypercurious"})
+    try:
+        ch = build_channel(parse_options({"language": "en", "niche": "space"}))
+        assert ch["name"] == "Hypercurious" and ch["handle"] == "@hypercurious96" and ch["brand_hashtags"] == ["#Hypercurious"]
+        assert build_channel(parse_options({"niche": "space", "handle": "@other"}))["handle"] == "@other"
+    finally:
+        for k in ("VF_BRAND_NAME", "VF_HANDLE", "VF_BRAND_TAG"):
+            os.environ.pop(k, None)
 
 if __name__ == "__main__":
     import inspect

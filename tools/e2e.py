@@ -131,9 +131,19 @@ def build_channel(o: dict) -> dict:
     if fmt and fmt != "auto":
         formats = [fmt] + [f for f in formats if f != fmt]
     ch["formats"] = formats
+    # the owner's brand (Settings -> Brand) replaces the built-in placeholder channels
+    if os.environ.get("VF_BRAND_NAME"):
+        ch["name"] = os.environ["VF_BRAND_NAME"]
+        ch["notes"] = (ch.get("notes") or "").replace("Bingeable series: a small series badge in scene 1",
+                                                       f"Channel {ch['name']}: a small series badge in scene 1")
+    if os.environ.get("VF_HANDLE"):
+        ch["handle"] = os.environ["VF_HANDLE"]
     if o.get("handle"):
         ch["handle"] = o["handle"]
-    ch["brand_hashtags"] = [BRAND[niche]] if niche in BRAND else []
+    if os.environ.get("VF_BRAND_TAG"):
+        ch["brand_hashtags"] = [os.environ["VF_BRAND_TAG"]]
+    else:
+        ch["brand_hashtags"] = [BRAND[niche]] if niche in BRAND else []
     if o.get("music"):
         ch["music_mood"] = o["music"]
     notes = []

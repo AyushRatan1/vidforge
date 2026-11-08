@@ -7,7 +7,7 @@ import {fmt} from "../format.js";
 
 const README = "https://github.com/ayushratan1/vidforge#readme";
 const SECRET = new Set(["anthropic_api_key", "github_token", "youtube_api_key", "youtube_client_secret", "youtube_refresh_token", "ig_access_token", "pexels_api_key", "pixabay_api_key"]);
-const ENV = {anthropic_api_key: "ANTHROPIC_API_KEY", youtube_api_key: "YOUTUBE_API_KEY", youtube_client_id: "YOUTUBE_CLIENT_ID", youtube_client_secret: "YOUTUBE_CLIENT_SECRET", youtube_refresh_token: "YOUTUBE_REFRESH_TOKEN", ig_access_token: "IG_ACCESS_TOKEN", ig_user_id: "IG_USER_ID", pexels_api_key: "PEXELS_API_KEY", pixabay_api_key: "PIXABAY_API_KEY", github_token: "VF_GITHUB_TOKEN", github_repo: "VF_GITHUB_REPO", runner: "VF_RUNNER", models: "VF_MODELS"};
+const ENV = {anthropic_api_key: "ANTHROPIC_API_KEY", youtube_api_key: "YOUTUBE_API_KEY", youtube_client_id: "YOUTUBE_CLIENT_ID", youtube_client_secret: "YOUTUBE_CLIENT_SECRET", youtube_refresh_token: "YOUTUBE_REFRESH_TOKEN", ig_access_token: "IG_ACCESS_TOKEN", ig_user_id: "IG_USER_ID", pexels_api_key: "PEXELS_API_KEY", pixabay_api_key: "PIXABAY_API_KEY", github_token: "VF_GITHUB_TOKEN", github_repo: "VF_GITHUB_REPO", runner: "VF_RUNNER", models: "VF_MODELS", brand_name: "VF_BRAND_NAME", brand_handle: "VF_HANDLE", brand_hashtag: "VF_BRAND_TAG"};
 const MODELS = [{value: "", label: "Default"}, {value: "claude-opus-5-5", label: "Opus 5.5"}, {value: "claude-fable-5-1", label: "Fable 5.1"}, {value: "claude-sonnet-5-5", label: "Sonnet 5.5"}];
 
 export function settingsPage(ctx, el, actions) {
@@ -78,6 +78,10 @@ export function settingsPage(ctx, el, actions) {
     }});
 
     clear(body).append(
+      groupCard("Brand", "Shown on every video and in every caption", "play", "Leave empty to use the built-in channel names. A handle typed on the Create page wins for that one video.",
+        settingRow("brand_name", "Channel name", "Hypercurious", "Used for the series badge Claude puts in the first scene."),
+        settingRow("brand_handle", "Handle", "@hypercurious96", "Printed small at the bottom of every frame."),
+        settingRow("brand_hashtag", "Brand hashtag", "#Hypercurious", "Added to every post, within the 5 hashtag limit.")),
       groupCard("Claude", "Writes, directs, reviews and scouts", "sparkles", "The writer model can also be chosen per video on the Create page.",
         settingRow("anthropic_api_key", "API key", "sk-ant-...", h("span", {}, "From ", link("https://console.anthropic.com/settings/keys", "console.anthropic.com"), ". Every video costs about $0.50."), {mono: true}),
         ...["writer", "director", "reviewer", "scout"].map(r => Field({label: r.charAt(0).toUpperCase() + r.slice(1) + " model", control: modelSel(r), hint: r === "writer" ? "Optional. Default uses the model the worker picks for each role." : null}))),
