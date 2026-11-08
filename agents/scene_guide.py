@@ -140,7 +140,7 @@ Kit, for everything else:
   at h | water {x0,x1,z0,z1,y_bottom,level_from,level,from,to} | trees / grass / rocks {count, area:[x0,z0,x1,z1], seed,
   avoid:[[x0,z0,x1,z1]]} | town {count, area, colors, scale} flat-roofed houses | mound {r,h} small dirt piles only
 - building: wall {from:[x,z], to:[x,z], h, thickness, crenels} | bastion {r,h} | gate {w,h,d,towers} | palace {w,d,h,
-  floors,domes,dome} | tomb {w,h,minarets} | minaret {h,r,balconies,tilt} | pavilion {w,d,h,cols,rows} | pillar |
+  floors,domes,dome} | tomb {w,h,minarets} | minaret {h,r,balconies,tilt (degrees, leans away from the centre; exaggerate to 6-8 so it shows)} | pavilion {w,d,h,cols,rows} | pillar |
   spire {w,h,tiers} | arch | stairs {from:[x,y,z] top, to:[x,y,z] bottom, width, steps} | ramp {from, to, width} |
   frustum {w, w_top, h} (w_top 0 makes a pyramid) | box / slab {w,h,d,texture:"stone"} | cylinder | cone | dome | sphere | house
 - work and life: blocks {cols,rows,layers,size} | sledge (a block on runners; give it a path) | boat {length, cargo,

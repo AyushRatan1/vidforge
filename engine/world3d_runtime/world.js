@@ -1112,7 +1112,8 @@ KIT.bastion = (o) => {
   return g;
 };
 
-// minaret: tall tapered shaft with 2-3 balconies, a lantern and a small dome; `tilt` leans it (degrees, towards tilt_dir)
+// minaret: tall tapered shaft with 2-3 balconies, a lantern and a small dome; `tilt` leans it by that many degrees.
+// The lean points away from the scene centre (0, 0) unless `tilt_dir` gives a world compass angle in degrees.
 KIT.minaret = (o) => {
   const h = num(o.h, 10), r = num(o.r, 0.6), rt = num(o.r_top, r * 0.72), c = o.color || "#efe9de";
   const nb = Math.round(clamp(num(o.balconies, 3), 1, 3));
@@ -1147,7 +1148,11 @@ KIT.minaret = (o) => {
   const lean = new THREE.Group(); parts.forEach((p) => lean.add(p));
   lean.rotation.x = (num(o.tilt, 0) * Math.PI) / 180;
   const yaw = new THREE.Group(); yaw.add(lean);
-  yaw.rotation.y = (num(o.tilt_dir, 0) * Math.PI) / 180;
+  // world direction of the lean (0 = +z, 90 = +x), turned into the holder's frame, which `rot` already spins
+  const p = Array.isArray(o.pos) ? o.pos : [0, 0, 0];
+  const outward = Math.hypot(num(p[0], 0), num(p[2], 0)) > 1e-6 ? (Math.atan2(num(p[0], 0), num(p[2], 0)) * 180) / Math.PI : 0;
+  const dir = typeof o.tilt_dir === "number" ? o.tilt_dir : outward;
+  yaw.rotation.y = ((dir - num(o.rot, 0)) * Math.PI) / 180;
   yaw.userData.stagger = staggerParts(parts, "rise");
   return yaw;
 };
