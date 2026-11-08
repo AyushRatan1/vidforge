@@ -1,22 +1,23 @@
 name: draft-video
-run-name: "draft ${{ inputs.request_id || github.run_id }}"
+run-name: "draft ${{ inputs.request_id || (github.event_name == 'schedule' && 'autopilot' || github.run_id) }}"
 
 # Makes one video and saves it to the library (a GitHub Release named video-<id>), then optionally posts it.
 # Claude finds a trend (or uses your topic), researches it, writes and directs it, reviews the frames; the free
-# engine renders it; Claude writes the captions and hashtags. Started from the web UI or the Actions tab.
-# Secrets: ANTHROPIC_API_KEY (required); YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET, YOUTUBE_REFRESH_TOKEN,
-# IG_ACCESS_TOKEN, IG_USER_ID (optional, for posting). Variable RUNNER picks the machine (default ubuntu-latest).
+# engine renders it; Claude writes the captions and hashtags. Started from the web UI, the Actions tab, or every
+# hour by autopilot (the Supabase `autopilot` row decides whether a video is due).
+# Secrets: SUPABASE_URL and SUPABASE_SERVICE_KEY (keys then come from the Supabase settings table). The old
+# per-key secrets (ANTHROPIC_API_KEY, YOUTUBE_*, IG_*) still work as a fallback. Variable RUNNER picks the machine.
 on:
   workflow_dispatch:
     inputs:
       request_id:
-        description: "ID for this video (the web UI sets it; leave blank when running by hand)"
+        description: "ID for this video (the web UI sets it to the job id; leave blank when running by hand)"
         default: ""
       options:
         description: 'JSON options, e.g. {"language":"en","niche":"space","topic":"","format":"auto","publish":{"youtube":false}}'
         default: '{"language":"en","niche":"space"}'
-  # schedule:
-  #   - cron: "0 4 * * *"   # 09:30 IST daily, trending topic with the default options
+  schedule:
+    - cron: "30 */1 * * *"   # hourly; tools/autopilot.py decides (IST slots, daily quota, topic queue)
 
 permissions:
   contents: write
@@ -26,8 +27,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  RID: ${{ inputs.request_id || github.run_id }}
-  OPTIONS: ${{ inputs.options || '{"language":"en","niche":"space"}' }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
   YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
@@ -46,36 +47,81 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - name: Cache voice model
-        uses: actions/cache@v4
-        with:
-          path: models
-          key: kokoro-v1.0
-      - name: Install tools
+      - name: Decide
+        id: decide
+        env:
+          INPUT_RID: ${{ inputs.request_id }}
+          INPUT_OPTIONS: ${{ inputs.options }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            python tools/autopilot.py
+          else
+            python - <<'PY'
+          import json, os
+          rid = os.environ.get("INPUT_RID") or os.environ["GITHUB_RUN_ID"]
+          o = json.loads(os.environ.get("INPUT_OPTIONS") or '{"language":"en","niche":"space"}')
+          o.setdefault("source", "manual")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"skip=false\nrequest_id={rid}\njob_id={o.get('job_id') or ''}\n")
+              f.write("options=" + json.dumps(o, ensure_ascii=False, separators=(",", ":")) + "\n")
+          print(rid, o)
+          PY
+          fi
+      - name: Prepare
+        if: steps.decide.outputs.skip != 'true'
+        env:
+          RID: ${{ steps.decide.outputs.request_id }}
+          JOB_ID: ${{ steps.decide.outputs.job_id }}
+          OPTIONS: ${{ steps.decide.outputs.options }}
         run: |
           [[ "$RID" =~ ^[A-Za-z0-9_-]{1,64}$ ]] || { echo "request_id must be letters, digits, - or _"; exit 1; }
           echo "$OPTIONS" | python -c "import json,sys; json.load(sys.stdin)" || { echo "options is not valid JSON"; exit 1; }
+          {
+            echo "RID=$RID"
+            echo "JOB_ID=$JOB_ID"
+            echo "OUT=data/out/$RID"
+            echo "OPTIONS<<VF_EOF"; echo "$OPTIONS"; echo "VF_EOF"
+          } >> "$GITHUB_ENV"
+          mkdir -p "data/out/$RID" && echo "$OPTIONS" > "data/out/$RID/options.json"
+      - name: Cache voice model
+        if: steps.decide.outputs.skip != 'true'
+        uses: actions/cache@v4
+        with:
+          path: |
+            models
+            models/footage
+          key: kokoro-v1.0
+      - name: Install tools
+        if: steps.decide.outputs.skip != 'true'
+        run: |
+          echo "STEP=Install tools" >> "$GITHUB_ENV"
           sudo apt-get update -q && sudo apt-get install -y -q ffmpeg libgl1 libegl1 fonts-noto-color-emoji
           pip install -q -r requirements.txt
           python run.py setup
-          echo "OUT=data/out/$RID" >> "$GITHUB_ENV"
-          mkdir -p "data/out/$RID" && echo "$OPTIONS" > "data/out/$RID/options.json"
       - name: Find trend
-        run: python run.py e2e --stage scout --out "$OUT" --options "$OPTIONS"
+        if: steps.decide.outputs.skip != 'true'
+        run: echo "STEP=Find trend" >> "$GITHUB_ENV" && python run.py e2e --stage scout --out "$OUT" --options "$OPTIONS"
       - name: Research
-        run: python run.py e2e --stage research --out "$OUT" --options "$OPTIONS"
+        if: steps.decide.outputs.skip != 'true'
+        run: echo "STEP=Research" >> "$GITHUB_ENV" && python run.py e2e --stage research --out "$OUT" --options "$OPTIONS"
       - name: Write and direct
-        run: python run.py e2e --stage write --out "$OUT" --options "$OPTIONS"
+        if: steps.decide.outputs.skip != 'true'
+        run: echo "STEP=Write and direct" >> "$GITHUB_ENV" && python run.py e2e --stage write --out "$OUT" --options "$OPTIONS"
       - name: Review frames
-        run: python run.py e2e --stage qa --out "$OUT" --options "$OPTIONS"
+        if: steps.decide.outputs.skip != 'true'
+        run: echo "STEP=Review frames" >> "$GITHUB_ENV" && python run.py e2e --stage qa --out "$OUT" --options "$OPTIONS"
       - name: Render video
-        run: python run.py e2e --stage render --out "$OUT" --options "$OPTIONS"
+        if: steps.decide.outputs.skip != 'true'
+        run: echo "STEP=Render video" >> "$GITHUB_ENV" && python run.py e2e --stage render --out "$OUT" --options "$OPTIONS"
       - name: Write captions and hashtags
-        run: python run.py e2e --stage package --out "$OUT" --options "$OPTIONS"
+        if: steps.decide.outputs.skip != 'true'
+        run: echo "STEP=Write captions and hashtags" >> "$GITHUB_ENV" && python run.py e2e --stage package --out "$OUT" --options "$OPTIONS"
       - name: Save to library
+        if: steps.decide.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          echo "STEP=Save to library" >> "$GITHUB_ENV"
           python tools/library.py notes "$OUT" > "$RUNNER_TEMP/notes.md"
           TITLE=$(python -c "import json; print(json.load(open('$OUT/summary.json'))['title'][:120])")
           FILES=""
@@ -84,9 +130,11 @@ jobs:
           done
           gh release create "video-$RID" $FILES --title "$TITLE" --notes-file "$RUNNER_TEMP/notes.md" --latest=false
       - name: Post to YouTube and Instagram
+        if: steps.decide.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          echo "STEP=Post to YouTube and Instagram" >> "$GITHUB_ENV"
           python run.py e2e --stage publish --out "$OUT" --options "$OPTIONS" || STATUS=$?
           if [ -f "$OUT/published.json" ]; then
             python tools/library.py notes "$OUT" > "$RUNNER_TEMP/notes.md"
@@ -94,8 +142,15 @@ jobs:
             gh release upload "video-$RID" "$OUT/published.json" --clobber
           fi
           exit ${STATUS:-0}
+      - name: Mark job done
+        if: steps.decide.outputs.skip != 'true'
+        run: python tools/store.py done "$RID" "$JOB_ID"
+      - name: Mark as failed
+        if: failure() && steps.decide.outputs.skip != 'true'
+        run: |
+          python tools/store.py fail "$RID" "$JOB_ID" "failed at ${STEP:-Prepare} ($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
       - name: Keep a copy for debugging
-        if: failure()
+        if: failure() && steps.decide.outputs.skip != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: draft-${{ env.RID }}

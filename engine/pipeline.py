@@ -103,6 +103,55 @@ def resolve_word_cues(spec: dict, tl: list):
                 el["at"] = max(0.0, t + float(el.get("at_offset", -0.1)))
 
 
+def resolve_footage(spec: dict, tl: list, out_dir: str) -> list:
+    """For every scene whose background is {"type": "footage"}: search, pick, download and cut a stock clip to
+    the canvas size and scene length (<out>/footage_<i>.mp4). Anything that fails (no key, no results, download
+    or ffmpeg error, spec "footage": "off") swaps the background for its `fallback` so rendering never fails.
+    Returns the records for the manifest: [{"scene", "provider", "id", "credit", "page_url"}]."""
+    from . import footage as F
+    W, H, fps = spec["_W"], spec["_H"], spec["fps"]
+    mode = spec.get("footage", "auto") or "auto"
+    orientation = "landscape" if W > H else ("square" if W == H else "portrait")
+    used, records, cache = set(), [], {}
+    for i, (sc, seg) in enumerate(zip(spec["scenes"], tl)):
+        bg = sc.get("background") or {}
+        if bg.get("type") != "footage":
+            continue
+        fallback = bg.get("fallback") or dict(F.DEFAULT_FALLBACK)
+        if fallback.get("type") == "footage":
+            fallback = dict(F.DEFAULT_FALLBACK)
+        bg.pop("_file", None)
+        bg.pop("_clip", None)
+        bg.pop("_last_frame", None)
+        prepared = None
+        clip = None
+        if mode != "off":
+            query = str(bg.get("query", "")).strip()
+            if query not in cache:
+                cache[query] = F.search(query, orientation=orientation)
+            clip = F.pick(cache[query], seg["dur"], exclude=used, query=query + f"#{i}")
+            if clip:
+                src = F.fetch(clip)
+                if src:
+                    try:
+                        dst = os.path.join(out_dir, f"footage_{i + 1:02d}.mp4")
+                        prepared = F.prepare(src, dst, W, H, seg["dur"] + 0.5, fps,
+                                             start=float(bg.get("start", 0) or 0), speed=float(bg.get("speed", 1) or 1))
+                    except Exception as e:  # corrupt download, odd codec: fall back
+                        F.log.warning("footage prepare failed for scene %d: %s", i + 1, e)
+                        prepared = None
+        if prepared is None or clip is None:
+            sc["background"] = fallback
+            continue
+        used.add(clip["id"])
+        bg["_file"] = prepared
+        bg["_clip"] = f"{clip['provider']}_{clip['id']}"
+        bg["_last_frame"] = F.extract_frame(prepared, max(0.0, seg["dur"] - 1.0 / fps), prepared[:-4] + "_last.png")
+        records.append({"scene": i, "provider": clip["provider"], "id": clip["id"], "credit": clip.get("credit"),
+                        "page_url": clip.get("page_url")})
+    return records
+
+
 def _engine_version() -> str:
     h = hashlib.sha1()
     here = os.path.dirname(os.path.abspath(__file__))
@@ -124,6 +173,7 @@ def _scene_key(spec, i, tl, voice):
         "W": spec["_W"], "H": spec["_H"], "fps": spec["fps"], "cap": spec.get("captions"),
         "ov": spec.get("overlay"), "tr": spec.get("transition"), "bg": spec.get("background"),
         "total": sum(s["frames"] for s in tl), "v": hashlib.sha1(voice.tobytes()).hexdigest(),
+        "clip": (spec["scenes"][i].get("background") or {}).get("_clip"),
     }, sort_keys=True, default=str)
     return hashlib.sha1(blob.encode()).hexdigest()[:16]
 
@@ -145,6 +195,8 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
                             sc.get("lang", spec.get("lang"))))
     tl = build_timeline(spec, voices)
     resolve_word_cues(spec, tl)
+    p("footage", 0)
+    footage = resolve_footage(spec, tl, out_dir)
     total_frames = sum(s["frames"] for s in tl)
     duration = total_frames / spec["fps"]
 
@@ -185,7 +237,7 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
     thumb = os.path.join(out_dir, "thumbnail.jpg")
     rnd.still(min(int(th.get("scene", 0)), len(tl) - 1), float(th.get("t", 1.4)), thumb)
     if stills_only:
-        return {"stills": stills, "thumbnail": thumb, "duration": duration, "timeline": tl}
+        return {"stills": stills, "thumbnail": thumb, "duration": duration, "timeline": tl, "footage": footage}
 
     # 4. scenes (cached by content hash so editing one scene only re-renders it; parallel on multi-core machines)
     files, todo = [], []
@@ -229,7 +281,7 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
     manifest = {
         "video": final, "thumbnail": thumb, "stills": stills, "duration": round(duration, 2),
         "size": f"{spec['_W']}x{spec['_H']}", "fps": spec["fps"], "scenes": len(tl),
-        "render_seconds": round(time.time() - t0, 1), "title": spec.get("title"),
+        "render_seconds": round(time.time() - t0, 1), "title": spec.get("title"), "footage": footage,
     }
     with open(os.path.join(out_dir, "manifest.json"), "w") as f:
         json.dump(manifest, f, indent=2, ensure_ascii=False)

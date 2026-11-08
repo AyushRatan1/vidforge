@@ -18,6 +18,23 @@ VOICES = set(_VOICE_MAP)
 MOODS = {"cosmic", "playful", "mystery", "epic", "calm", "upbeat", "indian", "devotional", "none"}
 
 
+def _check_footage(bg: dict) -> list[str]:
+    errs = []
+    if not str(bg.get("query", "")).strip():
+        errs.append("footage background needs a `query` (2-4 concrete English words)")
+    try:
+        dim = float(bg.get("dim", 0.45))
+        if not 0 <= dim <= 0.9:
+            errs.append(f"footage dim {dim} must be between 0 and 0.9")
+    except (TypeError, ValueError):
+        errs.append(f"footage dim {bg.get('dim')!r} must be a number")
+    fb = bg.get("fallback")
+    if fb is not None:
+        if not isinstance(fb, dict) or fb.get("type") not in BACKGROUNDS or fb.get("type") == "footage":
+            errs.append(f"footage fallback must be a drawn background, not {fb!r}")
+    return errs
+
+
 def validate(spec: dict) -> tuple[list[str], list[str]]:
     errs, warns = [], []
     scenes = spec.get("scenes")
@@ -30,6 +47,8 @@ def validate(spec: dict) -> tuple[list[str], list[str]]:
         warns.append(f"unknown music mood {mood!r}, falling back to cosmic")
     if not spec.get("title"):
         warns.append("missing title")
+    if spec.get("footage") not in (None, "auto", "off"):
+        errs.append(f"`footage` must be \"auto\" or \"off\", not {spec.get('footage')!r}")
     hindi = spec.get("language") in ("hi", "hinglish") or str(spec.get("voice", "")).startswith("h")
     if spec.get("language") not in (None, "en", "hi", "hinglish", "es", "fr", "it", "pt"):
         warns.append(f"language {spec.get('language')!r} has no matching voice; narration will use {spec.get('voice')}")
@@ -47,6 +66,8 @@ def validate(spec: dict) -> tuple[list[str], list[str]]:
         bg = sc.get("background") or {}
         if bg and bg.get("type") not in BACKGROUNDS:
             errs.append(f"{where}: unknown background type {bg.get('type')!r}")
+        if bg.get("type") == "footage":
+            errs += [f"{where}: {e}" for e in _check_footage(bg)]
         if sc.get("transition") not in TRANSITIONS:
             warns.append(f"{where}: unknown transition {sc.get('transition')!r}")
         els = sc.get("elements") or []

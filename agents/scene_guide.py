@@ -18,7 +18,8 @@ you place and animate vector elements. Everything you can use is listed here; an
 title, description, tags[], language ("hi" | "en" | "hinglish"), voice, speed (1.0-1.2, Hindi reads best at
 1.1), aspect ("9:16" Shorts/Reels, "16:9" long-form), made_for_kids (bool), category,
 music {mood, volume 0.1-0.25, seed}, captions {style "karaoke"|"plain", y, size, max_words, highlight},
-overlay {handle, progress_bar}, thumbnail {scene, t}, transition (default between scenes), scenes[].
+overlay {handle, progress_bar}, thumbnail {scene, t}, transition (default between scenes),
+footage ("auto" | "off": allow real stock footage backgrounds), scenes[].
 
 Voices: Hindi: hm_omega (male, warm), hm_psi (male), hf_alpha (female), hf_beta (female).
 English: af_heart, af_bella (female, US), am_michael, am_fenrir (male, US), bf_emma, bm_george (UK).
@@ -41,6 +42,15 @@ Music moods: cosmic, playful, mystery, epic, calm, upbeat, indian (flute + tabla
 - {"type":"paper", "color":"#f6e7c8"}  (stories, history, mythology)
 - {"type":"grid", "colors":["#050b1f","#0d1b3e"], "line":"#2bd4ff"}  (tech, explainers, news)
 - {"type":"underwater"}, {"type":"solid","color":"#..."}, {"type":"image","path":"...","zoom":[1,1.12]}
+- {"type":"footage", "query":"cat playing", "dim":0.45, "blur":0, "tint":"#0b1030", "speed":1.0,
+  "fallback":{"type":"space"}}  REAL stock video (Pexels/Pixabay, free to use) plays under your text, captions,
+  counters and mascots. Use it for real-world subjects: animals, nature, cities, food, sports, people, history,
+  mythology (temples, fire, mountains, ancient art), tech, festivals. `query` is 2-4 concrete VISUAL English words
+  ("ganges aarti fire", "himalaya snow peaks", "cat playing"), never abstract ("success", "controversy") and never
+  a copyrighted name (no film titles, no celebrities). Vary the query from scene to scene so clips differ. Keep text
+  readable: dim 0.35-0.6 (a dark `tint` at that opacity sits over the video), blur 0-8 only when the clip is busy.
+  `fallback` is the drawn background used when no clip is found. Astronomy stays on drawn `space` backgrounds.
+  Episode field `footage`: "auto" (default) or "off" to disable footage for the whole video.
 
 ## Elements (drawn in list order; later = on top)
 Every element accepts: x, y, scale, rot (degrees), opacity, flip, sfx (whoosh|pop|ding on entrance), at (seconds into scene when it appears),

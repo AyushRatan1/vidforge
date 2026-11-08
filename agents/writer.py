@@ -40,6 +40,15 @@ LANGUAGE
   pf_dora). Any other language: write in it, but warn in the description that the voice may sound foreign.
 - Respect the target length and aspect in OWNER NOTES when given (e.g. "about 60 seconds", "16:9 long-form").
 
+VISUALS
+- When the channel niche or the topic is real-world (animals, nature, travel, food, sports, people, history,
+  mythology, tech, festivals, news), give most scenes a background of type "footage" so real video plays under
+  the text, and keep drawn mascots, counters and labels on top. Footage `query` values are ALWAYS short English
+  visual phrases (2-4 words, what a camera would see), whatever the narration language, and should differ from
+  scene to scene. Always set a `fallback` drawn background and dim 0.35-0.6 for contrast.
+- Astronomy, abstract explainers and kids' animation stay on drawn backgrounds (space, grid, sunburst, paper).
+- If the channel says footage is off, use drawn backgrounds only.
+
 TRUTH
 - Use ONLY the facts in the fact sheet. If a number is approximate say "करीब"/"about". Never invent quotes,
   statistics, dates or scripture. Put the sources in the description.
@@ -61,6 +70,7 @@ SCHEMA = {
         "made_for_kids": {"type": "boolean"}, "category": {"type": "string"},
         "music": {"type": "object"}, "captions": {"type": "object"}, "overlay": {"type": "object"},
         "thumbnail": {"type": "object"}, "transition": {"type": "string"},
+        "footage": {"type": "string", "enum": ["auto", "off"]},
         "scenes": {"type": "array", "items": {"type": "object", "properties": {
             "id": {"type": "string"}, "narration": {"type": "string"}, "caption": {"type": "string"},
             "background": {"type": "object"}, "camera": {"type": "object"}, "transition": {"type": "string"},
@@ -78,17 +88,22 @@ def _system(channel: dict | None = None):
 
 def write_episode(claude: Claude, idea: dict, facts: dict, channel: dict, notes: str = "") -> dict:
     fmt = idea.get("format") or (channel.get("formats") or ["space_facts"])[0]
+    footage_off = str(channel.get("footage", "auto")).lower() == "off"
     prompt = (
-        f"CHANNEL\n{json.dumps({k: channel.get(k) for k in ('name', 'niche', 'language', 'caption_script', 'audience', 'voice', 'mascot', 'handle', 'palette', 'notes')}, ensure_ascii=False, indent=1)}\n\n"
+        f"CHANNEL\n{json.dumps({k: channel.get(k) for k in ('name', 'niche', 'language', 'caption_script', 'audience', 'voice', 'mascot', 'handle', 'palette', 'notes', 'footage')}, ensure_ascii=False, indent=1)}\n\n"
         f"{format_brief(fmt)}\n\nIDEA\n{json.dumps(idea, ensure_ascii=False, indent=1)}\n\n"
         f"FACT SHEET\n{json.dumps(facts, ensure_ascii=False, indent=1)}\n\n"
         + (f"OWNER NOTES\n{notes}\n\n" if notes else "")
+        + ("Stock footage is OFF for this channel: drawn backgrounds only.\n\n" if footage_off else "")
         + "Write and direct the episode now."
     )
     system = _system(channel)
     spec = claude.json_tool("writer", system, prompt, "submit_episode", "Submit the complete episode spec",
                             SCHEMA, max_tokens=32000)
-    return _repair_loop(claude, spec, prompt, system)
+    spec = _repair_loop(claude, spec, prompt, system)
+    if footage_off:
+        spec["footage"] = "off"
+    return spec
 
 
 def revise(claude: Claude, spec: dict, instructions: str, facts: dict | None = None, channel: dict | None = None) -> dict:

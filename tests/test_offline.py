@@ -49,6 +49,91 @@ def test_preview_render_two_scenes():
     assert res["scenes"] == 2 and res["duration"] > 3
 
 
+# ------------------------------------------------------------------ stock footage
+FOOTAGE_BG = {"type": "footage", "query": "cat playing", "dim": 0.5, "tint": "#0b1030",
+              "fallback": {"type": "sky", "time": "night"}}
+
+
+def test_footage_background_validates():
+    spec = copy.deepcopy(EXAMPLE)
+    spec["scenes"][0]["background"] = copy.deepcopy(FOOTAGE_BG)
+    spec["footage"] = "auto"
+    errs, _ = validate(spec)
+    assert errs == [], errs
+    bad = copy.deepcopy(spec)
+    bad["scenes"][0]["background"] = {"type": "footage", "dim": 1.5, "fallback": {"type": "footage", "query": "x"}}
+    bad["footage"] = "maybe"
+    errs, _ = validate(bad)
+    assert any("query" in e for e in errs) and any("dim" in e for e in errs)
+    assert any("fallback" in e for e in errs) and any("`footage`" in e for e in errs)
+
+
+def test_footage_falls_back_without_key(monkeypatch):
+    """No PEXELS_API_KEY: the footage scene renders on its fallback background and the mp4 is still produced."""
+    monkeypatch.delenv("PEXELS_API_KEY", raising=False)
+    monkeypatch.delenv("PIXABAY_API_KEY", raising=False)
+    from engine import footage
+    assert footage.search("cat playing") == []
+    spec = copy.deepcopy(EXAMPLE)
+    spec["scenes"] = spec["scenes"][:2]
+    spec["scenes"][1]["background"] = copy.deepcopy(FOOTAGE_BG)
+    spec["preview"] = True
+    spec["fps"] = 12
+    out = tempfile.mkdtemp()
+    res = render_episode(spec, out)
+    assert os.path.getsize(res["video"]) > 50_000 and res["scenes"] == 2
+    assert res["footage"] == []
+
+
+def test_footage_prepare_and_composite():
+    """prepare() cuts a synthetic clip to WxH and the requested length; the renderer composites it under a scene."""
+    import subprocess
+    from engine import footage
+    d = tempfile.mkdtemp()
+    src = os.path.join(d, "src.mp4")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", "testsrc=size=320x240:rate=12",
+                    "-t", "2", "-pix_fmt", "yuv420p", src], check=True)
+    dst = footage.prepare(src, os.path.join(d, "cut.mp4"), 270, 480, 3.0, 12)
+    probe = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+                            "stream=width,height", "-of", "csv=p=0", dst], capture_output=True, text=True)
+    assert probe.stdout.strip() == "270,480"
+    assert abs(footage.probe_duration(dst) - 3.0) < 0.2       # looped past the 2 s source
+    # a footage scene with a prepared file goes through the two-input ffmpeg path
+    spec = copy.deepcopy(EXAMPLE)
+    spec["scenes"] = spec["scenes"][:2]
+    spec["scenes"][1]["background"] = copy.deepcopy(FOOTAGE_BG)
+    spec["preview"] = True
+    spec["fps"] = 12
+    from engine import pipeline
+    import numpy as np
+    spec = pipeline.normalize(spec)
+    from engine import audio as A
+    voices = [np.zeros(int(1.2 * A.SR), dtype=np.float32)] * 2
+    tl = pipeline.build_timeline(spec, voices)
+    big = footage.prepare(src, os.path.join(d, "scene.mp4"), spec["_W"], spec["_H"], tl[1]["dur"] + 0.5, 12)
+    spec["scenes"][1]["background"].update({"_file": big, "_clip": "test_1"})
+    from engine.renderer import Renderer
+    rnd = Renderer(spec, tl, np.zeros(sum(s["frames"] for s in tl)))
+    still = rnd.still(1, 1.0, os.path.join(d, "still.png"))
+    assert os.path.getsize(still) > 1000
+    mp4 = rnd.encode_scene(1, os.path.join(d, "scene_out.mp4"))
+    assert os.path.getsize(mp4) > 5_000
+    assert abs(footage.probe_duration(mp4) - tl[1]["dur"]) < 0.2
+    assert footage.credits([{"id": "1", "provider": "pexels", "credit": "Ana"}]) == ["Video: Ana / Pexels"]
+
+
+def test_footage_pick_is_deterministic():
+    from engine import footage
+    res = [{"id": str(i), "provider": "pexels", "duration": 3 + i} for i in range(8)]
+    a = footage.pick(res, 6.0, query="cat playing")
+    b = footage.pick(res, 6.0, query="cat playing")
+    assert a == b and a["duration"] >= 6.0
+    c = footage.pick(res, 6.0, exclude={a["id"]}, query="cat playing")
+    assert c["id"] != a["id"]
+    assert footage.pick(res, 99.0)["id"] == "7"           # nothing long enough: the longest
+    assert footage.pick([], 3.0) is None
+
+
 # ------------------------------------------------------------------ agents with a fake Claude
 class FakeBlock(SimpleNamespace):
     def model_dump(self, **kw):
@@ -201,8 +286,128 @@ def test_library_notes_roundtrip():
     assert "tricky" in data["meta"]["youtube"]["description"]
 
 
+# ------------------------------------------------------------------ autopilot against a fake Supabase store
+class FakeStore:
+    """Stands in for tools.store.select/upsert/update: one autopilot row and a list of today's autopilot videos."""
+
+    def __init__(self, ap: dict, videos_today: int = 0):
+        self.ap = {"id": 1, "enabled": True, "videos_per_day": 3, "post_hours": [9, 13, 18], "platforms": {"youtube": True},
+                   "languages": ["en", "hi"], "niches": ["space", "tech"], "topics": [], "trending_fill": True,
+                   "privacy": "public", "options": {}, **ap}
+        self.videos_today = videos_today
+        self.upserts, self.updates = [], []
+
+    def select(self, table, **f):
+        if table == "autopilot":
+            return [self.ap]
+        if table == "videos":
+            return [{"id": f"v{i}"} for i in range(self.videos_today)]
+        return []
+
+    def upsert(self, table, row, on_conflict="id"):
+        self.upserts.append((table, row))
+        return row
+
+    def update(self, table, match, patch):
+        self.updates.append((table, match, patch))
+        if table == "autopilot":
+            self.ap.update(patch)
+        return [patch]
+
+    def install(self, monkeypatch):
+        from tools import store
+        monkeypatch.setattr(store, "select", self.select)
+        monkeypatch.setattr(store, "upsert", self.upsert)
+        monkeypatch.setattr(store, "update", self.update)
+        return self
+
+
+def _ist(hour, minute=0):
+    import datetime as dt
+    from tools.autopilot import IST
+    return dt.datetime(2026, 11, 8, hour, minute, tzinfo=IST)
+
+
+def test_autopilot_off(monkeypatch):
+    from tools import autopilot
+    fs = FakeStore({"enabled": False}).install(monkeypatch)
+    d = autopilot.decide(_ist(10))
+    assert d["skip"] and d["reason"] == "autopilot off" and not fs.upserts
+
+
+def test_autopilot_quota_reached(monkeypatch):
+    from tools import autopilot
+    fs = FakeStore({"videos_per_day": 2}, videos_today=2).install(monkeypatch)
+    d = autopilot.decide(_ist(20))
+    assert d["skip"] and "quota" in d["reason"] and not fs.upserts
+
+
+def test_autopilot_not_yet_due(monkeypatch):
+    from tools import autopilot
+    fs = FakeStore({}, videos_today=1).install(monkeypatch)       # second video belongs to the 13:00 slot
+    d = autopilot.decide(_ist(12, 30))
+    assert d["skip"] and "13:00" in d["reason"] and not fs.upserts
+
+
+def test_autopilot_due_with_queued_topic(monkeypatch):
+    from tools import autopilot
+    topics = [{"text": "Why Venus spins backwards", "language": "hi", "niche": "space", "status": "done", "video_id": "old"},
+              {"text": "NavIC vs GPS", "language": "hi", "status": "queued"},
+              {"text": "Later", "status": "queued"}]
+    fs = FakeStore({"topics": topics, "platforms": {"youtube": True, "instagram": True}, "privacy": "unlisted",
+                    "options": {"hashtags": "#india", "voice": "hm_omega", "length": 45}}, videos_today=1).install(monkeypatch)
+    d = autopilot.decide(_ist(13, 30))
+    assert not d["skip"]
+    assert d["request_id"] == d["job_id"] == "ap-20261108-133000"
+    o = d["options"]
+    assert o["topic"] == "NavIC vs GPS" and o["language"] == "hi" and o["niche"] == "tech"   # niche: round robin by count
+    assert o["publish"] == {"youtube": True, "instagram": True, "privacy": "unlisted"}
+    assert o["source"] == "autopilot" and o["job_id"] == d["job_id"] and o["voice"] == "hm_omega" and o["length"] == 45
+    jobs = [r for t, r in fs.upserts if t == "jobs"]
+    assert jobs and jobs[0]["id"] == d["job_id"] and jobs[0]["status"] == "queued" and jobs[0]["kind"] == "make"
+    assert any(t == "videos" and r["source"] == "autopilot" and r["status"] == "queued" for t, r in fs.upserts)
+    assert fs.ap["topics"][1] == {"text": "NavIC vs GPS", "language": "hi", "status": "running", "video_id": d["job_id"]}
+    assert fs.ap["topics"][2]["status"] == "queued" and fs.ap.get("last_run_at")
+    assert autopilot.mark_topic(d["job_id"], "done") and fs.ap["topics"][1]["status"] == "done"
+    assert not autopilot.mark_topic("nope", "done")
+
+
+def test_autopilot_due_with_trending_fill(monkeypatch):
+    from tools import autopilot
+    fs = FakeStore({"topics": [{"text": "x", "status": "done"}]}, videos_today=0).install(monkeypatch)
+    d = autopilot.decide(_ist(9))
+    assert not d["skip"] and d["options"]["topic"] == "" and d["options"]["language"] == "en" and d["options"]["niche"] == "space"
+    assert d["options"]["publish"]["instagram"] is False
+    fs2 = FakeStore({"topics": [], "trending_fill": False}).install(monkeypatch)
+    d2 = autopilot.decide(_ist(9))
+    assert d2["skip"] and "trending fill is off" in d2["reason"] and not fs2.upserts
+
+
+def test_autopilot_outputs(monkeypatch, tmp_path):
+    from tools import autopilot
+    p = tmp_path / "out.txt"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(p))
+    autopilot.write_outputs({"skip": False, "request_id": "ap-1", "job_id": "ap-1", "options": {"topic": "a b", "publish": {}}})
+    lines = p.read_text().splitlines()
+    assert lines[:3] == ["skip=false", "request_id=ap-1", "job_id=ap-1"] and lines[3] == 'options={"topic":"a b","publish":{}}'
+
+
+def test_store_noop_without_supabase(monkeypatch):
+    from tools import store
+    monkeypatch.delenv("SUPABASE_URL", raising=False)
+    monkeypatch.delenv("SUPABASE_SERVICE_KEY", raising=False)
+    assert not store.enabled() and store.select("videos") == [] and store.upsert("videos", {"id": "x"}) == {}
+    assert store.load_settings_into_env() == {}
+    monkeypatch.setenv("GITHUB_REPOSITORY", "me/vidforge")
+    assert store.release_urls("abc")["video_url"] == "https://github.com/me/vidforge/releases/download/video-abc/final.mp4"
+
+
 if __name__ == "__main__":
+    import inspect
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_") and callable(v)]
     for f in fns:
+        if any(p.default is p.empty for p in inspect.signature(f).parameters.values()):
+            print("skip", f.__name__, "(needs pytest fixtures)")
+            continue
         f()
         print("pass", f.__name__)

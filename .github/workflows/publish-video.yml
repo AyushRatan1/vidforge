@@ -1,7 +1,8 @@
 name: publish-video
 run-name: "publish ${{ inputs.request_id || github.run_id }} (${{ inputs.video_id }})"
 
-# Posts a video that is already in the library to YouTube and/or Instagram and records the links on its release.
+# Posts a video that is already in the library to YouTube and/or Instagram, records the links on its release and
+# on its Supabase videos row. The web UI inserts a jobs row (id = request_id, kind publish) before dispatching.
 on:
   workflow_dispatch:
     inputs:
@@ -9,10 +10,10 @@ on:
         description: "Library video id (the part after video- in the release tag)"
         required: true
       request_id:
-        description: "Tracking id (the web UI sets it)"
+        description: "Tracking id (the web UI sets it to the job id, e.g. pub-<timestamp>)"
         default: ""
       options:
-        description: 'JSON: {"youtube":true,"instagram":false,"privacy":"public","publish_at":"","overrides":{}}'
+        description: 'JSON: {"youtube":true,"instagram":false,"privacy":"public","publish_at":"","overrides":{},"job_id":""}'
         default: '{"youtube":true,"instagram":false,"privacy":"public"}'
 
 permissions:
@@ -24,7 +25,10 @@ concurrency:
 
 env:
   VID: ${{ inputs.video_id }}
+  JOB_ID: ${{ inputs.request_id }}
   OPTIONS: ${{ inputs.options }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
   YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
   YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
   YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
@@ -45,7 +49,19 @@ jobs:
       - name: Install tools
         run: |
           [[ "$VID" =~ ^[A-Za-z0-9_-]{1,64}$ ]] || { echo "bad video_id"; exit 1; }
+          echo "$OPTIONS" | python -c "import json,sys; json.load(sys.stdin)" || { echo "options is not valid JSON"; exit 1; }
           pip install -q requests google-api-python-client google-auth-oauthlib
+          JOB_FROM_OPTIONS=$(python -c "import json,os; print(json.loads(os.environ.get('OPTIONS') or '{}').get('job_id') or '')")
+          echo "JOB_ID=${JOB_ID:-$JOB_FROM_OPTIONS}" >> "$GITHUB_ENV"
+      - name: Start job
+        run: |
+          python - <<'PY'
+          import os
+          from tools import store
+          store.load_settings_into_env()
+          store.job_update(os.environ.get("JOB_ID") or None, status="running", stage="Posting", video_id=os.environ["VID"],
+                           run_id=os.environ.get("GITHUB_RUN_ID"), run_url=store.run_url())
+          PY
       - name: Fetch from library
         run: |
           mkdir -p "data/out/$VID"
@@ -69,3 +85,8 @@ jobs:
           gh release edit "video-$VID" --notes-file "$RUNNER_TEMP/notes.md"
           [ -f "data/out/$VID/published.json" ] && gh release upload "video-$VID" "data/out/$VID/published.json" --clobber
           exit ${STATUS:-0}
+      - name: Mark job done
+        run: python tools/store.py done "$VID" "$JOB_ID"
+      - name: Mark as failed
+        if: failure()
+        run: python tools/store.py fail "" "$JOB_ID" "publish failed ($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"

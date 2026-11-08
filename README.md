@@ -98,30 +98,68 @@ docker compose up -d --build
 Security: the dashboard refuses to listen publicly without `VIDFORGE_PASSWORD`, keys are encrypted at rest
 in `data/`, and `.env` / `data/` are git-ignored.
 
-## Web UI on GitHub Pages (no server needed)
+## Web UI on GitHub Pages, team data in Supabase (no server needed)
 
-`ui/` is a static dark-mode studio at `https://<user>.github.io/vidforge/`. It starts the `draft-video` workflow,
-shows each stage live, plays the finished video, and posts it. GitHub's runners do all the work.
+`ui/` is a static dark-mode studio at `https://<user>.github.io/vidforge/`. GitHub's runners make and post the
+videos; a free Supabase project (Postgres) holds everything the team shares: API keys, every video with its
+sources and review notes, daily stats, the autopilot plan and live job progress. Team members sign in with
+email and password; the workflows use the service key.
 
 - **Create**: topic (or leave empty for a trending one), narration language, channel, format, writer model, voice,
   music, aspect, length, handle, extra hashtags and notes. Every choice has a *Custom* option for your own value.
   Turn on *Post when it's ready* to publish to YouTube and Instagram as soon as the render passes review.
 - **Library**: every video is kept forever as a GitHub Release (`video-<id>`) with the MP4, thumbnail, script,
-  fact sheet with sources, review notes and ready-made captions. Search, filter to *Not posted yet*, edit the
-  title, description and caption, then *Post now* or schedule.
-- **Connect**: paste your keys once. They are encrypted in the browser (libsodium sealed box) and saved as
-  GitHub Actions secrets; the page never stores them.
+  fact sheet with sources, review notes and ready-made captions, mirrored in the `videos` table. Search, filter
+  to *Not posted yet*, edit the title, description and caption, then *Post now* or schedule.
+- **Settings**: keys are saved once in the `settings` table (Claude, YouTube, Instagram, Pexels, model per role)
+  and every workflow run loads them first. Repo secrets with the same names still work as a fallback.
+- **Autopilot** and **Stats**: see below.
 
-One-time setup:
-1. Repo **Settings → Pages → Source: GitHub Actions**. The `pages` workflow deploys `ui/` on every push to `main`.
-2. Create a [fine-grained token](https://github.com/settings/personal-access-tokens/new) for only this repo with
-   **Actions: read and write**, **Contents: read**, **Secrets: read and write**, **Variables: read and write**.
-3. Open the page, go to **Connect**, paste the token, then add Claude, YouTube and Instagram there.
+One-time setup (about 10 minutes):
+1. Create a free project at [supabase.com](https://supabase.com). Copy the **Project URL** and the
+   **service_role** key from *Project Settings -> API* (the service key never goes in the UI, only in GitHub).
+2. In the Supabase dashboard open **SQL Editor -> New query**, paste the contents of `supabase/schema.sql`, Run.
+   It creates the tables, row level security (signed-in team members only) and realtime for job progress.
+3. Create the first team user: **Authentication -> Users -> Add user**, enter email and password, keep
+   **Auto confirm user** on. Add more teammates the same way whenever you like.
+4. In the GitHub repo add two **Actions secrets** (Settings -> Secrets and variables -> Actions):
+   `SUPABASE_URL` and `SUPABASE_SERVICE_KEY`. Nothing else is required.
+5. Repo **Settings -> Pages -> Source: GitHub Actions**. The `pages` workflow deploys `ui/` on every push to `main`.
+6. Open the Pages site, enter the Supabase URL and anon key when asked (Project Settings -> API, *anon public*),
+   sign in with the user from step 3, open **Settings** and fill in the Anthropic key plus the YouTube and
+   Instagram values (how to get them is under *Connecting accounts*). Done: the next run picks them up.
 
 Each run spends Claude credits (the Library shows the cost of every video) and takes 8 to 12 minutes; runs queue
-one at a time.
-The repo is public, so the library releases are public too. Preview with sample data: serve `ui/` locally and
-open `index.html?demo` (needs a `ui/demo/` folder).
+one at a time. The repo is public, so the library releases are public too. The database is private: only
+signed-in users and the service key can read it. Without the two Supabase secrets everything still works the old
+way (per-key GitHub secrets, no shared library data).
+
+### Autopilot
+
+The `draft-video` workflow also runs every hour (at :30) and asks the `autopilot` row whether a video is due:
+
+- **Videos per day** and **Post hours (IST)**: with `videos_per_day = 3` and `post_hours = {9, 13, 18}`, the first
+  video of the day is made once the clock passes 09:00 IST, the second after 13:00, the third after 18:00. Each
+  run checks how many autopilot videos were made today (IST) and makes at most one.
+- **Topics queue**: a list of `{text, language, niche, status}`. The first `queued` topic is used next and marked
+  `running` with the video id, then `done` when the video is packaged. Leave language or niche empty to inherit.
+- **Trending fill**: when the queue is empty, the scout picks a trending topic; language and niche rotate over
+  the configured lists (first video `en`/`space`, second `hi`/`tech`, and so on).
+- **Platforms** and **privacy** decide where the finished video is posted; **options** holds extra defaults
+  (`voice`, `music`, `length`, `hashtags`, `notes`, `writer`).
+
+Every autopilot video gets the id `ap-<YYYYMMDD-HHMMSS>` as job id, video id and release tag suffix, and
+`source = autopilot` on its row. Turn it off with the **enabled** switch; the hourly run then exits in seconds.
+`python run.py autopilot` prints the decision locally.
+
+### Daily stats
+
+The `stats` workflow runs at 07:45 IST (`python run.py stats`) and writes one row per video, platform and day:
+views, likes, comments, and where the APIs allow it shares, saves, reach and watch time. Channel totals
+(subscribers or followers, lifetime views, video count) go to `channel_stats`. YouTube per-video numbers use the
+Data API with the OAuth token (or a plain `YOUTUBE_API_KEY`); watch time and shares need the
+`yt-analytics.readonly` scope, which `python run.py youtube-auth` now requests. Instagram uses the insights
+endpoint of the Instagram API with Instagram Login. One platform failing never blocks the other.
 
 ### Hashtags and captions
 
@@ -138,7 +176,7 @@ Over-tagging gets Shorts ignored, so fewer, specific tags win.
 ### Faster machines
 
 Public repos get GitHub's standard 4-core runners free and unlimited, and the renderer uses every core. To try
-another runner, set it in **Connect → Machine** (stored as the `RUNNER` repo variable). Blacksmith has 3,000
+another runner, set it in **Settings -> Machine** (stored as the `RUNNER` repo variable). Blacksmith has 3,000
 free minutes a month but only works for GitHub organizations, not personal repos: move the repo into a free
 org first, install Blacksmith there, then pick a label such as `blacksmith-4vcpu-ubuntu-2404`.
 
@@ -148,7 +186,7 @@ org first, install Blacksmith there, then pick a label such as `blacksmith-4vcpu
 1. Google Cloud Console: new project, enable *YouTube Data API v3*, OAuth consent screen (add yourself as a test
    user), then create an OAuth client of type **Desktop app** and download its JSON.
 2. On your computer: `python run.py youtube-auth client_secret.json`. Sign in with the channel's Google account.
-   It prints `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET` and `YOUTUBE_REFRESH_TOKEN`; paste them in **Connect**.
+   It prints `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET` and `YOUTUBE_REFRESH_TOKEN`; paste them in **Settings** on the Pages site (or save them as repo secrets).
 3. Until the project passes Google's **YouTube API compliance audit**, every API upload is locked to private.
    Submit the audit on day one. Default quota: 10,000 units/day, 1,600 per upload, so about 6 uploads/day.
    Publish the consent screen to *In production* or the refresh token expires after 7 days.
@@ -161,7 +199,7 @@ For the local dashboard instead, create a *Web application* client with redirect
 1. Make the account Professional (Creator or Business).
 2. Create a Meta app with *Instagram API with Instagram Login*, add the account as a tester, grant
    `instagram_business_basic` + `instagram_business_content_publish`, generate a long-lived token.
-3. Paste the token in **Connect** (the account ID is looked up for you). Tokens last about 60 days.
+3. Paste the token in **Settings** on the Pages site (the account ID is looked up for you). Tokens last about 60 days.
    Limit: 50 API posts per 24 hours.
 
 **From the command line**: `python run.py publish-video data/out/<id> --youtube --instagram --privacy public`
@@ -185,9 +223,11 @@ engine/   pipeline (spec -> mp4), renderer (Skia compositor), draw (all visuals)
 trends/   free trend feeds
 publish/  youtube.py, instagram.py
 app/      FastAPI server, SQLite (secrets encrypted), job queue, scheduler, dashboard (static/index.html)
-tools/    e2e.py (staged end-to-end flow), publish.py (post a folder), library.py (release notes)
+tools/    e2e.py (staged end-to-end flow), publish.py (post a folder), library.py (release notes),
+          store.py (Supabase client), autopilot.py (hourly decision), stats.py (daily YouTube/Instagram pull)
 ui/       GitHub Pages studio (index.html, app.js, styles.css, seal.js, vendor/)
-.github/  draft-video (make), publish-video (post from library), pages, ci
+.github/  draft-video (make, also hourly autopilot), publish-video (post from library), stats (daily), pages, ci
+supabase/ schema.sql (tables, RLS, realtime)
 examples/ Space Is Weird #1-3 (English), Leonids (Hindi), kids counting (Hindi), build_space_is_weird.py
 tests/    offline tests (engine + agents against a fake Claude)
 ```

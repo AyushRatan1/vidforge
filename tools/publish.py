@@ -20,6 +20,24 @@ def _load(out, name, default=None):
     return json.load(open(p, encoding="utf-8")) if os.path.exists(p) else default
 
 
+def _record(out: str, result: dict) -> None:
+    """Mirror published.json into the Supabase videos row (no-op without Supabase)."""
+    from tools import store
+    if not store.enabled():
+        return
+    rid = os.path.basename(os.path.normpath(out))
+    try:
+        row = store.video_from_folder(out, rid, _load(out, "options.json", None))
+        row.update(store.release_urls(rid))          # backfills library videos that predate Supabase
+        row["published"] = result
+        posted = bool((result.get("youtube") or {}).get("url") or (result.get("instagram") or {}).get("url"))
+        row["status"] = "posted" if posted else "ready"
+        row["stage"] = "Posted" if posted else "Post failed"
+        store.upsert("videos", row)
+    except Exception as e:
+        print(f"   (store: {e})", file=sys.stderr)
+
+
 def publish(out: str, youtube=False, instagram=False, privacy="public", publish_at=None, overrides=None) -> dict:
     youtube_on, instagram_on = bool(youtube), bool(instagram)
     spec = _load(out, "spec.json", {})
@@ -72,6 +90,7 @@ def publish(out: str, youtube=False, instagram=False, privacy="public", publish_
 
     with open(os.path.join(out, "published.json"), "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=1)
+    _record(out, result)
     for k in failed:
         print(f"   {k} failed: {result[k]['error']}", file=sys.stderr)
     if failed:

@@ -75,8 +75,19 @@ def strip_hashtags(text: str) -> str:
     return re.sub(r"(?<!\w)#[^\s#]+", "", text or "").replace("  ", " ").strip()
 
 
-def finalize(meta: dict, spec: dict, brand_tags=None, extra_tags=None) -> dict:
-    """Enforce platform limits no matter what the model returned."""
+def footage_line(footage) -> str:
+    """'Footage: Pexels, Pixabay' for the description, or '' when no stock clips were used."""
+    names = []
+    for f in footage or []:
+        p = {"pexels": "Pexels", "pixabay": "Pixabay"}.get((f or {}).get("provider"))
+        if p and p not in names:
+            names.append(p)
+    return "Footage: " + ", ".join(names) if names else ""
+
+
+def finalize(meta: dict, spec: dict, brand_tags=None, extra_tags=None, footage=None) -> dict:
+    """Enforce platform limits no matter what the model returned. `footage` is the render manifest's list of
+    stock clips; when given, a one-line credit is appended to the YouTube description."""
     brand = dedupe(brand_tags or [])
     extra = dedupe(extra_tags or [])
     yt = meta.get("youtube") or {}
@@ -91,6 +102,9 @@ def finalize(meta: dict, spec: dict, brand_tags=None, extra_tags=None) -> dict:
     desc = strip_hashtags(yt.get("description") or spec.get("description") or "")
     if AI_LINE.lower() not in desc.lower():
         desc += "\n\n" + AI_LINE
+    credit = footage_line(footage)
+    if credit and credit.lower() not in desc.lower():
+        desc += "\n" + credit
     desc = (desc + "\n\n" + " ".join(yt_tags)).strip()[:YT_DESC_MAX]
     tags, used = [], 0
     for t in [s.strip().lstrip("#") for s in (yt.get("tags") or spec.get("tags") or [])]:
@@ -110,7 +124,7 @@ def finalize(meta: dict, spec: dict, brand_tags=None, extra_tags=None) -> dict:
             "instagram": {"caption": cap, "hashtags": ig_tags}}
 
 
-def write_metadata(claude: Claude, spec: dict, facts: dict | None, channel: dict, extra_tags=None) -> dict:
+def write_metadata(claude: Claude, spec: dict, facts: dict | None, channel: dict, extra_tags=None, footage=None) -> dict:
     slim = {k: spec.get(k) for k in ("title", "description", "language", "made_for_kids", "aspect")}
     slim["script"] = [s.get("narration") for s in spec.get("scenes", [])]
     prompt = (f"CHANNEL\n{json.dumps({k: channel.get(k) for k in ('name', 'niche', 'language', 'audience', 'handle', 'brand_hashtags')}, ensure_ascii=False)}\n\n"
@@ -119,13 +133,13 @@ def write_metadata(claude: Claude, spec: dict, facts: dict | None, channel: dict
               + (f"ALWAYS INCLUDE THESE HASHTAGS: {' '.join(extra_tags)}\n\n" if extra_tags else "")
               + "Write the posting copy.")
     raw = claude.json_tool("metadata", SYSTEM, prompt, "submit_copy", "Submit the posting copy", SCHEMA, max_tokens=6000)
-    return finalize(raw, spec, channel.get("brand_hashtags"), extra_tags)
+    return finalize(raw, spec, channel.get("brand_hashtags"), extra_tags, footage=footage)
 
 
-def fallback_metadata(spec: dict, brand_tags=None, extra_tags=None) -> dict:
+def fallback_metadata(spec: dict, brand_tags=None, extra_tags=None, footage=None) -> dict:
     """No Claude available: derive copy from the spec."""
     base = {"youtube": {"title": spec.get("title", ""), "description": spec.get("description", ""),
                         "hashtags": spec.get("tags", [])[:3], "tags": spec.get("tags", [])},
             "instagram": {"caption": (spec.get("title", "") + "\n\n" + (spec.get("description") or "").split("\n\n")[0]),
                           "hashtags": spec.get("tags", [])[:3]}}
-    return finalize(base, spec, brand_tags, extra_tags)
+    return finalize(base, spec, brand_tags, extra_tags, footage=footage)

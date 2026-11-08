@@ -264,10 +264,29 @@ def bg_image(cv, bg, t, W, H, ctx):
         cv.drawRect(skia.Rect(0, 0, W, H), fill("#000000", float(bg.get("darken", 0.25))))
 
 
+def bg_footage(cv, bg, t, W, H, ctx):
+    """Real stock video. The moving picture itself is composited by ffmpeg under the Skia frames (see
+    Renderer.encode_scene), so for the live scene this draws only the tint rect and the canvas stays
+    transparent elsewhere. When the scene is drawn as the outgoing scene of a transition (ctx["as_prev"]),
+    or no clip was resolved, a still (`_last_frame`) or the fallback background stands in for the video."""
+    if not bg.get("_file"):
+        fb = bg.get("fallback") or {"type": "gradient", "colors": ["#1d2742", "#121a2e"]}
+        draw_background(cv, fb if fb.get("type") != "footage" else {"type": "gradient"}, t, W, H, ctx)
+    elif ctx.get("as_prev"):
+        img = load_image(bg.get("_last_frame", ""))
+        if img is not None:
+            _draw_cover(cv, img, W, H)
+        else:
+            cv.drawRect(skia.Rect(0, 0, W, H), fill("#000000"))
+    dim = float(bg.get("dim", 0.45))
+    if dim > 0:
+        cv.drawRect(skia.Rect(0, 0, W, H), fill(bg.get("tint", "#000000"), min(0.9, dim)))
+
+
 BACKGROUNDS = {
     "solid": bg_solid, "gradient": bg_gradient, "space": bg_space, "sky": bg_sky,
     "sunburst": bg_sunburst, "paper": bg_paper, "grid": bg_grid, "underwater": bg_underwater,
-    "image": bg_image,
+    "image": bg_image, "footage": bg_footage,
 }
 
 

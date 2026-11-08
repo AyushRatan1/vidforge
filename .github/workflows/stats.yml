@@ -1,0 +1,40 @@
+name: stats
+run-name: "stats ${{ github.run_id }}"
+
+# Daily: pulls views, likes, comments (and shares, saves, reach, watch time where the APIs give them) for every
+# posted video plus channel totals from YouTube and Instagram into the Supabase stats and channel_stats tables.
+on:
+  schedule:
+    - cron: "15 2 * * *"     # 07:45 IST
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: stats
+  cancel-in-progress: false
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+  YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+  YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+  YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+  YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+  IG_USER_ID: ${{ secrets.IG_USER_ID }}
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install tools
+        run: pip install -q requests google-api-python-client google-auth-oauthlib
+      - name: Pull stats
+        run: python tools/stats.py

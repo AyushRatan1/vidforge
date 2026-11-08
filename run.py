@@ -8,6 +8,10 @@
   python run.py validate SPEC.json
   python run.py trends [--niche space]     print raw India trend signals (no Claude)
   python run.py e2e [--language en]        live end-to-end test with your Claude key
+  python run.py autopilot                  decide whether a scheduled video is due (Supabase autopilot row)
+  python run.py stats                      pull YouTube and Instagram numbers into Supabase
+
+With SUPABASE_URL and SUPABASE_SERVICE_KEY set, keys come from the Supabase settings table; env vars are the fallback.
 """
 from __future__ import annotations
 
@@ -97,7 +101,16 @@ def main():
     ya.add_argument("client_secret", help="OAuth client JSON (type: Desktop app) from Google Cloud Console")
     t = sub.add_parser("trends")
     t.add_argument("--niche", default="general")
+    sub.add_parser("autopilot", help="scheduled run: decide whether a video is due and create its job (Supabase)")
+    sub.add_parser("stats", help="pull YouTube and Instagram stats for every posted video into Supabase")
     a = ap.parse_args()
+
+    if a.cmd in ("e2e", "publish-video", "trends", "stats"):
+        from tools import store
+        try:
+            store.load_settings_into_env()      # no-op without SUPABASE_URL / SUPABASE_SERVICE_KEY
+        except Exception as e:
+            print(f"warning: could not load settings from Supabase: {e}", file=sys.stderr)
 
     if a.cmd == "setup":
         return setup(a.fonts_only)
@@ -118,6 +131,12 @@ def main():
         return
     if a.cmd == "youtube-auth":
         return youtube_auth(a.client_secret)
+    if a.cmd == "autopilot":
+        from tools.autopilot import main as autopilot_main
+        sys.exit(autopilot_main([]))
+    if a.cmd == "stats":
+        from tools.stats import run as stats_run
+        sys.exit(stats_run())
     if a.cmd == "trends":
         from app import db
         from trends.sources import gather

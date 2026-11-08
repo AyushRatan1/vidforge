@@ -219,7 +219,14 @@ class Renderer:
             cv.drawRRect(skia.RRect.MakeRectXY(rect, rad, rad), D.stroke(el["border"], W * 0.008))
 
     # ---------------------------------------------------------- scenes
-    def draw_scene(self, cv, i, t, gframe):
+    def footage_bg(self, i):
+        """The scene's background dict when it is resolved stock footage (has a prepared `_file`), else None."""
+        bg = self.spec["scenes"][i].get("background") or {}
+        if bg.get("type") == "footage" and bg.get("_file") and os.path.exists(bg["_file"]):
+            return bg
+        return None
+
+    def draw_scene(self, cv, i, t, gframe, as_prev=False):
         sc = self.spec["scenes"][i]
         seg = self.tl[i]
         W, H = self.W, self.H
@@ -235,7 +242,8 @@ class Renderer:
         cv.translate(-W / 2 + pan[0] * W * t / max(0.1, dur), -H / 2 + pan[1] * H * t / max(0.1, dur))
         if cam.get("shake"):
             cv.translate(math.sin(t * 50) * W * 0.004, math.cos(t * 41) * W * 0.004)
-        D.draw_background(cv, sc.get("background") or self.spec.get("background") or {"type": "gradient"}, t, W, H, {"scene_dur": dur})
+        D.draw_background(cv, sc.get("background") or self.spec.get("background") or {"type": "gradient"}, t, W, H,
+                          {"scene_dur": dur, "as_prev": as_prev})
         for el in sc.get("elements", []) or []:
             if not el.get("overlay"):
                 self._element(cv, el, t, dur, amp)
@@ -253,10 +261,19 @@ class Renderer:
         trans = (self.spec["scenes"][i].get("transition") or self.spec.get("transition", "fade")) if i > 0 else "none"
         T = float(self.spec.get("transition_dur", 0.35))
         W, H = self.W, self.H
-        if i > 0 and trans != "none" and t < T:
+        if i > 0 and trans != "none" and t < T and self.footage_bg(i) is not None:
+            # the live footage sits under the Skia layer, so the outgoing scene must fade out instead of being
+            # painted opaque under the incoming one: every transition becomes a cross-fade on footage scenes
             u = ease("in_out", t / T)
             prev = self.tl[i - 1]
-            self.draw_scene(cv, i - 1, prev["dur"] + t, gframe)
+            cv.saveLayerAlpha(None, int(255 * (1 - u)))
+            self.draw_scene(cv, i - 1, prev["dur"] + t, gframe, as_prev=True)
+            cv.restore()
+            self.draw_scene(cv, i, t, gframe)
+        elif i > 0 and trans != "none" and t < T:
+            u = ease("in_out", t / T)
+            prev = self.tl[i - 1]
+            self.draw_scene(cv, i - 1, prev["dur"] + t, gframe, as_prev=True)
             if trans == "fade":
                 cv.saveLayerAlpha(None, int(255 * u))
                 self.draw_scene(cv, i, t, gframe)
@@ -312,6 +329,18 @@ class Renderer:
         cv.clear(skia.ColorBLACK)
         lf = int(round(t * self.fps))
         lf = max(0, min(self.tl[i]["frames"] - 1, lf))
+        fbg = self.footage_bg(i)
+        if fbg is not None:
+            # composite the real footage frame under the drawing so QA judges true readability
+            from .footage import extract_frame
+            png = extract_frame(fbg["_file"], lf / self.fps, path + ".bg.png")
+            img = skia.Image.open(png) if png else None
+            if img is not None:
+                D._draw_cover(cv, img, self.W, self.H)
+            try:
+                os.remove(path + ".bg.png")
+            except OSError:
+                pass
         self.draw_frame(cv, i, lf)
         surf.flushAndSubmit() if hasattr(surf, "flushAndSubmit") else None
         img = skia.Image.fromarray(arr, colorType=skia.kRGBA_8888_ColorType)
@@ -323,9 +352,23 @@ class Renderer:
         seg = self.tl[i]
         W, H = self.W, self.H
         tmp = path[:-4] + ".part.mp4"
-        cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}",
-               "-r", str(self.fps), "-i", "-", "-c:v", "libx264", "-preset", preset, "-crf", str(crf),
-               "-pix_fmt", "yuv420p", "-r", str(self.fps), "-movflags", "+faststart"]
+        fbg = self.footage_bg(i)
+        pipe = ["-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", str(self.fps), "-i", "-"]
+        if fbg is None:
+            cmd = ["ffmpeg", "-y", "-loglevel", "error"] + pipe + [
+                   "-c:v", "libx264", "-preset", preset, "-crf", str(crf),
+                   "-pix_fmt", "yuv420p", "-r", str(self.fps), "-movflags", "+faststart"]
+        else:
+            # input 0: prepared footage (already WxH, fps, long enough); input 1: the transparent Skia frames.
+            # Skia hands over premultiplied RGBA, so unpremultiply before the overlay blends it.
+            blur = float(fbg.get("blur", 0) or 0)
+            bgf = (f"boxblur={blur:.1f}:1," if blur > 0 else "") + "format=yuv420p"
+            fc = (f"[0:v]{bgf}[bg];[1:v]unpremultiply=inplace=1[fg];"
+                  "[bg][fg]overlay=0:0:format=auto:shortest=1:eof_action=endall,format=yuv420p[v]")
+            cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", fbg["_file"]] + pipe + [
+                   "-filter_complex", fc, "-map", "[v]", "-shortest", "-frames:v", str(seg["frames"]),
+                   "-c:v", "libx264", "-preset", preset, "-crf", str(crf),
+                   "-pix_fmt", "yuv420p", "-r", str(self.fps), "-movflags", "+faststart"]
         if threads:
             cmd += ["-threads", str(threads)]
         cmd.append(tmp)
@@ -333,9 +376,10 @@ class Renderer:
         arr = np.zeros((H, W, 4), dtype=np.uint8)
         surf = skia.Surface(arr, colorType=skia.kRGBA_8888_ColorType, alphaType=skia.kPremul_AlphaType)
         cv = surf.getCanvas()
+        clear = skia.ColorBLACK if fbg is None else skia.ColorTRANSPARENT
         try:
             for f in range(seg["frames"]):
-                cv.clear(skia.ColorBLACK)
+                cv.clear(clear)
                 self.draw_frame(cv, i, f)
                 proc.stdin.write(arr.tobytes())
         finally:

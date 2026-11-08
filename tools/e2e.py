@@ -12,6 +12,11 @@ Options (JSON, every value optional, custom values welcome):
             kids_story | <describe your own format>
   topic, notes (extra instructions), writer (model id), voice (Kokoro voice id), music (mood), aspect (9:16|16:9|1:1),
   length (seconds), hashtags (list or space-separated string), handle, publish {youtube, instagram, privacy, publish_at}
+  job_id    Supabase jobs.id to keep updated while the stages run (set by the web UI or autopilot)
+  source    "manual" (default) | "autopilot": recorded on the videos row
+
+When SUPABASE_URL and SUPABASE_SERVICE_KEY are set, settings are loaded from the settings table first and the
+videos/jobs rows are kept current; without them every store call is a no-op.
 """
 from __future__ import annotations
 
@@ -31,9 +36,12 @@ from app import db
 from app.jobs import PRICES, channel_overrides
 from engine.audio import DEFAULT_VOICE
 from engine.pipeline import render_episode
+from tools import store
 from trends.sources import NICHE_SOURCES, gather
 
 STAGES = ["scout", "research", "write", "qa", "render", "package", "publish"]
+STAGE_LABELS = {"scout": "Find trend", "research": "Research", "write": "Write and direct", "qa": "Review frames",
+                "render": "Render video", "package": "Write captions and hashtags", "publish": "Post"}
 
 BRAND = {"space": "#SpaceIsWeird", "kids": "#VidForgeKids"}
 
@@ -75,6 +83,8 @@ def parse_options(raw) -> dict:
     o.setdefault("niche", "space")
     o.setdefault("format", "auto")
     o["publish"] = o.get("publish") or {}
+    o["source"] = o.get("source") or "manual"
+    o["job_id"] = str(o["job_id"]) if o.get("job_id") else ""
     return o
 
 
@@ -126,6 +136,11 @@ def _client(writer_model: str = "") -> Claude:
     if not key:
         raise SystemExit("ANTHROPIC_API_KEY is not set. Add it as a repo secret (Actions) or env var.")
     roles = dict(db.get_setting("models", {}) or {})
+    if not roles and os.environ.get("VF_MODELS"):      # Supabase settings.models, loaded by store.load_settings_into_env
+        try:
+            roles = dict(json.loads(os.environ["VF_MODELS"]) or {})
+        except ValueError:
+            roles = {}
     if writer_model:
         roles["writer"] = writer_model
     return Claude(key, roles)
@@ -283,7 +298,48 @@ RUNNERS = {"scout": stage_scout, "research": stage_research, "write": stage_writ
            "render": stage_render, "package": stage_package, "publish": stage_publish}
 
 
+# ------------------------------------------------------------------ Supabase bookkeeping (no-ops when not configured)
+def _track(fn, *args, **kw):
+    """Run a store call without ever failing the video over bookkeeping."""
+    if not store.enabled():
+        return None
+    try:
+        return fn(*args, **kw)
+    except Exception as e:
+        print(f"   (store: {e})", flush=True)
+        return None
+
+
+def track_stage_start(out: str, stage: str, o: dict) -> None:
+    rid = os.path.basename(os.path.normpath(out))
+    label = STAGE_LABELS.get(stage, stage)
+    run_id = os.environ.get("GITHUB_RUN_ID")
+    fields = {"status": "making", "stage": label, "options": o, "source": o.get("source") or "manual"}
+    if run_id:
+        fields["run_id"] = run_id
+    if o.get("topic"):
+        fields["topic"] = o["topic"]
+    fields.update({k: o[k] for k in ("language", "niche") if o.get(k)})
+    _track(store.video_upsert, rid, **fields)
+    _track(store.job_update, o.get("job_id"), status="running", stage=label, video_id=rid, run_id=run_id,
+           run_url=store.run_url())
+
+
+def track_stage_end(out: str, stage: str, o: dict) -> None:
+    rid = os.path.basename(os.path.normpath(out))
+    if stage == "package":
+        row = store.video_from_folder(out, rid, o)
+        row.update({"status": "ready", "stage": "Saved to library", "source": o.get("source") or "manual",
+                    **store.release_urls(rid)})
+        _track(store.upsert, "videos", row)
+        if (o.get("source") or "") == "autopilot":
+            from tools import autopilot
+            _track(autopilot.mark_topic, rid, "done")
+    # publish: tools.publish.publish() mirrors published.json into the row itself (also on partial failure)
+
+
 def run_e2e(niche="", language="", topic="", fmt="", writer_model="", stage="all", out="", options=None):
+    _track(store.load_settings_into_env)
     o = parse_options(options or "{}")
     for k, v in (("niche", niche), ("language", language), ("topic", topic), ("format", fmt), ("writer", writer_model)):
         if v:
@@ -295,6 +351,8 @@ def run_e2e(niche="", language="", topic="", fmt="", writer_model="", stage="all
     for s in stages:
         t = time.time()
         print(f"\n== {s}", flush=True)
+        track_stage_start(out, s, o)
         RUNNERS[s](out, o, ch)
+        track_stage_end(out, s, o)
         print(f"   ({time.time() - t:.0f}s)", flush=True)
     return out
