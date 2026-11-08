@@ -23,7 +23,9 @@ permissions:
   contents: write
 
 concurrency:
-  group: draft-video        # one video at a time; extra requests wait in the queue
+  # one group per video: several videos can render side by side (GitHub only keeps ONE pending run per group and
+  # cancels the rest, so a shared group would silently drop videos when more than two are requested at once)
+  group: draft-video-${{ inputs.request_id || github.run_id }}
   cancel-in-progress: false
 
 env:
