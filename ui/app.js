@@ -1,191 +1,225 @@
-// VidForge web app: sign-in, shell, routing. Pages live in pages/*.js and talk to the data layer only.
+// VidForge web app: connection, start page, app shell and hash routing (#/, #/dashboard, #/create, #/library, #/settings).
+// Pages live in pages/*.js and talk to the data layer (db.js) only.
 import {connectSupabase, connectDemo, DbError} from "./db.js";
 import {DEFAULTS} from "./config.js";
-import {h, clear, icon, toast, field} from "./ui.js";
+import {h, clear, Button, Avatar, Card, toast, icon} from "./components.js";
+import {startPage, loadSample, brand} from "./pages/start.js";
 import {dashboardPage} from "./pages/dashboard.js";
 import {createPage} from "./pages/create.js";
 import {libraryPage} from "./pages/library.js";
 import {settingsPage} from "./pages/settings.js";
 
-const README = "https://github.com/ayushratan1/vidforge#readme";
 const params = new URLSearchParams(location.search);
 export const DEMO = params.has("demo");
 const root = document.getElementById("root");
 
 const PAGES = [
-  {id: "dashboard", title: "Dashboard", icon: "grid", make: dashboardPage},
-  {id: "create", title: "Create", icon: "plusCircle", make: createPage},
+  {id: "dashboard", title: "Dashboard", icon: "layout", make: dashboardPage},
+  {id: "create", title: "Create", icon: "sparkles", make: createPage},
   {id: "library", title: "Library", icon: "library", make: libraryPage},
-  {id: "settings", title: "Settings", icon: "gear", make: settingsPage},
+  {id: "settings", title: "Settings", icon: "settings", make: settingsPage},
 ];
 
-const brand = () => h("div", {class: "brand"}, h("span", {class: "brand-mark"}, icon("bolt")), h("div", {}, h("div", {class: "brand-name"}, "VidForge"), h("div", {class: "brand-sub"}, DEMO ? "Demo with sample data" : "Short videos on autopilot")));
+// ------------------------------------------------------------------ routing
+export function parseHash() { const s = location.hash.replace(/^#\/?/, ""); const [page, ...rest] = s.split("/"); return {page: page || "", arg: rest.length ? rest.join("/") : undefined}; }
+export function navigate(page, arg) { const hash = "#/" + (page || "") + (arg ? "/" + arg : ""); if (location.hash !== hash) location.hash = hash; else window.dispatchEvent(new HashChangeEvent("hashchange")); }
 
-// ------------------------------------------------------------------ sign in
+// ------------------------------------------------------------------ stored project
 function readProject() { try { return JSON.parse(localStorage.getItem("vf.sb") || "null"); } catch { return null; } }
 function saveProject(p) { try { localStorage.setItem("vf.sb", JSON.stringify(p)); } catch {} }
 export function forgetProject() { try { localStorage.removeItem("vf.sb"); for (const k of Object.keys(localStorage)) if (k.startsWith("vf.auth")) localStorage.removeItem(k); } catch {} }
 
-function projectForm(onSubmit, prefill) {
-  const err = h("div", {class: "error", role: "alert"});
-  const url = h("input", {class: "input", name: "url", type: "url", required: true, placeholder: "https://xxxx.supabase.co", autocomplete: "off", value: prefill.url || ""});
-  const key = h("input", {class: "input mono", name: "key", required: true, placeholder: "sb_publishable_... or eyJhbGciOi...", autocomplete: "off", value: prefill.key || ""});
-  const btn = h("button", {class: "btn", type: "button", onClick: async () => {
-    err.textContent = ""; btn.disabled = true;
-    try { await onSubmit({url: url.value.trim(), key: key.value.trim()}); }
-    catch (e) { err.textContent = (e.message || "Something went wrong.") + (e.hint ? " " + e.hint : ""); }
-    finally { btn.disabled = false; }
-  }}, "Use this project");
-  return h("div", {class: "form", style: {gap: "12px", marginTop: "12px"}},
-    h("p", {class: "footnote secondary", style: {margin: 0}}, "Both values are on the Supabase dashboard under Project Settings, API. They are kept on this device only."),
-    field("Project URL", url), field("Publishable key", key), err, btn,
-    h("details", {}, h("summary", {}, "Need a project? Steps"),
-      h("ol", {}, h("li", {}, "Create a free project at supabase.com."),
-        h("li", {}, "Open the SQL editor and run ", h("code", {}, "supabase/schema.sql"), " from the repository."),
-        h("li", {}, "Add your team in Authentication, Users (email and password)."),
-        h("li", {}, "Add the project URL and service key as GitHub secrets ", h("code", {}, "SUPABASE_URL"), " and ", h("code", {}, "SUPABASE_SERVICE_KEY"), "."),
-        h("li", {}, h("a", {href: README, target: "_blank", rel: "noopener"}, "Full guide in the README")))));
-}
-
-function signInCard(project, onSignIn, onProject) {
-  const err = h("div", {class: "error", role: "alert"});
-  const busy = h("span", {class: "spin", hidden: true});
-  const email = h("input", {class: "input", name: "email", type: "email", required: true, placeholder: "you@team.com", autocomplete: "username"});
-  const password = h("input", {class: "input", name: "password", type: "password", required: true, placeholder: "Password", autocomplete: "current-password"});
-  const submit = h("button", {class: "btn primary lg", type: "submit"}, busy, "Sign in");
-  const form = h("form", {class: "signin", onSubmit: async ev => {
-    ev.preventDefault(); err.textContent = ""; busy.hidden = false; submit.disabled = true;
-    try { await onSignIn({email: email.value.trim(), password: password.value}); }
-    catch (e) { err.textContent = (e.message || "Something went wrong.") + (e.hint ? " " + e.hint : ""); }
-    finally { busy.hidden = true; submit.disabled = false; }
-  }});
-  const host = (() => { try { return new URL(project.url).host; } catch { return project.url; } })();
-  form.append(brand(), h("h1", {}, "Sign in"),
-    h("p", {class: "subhead secondary", style: {margin: 0}}, "Use the email and password your team set up. You stay signed in on this device."),
-    field("Email", email), field("Password", password), err, submit,
-    h("details", {}, h("summary", {}, "Use a different project"),
-      h("p", {class: "footnote tertiary", style: {margin: "8px 0 0"}}, "Connected to ", h("span", {class: "mono"}, host), ". Enter another project to use it on this device instead."),
-      projectForm(onProject, project)));
-  return h("div", {class: "signin-wrap"}, form);
-}
-
-async function connect() {
-  if (DEMO && params.has("signin")) { clear(root).append(signInCard({url: DEFAULTS.supabaseUrl}, async () => { throw new DbError("Email or password is wrong.", "Check both, or ask an admin to reset the password in Supabase."); }, async () => {})); return new Promise(() => {}); }
-  if (DEMO) return connectDemo();
-  const stored = readProject();
-  const project = stored || {url: DEFAULTS.supabaseUrl, key: DEFAULTS.supabaseAnonKey};
-  const db = await connectSupabase(project.url, project.key);
-  if (!(await db.getSession())) {
-    await new Promise(resolve => {
-      clear(root).append(signInCard(project,
-        async ({email, password}) => {
-          try { await db.signIn(email, password); }
-          catch (e) { throw new DbError(/invalid/i.test(e.message) ? "Email or password is wrong." : e.message, /invalid/i.test(e.message) ? "Check both, or ask an admin to reset the password in Supabase." : ""); }
-          resolve();
-        },
-        async ({url, key}) => {
-          if (!/^https?:\/\//.test(url)) throw new DbError("That does not look like a project URL.", "It starts with https:// and ends with .supabase.co.");
-          const test = await fetch(url.replace(/\/$/, "") + "/rest/v1/", {headers: {apikey: key}}).catch(() => null);
-          if (!test || test.status === 401 || test.status === 403) throw new DbError("Supabase did not accept that key.", "Copy the publishable (anon) key, not the service key.");
-          saveProject({url: url.replace(/\/$/, ""), key});
-          location.reload();
-        }));
-    });
-  }
-  db.onAuth(s => { if (!s) location.reload(); });
-  return db;
-}
-
-// ------------------------------------------------------------------ shell
+// ------------------------------------------------------------------ main
 async function main() {
+  const project = readProject() || {url: DEFAULTS.supabaseUrl, key: DEFAULTS.supabaseAnonKey};
   let db;
-  try { db = await connect(); }
-  catch (e) {
-    const cdn = /dynamically imported module/i.test(e.message || "");
-    clear(root).append(h("div", {class: "signin-wrap"}, h("div", {class: "signin"}, brand(), h("h1", {}, "Could not connect"),
-      h("p", {class: "secondary subhead", style: {margin: 0}}, cdn ? "The Supabase client did not load from cdn.jsdelivr.net. Check your connection or any blocker, then reload." : (e.message + (e.hint ? " " + e.hint : ""))),
-      h("button", {class: "btn primary", onClick: () => location.reload()}, "Reload"),
-      cdn ? null : h("button", {class: "btn plain sm", onClick: () => { forgetProject(); location.reload(); }}, "Forget this project and start over"))));
-    return;
+  try { db = DEMO ? await connectDemo() : await connectSupabase(project.url, project.key); }
+  catch (e) { return connectError(e); }
+
+  const forceSignin = DEMO && params.has("signin");
+  let session = forceSignin ? null : await db.getSession();
+  const sample = await loadSample();
+
+  const startEl = h("div", {id: "start"});
+  const appEl = h("div", {id: "app-root", hidden: true});
+  root.append(startEl, appEl);
+  let shell = null;
+
+  const onSignIn = async ({email, password}) => {
+    if (forceSignin) throw new DbError("Email or password is wrong.", "Check both, or ask an admin to reset the password in Supabase.");
+    try { await db.signIn(email, password); }
+    catch (e) { throw new DbError(/invalid/i.test(e.message) ? "Email or password is wrong." : e.message, /invalid/i.test(e.message) ? "Check both, or ask an admin to reset the password in Supabase." : ""); }
+    session = await db.getSession();
+    navigate("dashboard");
+  };
+  const onProject = async ({url, key}) => {
+    if (!/^https?:\/\//.test(url)) throw new DbError("That does not look like a project URL.", "It starts with https:// and ends with .supabase.co.");
+    const test = await fetch(url.replace(/\/$/, "") + "/rest/v1/", {headers: {apikey: key}}).catch(() => null);
+    if (!test || test.status === 401 || test.status === 403) throw new DbError("Supabase did not accept that key.", "Copy the publishable (anon) key, not the service key.");
+    saveProject({url: url.replace(/\/$/, ""), key});
+    location.reload();
+  };
+  const onOpen = () => navigate("dashboard");
+
+  function renderStart() {
+    clear(startEl).append(startPage({demo: DEMO, signedIn: !!session && !forceSignin, project, sample, onSignIn, onProject, onOpen}));
+    document.title = "VidForge";
   }
 
-  const user = await db.user();
-  const ctx = {db, user, demo: DEMO, go: null, settings: await db.getSettings().catch(() => ({}))};
+  async function route() {
+    const {page, arg} = parseHash();
+    const wantsApp = PAGES.some(p => p.id === page);
+    if (!wantsApp || !session) {
+      if (wantsApp && !session) { history.replaceState(null, "", location.pathname + location.search + "#/"); }
+      appEl.hidden = true; startEl.hidden = false;
+      if (!startEl.firstChild) renderStart();
+      if (wantsApp && !session) setTimeout(() => document.querySelector("#signin")?.scrollIntoView({block: "start"}), 50);
+      return;
+    }
+    startEl.hidden = true; appEl.hidden = false;
+    shell ||= await buildShell(db, session, appEl);
+    await shell.go(page, arg);
+  }
 
-  const navItem = p => h("button", {class: "nav-item", type: "button", "data-page": p.id, onClick: () => go(p.id)}, icon(p.icon), h("span", {}, p.title));
-  const sidebar = h("nav", {class: "sidebar", "aria-label": "Main"}, brand(), ...PAGES.map(navItem),
-    h("div", {class: "sidebar-foot"}, h("span", {class: "who"}, user?.email || ""), h("span", {}, DEMO ? "Nothing here is saved" : "Stats refresh daily at 07:45 IST")));
+  window.addEventListener("hashchange", route);
+  if (!location.hash || location.hash === "#") { if (session && !DEMO) history.replaceState(null, "", location.pathname + location.search + "#/dashboard"); else history.replaceState(null, "", location.pathname + location.search + "#/"); }
+  else if (PAGES.some(p => location.hash === "#" + p.id || location.hash.startsWith("#" + p.id + "/"))) history.replaceState(null, "", location.pathname + location.search + "#/" + location.hash.slice(1)); // legacy #dashboard links
+  await route();
+
+  if (!DEMO) db.onAuth(s => { if (!s && session) { session = null; location.hash = "#/"; location.reload(); } });
+  window.addEventListener("unhandledrejection", ev => { const e = ev.reason; if (e) toast((e.message || "Something went wrong.") + (e.hint ? " " + e.hint : ""), "err"); });
+  if (DEMO) window.__vf = {db, navigate, get shell() { return shell; }};
+  if (DEMO && params.has("selftest")) selfTest(db);
+}
+
+function connectError(e) {
+  const cdn = /dynamically imported module/i.test(e.message || "");
+  clear(root).append(h("div", {class: "start"}, h("div", {class: "aurora", "aria-hidden": "true"}), h("div", {class: "section", style: {maxWidth: "520px"}},
+    Card({class: "signin", title: "Could not connect", body: h("div", {class: "stack"}, brand(DEMO),
+      h("p", {class: "secondary"}, cdn ? "The Supabase client did not load from cdn.jsdelivr.net. Check your connection or any blocker, then reload." : (e.message + (e.hint ? " " + e.hint : ""))),
+      Button({label: "Reload", variant: "primary", onClick: () => location.reload()}),
+      cdn ? null : Button({label: "Forget this project and start over", variant: "ghost", onClick: () => { forgetProject(); location.reload(); }}))}))));
+}
+
+// ------------------------------------------------------------------ app shell
+async function buildShell(db, session, host) {
+  const user = session?.user || (await db.user());
+  const ctx = {db, user, demo: DEMO, go: (id, arg) => navigate(id, arg), settings: await db.getSettings().catch(() => ({})), videosCache: []};
+
+  let collapsed = false;
+  try { collapsed = localStorage.getItem("vf.rail") === "1"; } catch {}
+  const navItem = p => h("a", {class: "nav-item", href: "#/" + p.id, "data-page": p.id, title: p.title}, icon(p.icon, {size: 20}), h("span", {}, p.title));
+  const railToggle = Button({variant: "icon", icon: collapsed ? "chevronRight" : "chevronLeft", ariaLabel: collapsed ? "Expand sidebar" : "Collapse sidebar", cls: "rail-toggle", onClick: () => { collapsed = !collapsed; app.classList.toggle("rail", collapsed); railToggle.setAttribute("aria-label", collapsed ? "Expand sidebar" : "Collapse sidebar"); clear(railToggle).append(icon(collapsed ? "chevronRight" : "chevronLeft", {size: 18})); try { localStorage.setItem("vf.rail", collapsed ? "1" : "0"); } catch {} }});
+  const sidebar = h("aside", {class: "sidebar"}, brand(DEMO),
+    h("nav", {class: "sidebar-nav", "aria-label": "Main"}, ...PAGES.map(navItem)),
+    h("div", {class: "sidebar-foot"}, h("p", {class: "sidebar-note"}, DEMO ? "Demo mode. Nothing here is saved." : "Stats refresh daily at 07:45 IST."), railToggle));
   const tabbar = h("nav", {class: "tabbar", "aria-label": "Main"}, ...PAGES.map(navItem));
-  const main = h("main", {class: "main"});
-  const toolbarTitle = h("h1", {class: "large-title"});
-  const toolbarActions = h("div", {class: "toolbar-actions"});
-  const toolbar = h("header", {class: "toolbar"}, toolbarTitle, toolbarActions);
-  main.append(toolbar);
-  clear(root).append(h("div", {class: "app"}, sidebar, main), tabbar);
+
+  // top bar
+  const title = h("h1", {class: "topbar-title", id: "page-title"});
+  const pageActions = h("div", {class: "topbar-actions", id: "page-actions"});
+  const search = globalSearch(ctx);
+  const makeBtn = Button({label: "Make video", variant: "primary", icon: "sparkles", ariaLabel: "Make video", onClick: () => navigate("create")});
+  const menuPanel = h("div", {class: "menu-panel", role: "menu", "data-open": "false"},
+    h("div", {class: "menu-head"}, h("strong", {}, user?.email?.split("@")[0] || "Team"), h("span", {class: "micro"}, user?.email || "")),
+    h("button", {class: "menu-item", role: "menuitem", onClick: () => { closeMenu(); navigate("settings"); }}, icon("settings", {size: 18}), "Settings"),
+    h("a", {class: "menu-item", role: "menuitem", href: "https://github.com/ayushratan1/vidforge#readme", target: "_blank", rel: "noopener"}, icon("bookOpen", {size: 18}), "Setup guide"),
+    h("button", {class: "menu-item", role: "menuitem", onClick: () => { closeMenu(); navigate(""); }}, icon("zap", {size: 18}), "Start page"),
+    h("button", {class: "menu-item danger", role: "menuitem", onClick: async () => { await db.signOut(); location.hash = "#/"; location.reload(); }}, icon("logout", {size: 18}), "Sign out"));
+  const avatarBtn = h("button", {class: "btn btn-icon", type: "button", "aria-haspopup": "menu", "aria-expanded": "false", "aria-label": "Account menu", onClick: () => { const open = menuPanel.dataset.open !== "true"; menuPanel.dataset.open = String(open); avatarBtn.setAttribute("aria-expanded", String(open)); }}, Avatar(user?.email || "demo", {size: 32}));
+  const closeMenu = () => { menuPanel.dataset.open = "false"; avatarBtn.setAttribute("aria-expanded", "false"); };
+  document.addEventListener("click", e => { if (!menu.contains(e.target)) closeMenu(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
+  const menu = h("div", {class: "menu"}, avatarBtn, menuPanel);
+  const topbar = h("header", {class: "topbar"}, title, pageActions, search, makeBtn, menu);
+
+  const main = h("main", {class: "main", id: "main", tabIndex: -1}, topbar);
+  const app = h("div", {class: "app" + (collapsed ? " rail" : "")}, sidebar, main);
+  clear(host).append(app, tabbar);
 
   const pages = {};
-  for (const p of PAGES) { const el = h("section", {class: "page", id: "page-" + p.id, "aria-labelledby": "title"}); main.append(el); pages[p.id] = {def: p, el, inst: null}; }
+  for (const p of PAGES) { const el = h("section", {class: "page", id: "page-" + p.id, "aria-labelledby": "page-title"}); main.append(el); pages[p.id] = {def: p, el, inst: null}; }
 
+  let currentId = null;
   async function go(id, arg) {
-    const page = pages[id] ? pages[id] : pages.dashboard;
+    const page = pages[id] || pages.dashboard;
     for (const [k, p] of Object.entries(pages)) p.el.classList.toggle("active", k === page.def.id);
-    for (const b of document.querySelectorAll(".nav-item")) b.toggleAttribute("aria-current", false), b.dataset.page === page.def.id ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current");
-    toolbarTitle.textContent = page.def.title;
-    clear(toolbarActions);
-    const hash = "#" + page.def.id + (arg ? "/" + arg : "");
-    if (location.hash !== hash) history.replaceState(null, "", location.pathname + location.search + hash);
-    if (!page.inst) { page.inst = page.def.make(ctx, page.el, toolbarActions); }
-    else page.inst.mount?.(toolbarActions);
+    for (const a of document.querySelectorAll(".nav-item")) a.dataset.page === page.def.id ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current");
+    title.textContent = page.def.title;
+    document.title = page.def.title + " · VidForge";
+    clear(pageActions);
+    if (!page.inst) page.inst = page.def.make(ctx, page.el, pageActions);
+    else page.inst.mount?.(pageActions);
     await page.inst.show?.(arg);
-    window.scrollTo({top: 0});
+    if (currentId !== page.def.id) { window.scrollTo({top: 0}); main.focus({preventScroll: true}); }
+    currentId = page.def.id;
   }
-  ctx.go = go;
-  window.addEventListener("hashchange", () => { const [id, arg] = location.hash.slice(1).split("/"); go(id, arg); });
-  const [id, arg] = (location.hash || "#dashboard").slice(1).split("/");
-  go(id, arg);
-
-  window.addEventListener("unhandledrejection", ev => { const e = ev.reason; if (e) toast((e.message || "Something went wrong.") + (e.hint ? " " + e.hint : ""), "err"); });
-  if (DEMO) window.__vf = ctx;
-  if (DEMO && params.has("selftest")) selfTest(ctx, go);
+  return {go, ctx};
 }
 
-// ?demo&selftest walks the main flows against the demo data layer and logs "SELFTEST OK" or the first failure.
-async function selfTest(ctx, go) {
+function globalSearch(ctx) {
+  const input = h("input", {class: "input", type: "search", placeholder: "Search videos", "aria-label": "Search videos", autocomplete: "off"});
+  const results = h("div", {class: "search-results", role: "listbox", "aria-label": "Results"});
+  const wrap = h("div", {class: "search"}, icon("search", {size: 18}), input, h("kbd", {}, "/"), results);
+  let videos = null;
+  const run = async () => {
+    const q = input.value.trim().toLowerCase();
+    clear(results);
+    if (!q) return;
+    videos ||= await ctx.db.listVideos().catch(() => []);
+    const hits = videos.filter(v => `${v.title || ""} ${v.topic || ""} ${v.niche || ""}`.toLowerCase().includes(q)).slice(0, 8);
+    if (!hits.length) { results.append(h("div", {class: "search-hit", role: "option"}, h("span", {class: "search-hit-title secondary"}, "No videos match"))); return; }
+    for (const v of hits) results.append(h("button", {class: "search-hit", role: "option", type: "button", onClick: () => { input.value = ""; clear(results); navigate("library", v.id); }},
+      v.thumb_url ? h("img", {class: "thumb-xs", src: v.thumb_url, alt: ""}) : h("span", {class: "thumb-xs"}), h("span", {class: "search-hit-title"}, v.title || v.topic || v.id), h("span", {class: "micro"}, v.status)));
+  };
+  input.addEventListener("input", run);
+  input.addEventListener("focus", () => { videos = null; run(); });
+  document.addEventListener("click", e => { if (!wrap.contains(e.target)) clear(results); });
+  document.addEventListener("keydown", e => { if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName) && document.getElementById("app-root") && !document.getElementById("app-root").hidden) { e.preventDefault(); input.focus(); } if (e.key === "Escape") { clear(results); input.blur(); } });
+  return wrap;
+}
+
+// ------------------------------------------------------------------ self test (?demo&selftest)
+// Walks the main flows against the demo data layer and logs "SELFTEST OK" or the first failure.
+async function selfTest(db) {
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const errors = [];
   window.addEventListener("error", e => errors.push(e.message));
   window.addEventListener("unhandledrejection", e => errors.push(String(e.reason?.message || e.reason)));
+  const btn = (root, text) => [...root.querySelectorAll("button")].find(b => b.textContent.trim() === text || b.getAttribute("aria-label") === text);
   try {
-    await go("create"); await wait(100);
-    document.querySelector("#page-create textarea").value = "Why Mars sunsets are blue";
-    [...document.querySelectorAll("#page-create .switch")][0].click();
-    [...document.querySelectorAll("#page-create .btn.primary")].find(b => b.textContent.includes("Make video")).click();
+    navigate("create"); await wait(300);
+    const create = document.querySelector("#page-create");
+    create.querySelector("textarea").value = "Why Mars sunsets are blue";
+    create.querySelectorAll(".switch")[0].click();
+    btn(create, "Make video").click();
     await wait(14000);
-    const steps = document.querySelectorAll("#page-create .step.done").length;
+    const steps = create.querySelectorAll(".step-done").length;
     if (steps < 7) throw new Error("make flow: only " + steps + " steps done");
-    if (!document.querySelector("#page-create .phone-screen video")) throw new Error("make flow: no video in phone preview");
-    await go("create", "autopilot"); await wait(100);
-    document.querySelector("#page-create textarea[placeholder^='Add topics']").value = "Topic A\nTopic B";
-    [...document.querySelectorAll("#page-create button")].find(b => b.textContent.trim() === "Add").click();
-    [...document.querySelectorAll("#page-create button")].find(b => b.textContent.trim() === "Save changes").click();
-    await wait(400);
-    if ((await ctx.db.getAutopilot()).topics.length < 7) throw new Error("autopilot: topics not saved");
-    await go("library", "20261108-0112-gl4s"); await wait(300);
+    if (!create.querySelector(".phone-screen video")) throw new Error("make flow: no video in phone preview");
+    navigate("create", "autopilot"); await wait(300);
+    create.querySelector("textarea[placeholder^='Add topics']").value = "Topic A\nTopic B";
+    btn(create, "Add").click();
+    btn(create, "Save changes").click();
+    await wait(500);
+    if ((await db.getAutopilot()).topics.length < 7) throw new Error("autopilot: topics not saved");
+    navigate("library", "20261108-0112-gl4s"); await wait(500);
     const dlg = document.querySelector("dialog.sheet[open]");
     if (!dlg) throw new Error("library: sheet did not open");
-    [...dlg.querySelectorAll(".switch")][0].setAttribute("aria-checked", "true");
-    dlg.querySelector("button.btn.primary").click();
+    dlg.querySelectorAll(".switch")[0].setAttribute("aria-checked", "true");
+    btn(dlg, "Post now").click();
     await wait(3500);
-    const v = await ctx.db.getVideo("20261108-0112-gl4s");
+    const v = await db.getVideo("20261108-0112-gl4s");
     if (v.status !== "posted") throw new Error("publish flow: status is " + v.status);
-    await go("settings"); await wait(100);
+    navigate("settings"); await wait(300);
     const inp = document.querySelector('#page-settings input[aria-label="pexels api key"]');
     inp.value = "newkey"; inp.dispatchEvent(new Event("input"));
-    [...document.querySelectorAll(".toolbar .btn.primary")][0].click();
-    await wait(500);
-    if ((await ctx.db.getSettings()).pexels_api_key !== "newkey") throw new Error("settings: not saved");
-    await go("dashboard"); await wait(300);
+    btn(document.querySelector("#page-settings"), "Save 1 change").click();
+    await wait(600);
+    if ((await db.getSettings()).pexels_api_key !== "newkey") throw new Error("settings: not saved");
+    navigate("dashboard"); await wait(1500);
     if (errors.length) throw new Error("console errors: " + errors.join(" | "));
+    if (!document.querySelector("#page-dashboard .chart-svg")) throw new Error("dashboard: no chart");
     console.log("SELFTEST OK");
   } catch (e) { console.log("SELFTEST FAIL: " + e.message); }
 }
