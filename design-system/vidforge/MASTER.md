@@ -234,21 +234,36 @@ Before delivering any UI code, verify:
 - [ ] No horizontal scroll on mobile
 
 
-## VidForge overrides (decided 2026-11-08, these win over the generated sections above)
+## VidForge overrides (revised 2026-11-08 at the owner's request, these win over everything above)
 
-- Style: Dark Mode (OLED) base with Glassmorphism surfaces and a Bento Box Grid on the Dashboard and Start page.
-  Background #07091A -> #0B0E24 radial, glass cards rgba(255,255,255,0.06) with 1px rgba(255,255,255,0.10) border,
-  backdrop-filter blur 16px, radius 20px, one soft violet/magenta aurora glow behind the hero and chart (decorative, low alpha).
-- Accent: creator gradient #7C5CFF -> #FF4FD8 for the primary action and the live chart; status colours green #22C55E
-  (posted), amber #F59E0B (making), red #EF4444 (failed), blue #38BDF8 (ready). Platform marks: YouTube #FF0033, Instagram #E1306C.
-- Typography: Inter for everything (400/500/600/700), tabular numerals for stats; display sizes 40/28/22, body 15/16, labels 13.
-  No monospace except raw ids and keys.
-- Components (ui/components.js, each a pure function returning a DOM node): Button (primary gradient, secondary glass, ghost,
-  destructive, icon), Card/GlassCard, BentoTile (span 1x1, 2x1, 2x2), StatTile with delta, Segmented, Switch, Chip and
-  ChipGroup with Custom input, Stepper, Field (label above, helper, error), Select, Textarea, Pill/Status, PlatformMark,
-  Avatar, Progress ring and bar, StepList, Sheet (dialog), Toast, EmptyState, Skeleton, Tabs, Table, Tooltip.
-- Motion: stagger grid tiles on load (opacity 0 -> 1, y 12 -> 0, 350 ms, 60 ms stagger, CSS only), hover lift 1.02 on tiles,
-  150 to 250 ms transitions, everything off under prefers-reduced-motion.
-- Start page before sign-in: hero with a live phone preview playing a sample video, four metric tiles, how it works
-  (Find trend -> Research -> Write and direct -> Render -> Post) as a horizontal step rail, Sign in card. No testimonials.
-- Avoid: emoji as icons, hidden error states, decorative charts, flat grey on grey, raw hex in components (use tokens).
+Owner feedback on the glass/gradient version: "looks so AI generated". New direction: **clean black and white,
+boxy, Apple OS-like** (macOS System Settings, Finder, Activity Monitor). Styles: Apple Native Experience +
+Minimalism & Swiss Style, dark appearance only.
+
+- Colour: monochrome only. Window #000000, sidebar #0A0A0A, surfaces #111111 and #161616, hover #1C1C1C,
+  hairline separators #262626, strong border #333333. Labels #FFFFFF, #A1A1A1 (secondary), #6B6B6B (tertiary).
+  Primary button: white fill, black text. Secondary: #161616 fill, 1px #333 border, white text.
+  Status is shown with text + a 6px dot in greyscale (filled white = posted, ring = ready, half = making,
+  dash = failed); the only non-grey colour allowed is a muted red #FF453A for errors and destructive actions.
+  Platform marks are monochrome glyphs, never brand colours. Charts: white line for YouTube, #8A8A8A dashed for
+  Instagram, no fills except a 6% white area under the selected series.
+- No gradients, no glow, no aurora, no blur-heavy glass, no coloured shadows, no emoji, no gradient text.
+  At most one hairline shadow on popovers and sheets (0 8px 24px rgba(0,0,0,.6)).
+- Shape: boxy. Radius 6px on controls and cards, 8px on sheets/popovers, 4px on chips/tags, 0 on tables.
+  1px borders define every box; spacing on a strict 8pt grid; dense but breathable (density 7).
+- Type: system stack (-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Inter, sans-serif),
+  Inter only as fallback. Large title 26/700 -0.02em, title 20/600, headline 15/600, body 14/400,
+  label 12/500 #A1A1A1, numerals tabular. No all-caps, no tracking tricks.
+- Layout (macOS): left sidebar 220px with section labels ("Workspace", "Account"), SF-Symbols-like 16px line icons,
+  selected item = #1C1C1C box with white text; unified toolbar 52px tall with title on the left, actions right.
+  Content max width 1280, 24px gutters. Dashboard uses a plain grid of equal-height boxes (not a bento collage):
+  a 4-up metric row (label above, number, small grey delta text), one full-width chart box with a segmented
+  control (All | YouTube | Instagram) in its header, then two columns (Autopilot + Making now | Recent runs),
+  then a Top videos table with row hover.
+- Controls: macOS-style segmented control (boxy, 1px border, selected segment #2A2A2A), checkbox-style toggles or
+  compact switches in white/grey, inputs 32px tall with 1px #333 border and 6px radius, focus ring 2px white at
+  40% opacity. Chips are square-ish tags with 1px border, selected = white fill + black text.
+- Start page: black, a single headline in white, one line of grey copy, white "Sign in" button, a monochrome
+  phone/video frame, a plain 5-step list ("Find trend, Research, Write and direct, Render, Post") in a bordered
+  box, and the sign-in form. No decorative elements.
+- Motion: 120 to 180 ms ease-out on hover/press and sheet open only. No staggered entrances. Reduced motion respected.
