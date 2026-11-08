@@ -204,7 +204,9 @@ select.input { appearance: none; -webkit-appearance: none; background-image: url
 .row.stacked .row-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .row-icon { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; flex: none; background: var(--surface-3); color: #fff; }
 .row-icon svg { width: 18px; height: 18px; }
-.row.button { cursor: pointer; width: 100%; text-align: left; color: var(--label); }
+.row.button { cursor: pointer; width: 100%; text-align: left; color: var(--label); background: none; border: 0; font: inherit; }
+.row .chev { width: 16px; height: 16px; flex: none; color: var(--label-3); }
+svg[aria-hidden="true"]:not([class]), svg[aria-hidden="true"][class=""] { width: 18px; height: 18px; flex: none; }
 .row.button:hover { background: var(--surface-2); }
 
 /* Pills and marks */
