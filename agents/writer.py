@@ -109,6 +109,8 @@ def write_episode(claude: Claude, idea: dict, facts: dict, channel: dict, notes:
     if footage_off:
         spec["footage"] = "off"
     else:
+        if spec.get("footage") == "off":   # footage is the owner's switch, not the writer's
+            spec.pop("footage")
         need = footage_shortfall(spec, channel)
         if need:
             fix = ("This is a real-world topic, but these scenes still use drawn backgrounds: " + ", ".join(need) +
@@ -131,7 +133,7 @@ DRAWN_NICHES = {"space", "science", "kids", "astronomy"}
 def footage_shortfall(spec: dict, channel: dict | None, min_share: float = 0.6) -> list[str]:
     """Scene ids that should carry footage but do not. Empty when the topic is drawn by nature or coverage is fine."""
     ch = channel or {}
-    if str(ch.get("footage", "auto")).lower() == "off" or spec.get("footage") == "off" or spec.get("made_for_kids"):
+    if str(ch.get("footage", "auto")).lower() == "off" or spec.get("made_for_kids"):
         return []
     if spec.get("world3d"):            # 3D build videos draw their own world
         return []

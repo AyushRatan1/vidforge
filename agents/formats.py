@@ -1,6 +1,15 @@
 """Content formats. A channel picks the formats it is allowed to make; the scout picks one per idea."""
 
 FORMATS = {
+    "facts": {
+        "name": "Facts explainer (any topic)",
+        "audience": "general", "made_for_kids": False, "aspect": "9:16", "music": "calm",
+        "look": "real footage of the subject under every scene (footage backgrounds with specific queries), bold labels, "
+                "counters for numbers, one simple diagram only where a mechanism needs explaining",
+        "structure": "hook with the surprising claim or question in the first 1.5 s -> the short answer -> why/how in "
+                     "2-3 scenes, one idea each -> the number that makes it real -> a lesser-known twist or caveat -> "
+                     "teaser for the next video",
+    },
     "3d_build": {
         "name": "How it was built (3D build animation)",
         "audience": "general", "made_for_kids": False, "aspect": "9:16", "music": "calm",

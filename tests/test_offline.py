@@ -497,6 +497,16 @@ def test_world3d_renders_a_frame():
     from PIL import Image
     assert os.path.getsize(out) > 1000 and Image.open(still).size == (216, 384)
 
+def test_studio_option_aliases():
+    from tools.e2e import parse_options, build_channel
+    o = parse_options({"language": "en", "niche": "trending", "format": "facts", "voice": "auto", "music": "auto",
+                       "footage": "auto", "writer": "claude-opus-5-5"})
+    assert o["format"] == "facts" and o["niche"] == "general" and "voice" not in o and "music" not in o
+    ch = build_channel(o)
+    assert ch["voice"] != "auto" and ch["formats"][0] == "facts" and ch["footage"] == "auto"
+    assert parse_options({"format": "toplist"})["format"] == "facts_list"
+    assert parse_options({"format": "trend"})["format"] == "trend_explainer"
+
 if __name__ == "__main__":
     import inspect
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_") and callable(v)]

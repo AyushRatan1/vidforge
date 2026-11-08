@@ -75,9 +75,22 @@ NICHE_FORMATS = {
 }
 
 
+# names the studio sends -> names the engine uses
+FORMAT_ALIASES = {"facts": "facts", "trend": "trend_explainer", "toplist": "facts_list", "top_list": "facts_list",
+                  "3d": "3d_build", "build": "3d_build"}
+NICHE_ALIASES = {"trending": "general", "anything": "general", "news_explained": "news"}
+
+
 def parse_options(raw) -> dict:
     o = raw if isinstance(raw, dict) else json.loads(raw or "{}")
     o = {k: (v.strip() if isinstance(v, str) else v) for k, v in o.items()}
+    for k in ("voice", "music", "writer", "aspect", "footage"):     # "auto" or empty means: let Claude decide
+        if str(o.get(k, "")).lower() in ("", "auto", "default"):
+            o.pop(k, None)
+    if o.get("format"):
+        o["format"] = FORMAT_ALIASES.get(str(o["format"]).lower(), o["format"])
+    if o.get("niche"):
+        o["niche"] = NICHE_ALIASES.get(str(o["niche"]).lower(), o["niche"])
     tags = o.get("hashtags") or []
     if isinstance(tags, str):
         tags = [t for t in tags.replace(",", " ").split() if t]
