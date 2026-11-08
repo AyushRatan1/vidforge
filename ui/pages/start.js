@@ -55,7 +55,7 @@ export function startPage({demo, signedIn, project, sample, onSignIn, onProject,
       : signInCard({project, onSignIn, onProject, demo, onOpen}));
 
   root.append(nav, h("main", {class: "start-wrap"}, hero, h("div", {class: "start-grid"}, how, signin)),
-    h("footer", {class: "start-foot"}, "Keys stay in your private Supabase project. Every video is kept as a GitHub Release. ", h("a", {href: README, target: "_blank", rel: "noopener"}, "Setup guide")));
+    h("footer", {class: "start-foot"}, "Keys stay in your private Supabase project. Every video is kept as a GitHub Release. ", h("a", {href: README, target: "_blank", rel: "noopener"}, "Setup guide"), "  ", h("a", {href: "privacy.html", style: {marginLeft: "12px"}}, "Privacy"), h("a", {href: "terms.html", style: {marginLeft: "12px"}}, "Terms")));
   return root;
 }
 

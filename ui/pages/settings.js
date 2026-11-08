@@ -4,6 +4,7 @@ import {h, clear, Button, Card, Segmented, Field, Input, Select, SecretInput, Li
 import {forgetProject} from "../app.js";
 import {DEFAULTS} from "../config.js";
 import {fmt} from "../format.js";
+import {redirectUri, startYouTubeAuth, takePendingYouTubeAuth, finishYouTubeAuth} from "../youtube-auth.js";
 
 const README = "https://github.com/ayushratan1/vidforge#readme";
 const SECRET = new Set(["anthropic_api_key", "github_token", "youtube_api_key", "youtube_client_secret", "youtube_refresh_token", "ig_access_token", "pexels_api_key", "pixabay_api_key"]);
@@ -88,10 +89,11 @@ export function settingsPage(ctx, el, actions) {
       groupCard("GitHub", "Runs the worker", "github", "The token is used only to start workflows from this page. The worker itself uses the repository's own token.",
         settingRow("github_repo", "Repository", DEFAULTS.githubRepo, "The repository that runs the workflows, as owner/name.", {mono: true}),
         settingRow("github_token", "Token", "github_pat_...", h("span", {}, link("https://github.com/settings/personal-access-tokens/new", "Create a fine-grained token"), " for only this repository with Actions read and write, Contents read."), {mono: true})),
-      groupCard("YouTube", "Shorts upload", "youtube", h("span", {}, "Run ", h("code", {}, "python run.py youtube-auth client_secret.json"), " on your computer once; it prints the refresh token. The client id and secret come from the Google Cloud OAuth client (Desktop app)."),
+      groupCard("YouTube", "Shorts upload", "youtube", h("span", {}, "Use a Google Cloud OAuth client of type Web application with the redirect URI ", h("code", {}, redirectUri()), ". Paste its id and secret, save, then press Connect and pick your channel."),
         settingRow("youtube_client_id", "Client id", "....apps.googleusercontent.com", null, {mono: true}),
         settingRow("youtube_client_secret", "Client secret", "GOCSPX-...", null, {mono: true}),
-        settingRow("youtube_refresh_token", "Refresh token", "1//0g...", null, {mono: true})),
+        youtubeConnectRow(),
+        settingRow("youtube_refresh_token", "Refresh token", "Filled in by Connect", "Set automatically when you connect. Paste one only if you made it some other way.", {mono: true})),
       groupCard("Instagram", "Reels upload", "instagram", "Needs a Business or Creator account linked to a Facebook Page, and a long-lived token with instagram_business_content_publish.",
         settingRow("ig_access_token", "Access token", "IGQW...", null, {mono: true}),
         settingRow("ig_user_id", "User id", "1784...", h("span", {class: "cluster", style: {gap: "8px"}}, "Optional. ", lookup, lookupOut), {mono: true})),
@@ -109,6 +111,31 @@ export function settingsPage(ctx, el, actions) {
       h("p", {class: "settings-note"}, "Settings keys are read by the GitHub worker at run time. ", link(README, "Setup guide")));
   }
 
+  function youtubeConnectRow() {
+    const [title, id] = (saved.youtube_channel || "").split("|");
+    const ready = saved.youtube_client_id && saved.youtube_client_secret;
+    const status = saved.youtube_refresh_token
+      ? h("span", {class: "saved-state is-saved"}, icon("check", {size: 12}), title ? "Connected to " + title : "Connected")
+      : h("span", {class: "saved-state"}, ready ? "Not connected" : "Save the client id and secret first");
+    const btn = Button({label: saved.youtube_refresh_token ? "Reconnect" : "Connect YouTube", variant: saved.youtube_refresh_token ? "secondary" : "primary", size: "sm", icon: "youtube", disabled: !ready || changed().some(k => k.startsWith("youtube_client")),
+      onClick: () => startYouTubeAuth(saved.youtube_client_id)});
+    return h("div", {class: "field"}, h("div", {class: "field-label"}, h("div", {}, "Channel"), status),
+      h("div", {class: "cluster", style: {gap: "8px"}}, btn, id ? h("a", {href: "https://www.youtube.com/channel/" + id, target: "_blank", rel: "noopener", class: "micro"}, "Open channel") : null),
+      h("div", {class: "hint"}, "Opens Google sign-in. Choose the account and then the channel videos should go to."));
+  }
+
+  async function finishYouTube() {
+    const pending = takePendingYouTubeAuth();
+    if (!pending) return;
+    try {
+      const {refresh_token, channel} = await finishYouTubeAuth(pending, saved.youtube_client_id || "", saved.youtube_client_secret || "");
+      saved = await db.saveSettings({youtube_refresh_token: refresh_token, youtube_channel: channel});
+      draft = {...saved}; delete draft.__updated; if (!draft.github_repo) draft.github_repo = DEFAULTS.githubRepo; ctx.settings = saved;
+      toast(channel ? `YouTube connected: ${channel.split("|")[0]}` : "YouTube connected", "ok");
+      render(); updateSaveState();
+    } catch (e) { toast("YouTube not connected: " + e.message, "err", {timeout: 12000}); }
+  }
+
   async function save() {
     const patch = Object.fromEntries(changed().map(k => [k, draft[k] || ""]));
     saveBtn.setBusy(true);
@@ -122,7 +149,7 @@ export function settingsPage(ctx, el, actions) {
     const a = h("a", {href: URL.createObjectURL(blob), download: ".env"}); document.body.append(a); a.click(); a.remove();
     toast("Downloaded .env", "ok");
   }
-  return {mount, refresh: () => changed().length ? toast("Save or discard your changes first.", "info") : load(true), async show() { await load(); }};
+  return {mount, refresh: () => changed().length ? toast("Save or discard your changes first.", "info") : load(true), async show() { await load(); await finishYouTube(); }};
 }
 
 function parseModels(s) { try { return {...JSON.parse(s || "{}")}; } catch { return {}; } }

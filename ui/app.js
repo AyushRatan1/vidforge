@@ -8,9 +8,12 @@ import {dashboardPage} from "./pages/dashboard.js";
 import {createPage} from "./pages/create.js";
 import {libraryPage} from "./pages/library.js";
 import {settingsPage} from "./pages/settings.js";
+import {captureYouTubeRedirect} from "./youtube-auth.js";
 
 const params = new URLSearchParams(location.search);
 export const DEMO = params.has("demo");
+// Google's YouTube sign-in returns here with ?code=&state=: keep the result for Settings and drop it from the URL.
+if (captureYouTubeRedirect(params)) history.replaceState(null, "", location.pathname + "#/settings");
 const root = document.getElementById("root");
 
 const PAGES = [
