@@ -434,6 +434,28 @@ def test_every_element_type_renders():
     assert len(out["stills"]) >= len(base["scenes"])
 
 
+def test_footage_shortfall_rule():
+    sc = lambda i, t: {"id": f"s{i}", "background": {"type": t}}
+    spec = {"scenes": [sc(1, "footage"), sc(2, "space"), sc(3, "sunburst"), sc(4, "paper"), sc(5, "footage")]}
+    assert writer.footage_shortfall(spec, {"niche": "mythology"}) == ["s2", "s3", "s4"]
+    assert writer.footage_shortfall(spec, {"niche": "space"}) == []
+    assert writer.footage_shortfall(spec, {"niche": "animals", "footage": "off"}) == []
+    assert writer.footage_shortfall(dict(spec, made_for_kids=True), {"niche": "animals"}) == []
+    good = {"scenes": [sc(i, "footage") for i in range(4)] + [sc(9, "space")]}
+    assert writer.footage_shortfall(good, {"niche": "food"}) == []
+
+
+def test_publish_gate_skips_failed_review(monkeypatch, capsys):
+    from tools import e2e
+    d = tempfile.mkdtemp()
+    json.dump({"score": 5, "pass": False}, open(os.path.join(d, "qa.json"), "w"))
+    called = []
+    monkeypatch.setattr("tools.publish.publish", lambda *a, **k: called.append(1))
+    e2e.stage_publish(d, {"publish": {"youtube": True}}, {})
+    assert not called and "Needs review" in capsys.readouterr().out
+    e2e.stage_publish(d, {"publish": {"youtube": True, "force": True}}, {})
+    assert called
+
 if __name__ == "__main__":
     import inspect
     fns = [v for k, v in dict(globals()).items() if k.startswith("test_") and callable(v)]

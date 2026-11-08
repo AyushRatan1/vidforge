@@ -147,6 +147,11 @@ The `draft-video` workflow also runs every hour (at :30) and asks the `autopilot
   the configured lists (first video `en`/`space`, second `hi`/`tech`, and so on).
 - **Platforms** and **privacy** decide where the finished video is posted; **options** holds extra defaults
   (`voice`, `music`, `length`, `hashtags`, `notes`, `writer`).
+- **Review gate**: a video is only auto-posted when Claude's frame review passes. A failing video (score below
+  the pass mark) stays in the Library marked *Needs review*; post it from there after a look, or set
+  `publish.force = true` in the options to post regardless.
+- **Real footage**: for real-world channels (animals, food, travel, mythology, tech, stories, news, custom) the
+  writer must give at least 60 percent of scenes a stock-footage background; a second writer pass enforces it.
 
 Every autopilot video gets the id `ap-<YYYYMMDD-HHMMSS>` as job id, video id and release tag suffix, and
 `source = autopilot` on its row. Turn it off with the **enabled** switch; the hourly run then exits in seconds.

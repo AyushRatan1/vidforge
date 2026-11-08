@@ -291,6 +291,12 @@ def stage_publish(out, o, ch):
     if not (p.get("youtube") or p.get("instagram")):
         print("   not publishing (no platform selected)")
         return
+    qa = _load(out, "qa.json", {}) or {}
+    if qa and not qa.get("pass") and not p.get("force"):
+        print(f"   not publishing: review score {qa.get('score')}/10 did not pass. The video stays in the library "
+              "marked 'Needs review'; post it from there after checking, or set publish.force=true.")
+        _track(store.video_update, os.path.basename(os.path.normpath(out)), status="ready", stage="Needs review")
+        return
     publish(out, youtube=bool(p.get("youtube")), instagram=bool(p.get("instagram")),
             privacy=p.get("privacy", "public"), publish_at=p.get("publish_at") or None)
 

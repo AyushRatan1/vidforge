@@ -103,7 +103,42 @@ def write_episode(claude: Claude, idea: dict, facts: dict, channel: dict, notes:
     spec = _repair_loop(claude, spec, prompt, system)
     if footage_off:
         spec["footage"] = "off"
+    else:
+        need = footage_shortfall(spec, channel)
+        if need:
+            fix = ("This is a real-world topic, but these scenes still use drawn backgrounds: " + ", ".join(need) +
+                   ". Give each of them a background of type \"footage\" with a concrete 2-4 word English query of what a "
+                   "camera would see for that moment (e.g. 'ancient temple fire ritual', 'eagle flying sky', 'royal palace "
+                   "courtyard'), vary the queries, keep a drawn fallback and dim 0.35-0.6, and keep every element on top. "
+                   "Replace emoji-only scenes with footage plus one or two drawn labels. Keep everything else unchanged and "
+                   "resubmit the complete spec.")
+            history = [{"role": "user", "content": prompt},
+                       {"role": "assistant", "content": [{"type": "text", "text": json.dumps(spec, ensure_ascii=False)}]}]
+            spec = _repair_loop(claude, claude.json_tool("writer", system, fix, "submit_episode",
+                                                         "Submit the complete episode spec", SCHEMA,
+                                                         max_tokens=32000, history=history), prompt, system)
     return spec
+
+
+DRAWN_NICHES = {"space", "science", "kids", "astronomy"}
+
+
+def footage_shortfall(spec: dict, channel: dict | None, min_share: float = 0.6) -> list[str]:
+    """Scene ids that should carry footage but do not. Empty when the topic is drawn by nature or coverage is fine."""
+    ch = channel or {}
+    if str(ch.get("footage", "auto")).lower() == "off" or spec.get("footage") == "off" or spec.get("made_for_kids"):
+        return []
+    niche = str(ch.get("niche", "")).lower()
+    if not niche or niche in DRAWN_NICHES:
+        return []
+    scenes = spec.get("scenes") or []
+    if len(scenes) < 3:
+        return []
+    with_footage = [sc for sc in scenes if (sc.get("background") or {}).get("type") == "footage"]
+    if len(with_footage) >= min_share * len(scenes):
+        return []
+    return [str(sc.get("id") or f"scene {i + 1}") for i, sc in enumerate(scenes)
+            if (sc.get("background") or {}).get("type") != "footage"]
 
 
 def revise(claude: Claude, spec: dict, instructions: str, facts: dict | None = None, channel: dict | None = None) -> dict:
