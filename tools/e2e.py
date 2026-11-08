@@ -93,6 +93,7 @@ def build_channel(o: dict) -> dict:
     base_lang = lang if lang in CHANNELS else ("hi" if lang == "hinglish" else "en")
     ch = json.loads(json.dumps(CHANNELS[base_lang]))
     ch["language"] = lang
+    ch["footage"] = o.get("footage") or "auto"
     custom_niche = niche not in NICHE_SOURCES
     ch["niche"] = "general" if custom_niche else niche
     if niche != "space":
@@ -258,10 +259,10 @@ def stage_package(out, o, ch):
     spec, facts = _load(out, "spec.json"), _load(out, "facts.json", {})
     try:
         c = _client(o.get("writer"))
-        meta = write_metadata(c, spec, facts, ch, o.get("hashtags"))
+        meta = write_metadata(c, spec, facts, ch, o.get("hashtags"), footage=_load(out, "render.json", {}).get("footage"))
         _add_usage(out, c)
     except SystemExit:
-        meta = fallback_metadata(spec, ch.get("brand_hashtags"), o.get("hashtags"))
+        meta = fallback_metadata(spec, ch.get("brand_hashtags"), o.get("hashtags"), footage=_load(out, "render.json", {}).get("footage"))
     _save(out, "meta.json", meta)
     print(f"   YouTube: {meta['youtube']['title']}  {' '.join(meta['youtube']['hashtags'])}")
     print(f"   Instagram: {' '.join(meta['instagram']['hashtags'])}")
