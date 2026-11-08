@@ -101,37 +101,63 @@ exit (fade | pop | fly_up), behaviors [ ... ], keys [ ... ], move {...}, overlay
 7. Use the channel's palette, mascot and handle consistently.
 
 ## 3D build worlds (format 3d_build: "how it was built" low-poly dioramas)
-Add a top-level "world3d" and give scenes {"type":"world3d"} backgrounds (scenes without a background default to it).
-The whole video is ONE continuous diorama; each scene shows its own slice of the timeline, so the build and the camera
-flow across scenes while the 2D layer adds captions and labels. Keep 2D elements sparse: 0-2 per scene, mostly yellow
-callout labels {"type":"text","text":"STEPWELL","bg":"#ffd54a","color":"#1c1a17","style":"label","stroke":false,"size":0.056,"y":0.2}.
-Captions for this format: {"y":0.6,"size":0.084,"max_words":2,"highlight":"#ffd54a","uppercase":false}; spec "transition":"none".
+Add a top-level "world3d"; scenes get {"type":"world3d"} backgrounds (the default). The video is ONE continuous diorama:
+each scene shows its own slice of the timeline, so the build and the camera flow across scenes while the 2D layer adds
+captions and 0-2 yellow callout labels per scene
+{"type":"text","text":"7 GATES","bg":"#ffd54a","color":"#1c1a17","style":"label","stroke":false,"size":0.056,"y":0.2,"at_word":"seven"}.
+Captions {"y":0.6,"size":0.084,"max_words":2,"highlight":"#ffd54a","uppercase":false}; spec "transition":"none".
+Shape: 8-10 scenes, 45-60 s: hook, one scene per build stage, a reveal with the real name, a teaser.
 
-Units are metres-ish; y is up, the ground surface is y=0, people are ~1.4 tall. The terrain block is cut open at its
-front face (z = terrain.cut, facing the camera on +z), so anything dug up to that face is seen in cross-section with
-coloured soil layers, like an architectural cutaway. Put the camera at +z looking towards -z.
-world3d = {
-  "style": "desert|golden|green|overcast|night",
-  "terrain": {"width":44,"length":56,"cut":6,"strata":[["#d9bf8f",0.35],["#b98a5c",1.6],...] (optional),
-              "digs":[{"x0":-1.2,"x1":1.2,"z0":3.4,"z1":6,"depth":5,"from":TIME,"to":TIME}]},   dig animates 0 -> depth
-  "objects":[...], "camera":[{"at":TIME,"pos":[x,y,z],"look":[x,y,z],"fov":38,"ease":"inout|linear"}, ...]
-}
-TIME is seconds or a scene reference: {"scene":"dig","t":0.5} (fraction of that scene), {"scene":"dig","at":1.2},
-or {"scene":"dig","word":"water","offset":0.2}. Prefer scene references so the build follows the narration.
-Every object takes "pos":[x,y,z] (its base), "rot" (degrees around y), "build":{"op":"rise|grow|drop|slide|stagger",
-"from":TIME,"to":TIME} (stagger reveals parts one by one: wall courses, steps, pillars) and "hide":{"at":TIME}.
-Kit:
-- box/slab {w,h,d,color,texture:"stone"} | cylinder {r,h,r_top,segments} | cone/pyramid {r,h} | dome {r} | sphere {r}
-- mound {r,h,stretch} dirt pile | wall {from:[x,z],to:[x,z],h,thickness,courses,color} stone courses (stagger = laid row by row)
-- stairs {from:[x,y,z] top,to:[x,y,z] bottom,width,steps} solid flight (stagger = steps drop in one by one)
-- pillar {h,w} | pavilion {w,d,h,cols,rows,roof} pillared hall | spire {w,h,tiers} temple shikhara | arch {w,h,thickness}
-- water {x0,x1,z0,z1,y_bottom,level_from,level,from,to} rising water | well {w,h,rope_from,rope_to,rope_start,rope_end} frame, pulley, bucket
-- ladder {h,lean} | house {w,d,h,color,roof} | tree {scale,color} | trees/grass/rocks {count,area:[x0,z0,x1,z1],seed,avoid:[[x0,z0,x1,z1]]}
-- person {action:"dig|pull|walk|carry|climb|wave|stand",path:[[x,y,z],...],from,to,cloth,skin,turban} | people {count,area,y,action}
-- macro stepwell {x0,x1,z_front,length,depth,levels,phases:{dig,walls,stairs,halls,water}} expands into a lined trench,
-  flights of steps, pillared halls on each landing and water (see the example).
-Recipe that works: (1) hook: wide three-quarter shot of the site as it was, a tiny human-scale start (a well, a hut, a
-mound); (2) one scene per build stage, each stage animating within its own scene; (3) the camera moves on every scene
-(push in to the cutaway, glide along the structure, dip inside, rise out); (4) a wide reveal with the real name and one
-hard fact; (5) a teaser. 8-10 scenes, 40-55 s. Build what the facts say; never invent features of a real monument.
+Units are metres, y is up, ground is y=0, people are about 1.4 tall, the camera side is +z. The terrain is a block cut
+open at its front face (z = terrain.cut), so digs show soil layers like a cutaway. Make it big: width and length about
+3x the monument, cut 15 m or more in front of it.
+world3d = {"style":"desert|golden|green|overcast|night",
+  "terrain":{"width":96,"length":110,"cut":30,"digs":[{"x0":-2,"x1":2,"z0":20,"z1":30,"depth":3,"from":TIME,"to":TIME}]},
+  "objects":[...], "camera":[...]}
+Style by place: desert for Rajasthan, Gujarat and Egypt; golden for warm evening light; green for Kerala, Bengal, the
+Northeast and green river valleys; overcast for Himalayan stone; night only for a lit finale.
+TIME is seconds or a scene reference: {"scene":"walls","t":0.5} | {"scene":"walls","at":1.2} | {"scene":"walls","word":"seven"}.
+Use scene references so the build follows the narration.
+Every object takes "pos":[x,y,z], "rot" (degrees about y), "id" (so shots can target it), "build":{"op":"rise|grow|drop|
+slide|stagger","from":TIME,"to":TIME} (stagger lays parts one by one: courses, steps, floors, blocks), "hide":{"at":TIME,
+"op":"shrink|lower|sink"}, and "path":[[x,y,z],...] with "from"/"to" to travel (boats, sledges, people).
+
+Macros: use them for monuments. They expand deterministically, everything rests on its support, and each registers
+anchors (centre and size) for camera shots.
+- pyramid {pos, base, height, courses, ramp:"right|left|front|back"|false, casing, capstone, phases:{courses, ramp,
+  casing, capstone}}: stepped core course by course, a ramp raised and lengthened as it grows with teams hauling blocks
+  (one theory: say so), casing laid while the ramp comes away, a capstone that lands on the top course.
+  Anchors: pyramid, pyramid.top, pyramid.base, pyramid.ramp.
+- fort {pos, w, d, h, seed, gates, walkers, palaces: 3 or [{w,d,h,domes,id}], phases:{hill, walls, bastions, gate,
+  palaces}}: a rocky hill with a road winding up through gates, crenellated walls on the rim, round bastions, the main
+  gate where the road arrives, palaces inside. Anchors: fort, fort.hill, fort.walls, fort.top, fort.path, fort.gate
+  (main), fort.gate1, fort.gate2... (lower gates from the bottom), fort.palaces.
+- temple {pos, w, d, h, phases:{plinth, hall, spire}}: stepped plinth, pillared mandapa, sanctum and shikhara.
+  Anchors: temple, temple.hall, temple.spire.
+- stepwell {x0, x1, z_front, length, depth, levels, phases:{dig, walls, stairs, halls, water}}. Anchors: stepwell, stepwell.bottom.
+Kit, for everything else:
+- land: hill / cliff {r or w,d, h, seed, path: true or {from, span, turns, width}} faceted rock plateau with a flat top
+  at h | water {x0,x1,z0,z1,y_bottom,level_from,level,from,to} | trees / grass / rocks {count, area:[x0,z0,x1,z1], seed,
+  avoid:[[x0,z0,x1,z1]]} | town {count, area, colors, scale} flat-roofed houses | mound {r,h} small dirt piles only
+- building: wall {from:[x,z], to:[x,z], h, thickness, crenels} | bastion {r,h} | gate {w,h,d,towers} | palace {w,d,h,
+  floors,domes,dome} | tomb {w,h,minarets} | minaret {h,r,balconies,tilt} | pavilion {w,d,h,cols,rows} | pillar |
+  spire {w,h,tiers} | arch | stairs {from:[x,y,z] top, to:[x,y,z] bottom, width, steps} | ramp {from, to, width} |
+  frustum {w, w_top, h} (w_top 0 makes a pyramid) | box / slab {w,h,d,texture:"stone"} | cylinder | cone | dome | sphere | house
+- work and life: blocks {cols,rows,layers,size} | sledge (a block on runners; give it a path) | boat {length, cargo,
+  sail} | flag {h,color} | well | ladder | person {action:"dig|pull|walk|carry|climb|wave|stand", path, from, to} |
+  people {count, area, y, action}
+
+Camera: use shot keys. {"at":TIME, "shot":"wide|medium|close|top|low|orbit|inside", "target":"fort.gate" (an anchor
+or id) or [x,y,z], "angle":30} (0 = from the front, +z; 90 = from the right). Optional: "dist", "height" (camera
+height above the target), "size" (override the target size, a number or [w,h,d]), "fov". Framing is automatic: the
+target sits in the upper middle and the caption band stays clear. "orbit" sweeps "sweep" degrees (default 90) until
+the next key or the end. "inside" is for open interiors (a stepwell trench, a courtyard). The camera glides between
+keys; two keys at the same time make a cut. Plain {"at","pos","look","fov"} keys still work.
+Recipe: (1) hook: an establishing shot with something already moving; (2) one scene per build stage, each with a
+medium or close shot on that stage's anchor (a key near t 0.25 and another near t 1 with the angle moved 15-30 degrees
+so the camera keeps drifting); (3) one low or top shot for scale; (4) reveal: orbit the whole monument with its real
+name and one hard fact; (5) a teaser for the next video.
+Rules: never fake terrain with a giant mound (use hill or cliff); anything placed on top must rest on its support (its
+y is the support's top), so prefer macros; keep low shots over the terrain block, not in front of its cut face; build
+only what the facts say, never invent features of a real monument; 0-2 labels per scene.
 """.strip()

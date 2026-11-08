@@ -75,10 +75,16 @@ water fills the bottom while the camera glides through. Claude writes a `world3d
 timings tied to the narration, camera path); `engine/world3d.py` renders it with three.js in headless Chrome (software
 WebGL, no GPU) and the 2D engine adds voice, captions and labels on top.
 
-- Kit: terrain with animated digs, walls, stairs, pillars, pavilions, temple spires, arches, domes, water, wells,
-  ladders, houses, trees, grass, rocks, villagers (dig, pull, walk, carry, climb) and a `stepwell` macro.
+- Kit: terrain with animated digs, rocky hills and cliffs (with a road winding up), walls with merlons, bastions, gates,
+  palaces with jharokha balconies, tombs, minarets, stairs, ramps, pillars, pavilions, temple spires, arches, domes,
+  water, boats, sledges, cut blocks, flags, wells, ladders, houses, towns, trees, grass, rocks and villagers (dig, pull,
+  walk, carry, climb).
+- Macros: `stepwell`, `pyramid`, `fort` and `temple` expand into the kit with build phases tied to scenes, and register
+  anchors (`fort.gate`, `pyramid.top`, ...) that camera shots aim at: `{"shot": "medium", "target": "fort.gate",
+  "angle": 30}` is framed automatically for 9:16 (subject in the upper middle, caption band clear).
 - Styles: desert, golden, green, overcast, night.
-- Try it: `python run.py render examples/built_rani_ki_vav.json` (Rani ki Vav, about 50 s).
+- Try it: `python run.py render examples/built_rani_ki_vav.json` (Rani ki Vav), `examples/built_great_pyramid.json` or
+  `examples/built_mehrangarh_fort.json` (each about 50 to 55 s). Use `stills` instead of `render` for QA frames only.
 - Speed: about 0.25 to 0.5 s per frame on a 4-core runner at the default `VIDFORGE_3D_SCALE=0.75` (rendered at 75 percent
   size, upscaled to 1080x1920), so a 50 s Short adds roughly 6 to 12 minutes to a run.
 - Pick it in Create (Format: 3D build) or let the scout choose it for history, architecture, travel, mythology and

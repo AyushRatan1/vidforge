@@ -1,0 +1,686 @@
+{
+ "title": "How a Fort Was Built on a 122 m Cliff: Mehrangarh #Shorts",
+ "description": "How Mehrangarh in Jodhpur, Rajasthan, sits on a rocky hill about 122 m above the city: founded by Rao Jodha in 1459, walls up to about 36 m high and 21 m wide, a road through seven gates (pols), Jai Pol added by Maharaja Man Singh in 1806, and palaces such as Moti Mahal, Phool Mahal and Sheesh Mahal added by later rulers.\nSource: Mehrangarh Museum Trust.\n\nVisuals and voice are AI-assisted.",
+ "tags": [
+  "Mehrangarh",
+  "Mehrangarh Fort",
+  "Jodhpur",
+  "Rajasthan",
+  "Rao Jodha",
+  "Indian forts",
+  "3D animation",
+  "how it was built",
+  "shorts"
+ ],
+ "language": "en",
+ "voice": "am_michael",
+ "speed": 1.0,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "category": "education",
+ "format": "3d_build",
+ "captions": {
+  "style": "karaoke",
+  "y": 0.6,
+  "size": 0.084,
+  "max_words": 2,
+  "highlight": "#ffd54a",
+  "uppercase": false
+ },
+ "overlay": {
+  "progress_bar": false
+ },
+ "transition": "none",
+ "music": {
+  "mood": "indian",
+  "volume": 0.13,
+  "seed": 14
+ },
+ "thumbnail": {
+  "scene": 9,
+  "t": 2.0
+ },
+ "world3d": {
+  "style": "desert",
+  "terrain": {
+   "width": 96,
+   "length": 120,
+   "cut": 42
+  },
+  "objects": [
+   {
+    "type": "fort",
+    "id": "fort",
+    "pos": [
+     0,
+     0,
+     -12
+    ],
+    "w": 19,
+    "d": 25,
+    "h": 9,
+    "seed": 11,
+    "gates": 7,
+    "walkers": 3,
+    "wall_h": 3.0,
+    "path_from": -60,
+    "path_span": 120,
+    "palaces": [
+     {
+      "w": 7,
+      "d": 4.2,
+      "h": 5.6,
+      "domes": 3
+     },
+     {
+      "w": 5.6,
+      "d": 3.8,
+      "h": 4.6,
+      "domes": 2
+     },
+     {
+      "w": 4.8,
+      "d": 3.4,
+      "h": 3.8,
+      "domes": 2
+     }
+    ],
+    "phases": {
+     "walls": {
+      "from": {
+       "scene": "walls",
+       "t": 0.0
+      },
+      "to": {
+       "scene": "walls",
+       "t": 0.95
+      }
+     },
+     "bastions": {
+      "from": {
+       "scene": "thick",
+       "t": 0.0
+      },
+      "to": {
+       "scene": "thick",
+       "t": 0.9
+      }
+     },
+     "gate": {
+      "from": {
+       "scene": "gates",
+       "t": 0.0
+      },
+      "to": {
+       "scene": "gates",
+       "t": 0.95
+      }
+     },
+     "palaces": {
+      "from": {
+       "scene": "palaces",
+       "t": 0.0
+      },
+      "to": {
+       "scene": "palaces",
+       "t": 0.92
+      }
+     }
+    }
+   },
+   {
+    "type": "town",
+    "id": "city",
+    "count": 70,
+    "area": [
+     -44,
+     4,
+     -9,
+     36
+    ],
+    "seed": 3,
+    "scale": 0.85,
+    "colors": [
+     "#6f9fd0",
+     "#86b3dd",
+     "#e9e1d0",
+     "#5f8fc4",
+     "#a9c6e4",
+     "#7aa6d6"
+    ]
+   },
+   {
+    "type": "town",
+    "count": 70,
+    "area": [
+     9,
+     4,
+     44,
+     36
+    ],
+    "seed": 7,
+    "scale": 0.85,
+    "colors": [
+     "#6f9fd0",
+     "#86b3dd",
+     "#e9e1d0",
+     "#5f8fc4",
+     "#a9c6e4",
+     "#7aa6d6"
+    ]
+   },
+   {
+    "type": "flag",
+    "pos": [
+     1,
+     9,
+     -9
+    ],
+    "h": 2.4,
+    "color": "#d9772b",
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "founder",
+      "t": 0.35
+     },
+     "to": {
+      "scene": "founder",
+      "t": 0.55
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "walls",
+      "t": 0.4
+     }
+    }
+   },
+   {
+    "type": "people",
+    "count": 5,
+    "area": [
+     -3,
+     -12,
+     4,
+     -6
+    ],
+    "y": 9,
+    "action": "walk",
+    "seed": 6,
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "founder",
+      "t": 0.45
+     },
+     "to": {
+      "scene": "founder",
+      "t": 0.7
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "walls",
+      "t": 0.4
+     }
+    }
+   },
+   {
+    "type": "town",
+    "count": 60,
+    "area": [
+     -42,
+     -40,
+     -17,
+     4
+    ],
+    "seed": 4,
+    "scale": 0.85,
+    "colors": [
+     "#6f9fd0",
+     "#86b3dd",
+     "#e9e1d0",
+     "#5f8fc4",
+     "#a9c6e4"
+    ]
+   },
+   {
+    "type": "town",
+    "count": 60,
+    "area": [
+     17,
+     -40,
+     42,
+     4
+    ],
+    "seed": 5,
+    "scale": 0.85,
+    "colors": [
+     "#6f9fd0",
+     "#86b3dd",
+     "#e9e1d0",
+     "#5f8fc4",
+     "#a9c6e4"
+    ]
+   },
+   {
+    "type": "trees",
+    "count": 16,
+    "area": [
+     -46,
+     -76,
+     46,
+     40
+    ],
+    "seed": 9,
+    "scale": 0.8,
+    "avoid": [
+     [
+      -16,
+      -30,
+      16,
+      6
+     ]
+    ]
+   },
+   {
+    "type": "rocks",
+    "count": 60,
+    "area": [
+     -46,
+     -76,
+     46,
+     40
+    ],
+    "seed": 2,
+    "avoid": [
+     [
+      -14,
+      -28,
+      14,
+      4
+     ]
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "at": {
+     "scene": "hook",
+     "t": 0.0
+    },
+    "shot": "wide",
+    "target": "fort.hill",
+    "size": [
+     34,
+     12,
+     40
+    ],
+    "angle": 28
+   },
+   {
+    "at": {
+     "scene": "hook",
+     "t": 1.0
+    },
+    "shot": "wide",
+    "target": "fort.hill",
+    "angle": 12
+   },
+   {
+    "at": {
+     "scene": "hill",
+     "t": 0.6
+    },
+    "shot": "low",
+    "target": "fort.hill",
+    "angle": -6,
+    "dist": 41,
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "founder",
+     "t": 0.6
+    },
+    "shot": "top",
+    "target": "fort",
+    "angle": 15
+   },
+   {
+    "at": {
+     "scene": "walls",
+     "t": 0.3
+    },
+    "shot": "medium",
+    "target": "fort.walls",
+    "angle": 30
+   },
+   {
+    "at": {
+     "scene": "walls",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": "fort.walls",
+    "angle": 45
+   },
+   {
+    "at": {
+     "scene": "thick",
+     "t": 0.6
+    },
+    "shot": "close",
+    "target": "fort.walls",
+    "angle": 60
+   },
+   {
+    "at": {
+     "scene": "gates",
+     "t": 0.25
+    },
+    "shot": "medium",
+    "target": "fort.path",
+    "angle": 5
+   },
+   {
+    "at": {
+     "scene": "gates",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": "fort.path",
+    "angle": -15
+   },
+   {
+    "at": {
+     "scene": "jaipol",
+     "t": 0.5
+    },
+    "shot": "medium",
+    "target": "fort.gate1",
+    "size": [
+     8,
+     5,
+     8
+    ],
+    "angle": 8,
+    "height": 6
+   },
+   {
+    "at": {
+     "scene": "palaces",
+     "t": 0.25
+    },
+    "shot": "medium",
+    "target": "fort.palaces",
+    "angle": 20,
+    "height": 10
+   },
+   {
+    "at": {
+     "scene": "palaces",
+     "t": 1.0
+    },
+    "shot": "medium",
+    "target": "fort.palaces",
+    "angle": 40,
+    "height": 9
+   },
+   {
+    "at": {
+     "scene": "reveal",
+     "t": 0.0
+    },
+    "shot": "orbit",
+    "target": "fort",
+    "angle": 20,
+    "sweep": 80
+   }
+  ]
+ },
+ "scenes": [
+  {
+   "id": "hook",
+   "narration": "How do you build a fortress on top of a cliff?",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "A FORT ON A CLIFF?",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.06,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.4
+    }
+   ]
+  },
+  {
+   "id": "hill",
+   "narration": "Start with a rocky hill that rises about one hundred and twenty two metres above Jodhpur.",
+   "caption": "Start with a rocky hill that rises about 122 metres above Jodhpur.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "~122 M HIGH",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "hundred"
+    }
+   ]
+  },
+  {
+   "id": "founder",
+   "narration": "In fourteen fifty-nine, Rao Jodha founded his fort right on top.",
+   "caption": "In 1459, Rao Jodha founded his fort right on top.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "1459",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.062,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "fourteen"
+    },
+    {
+     "type": "text",
+     "text": "Rao Jodha",
+     "x": 0.5,
+     "y": 0.26,
+     "size": 0.05,
+     "color": "#ffffff",
+     "enter": "fade",
+     "at": 1.2
+    }
+   ]
+  },
+  {
+   "id": "walls",
+   "narration": "Its walls rise straight from the cliff edge, up to about thirty six metres high.",
+   "caption": "Its walls rise straight from the cliff edge, up to about 36 metres high.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "UP TO 36 M HIGH",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "thirty"
+    }
+   ]
+  },
+  {
+   "id": "thick",
+   "narration": "And in places, they are about twenty one metres wide.",
+   "caption": "And in places, they are about 21 metres wide.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "21 M WIDE",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "twenty"
+    }
+   ]
+  },
+  {
+   "id": "gates",
+   "narration": "The road up winds through seven gates, called pols.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "7 GATES",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "seven"
+    }
+   ]
+  },
+  {
+   "id": "jaipol",
+   "narration": "One of them, Jai Pol, was added by Maharaja Man Singh in eighteen oh six.",
+   "caption": "One of them, Jai Pol, was added by Maharaja Man Singh in 1806.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "JAI POL, 1806",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Jai"
+    }
+   ]
+  },
+  {
+   "id": "palaces",
+   "narration": "Later rulers added palaces inside, like Moti Mahal, Phool Mahal and Sheesh Mahal.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "PALACES",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.056,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "palaces"
+    },
+    {
+     "type": "text",
+     "text": "Moti, Phool and Sheesh Mahal",
+     "x": 0.5,
+     "y": 0.26,
+     "size": 0.05,
+     "color": "#ffffff",
+     "enter": "fade",
+     "at": 1.6
+    }
+   ]
+  },
+  {
+   "id": "reveal",
+   "narration": "This is Mehrangarh, still standing over Jodhpur more than five centuries later.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "MEHRANGARH",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.062,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.3
+    },
+    {
+     "type": "text",
+     "text": "Jodhpur, Rajasthan",
+     "x": 0.5,
+     "y": 0.26,
+     "size": 0.05,
+     "color": "#ffffff",
+     "enter": "fade",
+     "at": 0.8
+    }
+   ]
+  },
+  {
+   "id": "teaser",
+   "narration": "Follow to see how the Great Pyramid was stacked, block by block.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": []
+  }
+ ]
+}

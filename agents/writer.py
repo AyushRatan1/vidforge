@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 
 from engine.validate import validate
 
@@ -12,11 +13,26 @@ from .scene_guide import SCENE_GUIDE
 
 EXAMPLES_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "examples")
 
+# 3d_build examples by subject: the first pattern that matches the idea's topic picks the example
+BUILD_EXAMPLES = [
+    (re.compile(r"pyramid|giza|khufu|cheops", re.I), "built_great_pyramid.json"),
+    (re.compile(r"\bforts?\b|fortress|citadel|\bqila\b|\bqal'?a\b|garh\b|\bdurg\b|castle", re.I), "built_mehrangarh_fort.json"),
+    (re.compile(r"step\s?-?wells?|\bvav\b|baori|baoli|bawdi|bavdi", re.I), "built_rani_ki_vav.json"),
+]
 
-def _example_for(channel: dict, fmt: str = "") -> str:
-    """Show the writer a finished spec in the same format or language/audience as the channel."""
+
+def _build_example(topic: str) -> str:
+    for pattern, name in BUILD_EXAMPLES:
+        if pattern.search(topic or ""):
+            return name
+    return "built_rani_ki_vav.json"
+
+
+def _example_for(channel: dict, fmt: str = "", topic: str = "") -> str:
+    """Show the writer a finished spec in the same format or language/audience as the channel. For 3d_build, the
+    example whose subject best matches the topic (pyramid, fort/qila/garh, stepwell/vav/baori; else Rani ki Vav)."""
     if fmt == "3d_build":
-        name = "built_rani_ki_vav.json"
+        name = _build_example(topic)
     elif channel.get("audience") == "kids":
         name = "kids_counting_hi.json"
     elif channel.get("language") == "en":
@@ -85,8 +101,12 @@ SCHEMA = {
 }
 
 
-def _system(channel: dict | None = None, fmt: str = ""):
-    return SYSTEM_TMPL.format(guide=SCENE_GUIDE, example=_example_for(channel or {}, fmt))
+def _system(channel: dict | None = None, fmt: str = "", topic: str = ""):
+    return SYSTEM_TMPL.format(guide=SCENE_GUIDE, example=_example_for(channel or {}, fmt, topic))
+
+
+def _topic_of(idea: dict) -> str:
+    return " ".join(str(idea.get(k) or "") for k in ("topic", "title", "angle", "hook"))
 
 
 def write_episode(claude: Claude, idea: dict, facts: dict, channel: dict, notes: str = "") -> dict:
@@ -100,7 +120,7 @@ def write_episode(claude: Claude, idea: dict, facts: dict, channel: dict, notes:
         + ("Stock footage is OFF for this channel: drawn backgrounds only.\n\n" if footage_off else "")
         + "Write and direct the episode now."
     )
-    system = _system(channel, fmt)
+    system = _system(channel, fmt, _topic_of(idea))
     spec = claude.json_tool("writer", system, prompt, "submit_episode", "Submit the complete episode spec",
                             SCHEMA, max_tokens=32000)
     spec = _repair_loop(claude, spec, prompt, system)
@@ -158,7 +178,7 @@ def revise(claude: Claude, spec: dict, instructions: str, facts: dict | None = N
           "Return the complete revised spec via submit_episode."
     )
     system = _system(channel or {"language": spec.get("language"), "audience": "kids" if spec.get("made_for_kids") else "general"},
-                     spec.get("format", ""))
+                     spec.get("format", ""), str(spec.get("title") or ""))
     out = claude.json_tool("writer", system, prompt, "submit_episode", "Submit the complete episode spec",
                            SCHEMA, max_tokens=32000)
     return _repair_loop(claude, out, prompt, system)

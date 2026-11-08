@@ -476,6 +476,108 @@ def test_world3d_time_refs_and_stepwell():
     assert any("dragon" in e for e in e2) and any("nope" in e for e in e2)
 
 
+def _w3_spec(objects, camera, scenes=("a", "b", "c", "d", "e")):
+    return {"title": "t", "language": "en", "voice": "am_michael", "aspect": "9:16", "format": "3d_build",
+            "scenes": [{"id": s, "narration": "Some words here.", "elements": []} for s in scenes],
+            "world3d": {"style": "desert", "terrain": {"width": 90, "length": 100, "cut": 30}, "objects": objects, "camera": camera}}
+
+
+def _w3_tl(n, dur=5.0):
+    return [{"start": dur * i, "dur": dur, "voice_start": 0.2, "voice_dur": dur - 1} for i in range(n)]
+
+
+def test_world3d_macros_expand_and_validate():
+    from engine import world3d as W3
+    win = lambda s: {"from": {"scene": s, "t": 0}, "to": {"scene": s, "t": 1}}   # noqa: E731
+    objects = [
+        {"type": "pyramid", "pos": [0, 0, -10], "base": 20, "courses": 9,
+         "phases": {"courses": win("a"), "casing": win("b"), "capstone": win("c")}},
+        {"type": "fort", "pos": [40, 0, -10], "w": 16, "d": 20, "h": 8, "gates": 4, "walkers": 1,
+         "palaces": [{"w": 5, "d": 3.5, "h": 4, "id": "big_palace"}, {"w": 4, "d": 3, "h": 3}],
+         "phases": {"walls": win("a"), "bastions": win("b"), "gate": win("c"), "palaces": win("d")}},
+        {"type": "temple", "pos": [-35, 0, -5], "w": 8, "phases": {"plinth": win("a"), "hall": win("b"), "spire": win("c")}},
+        {"type": "stepwell", "x0": -4, "x1": 4, "z_front": 25, "length": 16, "depth": 6, "levels": 3,
+         "phases": {"dig": win("a"), "stairs": win("b")}},
+        {"type": "cliff", "id": "crag", "pos": [-30, 0, -40], "w": 12, "d": 10, "h": 10, "path": True},
+    ]
+    camera = [{"at": {"scene": "a", "t": 0}, "shot": "wide", "target": "fort"},
+              {"at": {"scene": "c", "t": 0.5}, "shot": "close", "target": "pyramid.top", "angle": 20},
+              {"at": {"scene": "e", "t": 0}, "shot": "orbit", "target": "big_palace", "sweep": 60}]
+    spec = _w3_spec(objects, camera)
+    errs, warns = validate(spec)
+    assert errs == [], errs
+    w = W3.prepare_world(spec, _w3_tl(5))
+    types = [o["type"] for o in w["objects"]]
+    assert not set(types) & {"pyramid", "fort", "temple", "stepwell"}
+    assert set(types) <= W3.KIT, set(types) - W3.KIT
+    for name in ("pyramid", "pyramid.top", "pyramid.ramp", "fort", "fort.gate", "fort.gate1", "fort.gate3", "fort.palaces",
+                 "big_palace", "temple", "temple.spire", "stepwell", "crag"):
+        assert name in w["anchors"], name
+    # the capstone sits exactly on the top course
+    boxes = [o for o in w["objects"] if o["type"] == "box" and o.get("texture") == "stone" and o["pos"][0] == 0]
+    top = max(o["pos"][1] + o["h"] for o in boxes)
+    cap = [o for o in w["objects"] if o["type"] == "frustum" and o.get("w_top") == 0][0]
+    assert abs(cap["pos"][1] - top) < 0.01 and abs(cap["w"] / 1.006 - min(o["w"] for o in boxes)) < 0.01
+    # fort: walls on the hill rim, hill outline and road computed, phases resolved to seconds
+    hill = [o for o in w["objects"] if o["type"] == "hill"][0]
+    walls = [o for o in w["objects"] if o["type"] == "wall" and o.get("crenels")]
+    assert len(walls) == len(hill["outline"]) and hill["path"]["ribbons"] and walls[0]["pos"][1] == hill["h"] - 0.6
+    assert all(isinstance(o["build"]["from"], float) for o in walls)
+    assert any(o["type"] == "palace" for o in w["objects"]) and any(o["type"] == "gate" for o in w["objects"])
+    cliff = [o for o in w["objects"] if o["type"] == "cliff"][0]
+    assert len(cliff["outline"]) >= 5 and cliff["path"]["ribbons"]
+    # deterministic
+    assert W3.prepare_world(spec, _w3_tl(5)) == w
+
+
+def test_world3d_camera_shots():
+    from engine import world3d as W3
+    objects = [{"type": "pyramid", "id": "p", "pos": [0, 0, -10], "base": 20},
+               {"type": "palace", "id": "hall", "pos": [20, 0, 0], "w": 6, "d": 4, "h": 5}]
+    camera = [{"at": {"scene": "a", "t": 0}, "shot": "wide", "target": "p", "angle": 30},
+              {"at": {"scene": "b", "t": 0.5}, "shot": "medium", "target": "hall"},
+              {"at": {"scene": "c", "t": 0}, "shot": "low", "target": [0, 3, -10], "size": 12},
+              {"at": {"scene": "c", "t": 0.6}, "pos": [10, 8, 20], "look": [0, 2, -10], "fov": 40},
+              {"at": {"scene": "d", "t": 0}, "shot": "orbit", "target": "p.top", "sweep": 90}]
+    spec = _w3_spec(objects, camera)
+    assert validate(spec)[0] == []
+    w = W3.prepare_world(spec, _w3_tl(5))
+    cam = w["camera"]
+    assert len(cam) > len(camera)                                  # the orbit expanded into several keys
+    for k in cam:
+        assert isinstance(k["at"], float) and len(k["pos"]) == 3 and len(k["look"]) == 3
+        assert all(isinstance(v, (int, float)) for v in k["pos"] + k["look"] + [k["fov"]])
+    assert [k["at"] for k in cam] == sorted(k["at"] for k in cam) and cam[-1]["at"] <= 25.0
+    assert {"pos": [10, 8, 20], "look": [0, 2, -10], "fov": 40, "at": 13.0} in cam    # plain keys pass through
+    wide = cam[0]
+    assert wide["pos"][1] > 5 and wide["pos"][2] > -10                              # above and in front of the subject
+    assert all(k["pos"][1] >= 0.7 for k in cam)                                    # never under the ground
+    # bad shots and unknown targets are validation errors
+    bad = _w3_spec(objects, [{"at": 0, "shot": "zoom", "target": "p"}, {"at": 1, "shot": "wide", "target": "nope"},
+                             {"at": 2, "shot": "close", "target": "p", "angle": "left"}])
+    errs, _ = validate(bad)
+    assert any("unknown shot" in e for e in errs) and any("'nope'" in e for e in errs) and any("angle" in e for e in errs)
+
+
+def test_world3d_build_examples():
+    from engine import world3d as W3
+    for name, n_min in (("built_great_pyramid.json", 8), ("built_mehrangarh_fort.json", 8), ("built_rani_ki_vav.json", 8)):
+        spec = json.load(open(os.path.join(ROOT, "examples", name), encoding="utf-8"))
+        errs, warns = validate(spec)
+        assert errs == [] and warns == [], (name, errs, warns)
+        assert n_min <= len(spec["scenes"]) <= 10 and spec["voice"] == "am_michael" and spec["format"] == "3d_build"
+        assert "\u2014" not in json.dumps(spec, ensure_ascii=False)
+        assert all(len([e for e in sc["elements"] if e.get("style") == "label"]) <= 2 for sc in spec["scenes"])
+        w = W3.prepare_world(spec, _w3_tl(len(spec["scenes"]), 5.5))
+        assert all(len(k["pos"]) == 3 for k in w["camera"])
+    assert writer._example_for({}, "3d_build", "How the Great Pyramid of Giza was built").startswith("{")
+    assert writer._build_example("Mehrangarh Fort, Jodhpur") == "built_mehrangarh_fort.json"
+    assert writer._build_example("Chittorgarh: the biggest qila in India") == "built_mehrangarh_fort.json"
+    assert writer._build_example("Khufu's pyramid") == "built_great_pyramid.json"
+    assert writer._build_example("Chand Baori stepwell") == "built_rani_ki_vav.json"
+    assert writer._build_example("How the Taj Mahal was built") == "built_rani_ki_vav.json"
+
+
 def test_world3d_renders_a_frame():
     """Smoke test of the browser renderer when a Chromium is available (skipped otherwise)."""
     import pytest
