@@ -14,6 +14,7 @@ import io
 import json
 import os
 import sys
+import time
 
 import requests
 from PIL import Image, ImageDraw, ImageFont
@@ -38,8 +39,10 @@ def candidates(queries: list, n: int = COLS * ROWS) -> list[dict]:
     """Round robin over the queries (best liked first within each) so every query gets a few tiles."""
     lists = []
     for q, kind in queries:
-        got = F.search_images(q, kind=kind, orientation="horizontal", per_page=24)
-        got += F.search_images(q, kind=kind, orientation="all", per_page=24)
+        got = []
+        for orient in ("horizontal", "all"):
+            time.sleep(0.7)  # Pixabay allows 100 requests a minute
+            got += F.search_images(q, kind=kind, orientation=orient, per_page=24)
         lists.append([dict(c, query=q) for c in got])
     seen, out = set(), []
     for rank in range(48):
