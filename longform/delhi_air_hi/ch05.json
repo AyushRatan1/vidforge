@@ -1,0 +1,341 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 405
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "दिल्ली की हवा, भाग 5: क्या हवा बदल सकती है?",
+ "scenes": [
+  {
+   "narration": "तो क्या दिल्ली की हवा कभी साफ़ हो सकती है? इसका जवाब एक ऐसे शहर में छिपा है, जो कभी दिल्ली जितना ही बदनाम था: बीजिंग।",
+   "background": {
+    "type": "footage",
+    "image_id": 16011,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "क्या हवा बदल सकती है?",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch05_01"
+  },
+  {
+   "narration": "दो हज़ार तेरह में बीजिंग का पीएम दो दशमलव पाँच सालाना औसत करीब नवासी था। दो हज़ार पच्चीस में ये घटकर सत्ताईस रह गया, यानी करीब सत्तर प्रतिशत कम।",
+   "background": {
+    "type": "footage",
+    "image_id": 805587,
+    "move": "right",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "बीजिंग: 89.5 → 27",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "सत्ताईस"
+    }
+   ],
+   "id": "ch05_02"
+  },
+  {
+   "narration": "बीजिंग ने कोयले की जगह गैस और बिजली अपनाई, पुराने वाहन हटाए, कारखाने शहर से बाहर किए, और सबसे ज़रूरी, आसपास के पूरे इलाके के साथ मिलकर काम किया।",
+   "background": {
+    "type": "footage",
+    "image_id": 8936971,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_03"
+  },
+  {
+   "narration": "दिल्ली में भी कदम उठाए गए हैं: ग्रैप यानी ग्रेडेड रिस्पॉन्स एक्शन प्लान, जिसमें हवा बिगड़ने पर पाबंदियाँ बढ़ती जाती हैं, मेट्रो का विस्तार, इलेक्ट्रिक बसें, और पराली के लिए मशीनें।",
+   "background": {
+    "type": "footage",
+    "image_id": 1853976,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "GRAP",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "ग्रैप"
+    }
+   ],
+   "id": "ch05_04"
+  },
+  {
+   "narration": "ग्रैप के चार चरण हैं। पहले चरण में खुले में कचरा जलाने और धूल पर सख्ती होती है, और चौथे चरण में ट्रकों की एंट्री और निर्माण कार्य तक पर रोक लग जाती है, और स्कूल ऑनलाइन चलने लगते हैं।",
+   "background": {
+    "type": "footage",
+    "image_id": 2579437,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "ग्रैप: चार चरण",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "चार"
+    }
+   ],
+   "id": "ch05_05"
+  },
+  {
+   "narration": "ऑड ईवन जैसे प्रयोग हुए, और शहर में स्मॉग टावर भी लगाए गए। पर विशेषज्ञ मानते हैं कि खुली हवा में स्मॉग टावर का असर बहुत सीमित है।",
+   "background": {
+    "type": "footage",
+    "image_id": 8772920,
+    "move": "right",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_06"
+  },
+  {
+   "narration": "पराली के लिए हैप्पी सीडर जैसी मशीनें आईं, जो पराली हटाए बिना गेहूँ बो देती हैं, और पूसा डीकम्पोज़र जैसे घोल, जो पराली को खेत में ही गला देते हैं।",
+   "background": {
+    "type": "footage",
+    "image_id": 9738590,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_07"
+  },
+  {
+   "narration": "पर विशेषज्ञ कहते हैं कि बीजिंग का सबक साफ़ है: हवा राज्यों की सीमाएँ नहीं मानती। पूरा उत्तर भारत मिलकर काम करे, तभी दिल्ली की हवा पूरी तरह बदल सकती है।",
+   "background": {
+    "type": "footage",
+    "image_id": 1756274,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_08"
+  },
+  {
+   "narration": "और हम क्या कर सकते हैं? बहुत खराब दिनों में बाहर कसरत कम करें, बाहर निकलें तो अच्छा मास्क पहनें, और जहाँ हो सके सार्वजनिक परिवहन अपनाएँ।",
+   "background": {
+    "type": "footage",
+    "image_id": 4965943,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_09"
+  },
+  {
+   "narration": "घर के अंदर एयर प्यूरीफ़ायर मदद करते हैं, पर याद रखिए, ये इलाज नहीं, सिर्फ बचाव है। असली इलाज है हवा को बाहर से साफ़ करना।",
+   "background": {
+    "type": "footage",
+    "image_id": 4634225,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_10"
+  },
+  {
+   "narration": "दिल्ली की हवा एक दिन में खराब नहीं हुई, और एक दिन में साफ़ भी नहीं होगी। पर बीजिंग ने दिखा दिया है कि ये नामुमकिन भी नहीं।",
+   "background": {
+    "type": "footage",
+    "image_id": 10182485,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_11"
+  },
+  {
+   "narration": "तो कुल मिलाकर: गाड़ियाँ, धूल, कारखाने, पराली और पटाखे धुआँ बनाते हैं, और सर्दियों का मौसम उसे शहर के ऊपर कैद कर देता है। जब तक हर स्रोत पर काम नहीं होगा, नवंबर ऐसा ही रहेगा।",
+   "background": {
+    "type": "footage",
+    "image_id": 9448741,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_12"
+  },
+  {
+   "narration": "आपके शहर का AQI आज कितना है? कमेंट में बताइए। और ऐसे ही वीडियो के लिए Hypercurious को सब्सक्राइब कीजिए।",
+   "background": {
+    "type": "footage",
+    "image_id": 4813658,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "सब्सक्राइब करें: Hypercurious",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "सब्सक्राइब"
+    }
+   ],
+   "id": "ch05_13"
+  }
+ ]
+}

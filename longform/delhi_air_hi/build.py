@@ -14,7 +14,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 from kit import S, build, card, pin, tag, vid  # noqa: E402
 
-PICK = {}  # name -> Pixabay image id, filled from the candidate sheets
+PICK = {  # name -> Pixabay image id, chosen from the candidate sheets for subjects.json
+    "india_gate_smog": 7750811, "smog_city": 2340300, "school_kids": 5760039, "smoke": 2434723, "delhi_skyline": 3734412,
+    "haze_sun": 3178047, "particles": 8165889, "lungs": 8771248,
+    "traffic_night": 7859033, "traffic": 6945280, "industry": 1752876, "smog_aerial": 4796858, "stubble": 3544202,
+    "farmer": 253410, "field_fire": 7218032, "debate": 2178704, "paddy": 1866498, "fog_road": 5731886,
+    "himalaya": 10489623, "sun_haze": 611668, "sky_layer": 2184940, "winter_fog": 2571788, "smog_word": 1761801,
+    "blue_sky": 2916763, "firecrackers": 4584262,
+    "people_street": 5703332, "old_delhi": 4819243, "haze_city": 15879, "smog_landmark": 4867634, "mask": 6274651,
+    "child_mask": 5770618,
+    "beijing_smog": 16011, "beijing_clear": 805587, "electric_bus": 8936971, "metro": 1853976, "construction": 2579437,
+    "traffic2": 8772920, "harvester": 9738590, "geography": 1756274, "mask2": 4965943, "purifier": 4634225,
+    "trees": 10182485, "recap": 9448741, "india_gate": 4813658,
+}
 
 
 def P(name, move="in"):

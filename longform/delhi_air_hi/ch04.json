@@ -1,0 +1,184 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 404
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "दिल्ली की हवा, भाग 4: शरीर पर असर",
+ "scenes": [
+  {
+   "narration": "ये सब हमारे शरीर पर क्या करता है? शिकागो विश्वविद्यालय के एयर क्वालिटी लाइफ इंडेक्स के अनुसार, अगर हवा WHO के मानक तक साफ़ हो जाए, तो दिल्ली वालों की औसत उम्र करीब आठ साल बढ़ सकती है।",
+   "background": {
+    "type": "footage",
+    "image_id": 5703332,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "शरीर पर असर",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    },
+    {
+     "type": "text",
+     "text": "दिल्ली: ~8.2 साल",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "आठ"
+    }
+   ],
+   "id": "ch04_01"
+  },
+  {
+   "narration": "पूरे भारत के लिए ये आंकड़ा करीब साढ़े तीन साल है।",
+   "background": {
+    "type": "footage",
+    "image_id": 4819243,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_02"
+  },
+  {
+   "narration": "WHO के मुताबिक पीएम दो दशमलव पाँच का सालाना औसत पाँच माइक्रोग्राम प्रति घन मीटर से ज़्यादा नहीं होना चाहिए। दो हज़ार पच्चीस में दिल्ली का औसत था छियानवे।",
+   "background": {
+    "type": "footage",
+    "image_id": 15879,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "WHO: 5 | दिल्ली 2025: 96",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "छियानवे।"
+    }
+   ],
+   "id": "ch04_03"
+  },
+  {
+   "narration": "यानी तय सीमा से लगभग उन्नीस गुना ज़्यादा।",
+   "background": {
+    "type": "footage",
+    "image_id": 4867634,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_04"
+  },
+  {
+   "narration": "प्रदूषण से खाँसी, साँस फूलना और अस्थमा बढ़ता है, और लंबे समय में दिल और फेफड़ों की बीमारियों का खतरा। सबसे ज़्यादा खतरे में होते हैं बच्चे और बुज़ुर्ग।",
+   "background": {
+    "type": "footage",
+    "image_id": 6274651,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_05"
+  },
+  {
+   "narration": "बच्चे बड़ों के मुकाबले तेज़ साँस लेते हैं, और ज़मीन के ज़्यादा करीब होते हैं, जहाँ प्रदूषण सबसे घना होता है। इसलिए हर साँस के साथ वो ज़्यादा ज़हर अंदर लेते हैं।",
+   "background": {
+    "type": "footage",
+    "image_id": 5770618,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_06"
+  }
+ ]
+}

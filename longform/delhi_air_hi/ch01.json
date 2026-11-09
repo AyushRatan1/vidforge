@@ -1,0 +1,251 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 401
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "दिल्ली की हवा, भाग 1: हर साल की कहानी",
+ "scenes": [
+  {
+   "narration": "हर साल नवंबर आते ही दिल्ली की हवा ज़हर बन जाती है। छह नवंबर को दिल्ली का औसत AQI तीन सौ नवासी था, और रोहिणी जैसे इलाकों में चार सौ चौहत्तर, यानी सीवियर।",
+   "background": {
+    "type": "footage",
+    "image_id": 7750811,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "AQI 389 | रोहिणी 474",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "नवासी"
+    }
+   ],
+   "id": "ch01_01"
+  },
+  {
+   "narration": "और ये सिर्फ दिल्ली की कहानी नहीं। उत्तर भारत के कई शहर हर सर्दी इसी धुंध में घिर जाते हैं।",
+   "background": {
+    "type": "footage",
+    "image_id": 2340300,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_02"
+  },
+  {
+   "narration": "ये समस्या नई भी नहीं। दो हज़ार उन्नीस में तो हालात इतने बिगड़े कि दिल्ली में पब्लिक हेल्थ इमरजेंसी घोषित करनी पड़ी, और स्कूल बंद करने पड़े।",
+   "background": {
+    "type": "footage",
+    "image_id": 5760039,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "2019: पब्लिक हेल्थ इमरजेंसी",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "इमरजेंसी"
+    }
+   ],
+   "id": "ch01_03"
+  },
+  {
+   "narration": "हर साल वही सवाल उठता है: आखिर दिल्ली की हवा इतनी ज़हरीली क्यों होती है? पराली? गाड़ियाँ? पटाखे? आज इसका पूरा सच, आंकड़ों के साथ।",
+   "background": {
+    "type": "footage",
+    "image_id": 2434723,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_04"
+  },
+  {
+   "narration": "पहले समझते हैं कि AQI है क्या। एयर क्वालिटी इंडेक्स, शून्य से पाँच सौ तक का एक पैमाना, जो बताता है कि हवा कितनी साफ़ है, या कितनी गंदी।",
+   "background": {
+    "type": "footage",
+    "image_id": 3734412,
+    "move": "right",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "AQI क्या है?",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch01_05"
+  },
+  {
+   "narration": "शून्य से पचास तक अच्छा, सौ तक संतोषजनक, दो सौ तक मध्यम, तीन सौ तक खराब, चार सौ तक बहुत खराब, और चार सौ के ऊपर सीवियर।",
+   "background": {
+    "type": "footage",
+    "image_id": 3178047,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "401 से 500: सीवियर",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "सीवियर।"
+    }
+   ],
+   "id": "ch01_06"
+  },
+  {
+   "narration": "इस पैमाने में सबसे अहम हैं पीएम दो दशमलव पाँच कण। धूल और धुएँ के ऐसे कण, जो इंसान के बाल से करीब तीस गुना पतले होते हैं।",
+   "background": {
+    "type": "footage",
+    "image_id": 8165889,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "PM2.5",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "पीएम"
+    }
+   ],
+   "id": "ch01_07"
+  },
+  {
+   "narration": "ये इतने छोटे होते हैं कि नाक और गले की हर रुकावट पार करके फेफड़ों की गहराई तक, और वहाँ से खून तक पहुँच जाते हैं।",
+   "background": {
+    "type": "footage",
+    "image_id": 8771248,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_08"
+  }
+ ]
+}

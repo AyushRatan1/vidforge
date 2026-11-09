@@ -1,0 +1,203 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 403
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "दिल्ली की हवा, भाग 3: मौसम का खेल",
+ "scenes": [
+  {
+   "narration": "दिल्ली गंगा के विशाल मैदान में बसी है, जिसके उत्तर में हिमालय की दीवार खड़ी है। सर्दियों में हवा धीमी पड़ जाती है, और प्रदूषण इस कटोरे जैसे इलाके में फँस जाता है।",
+   "background": {
+    "type": "footage",
+    "image_id": 10489623,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "मौसम का खेल",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch03_01"
+  },
+  {
+   "narration": "ऊपर से होता है टेम्परेचर इन्वर्ज़न। आम तौर पर ज़मीन के पास की गर्म हवा ऊपर उठती है, और धुएँ को अपने साथ ऊपर ले जाती है।",
+   "background": {
+    "type": "footage",
+    "image_id": 611668,
+    "move": "up",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch03_02"
+  },
+  {
+   "narration": "वैज्ञानिक इसे मिक्सिंग हाइट कहते हैं, यानी वो ऊँचाई जहाँ तक धुआँ हवा में घुल मिल सकता है। सर्दियों में ये ऊँचाई गर्मियों के मुकाबले कई गुना कम हो जाती है।",
+   "background": {
+    "type": "footage",
+    "image_id": 2184940,
+    "move": "up",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch03_03"
+  },
+  {
+   "narration": "पर सर्दियों की रातों में ज़मीन जल्दी ठंडी हो जाती है, और ऊपर गर्म हवा की एक परत बन जाती है, जैसे किसी ने ढक्कन लगा दिया हो। धुआँ नीचे ही कैद रह जाता है।",
+   "background": {
+    "type": "footage",
+    "image_id": 2571788,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "टेम्परेचर इन्वर्ज़न",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "ढक्कन"
+    }
+   ],
+   "id": "ch03_04"
+  },
+  {
+   "narration": "ऊपर से सर्दियों का कोहरा। जब कोहरे की नमी में धुएँ के कण घुल जाते हैं, तो बनता है स्मॉग, यानी स्मोक और फॉग का मेल।",
+   "background": {
+    "type": "footage",
+    "image_id": 1761801,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Smoke + Fog = Smog",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "स्मॉग,"
+    }
+   ],
+   "id": "ch03_05"
+  },
+  {
+   "narration": "गर्मियों में यही धुआँ आसमान में ऊपर फैल जाता है, और मानसून की बारिश उसे धो देती है। इसीलिए जो प्रदूषण जुलाई में दिखता नहीं, वही नवंबर में दम घोंटने लगता है।",
+   "background": {
+    "type": "footage",
+    "image_id": 2916763,
+    "move": "right",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch03_06"
+  },
+  {
+   "narration": "और दिवाली के पटाखे? वो कुछ दिनों के लिए आग में घी का काम करते हैं, खासकर तब, जब हवा पहले से ठहरी हुई हो।",
+   "background": {
+    "type": "footage",
+    "image_id": 4584262,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch03_07"
+  }
+ ]
+}

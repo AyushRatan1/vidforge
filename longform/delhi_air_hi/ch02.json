@@ -1,0 +1,302 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 402
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "दिल्ली की हवा, भाग 2: धुआँ आता कहाँ से है?",
+ "scenes": [
+  {
+   "narration": "तो ये ज़हर आता कहाँ से है? जवाब एक नहीं, कई हैं। और सर्दियों में ये सब एक साथ मिल जाते हैं।",
+   "background": {
+    "type": "footage",
+    "image_id": 7859033,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "धुआँ आता कहाँ से है?",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch02_01"
+  },
+  {
+   "narration": "सबसे बड़ा स्थानीय कारण है गाड़ियाँ। सेंटर फॉर साइंस एंड एनवायरनमेंट के विश्लेषण के मुताबिक, सर्दियों में दिल्ली के अपने प्रदूषण का करीब आधा हिस्सा गाड़ियों के धुएँ से आता है।",
+   "background": {
+    "type": "footage",
+    "image_id": 6945280,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "स्थानीय प्रदूषण का ~आधा: गाड़ियाँ",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "गाड़ियाँ।"
+    }
+   ],
+   "id": "ch02_02"
+  },
+  {
+   "narration": "फिर है धूल: निर्माण कार्य की धूल, और सड़कों की धूल। साथ में आसपास के कारखाने, बिजलीघर और ईंट भट्ठे।",
+   "background": {
+    "type": "footage",
+    "image_id": 1752876,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_03"
+  },
+  {
+   "narration": "पर एक चौंकाने वाली बात: इसी विश्लेषण के अनुसार, पिछली सर्दियों में दिल्ली के प्रदूषण का करीब पैंसठ प्रतिशत हिस्सा शहर की सीमा के बाहर से आया था।",
+   "background": {
+    "type": "footage",
+    "image_id": 4796858,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "~65% शहर के बाहर से",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "पैंसठ"
+    }
+   ],
+   "id": "ch02_04"
+  },
+  {
+   "narration": "और फिर आती है पराली। अक्टूबर नवंबर में पंजाब और हरियाणा में धान की कटाई के बाद खेतों में बचे डंठल जला दिए जाते हैं।",
+   "background": {
+    "type": "footage",
+    "image_id": 3544202,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "पराली",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "पराली।"
+    }
+   ],
+   "id": "ch02_05"
+  },
+  {
+   "narration": "किसान ऐसा क्यों करते हैं? क्योंकि धान कटने और गेहूँ बोने के बीच सिर्फ दो तीन हफ्ते होते हैं, और पराली हटाने की मशीनें हर किसान के बस की बात नहीं।",
+   "background": {
+    "type": "footage",
+    "image_id": 253410,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_06"
+  },
+  {
+   "narration": "पराली का असर हर दिन बदलता है। पिछले साल बारह नवंबर को, सबसे बुरे दिन, दिल्ली के प्रदूषण में इसका हिस्सा करीब साढ़े बाईस प्रतिशत तक पहुँचा था।",
+   "background": {
+    "type": "footage",
+    "image_id": 7218032,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "12 नवंबर 2025: ~22.5%",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "बाईस"
+    }
+   ],
+   "id": "ch02_07"
+  },
+  {
+   "narration": "और अच्छी खबर ये है कि खेतों में आग की घटनाएँ बहुत घटी हैं। पंजाब में दो हज़ार इक्कीस में सत्तर हज़ार से ज़्यादा घटनाएँ हुई थीं, और दो हज़ार पच्चीस में करीब पाँच हज़ार।",
+   "background": {
+    "type": "footage",
+    "image_id": 1866498,
+    "move": "right",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "पंजाब: 70,000+ → ~5,100",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "पाँच"
+    }
+   ],
+   "id": "ch02_08"
+  },
+  {
+   "narration": "हर साल इस पर राजनीति भी होती है। दिल्ली की ओर से पराली पर उँगली उठती है, और पंजाब की ओर से जवाब आता है कि दिल्ली का धुआँ उसकी अपनी गाड़ियों और धूल से है। आंकड़े बताते हैं कि दोनों बातों में सच्चाई है।",
+   "background": {
+    "type": "footage",
+    "image_id": 2178704,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_09"
+  },
+  {
+   "narration": "फिर भी हवा उतनी नहीं सुधरी। क्योंकि असली खेल सिर्फ धुएँ का नहीं, मौसम और भूगोल का भी है।",
+   "background": {
+    "type": "footage",
+    "image_id": 5731886,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_10"
+  }
+ ]
+}
