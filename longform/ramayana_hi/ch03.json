@@ -1,0 +1,267 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.1,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "devotional",
+  "volume": 0.1,
+  "seed": 103
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "रामायण अध्याय 3: वनवास",
+ "scenes": [
+  {
+   "narration": "वर्षों बाद राजा दशरथ ने राम को युवराज बनाने का निर्णय लिया। पूरी अयोध्या में उत्सव की तैयारी होने लगी।",
+   "background": {
+    "type": "footage",
+    "query": "festival lamps celebration",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अध्याय 3: वनवास",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch03_01"
+  },
+  {
+   "narration": "लेकिन रानी कैकेयी की दासी मंथरा ने उनके मन में शंका भर दी। अगर राम राजा बने, तो भरत का क्या होगा?",
+   "background": {
+    "type": "footage",
+    "image": "palace window shadow",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [],
+   "id": "ch03_02"
+  },
+  {
+   "narration": "कैकेयी को याद आए वो दो वरदान, जो दशरथ ने बरसों पहले एक युद्ध में उनकी जान बचाने पर दिए थे। आज उन्होंने वो वरदान माँग लिए।",
+   "background": {
+    "type": "footage",
+    "image": "indian queen",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "right"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "कैकेयी के दो वरदान",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "वरदान"
+    }
+   ],
+   "id": "ch03_03"
+  },
+  {
+   "narration": "पहला: भरत का राज्याभिषेक। दूसरा: राम को चौदह वर्ष का वनवास।",
+   "background": {
+    "type": "footage",
+    "image": "golden throne",
+    "kind": "all",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "1. भरत को राज्य",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "पहला:"
+    },
+    {
+     "type": "text",
+     "text": "2. राम को 14 वर्ष वनवास",
+     "x": 0.5,
+     "y": 0.21,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "दूसरा:"
+    }
+   ],
+   "id": "ch03_04"
+  },
+  {
+   "narration": "दशरथ टूट गए, लेकिन राम ने बिना किसी शिकायत के पिता का वचन स्वीकार किया। सीता और लक्ष्मण भी उनके साथ वन जाने को तैयार हो गए।",
+   "background": {
+    "type": "footage",
+    "image": "rama sita",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "out"
+   },
+   "elements": [],
+   "id": "ch03_05"
+  },
+  {
+   "narration": "पूरी अयोध्या रोते हुए उनके पीछे चली। गंगा के तट पर निषादराज गुह ने उन्हें नाव से नदी पार कराई, और तीनों चित्रकूट के जंगलों में पहुँच गए।",
+   "background": {
+    "type": "footage",
+    "query": "boat river ganga",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "गंगा पार",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "गंगा"
+    }
+   ],
+   "id": "ch03_06"
+  },
+  {
+   "narration": "राम के जाने के कुछ ही दिनों बाद, पुत्र के वियोग में राजा दशरथ ने प्राण त्याग दिए।",
+   "background": {
+    "type": "footage",
+    "query": "candle flame dark",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch03_07"
+  },
+  {
+   "narration": "भरत लौटे तो सब जानकर बहुत दुखी हुए। वे राम को मनाने वन गए, पर राम नहीं लौटे। तब भरत राम की खड़ाऊँ लेकर आए, उन्हें सिंहासन पर रखा, और खुद तपस्वी बनकर राज्य चलाया।",
+   "background": {
+    "type": "footage",
+    "image": "wooden sandals",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "राम की खड़ाऊँ",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "खड़ाऊँ"
+    }
+   ],
+   "id": "ch03_08"
+  }
+ ]
+}

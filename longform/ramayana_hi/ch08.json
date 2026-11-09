@@ -1,0 +1,224 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.1,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "devotional",
+  "volume": 0.1,
+  "seed": 108
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "रामायण अध्याय 8: दीपों का उत्सव",
+ "scenes": [
+  {
+   "narration": "युद्ध के बाद राम ने विभीषण को लंका का राजा बनाया। सीता से मिलन हुआ, और वाल्मीकि के अनुसार सीता ने अग्नि परीक्षा देकर अपनी पवित्रता सिद्ध की।",
+   "background": {
+    "type": "footage",
+    "query": "fire flames slow motion",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अध्याय 8: दीपों का उत्सव",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch08_01"
+  },
+  {
+   "narration": "चौदह वर्ष पूरे हो चुके थे। राम, सीता और लक्ष्मण, हनुमान और मित्रों के साथ, पुष्पक विमान से अयोध्या लौटे।",
+   "background": {
+    "type": "footage",
+    "query": "flying over clouds sunrise",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch08_02"
+  },
+  {
+   "narration": "राम ने हनुमान को आगे भेजा, भरत को खबर देने। भरत चौदह वर्षों से नंदीग्राम में राम की खड़ाऊँ के आगे बैठे, एक एक दिन गिन रहे थे।",
+   "background": {
+    "type": "footage",
+    "image": "wooden sandals",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "out",
+    "skip": 1
+   },
+   "elements": [],
+   "id": "ch08_03"
+  },
+  {
+   "narration": "भरत ने राज्य राम को सौंप दिया। और लोक परंपरा कहती है कि उस रात अयोध्यावासियों ने पूरे नगर को दीपों से सजा दिया। यही है दीपावली।",
+   "background": {
+    "type": "footage",
+    "query": "diya lamps diwali",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "दीपावली",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "दीपावली।"
+    }
+   ],
+   "id": "ch08_04"
+  },
+  {
+   "narration": "राम राजा बने, और उनके शासन को राम राज्य कहा गया, जहाँ न्याय था, धर्म था और प्रजा सुखी थी।",
+   "background": {
+    "type": "footage",
+    "image": "lord rama",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "out",
+    "skip": 2
+   },
+   "elements": [],
+   "id": "ch08_05"
+  },
+  {
+   "narration": "गुरु वशिष्ठ ने राम का राज्याभिषेक किया। सीता उनके साथ सिंहासन पर बैठीं, और हनुमान सदा के लिए उनके चरणों में।",
+   "background": {
+    "type": "footage",
+    "image": "hindu temple gold",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [],
+   "id": "ch08_06"
+  },
+  {
+   "narration": "पर रामायण की कहानी यहाँ खत्म नहीं होती। उत्तरकांड में सीता का वनवास, लव और कुश का जन्म, और भी बहुत कुछ है। वह कहानी फिर कभी।",
+   "background": {
+    "type": "footage",
+    "image": "old book pages",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "right",
+    "skip": 1
+   },
+   "elements": [],
+   "id": "ch08_07"
+  },
+  {
+   "narration": "आपको रामायण का कौन सा प्रसंग सबसे अच्छा लगता है? कमेंट में ज़रूर बताइए। और ऐसी ही कहानियों के लिए Hypercurious को सब्सक्राइब कीजिए।",
+   "background": {
+    "type": "footage",
+    "query": "diya lamps night",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "सब्सक्राइब करें: Hypercurious",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "सब्सक्राइब"
+    }
+   ],
+   "id": "ch08_08"
+  }
+ ]
+}

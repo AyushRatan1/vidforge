@@ -1,0 +1,203 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.1,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "devotional",
+  "volume": 0.1,
+  "seed": 105
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "रामायण अध्याय 5: हनुमान",
+ "scenes": [
+  {
+   "narration": "सीता की खोज में भटकते राम और लक्ष्मण शबरी के आश्रम पहुँचे। वृद्ध शबरी ने उन्हें ऋष्यमूक पर्वत पर रहने वाले सुग्रीव के पास जाने की राह दिखाई।",
+   "background": {
+    "type": "footage",
+    "query": "mountain forest mist",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अध्याय 5: हनुमान",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch05_01"
+  },
+  {
+   "narration": "वहीं उनकी भेंट हुई हनुमान से। पवनपुत्र हनुमान, जो उसी क्षण से राम के सबसे बड़े भक्त बन गए।",
+   "background": {
+    "type": "footage",
+    "image": "hanuman",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "out",
+    "skip": 1
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "हनुमान",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "हनुमान"
+    }
+   ],
+   "id": "ch05_02"
+  },
+  {
+   "narration": "वानरों ने राम को कुछ गहने दिखाए, जो आकाश से गिरे थे। रावण के रथ से सीता ने उन्हें निशानी के तौर पर नीचे फेंका था। उन्हें देखते ही राम की आँखें भर आईं।",
+   "background": {
+    "type": "footage",
+    "image": "gold jewelry indian",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [],
+   "id": "ch05_03"
+  },
+  {
+   "narration": "सुग्रीव को उसके बड़े भाई बाली ने राज्य से निकाल दिया था। राम ने सुग्रीव से मित्रता की, बाली का वध किया, और सुग्रीव को किष्किंधा का राजा बनाया।",
+   "background": {
+    "type": "footage",
+    "query": "monkeys forest",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_04"
+  },
+  {
+   "narration": "बदले में सुग्रीव ने वानर सेना को चारों दिशाओं में सीता की खोज में भेजा। राम ने हनुमान को अपनी अंगूठी दी, ताकि सीता उन्हें पहचान सकें।",
+   "background": {
+    "type": "footage",
+    "image": "gold ring",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "राम की अंगूठी",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "अंगूठी"
+    }
+   ],
+   "id": "ch05_05"
+  },
+  {
+   "narration": "दक्षिण गई टोली समुद्र तट तक पहुँची। वहाँ जटायु के बड़े भाई संपाति ने बताया: सीता समुद्र के उस पार, लंका में हैं।",
+   "background": {
+    "type": "footage",
+    "query": "ocean waves beach",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_06"
+  },
+  {
+   "narration": "सामने था विशाल समुद्र। कौन जाएगा? तब जामवंत ने हनुमान को उनकी भूली हुई शक्ति याद दिलाई।",
+   "background": {
+    "type": "footage",
+    "query": "ocean horizon sunset",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_07"
+  }
+ ]
+}

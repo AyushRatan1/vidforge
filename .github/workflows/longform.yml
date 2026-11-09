@@ -1,0 +1,135 @@
+name: longform
+run-name: "longform ${{ inputs.name }} (${{ inputs.mode }})"
+
+# A long YouTube video made of chapter specs in longform/<name>/chNN.json.
+# mode=stills renders a contact sheet per chapter (to check the pictures); mode=render renders every chapter in
+# parallel, joins them into one file and saves it as the release longform-<name> (chapter timestamps included).
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Folder under longform/, e.g. ramayana_hi"
+        required: true
+      mode:
+        description: "stills or render"
+        default: stills
+
+permissions:
+  contents: write
+
+env:
+  VIDFORGE_REQUIRE_VOICE: "1"
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+  PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+  PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      chapters: ${{ steps.list.outputs.chapters }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        env:
+          NAME: ${{ inputs.name }}
+        run: |
+          [[ "$NAME" =~ ^[a-z0-9_]{1,40}$ ]] || { echo "name must be lowercase letters, digits or _"; exit 1; }
+          ls longform/$NAME/ch*.json >/dev/null
+          echo "chapters=$(ls longform/$NAME/ch*.json | xargs -n1 basename | sed 's/.json$//' | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+
+  chapter:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        ch: ${{ fromJson(needs.plan.outputs.chapters) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/cache@v4
+        with:
+          path: models
+          key: kokoro-v1.0
+      - name: Install tools
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q ffmpeg libgl1 libegl1 fonts-noto-color-emoji
+          pip install -q -r requirements.txt
+          python run.py setup
+          google-chrome --version || python -m playwright install --with-deps chromium
+      - name: Load saved keys
+        run: |
+          python - <<'PY'
+          import os
+          from tools import store
+          s = store.settings() if store.enabled() else {}
+          with open(os.environ["GITHUB_ENV"], "a") as f:
+              for k, env in (("pixabay_api_key", "PIXABAY_API_KEY"), ("pexels_api_key", "PEXELS_API_KEY")):
+                  v = s.get(k)
+                  if v and not os.environ.get(env):
+                      print(f"::add-mask::{v}")
+                      f.write(f"{env}={v}\n")
+          PY
+      - name: Render ${{ matrix.ch }}
+        env:
+          NAME: ${{ inputs.name }}
+          MODE: ${{ inputs.mode }}
+          CH: ${{ matrix.ch }}
+        run: |
+          mkdir -p out
+          if [ "$MODE" = "render" ]; then
+            python run.py render "longform/$NAME/$CH.json" --out "out/$CH"
+            cp "out/$CH/final.mp4" "out/$CH.mp4"
+          else
+            python run.py stills "longform/$NAME/$CH.json" --out "out/$CH"
+            ffmpeg -hide_banner -loglevel error -y -pattern_type glob -i "out/$CH/still_*.jpg" \
+              -vf "scale=480:-2,tile=4x6:padding=6" -frames:v 1 "out/${CH}_sheet.jpg"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.ch }}
+          path: |
+            out/*.mp4
+            out/*_sheet.jpg
+          if-no-files-found: error
+
+  join:
+    needs: chapter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: parts
+          merge-multiple: true
+      - name: Join and save
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NAME: ${{ inputs.name }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
+          ls -la parts
+          if [ "$MODE" = "render" ]; then
+            : > list.txt; : > chapters.txt; t=0
+            for f in $(ls parts/ch*.mp4 | sort); do
+              echo "file '$PWD/$f'" >> list.txt
+              python3 -c "import sys; t=float(sys.argv[1]); print(f'{int(t//60):02d}:{int(t%60):02d} {sys.argv[2]}')" "$t" "$(basename $f .mp4)" >> chapters.txt
+              d=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$f"); t=$(python3 -c "print($t+$d)")
+            done
+            ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i list.txt -c copy -movflags +faststart final.mp4 \
+              || ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i list.txt -c:v libx264 -preset veryfast -crf 20 -c:a aac -b:a 160k -movflags +faststart final.mp4
+            ffprobe -v error -show_entries format=duration -of csv=p=0 final.mp4
+            cat chapters.txt
+            gh release delete "longform-$NAME" -y --cleanup-tag || true
+            gh release create "longform-$NAME" final.mp4 chapters.txt longform/$NAME/ch*.json --title "Long video: $NAME" --notes "Chapters:\n$(cat chapters.txt)" --prerelease --latest=false
+          else
+            gh release delete "longform-$NAME-preview" -y --cleanup-tag || true
+            gh release create "longform-$NAME-preview" parts/*_sheet.jpg --title "Preview: $NAME" --notes "Contact sheets, one per chapter" --prerelease --latest=false
+          fi

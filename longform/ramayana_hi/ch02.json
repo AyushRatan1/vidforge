@@ -1,0 +1,223 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.1,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "devotional",
+  "volume": 0.1,
+  "seed": 102
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "रामायण अध्याय 2: शिव का धनुष",
+ "scenes": [
+  {
+   "narration": "एक दिन महर्षि विश्वामित्र अयोध्या आए। उनके यज्ञ को राक्षस बार बार नष्ट कर रहे थे। रक्षा के लिए उन्होंने राजा से राम को माँगा।",
+   "background": {
+    "type": "footage",
+    "image": "sage meditation",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अध्याय 2: शिव का धनुष",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch02_01"
+  },
+  {
+   "narration": "दशरथ का मन नहीं माना, पर ऋषि की बात का मान रखते हुए उन्होंने राम और लक्ष्मण को विश्वामित्र के साथ भेज दिया।",
+   "background": {
+    "type": "footage",
+    "query": "forest path sunlight",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_02"
+  },
+  {
+   "narration": "वन में राम ने राक्षसी ताड़का का वध किया, और यज्ञ में बाधा डालने वाले राक्षसों को भगाया। इनमें एक था मारीच, जो आगे चलकर इस कहानी में फिर लौटेगा।",
+   "background": {
+    "type": "footage",
+    "query": "dark forest fog",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_03"
+  },
+  {
+   "narration": "रास्ते में, गौतम ऋषि के सूने आश्रम में, राम ने अहल्या को श्राप से मुक्ति दिलाई। बरसों से तपस्या में लीन अहल्या को राम के दर्शन से फिर से नया जीवन मिला।",
+   "background": {
+    "type": "footage",
+    "query": "old temple ruins forest",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_04"
+  },
+  {
+   "narration": "फिर विश्वामित्र उन्हें मिथिला ले गए, जहाँ राजा जनक ने अपनी पुत्री सीता के विवाह के लिए एक शर्त रखी थी।",
+   "background": {
+    "type": "footage",
+    "image": "goddess sita",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "out"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "सीता",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "सीता"
+    }
+   ],
+   "id": "ch02_05"
+  },
+  {
+   "narration": "सीता का जन्म भी किसी चमत्कार से कम नहीं था। राजा जनक यज्ञ के लिए खेत में हल चला रहे थे, तभी धरती से एक कन्या मिली। इसीलिए सीता को भूमिजा भी कहा जाता है।",
+   "background": {
+    "type": "footage",
+    "query": "plough field farmer",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_06"
+  },
+  {
+   "narration": "शर्त थी: जो शिव के विशाल धनुष पर प्रत्यंचा चढ़ा देगा, उसी से सीता का विवाह होगा। बड़े बड़े राजा उसे हिला तक नहीं पाए।",
+   "background": {
+    "type": "footage",
+    "image": "lord shiva",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [],
+   "id": "ch02_07"
+  },
+  {
+   "narration": "राम ने धनुष उठाया, प्रत्यंचा चढ़ाई, और खींचते ही वह धनुष बीच से टूट गया। उसकी गर्जना से पूरी सभा काँप उठी।",
+   "background": {
+    "type": "footage",
+    "query": "lightning storm",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_08"
+  },
+  {
+   "narration": "राम और सीता का विवाह हुआ, और साथ ही बाकी तीनों भाइयों का भी। अयोध्या लौटकर सबको लगा, अब सुख ही सुख है।",
+   "background": {
+    "type": "footage",
+    "image": "indian wedding",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "left"
+   },
+   "elements": [],
+   "id": "ch02_09"
+  }
+ ]
+}

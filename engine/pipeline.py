@@ -125,7 +125,29 @@ def resolve_footage(spec: dict, tl: list, out_dir: str) -> list:
         bg.pop("_last_frame", None)
         prepared = None
         clip = None
-        if mode != "off":
+        if mode != "off" and (bg.get("image") or bg.get("image_id")):
+            # a still (Pixabay photo or illustration) with a slow push-in or pan
+            query = str(bg.get("image") or "").strip()
+            kind = str(bg.get("kind") or "all")
+            if bg.get("image_id"):
+                clip = F.image_by_id(bg["image_id"])
+            else:
+                ck = f"img::{kind}::{query}"
+                if ck not in cache:
+                    cache[ck] = F.search_images(query, kind=kind, orientation="horizontal" if W > H else "vertical") \
+                        or F.search_images(query, kind=kind, orientation="all")
+                clip = F.pick_image(cache[ck], exclude=used, skip=int(bg.get("skip", 0) or 0))
+            if clip:
+                src = F.fetch(clip)
+                if src:
+                    try:
+                        dst = os.path.join(out_dir, f"footage_{i + 1:02d}.mp4")
+                        move = bg.get("move") or F.MOVES[i % 4]
+                        prepared = F.ken_burns(src, dst, W, H, seg["dur"] + 0.5, fps, move=move)
+                    except Exception as e:
+                        F.log.warning("image prepare failed for scene %d: %s", i + 1, e)
+                        prepared = None
+        elif mode != "off":
             query = str(bg.get("query", "")).strip()
             if query not in cache:
                 cache[query] = F.search(query, orientation=orientation)
@@ -148,7 +170,7 @@ def resolve_footage(spec: dict, tl: list, out_dir: str) -> list:
         bg["_clip"] = f"{clip['provider']}_{clip['id']}"
         bg["_last_frame"] = F.extract_frame(prepared, max(0.0, seg["dur"] - 1.0 / fps), prepared[:-4] + "_last.png")
         records.append({"scene": i, "provider": clip["provider"], "id": clip["id"], "credit": clip.get("credit"),
-                        "page_url": clip.get("page_url")})
+                        "page_url": clip.get("page_url"), "kind": clip.get("kind", "video")})
     return records
 
 

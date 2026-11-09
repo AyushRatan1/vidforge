@@ -1,0 +1,268 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.1,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "devotional",
+  "volume": 0.1,
+  "seed": 104
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "रामायण अध्याय 4: सोने का हिरण",
+ "scenes": [
+  {
+   "narration": "वनवास के तेरह साल बीत चुके थे। राम, सीता और लक्ष्मण गोदावरी के किनारे पंचवटी में कुटिया बनाकर रह रहे थे।",
+   "background": {
+    "type": "footage",
+    "query": "forest river",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अध्याय 4: सोने का हिरण",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch04_01"
+  },
+  {
+   "narration": "एक दिन वहाँ आई रावण की बहन शूर्पणखा। उसने राम से विवाह का प्रस्ताव रखा, और ठुकराए जाने पर सीता पर झपटी। लक्ष्मण ने उसकी नाक काट दी।",
+   "background": {
+    "type": "footage",
+    "query": "forest dusk",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_02"
+  },
+  {
+   "narration": "अपमानित शूर्पणखा सीधे लंका पहुँची, अपने भाई रावण के पास। दस सिरों वाला रावण, महान विद्वान, शिव का भक्त, लेकिन अहंकार से भरा हुआ।",
+   "background": {
+    "type": "footage",
+    "image": "ravana",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "रावण",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "रावण,"
+    }
+   ],
+   "id": "ch04_03"
+  },
+  {
+   "narration": "रावण ने कठोर तपस्या से ब्रह्मा से वरदान पाया था कि कोई देवता, दानव या यक्ष उसे नहीं मार सकेगा। मनुष्यों को वह इतना तुच्छ समझता था कि उसने उनका नाम ही नहीं लिया। यही उसकी सबसे बड़ी चूक थी।",
+   "background": {
+    "type": "footage",
+    "query": "dark clouds lightning night",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "ब्रह्मा का वरदान",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "वरदान"
+    }
+   ],
+   "id": "ch04_04"
+  },
+  {
+   "narration": "रावण ने एक चाल चली। उसने मारीच को सोने के हिरण का रूप देकर पंचवटी भेजा।",
+   "background": {
+    "type": "footage",
+    "image": "golden deer",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "out"
+   },
+   "elements": [],
+   "id": "ch04_05"
+  },
+  {
+   "narration": "सीता उस हिरण को देखकर मोहित हो गईं। राम उसके पीछे गए, और दूर जंगल में तीर लगते ही मारीच ने राम की आवाज़ में पुकारा: हा लक्ष्मण!",
+   "background": {
+    "type": "footage",
+    "query": "deer running forest",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_06"
+  },
+  {
+   "narration": "सीता के आग्रह पर लक्ष्मण भी चले गए। और तभी, एक साधु के वेश में, रावण कुटिया के द्वार पर आ खड़ा हुआ।",
+   "background": {
+    "type": "footage",
+    "query": "sunset forest silhouette",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_07"
+  },
+  {
+   "narration": "भिक्षा देने बाहर आईं सीता को रावण ने अपने उड़ने वाले रथ में उठा लिया, और आकाश मार्ग से लंका की ओर उड़ चला।",
+   "background": {
+    "type": "footage",
+    "query": "flying above clouds",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_08"
+  },
+  {
+   "narration": "रास्ते में बूढ़े गिद्धराज जटायु ने रावण को रोकने की कोशिश की। भीषण युद्ध हुआ, पर रावण ने जटायु के पंख काट दिए।",
+   "background": {
+    "type": "footage",
+    "image": "eagle",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "जटायु",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "जटायु"
+    }
+   ],
+   "id": "ch04_09"
+  },
+  {
+   "narration": "राम लौटे तो कुटिया खाली थी। घायल जटायु ने बताया कि रावण सीता को दक्षिण की ओर ले गया है, और फिर प्राण त्याग दिए।",
+   "background": {
+    "type": "footage",
+    "query": "wind grass field sad",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_10"
+  }
+ ]
+}

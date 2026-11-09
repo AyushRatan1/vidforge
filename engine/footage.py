@@ -22,6 +22,7 @@ CACHE_DIR = os.environ.get("VIDFORGE_FOOTAGE_DIR") or os.path.join(ROOT, "models
 TIMEOUT = 20
 PEXELS_URL = "https://api.pexels.com/videos/search"
 PIXABAY_URL = "https://pixabay.com/api/videos/"
+PIXABAY_IMG_URL = "https://pixabay.com/api/"
 MAX_WIDTH = {"portrait": 1080, "landscape": 1920, "square": 1080}
 DEFAULT_FALLBACK = {"type": "sunburst", "colors": ["#1d2742", "#121a2e"], "speed": 3}
 
@@ -91,6 +92,104 @@ def _norm_pixabay(h: dict, limit: int) -> dict | None:
             "credit": h.get("user") or "Pixabay"}
 
 
+# ---------------------------------------------------------------- still images (Pixabay photos and illustrations)
+def search_images(query: str, kind: str = "all", orientation: str = "horizontal", per_page: int = 40) -> list[dict]:
+    """Pixabay images for a query, best liked first. kind: photo, illustration, vector or all. Never raises."""
+    key = os.environ.get("PIXABAY_API_KEY", "").strip()
+    query = (query or "").strip()
+    if not key or not query:
+        return []
+    try:
+        r = requests.get(PIXABAY_IMG_URL, params={"key": key, "q": query, "image_type": kind or "all",
+                                                  "orientation": orientation or "all", "safesearch": "true",
+                                                  "order": "popular", "min_width": 960, "per_page": max(3, min(per_page, 200))},
+                         timeout=TIMEOUT)
+        if r.status_code != 200:
+            log.warning("Pixabay image search %r failed: HTTP %s", query, r.status_code)
+            return []
+        hits = r.json().get("hits", [])
+    except Exception as e:
+        log.warning("Pixabay image search %r failed: %s", query, e)
+        return []
+    return [_norm_image(h) for h in hits if h.get("largeImageURL")]
+
+
+def image_by_id(image_id) -> dict | None:
+    key = os.environ.get("PIXABAY_API_KEY", "").strip()
+    if not key:
+        return None
+    try:
+        r = requests.get(PIXABAY_IMG_URL, params={"key": key, "id": str(image_id)}, timeout=TIMEOUT)
+        hits = r.json().get("hits", []) if r.status_code == 200 else []
+        return _norm_image(hits[0]) if hits and hits[0].get("largeImageURL") else None
+    except Exception as e:
+        log.warning("Pixabay image %s lookup failed: %s", image_id, e)
+        return None
+
+
+def _norm_image(h: dict) -> dict:
+    return {"id": f"img{h.get('id')}", "provider": "pixabay", "kind": "image", "url": h["largeImageURL"],
+            "width": int(h.get("imageWidth") or 0), "height": int(h.get("imageHeight") or 0),
+            "likes": int(h.get("likes") or 0), "page_url": h.get("pageURL", ""), "credit": h.get("user") or "Pixabay",
+            "tags": h.get("tags", "")}
+
+
+def pick_image(results: list[dict], exclude=None, skip: int = 0) -> dict | None:
+    """Most liked image not used yet; `skip` steps past that many candidates (to swap a bad pick by hand)."""
+    exclude = set(exclude or ())
+    pool = [c for c in results if c.get("id") not in exclude] or list(results)
+    pool.sort(key=lambda c: (-int(c.get("likes") or 0), str(c["id"])))
+    return pool[min(max(0, int(skip or 0)), len(pool) - 1)] if pool else None
+
+
+MOVES = ("in", "out", "left", "right", "up", "down")
+
+
+def ken_burns(src: str, dst: str, W: int, H: int, duration: float, fps: int, move: str = "in") -> str:
+    """Turn a still into a WxH clip with a slow push-in/out or pan. Images whose shape is far from the canvas sit
+    on a blurred, darkened copy of themselves instead of being cropped hard. Raises RuntimeError on ffmpeg errors."""
+    n = max(2, int(round(float(duration) * fps)))
+    W2, H2 = W * 2, H * 2
+    iw, ih = _image_size(src)
+    far = iw and ih and abs((iw / ih) / (W / H) - 1) > 0.28
+    if far:
+        prep = (f"[0:v]scale={W2}:{H2}:force_original_aspect_ratio=increase,crop={W2}:{H2},boxblur=40:2,"
+                f"eq=brightness=-0.18[bg];[0:v]scale={W2}:{H2}:force_original_aspect_ratio=decrease[fg];"
+                f"[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1[base]")
+    else:
+        prep = f"[0:v]scale={W2}:{H2}:force_original_aspect_ratio=increase,crop={W2}:{H2},setsar=1[base]"
+    z0, z1 = 1.0, 1.13
+    move = move if move in MOVES else "in"
+    zoom = {"in": f"{z0}+{z1 - z0}*on/{n}", "out": f"{z1}-{z1 - z0}*on/{n}"}.get(move, "1.12")
+    cx, cy = "iw/2-(iw/zoom/2)", "ih/2-(ih/zoom/2)"
+    x = {"left": f"(iw-iw/zoom)*on/{n}", "right": f"(iw-iw/zoom)*(1-on/{n})"}.get(move, cx)
+    y = {"up": f"(ih-ih/zoom)*(1-on/{n})", "down": f"(ih-ih/zoom)*on/{n}"}.get(move, cy)
+    vf = (f"{prep};[base]zoompan=z='{zoom}':x='{x}':y='{y}':d={n}:s={W}x{H}:fps={fps},format=yuv420p[v]")
+    part = dst + ".part.mp4"
+    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-filter_complex", vf, "-map", "[v]", "-frames:v", str(n),
+           "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(fps),
+           "-movflags", "+faststart", part]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        try:
+            os.remove(part)
+        except OSError:
+            pass
+        raise RuntimeError(f"ffmpeg ken burns failed: {r.stderr[-800:]}")
+    os.replace(part, dst)
+    return dst
+
+
+def _image_size(path: str) -> tuple[int, int]:
+    r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height",
+                        "-of", "csv=p=0", path], capture_output=True, text=True)
+    try:
+        w, h = r.stdout.strip().split(",")[:2]
+        return int(w), int(h)
+    except ValueError:
+        return 0, 0
+
+
 # ---------------------------------------------------------------- choose
 def pick(results: list[dict], duration: float, exclude=None, query: str = "") -> dict | None:
     """Deterministic choice (seeded by the query hash): a clip at least `duration` s long if any, else the
@@ -112,7 +211,8 @@ def fetch(clip: dict, cache_dir: str | None = None) -> str | None:
     """Download the clip to cache_dir/<provider>_<id>.mp4 (streamed to .part then renamed). None on failure."""
     cache_dir = cache_dir or CACHE_DIR
     os.makedirs(cache_dir, exist_ok=True)
-    dst = os.path.join(cache_dir, f"{clip['provider']}_{clip['id']}.mp4")
+    ext = ".jpg" if clip.get("kind") == "image" else ".mp4"
+    dst = os.path.join(cache_dir, f"{clip['provider']}_{clip['id']}{ext}")
     if os.path.exists(dst) and os.path.getsize(dst) > 10_000:
         return dst
     part = dst + ".part"
@@ -197,7 +297,7 @@ def credits(spec_or_list) -> list[str]:
         if not isinstance(f, dict) or not f.get("id"):
             continue
         prov = {"pexels": "Pexels", "pixabay": "Pixabay"}.get(f.get("provider"), str(f.get("provider") or "").title())
-        line = f"Video: {f.get('credit') or prov} / {prov}"
+        line = f"{'Image' if f.get('kind') == 'image' else 'Video'}: {f.get('credit') or prov} / {prov}"
         if line not in seen:
             seen.add(line)
             out.append(line)

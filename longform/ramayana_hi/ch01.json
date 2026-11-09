@@ -1,0 +1,226 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.1,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "devotional",
+  "volume": 0.1,
+  "seed": 101
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "रामायण अध्याय 1: प्रस्तावना और अयोध्या",
+ "scenes": [
+  {
+   "narration": "एक राजकुमार, जिसे राजगद्दी मिलने वाली थी, उसे चौदह साल के लिए जंगल भेज दिया गया। एक राक्षस राजा, जिसने उसकी पत्नी का हरण कर लिया। और एक वानर, जिसने समुद्र लांघकर सोने की लंका जला दी।",
+   "background": {
+    "type": "footage",
+    "image": "hanuman",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [],
+   "id": "ch01_01"
+  },
+  {
+   "narration": "यह कहानी हज़ारों सालों से सुनाई जा रही है। रामायण फिल्म का पहला भाग अभी सिनेमाघरों में आया है, और दूसरा भाग दो हज़ार अट्ठाईस में आएगा।",
+   "background": {
+    "type": "footage",
+    "image": "lord rama",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "out"
+   },
+   "elements": [],
+   "id": "ch01_02"
+  },
+  {
+   "narration": "लेकिन असली कहानी जानने के लिए इंतज़ार की ज़रूरत नहीं। आज, वाल्मीकि रामायण के आधार पर, शुरू से अंत तक, पूरी कहानी।",
+   "background": {
+    "type": "footage",
+    "image": "old book pages",
+    "kind": "photo",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "left"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "वाल्मीकि रामायण",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "वाल्मीकि"
+    }
+   ],
+   "id": "ch01_03"
+  },
+  {
+   "narration": "सरयू नदी के किनारे बसी थी अयोध्या, कोसल राज्य की राजधानी। यहाँ के राजा थे दशरथ, वीर, धर्मात्मा और प्रजा के प्रिय।",
+   "background": {
+    "type": "footage",
+    "query": "river sunrise india",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अध्याय 1: अयोध्या",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch01_04"
+  },
+  {
+   "narration": "उनकी तीन रानियाँ थीं: कौशल्या, कैकेयी और सुमित्रा। राज्य में सब कुछ था, लेकिन राजा के मन में एक गहरा दुख था। उनकी कोई संतान नहीं थी।",
+   "background": {
+    "type": "footage",
+    "image": "indian palace",
+    "kind": "all",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "right"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "राजा दशरथ",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "रानियाँ"
+    }
+   ],
+   "id": "ch01_05"
+  },
+  {
+   "narration": "ऋषियों की सलाह पर दशरथ ने पुत्रकामेष्टि यज्ञ किया। यज्ञ की अग्नि से एक दिव्य पुरुष प्रकट हुए, और राजा को खीर से भरा एक पात्र दिया।",
+   "background": {
+    "type": "footage",
+    "query": "fire ritual flames",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_06"
+  },
+  {
+   "narration": "रानियों ने वह खीर ग्रहण की, और समय आने पर चार पुत्रों का जन्म हुआ। कौशल्या से राम, कैकेयी से भरत, और सुमित्रा से लक्ष्मण और शत्रुघ्न।",
+   "background": {
+    "type": "footage",
+    "image": "lord rama",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in",
+    "skip": 1
+   },
+   "elements": [],
+   "id": "ch01_07"
+  },
+  {
+   "narration": "चारों भाई साथ बड़े हुए, गुरु वशिष्ठ से शिक्षा पाई, और धनुर्विद्या में निपुण हो गए। पर राम और लक्ष्मण का साथ सबसे गहरा था।",
+   "background": {
+    "type": "footage",
+    "image": "bow and arrow",
+    "kind": "all",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "left"
+   },
+   "elements": [],
+   "id": "ch01_08"
+  }
+ ]
+}

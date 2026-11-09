@@ -1,0 +1,225 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.1,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "devotional",
+  "volume": 0.1,
+  "seed": 106
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "रामायण अध्याय 6: लंका दहन",
+ "scenes": [
+  {
+   "narration": "हनुमान ने अपना रूप विशाल किया, और एक ही छलांग में सौ योजन का समुद्र लांघ गए।",
+   "background": {
+    "type": "footage",
+    "image": "hanuman flying",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अध्याय 6: लंका दहन",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch06_01"
+  },
+  {
+   "narration": "रास्ते में नागमाता सुरसा ने उनका रास्ता रोका। हनुमान ने चतुराई से अपना रूप छोटा किया, उसके मुँह में जाकर तुरंत बाहर निकल आए, और आगे बढ़ गए।",
+   "background": {
+    "type": "footage",
+    "query": "ocean storm waves",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch06_02"
+  },
+  {
+   "narration": "सामने थी सोने की लंका। रात में छोटा रूप धरकर हनुमान ने महल महल खोजा, और आखिर अशोक वाटिका में एक पेड़ के नीचे सीता को पाया।",
+   "background": {
+    "type": "footage",
+    "image": "golden palace night",
+    "kind": "all",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "left"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अशोक वाटिका",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "अशोक"
+    }
+   ],
+   "id": "ch06_03"
+  },
+  {
+   "narration": "हनुमान पेड़ पर छिपकर देखते रहे। रावण आया, और सीता को डराया, धमकाया। पर सीता ने एक तिनके की ओट से उसे जवाब दिया: मैं केवल राम की हूँ।",
+   "background": {
+    "type": "footage",
+    "query": "tree leaves night moon",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch06_04"
+  },
+  {
+   "narration": "हनुमान ने राम की अंगूठी दी। सीता की आँखें भर आईं। उन्होंने अपनी चूड़ामणि हनुमान को सौंपी, राम के लिए निशानी के तौर पर।",
+   "background": {
+    "type": "footage",
+    "image": "goddess sita",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in",
+    "skip": 1
+   },
+   "elements": [],
+   "id": "ch06_05"
+  },
+  {
+   "narration": "फिर हनुमान ने जानबूझकर अशोक वाटिका उजाड़ दी। रावण के सैनिक आए, और रावण के पुत्र मेघनाद ने उन्हें ब्रह्मास्त्र से बाँधकर दरबार में पेश किया।",
+   "background": {
+    "type": "footage",
+    "image": "ravana",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "out",
+    "skip": 1
+   },
+   "elements": [],
+   "id": "ch06_06"
+  },
+  {
+   "narration": "दरबार में हनुमान ने रावण को चेतावनी दी: सीता को लौटा दो। क्रोधित रावण ने हनुमान की पूँछ में आग लगाने का आदेश दिया।",
+   "background": {
+    "type": "footage",
+    "query": "fire torch flame",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch06_07"
+  },
+  {
+   "narration": "और यही उसकी सबसे बड़ी भूल थी। जलती पूँछ के साथ हनुमान एक महल से दूसरे महल पर कूदते गए, और पूरी लंका धू धू कर जलने लगी।",
+   "background": {
+    "type": "footage",
+    "query": "big fire burning",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch06_08"
+  },
+  {
+   "narration": "समुद्र में पूँछ की आग बुझाकर हनुमान लौटे, और राम को खबर दी: सीता जीवित हैं, और आपकी राह देख रही हैं।",
+   "background": {
+    "type": "footage",
+    "query": "sunrise ocean",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch06_09"
+  }
+ ]
+}

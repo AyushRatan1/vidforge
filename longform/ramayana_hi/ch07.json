@@ -1,0 +1,492 @@
+{
+ "language": "hi",
+ "voice": "hm_omega",
+ "speed": 1.1,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "devotional",
+  "volume": 0.1,
+  "seed": 107
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 6,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "रामायण अध्याय 7: महायुद्ध",
+ "scenes": [
+  {
+   "narration": "लंका में रावण के छोटे भाई विभीषण ने उसे समझाया कि सीता को लौटा दो। रावण ने उन्हें अपमानित करके निकाल दिया, और विभीषण राम की शरण में आ गए।",
+   "background": {
+    "type": "footage",
+    "query": "storm clouds dark",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अध्याय 7: महायुद्ध",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch07_01"
+  },
+  {
+   "narration": "युद्ध से पहले राम ने युवराज अंगद को दूत बनाकर रावण के पास भेजा, ताकि सीता को लौटाकर युद्ध टाला जा सके। पर रावण नहीं माना।",
+   "background": {
+    "type": "footage",
+    "image": "ancient palace hall",
+    "kind": "all",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "अंगद, शांति दूत",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "अंगद"
+    }
+   ],
+   "id": "ch07_02"
+  },
+  {
+   "narration": "अब सेना को समुद्र पार करना था। वानर नल के नेतृत्व में, पत्थरों और पेड़ों से समुद्र पर एक पुल बनाया गया: राम सेतु।",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "राम सेतु",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "सेतु।"
+    }
+   ],
+   "id": "setu"
+  },
+  {
+   "narration": "वाल्मीकि लिखते हैं कि यह सेतु पाँच दिनों में बना। और उस पर चलकर वानर सेना लंका पहुँच गई।",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "5 दिन",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "पाँच"
+    }
+   ],
+   "id": "setu2"
+  },
+  {
+   "narration": "भीषण युद्ध शुरू हुआ। रावण ने अपने विशाल भाई कुंभकर्ण को गहरी नींद से जगाया। वह हज़ारों वानरों पर भारी पड़ा, पर अंत में राम के बाणों से गिर गया।",
+   "background": {
+    "type": "footage",
+    "image": "ancient battle",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "कुंभकर्ण",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "कुंभकर्ण"
+    }
+   ],
+   "id": "ch07_05"
+  },
+  {
+   "narration": "फिर आया मेघनाद, जिसने कभी इंद्र को भी हराया था। उसकी शक्ति के प्रहार से लक्ष्मण मूर्छित होकर गिर पड़े।",
+   "background": {
+    "type": "footage",
+    "image": "warrior archer",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "out"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "मेघनाद",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "मेघनाद,"
+    }
+   ],
+   "id": "ch07_06"
+  },
+  {
+   "narration": "वैद्य सुषेण ने कहा: हिमालय की संजीवनी बूटी चाहिए। हनुमान उड़े, पर बूटी पहचान नहीं पाए, तो पूरा पर्वत ही उठा लाए।",
+   "background": {
+    "type": "footage",
+    "image": "hanuman mountain",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "संजीवनी",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "संजीवनी"
+    }
+   ],
+   "id": "ch07_07"
+  },
+  {
+   "narration": "लक्ष्मण होश में आए, और अगले युद्ध में उन्होंने मेघनाद का वध कर दिया।",
+   "background": {
+    "type": "footage",
+    "query": "arrow flying",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch07_08"
+  },
+  {
+   "narration": "अब बचा था सिर्फ रावण। राम और रावण का युद्ध कई दिनों तक चला। राम रावण का सिर काटते, और वह फिर उग आता।",
+   "background": {
+    "type": "footage",
+    "image": "ravana",
+    "kind": "illustration",
+    "dim": 0.12,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    },
+    "move": "in",
+    "skip": 2
+   },
+   "elements": [],
+   "id": "ch07_09"
+  },
+  {
+   "narration": "तब सारथी मातलि ने राम को ब्रह्मास्त्र की याद दिलाई। राम ने ब्रह्मास्त्र चलाया, बाण रावण के हृदय में लगा, और लंका का राजा धराशायी हो गया।",
+   "background": {
+    "type": "footage",
+    "query": "sun rays clouds",
+    "dim": 0.18,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#2a1a0e",
+      "#120a05"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch07_10"
+  }
+ ],
+ "world3d": {
+  "style": "golden",
+  "style_overrides": {
+   "fog": [
+    260,
+    800
+   ]
+  },
+  "terrain": {
+   "width": 220,
+   "length": 200,
+   "cut": 100,
+   "digs": [
+    {
+     "x0": -110,
+     "x1": 110,
+     "z0": -40,
+     "z1": 40,
+     "depth": 2.5
+    }
+   ]
+  },
+  "objects": [
+   {
+    "type": "water",
+    "id": "sea",
+    "x0": -110,
+    "x1": 110,
+    "z0": -40,
+    "z1": 40,
+    "y_bottom": -2.5,
+    "level": -0.5
+   },
+   {
+    "type": "blocks",
+    "id": "setu",
+    "pos": [
+     0,
+     -2.5,
+     0
+    ],
+    "cols": 3,
+    "rows": 40,
+    "layers": 2,
+    "size": [
+     3.0,
+     1.6,
+     2.0
+    ],
+    "color": "#8d8173",
+    "build": {
+     "op": "stagger",
+     "from": {
+      "scene": "setu",
+      "t": 0.05
+     },
+     "to": {
+      "scene": "setu2",
+      "t": 0.7
+     }
+    }
+   },
+   {
+    "type": "people",
+    "count": 14,
+    "area": [
+     -4,
+     42,
+     4,
+     70
+    ],
+    "y": 0,
+    "action": "carry",
+    "seed": 7
+   },
+   {
+    "type": "people",
+    "count": 10,
+    "area": [
+     -3,
+     -70,
+     3,
+     -42
+    ],
+    "y": 0,
+    "action": "walk",
+    "seed": 9,
+    "build": {
+     "op": "grow",
+     "from": {
+      "scene": "setu2",
+      "t": 0.6
+     },
+     "to": {
+      "scene": "setu2",
+      "t": 0.9
+     }
+    }
+   },
+   {
+    "type": "trees",
+    "count": 40,
+    "area": [
+     -100,
+     44,
+     100,
+     95
+    ],
+    "seed": 4,
+    "avoid": [
+     [
+      -8,
+      40,
+      8,
+      100
+     ]
+    ]
+   },
+   {
+    "type": "trees",
+    "count": 30,
+    "area": [
+     -100,
+     -95,
+     100,
+     -44
+    ],
+    "seed": 5,
+    "avoid": [
+     [
+      -8,
+      -100,
+      8,
+      -40
+     ]
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "at": {
+     "scene": "setu",
+     "t": 0
+    },
+    "pos": [
+     60,
+     26,
+     70
+    ],
+    "look": [
+     0,
+     0,
+     10
+    ],
+    "fov": 45
+   },
+   {
+    "at": {
+     "scene": "setu",
+     "t": 1
+    },
+    "pos": [
+     50,
+     30,
+     20
+    ],
+    "look": [
+     0,
+     0,
+     -5
+    ],
+    "fov": 45
+   },
+   {
+    "at": {
+     "scene": "setu2",
+     "t": 1
+    },
+    "pos": [
+     30,
+     45,
+     -60
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 45
+   }
+  ]
+ }
+}
