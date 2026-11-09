@@ -2,7 +2,8 @@
 
     python -m tools.image_candidates subjects.json out_dir
 
-subjects.json maps a subject name to a list of [query, kind] pairs (kind: photo, illustration, vector or all):
+subjects.json may list "_fetch": [ids] to save full-size copies (full_<id>.jpg) of chosen stills; every other key maps
+a subject name to a list of [query, kind] pairs (kind: photo, illustration, vector or all):
     {"rama": [["lord rama", "illustration"], ["shri ram", "all"]], "palace": [["amer fort", "photo"]]}
 Writes out_dir/sheet_NN.jpg (two subjects per sheet, 12 candidates each, every tile labelled with its Pixabay id)
 and out_dir/candidates.json (id, tags, size, page for every tile). Pin a pick in a spec with
@@ -95,6 +96,12 @@ def main(path: str, out_dir: str) -> None:
     with open(path, encoding="utf-8") as f:
         subjects = json.load(f)
     os.makedirs(out_dir, exist_ok=True)
+    for image_id in subjects.pop("_fetch", []):  # full-size copies of chosen stills (for thumbnails)
+        time.sleep(0.7)
+        c = F.image_by_id(image_id)
+        if c and F.fetch(dict(c, id=f"full{image_id}"), out_dir):
+            os.replace(os.path.join(out_dir, f"pixabay_full{image_id}.jpg"), os.path.join(out_dir, f"full_{image_id}.jpg"))
+            print(f"fetched {image_id}")
     found, names = {}, list(subjects)
     for name in names:
         found[name] = candidates(subjects[name])

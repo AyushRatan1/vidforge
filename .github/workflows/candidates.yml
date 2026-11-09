@@ -48,6 +48,6 @@ jobs:
         run: |
           [[ "$FILE" =~ ^longform/[a-z0-9_]+/[a-z0-9_]+\.json$ ]] || { echo "file must be longform/<name>/<file>.json"; exit 1; }
           python -m tools.image_candidates "$FILE" cand
-          NAME=$(basename $(dirname "$FILE"))
+          NAME=$(basename $(dirname "$FILE"))$( [ "$(basename "$FILE" .json)" = subjects ] || echo "-$(basename "$FILE" .json)")
           gh release delete "candidates-$NAME" -y --cleanup-tag || true
           gh release create "candidates-$NAME" cand/*.jpg cand/candidates.json --title "Image candidates: $NAME" --notes "Pin a still with image_id" --prerelease --latest=false
