@@ -1,0 +1,42 @@
+name: stage
+run-name: "stage ${{ inputs.tag }}/${{ inputs.asset }}"
+
+# Copies a release asset onto the orphan branch `media` in 45 MB parts, so a browser page can fetch it from
+# raw.githubusercontent.com (which allows cross-origin reads; release downloads do not). Used to hand a long
+# render to YouTube Studio's upload dialog. The branch is force-pushed each time, so only the latest file stays.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, e.g. longform-ramayana_hi"
+        required: true
+      asset:
+        description: "Asset name, e.g. final.mp4"
+        default: final.mp4
+
+permissions:
+  contents: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          ASSET: ${{ inputs.asset }}
+        run: |
+          [[ "$TAG" =~ ^[A-Za-z0-9._-]+$ && "$ASSET" =~ ^[A-Za-z0-9._-]+$ ]] || { echo "bad tag or asset"; exit 1; }
+          mkdir -p /tmp/dl /tmp/parts
+          gh release download "$TAG" -p "$ASSET" -D /tmp/dl
+          split -b 45m -d -a 2 "/tmp/dl/$ASSET" "/tmp/parts/$ASSET.part"
+          ( cd /tmp/parts && python3 -c "import json,os,sys; n=sorted(os.listdir('.')); json.dump({'file': sys.argv[1], 'size': os.path.getsize(sys.argv[2]), 'parts': n}, open('manifest.json','w'), indent=1)" "$ASSET" "/tmp/dl/$ASSET" )
+          sha256sum "/tmp/dl/$ASSET" | cut -d' ' -f1 > /tmp/parts/sha256.txt
+          git config user.name "vidforge-bot"; git config user.email "vidforge-bot@users.noreply.github.com"
+          git checkout --orphan media
+          git rm -rq --cached . && git clean -fdxq
+          cp /tmp/parts/* .
+          git add -A && git commit -qm "media: $TAG/$ASSET"
+          git push -f origin media
+          cat manifest.json
