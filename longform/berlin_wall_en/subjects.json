@@ -1,0 +1,20 @@
+{
+ "berlin_wall": [["berlin wall", "photo"], ["east side gallery", "photo"], ["berlin wall remains", "photo"], ["wall graffiti berlin", "photo"]],
+ "brandenburg": [["brandenburg gate", "photo"], ["brandenburg gate night", "photo"], ["pariser platz", "photo"], ["quadriga berlin", "photo"]],
+ "checkpoint": [["checkpoint charlie", "photo"], ["border crossing sign", "photo"], ["american sector sign", "photo"], ["border control barrier", "photo"]],
+ "watchtower_wire": [["watchtower", "photo"], ["barbed wire", "photo"], ["border fence", "photo"], ["searchlight night", "photo"]],
+ "berlin_city": [["berlin skyline", "photo"], ["fernsehturm", "photo"], ["alexanderplatz", "photo"], ["reichstag", "photo"]],
+ "cold_war": [["cold war", "all"], ["soviet", "photo"], ["iron curtain", "all"], ["nuclear missile", "photo"]],
+ "ddr": [["trabant", "photo"], ["ddr", "photo"], ["east germany", "photo"], ["plattenbau", "photo"]],
+ "crowd": [["crowd celebration night", "photo"], ["protest crowd", "photo"], ["candles protest", "photo"], ["demonstration", "photo"]],
+ "fireworks": [["fireworks berlin", "photo"], ["fireworks crowd", "photo"], ["celebration fireworks night", "photo"], ["new year berlin", "photo"]],
+ "press": [["microphones press conference", "photo"], ["press conference", "photo"], ["old television", "photo"], ["newspaper", "photo"]],
+ "memorial": [["berlin wall memorial", "photo"], ["bernauer strasse", "photo"], ["memorial candles", "photo"], ["cross memorial", "photo"]],
+ "escape": [["tunnel", "photo"], ["hot air balloon night", "photo"], ["jump", "photo"], ["running man silhouette", "photo"]],
+ "map_germany": [["germany map", "all"], ["map europe", "all"], ["germany flag", "all"], ["divided", "all"]],
+ "hungary_border": [["hungary austria border", "photo"], ["border fence field", "photo"], ["hungary", "photo"], ["picnic field", "photo"]],
+ "leipzig": [["leipzig", "photo"], ["nikolaikirche", "photo"], ["church candles", "photo"], ["leipzig night", "photo"]],
+ "hammer": [["hammer chisel", "photo"], ["wall pieces", "photo"], ["concrete wall", "photo"], ["broken wall", "photo"]],
+ "today": [["berlin wall piece", "photo"], ["berlin tourists", "photo"], ["checkpoint charlie museum", "photo"], ["berlin wall trail", "photo"]],
+ "soldiers": [["soldier silhouette", "photo"], ["border guard", "photo"], ["military patrol", "photo"], ["army uniform", "photo"]]
+}

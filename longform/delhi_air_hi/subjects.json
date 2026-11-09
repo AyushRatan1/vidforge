@@ -1,0 +1,20 @@
+{
+ "delhi_smog": [["delhi smog", "photo"], ["india gate smog", "photo"], ["delhi pollution", "photo"], ["smog city india", "photo"]],
+ "delhi_landmarks": [["india gate", "photo"], ["qutub minar", "photo"], ["delhi skyline", "photo"], ["lotus temple", "photo"]],
+ "traffic": [["traffic jam india", "photo"], ["delhi traffic", "photo"], ["exhaust smoke car", "photo"], ["truck smoke", "photo"]],
+ "stubble": [["stubble burning", "photo"], ["crop burning field", "photo"], ["field fire smoke", "photo"], ["paddy field punjab", "photo"]],
+ "industry": [["factory chimney smoke", "photo"], ["power plant smoke", "photo"], ["brick kiln", "photo"], ["industrial pollution", "photo"]],
+ "dust": [["construction dust", "photo"], ["construction site india", "photo"], ["road dust", "photo"], ["dusty road", "photo"]],
+ "firecrackers": [["firecrackers", "photo"], ["diwali fireworks", "photo"], ["sparkler", "photo"], ["fireworks smoke", "photo"]],
+ "mask": [["pollution mask", "photo"], ["face mask city", "photo"], ["n95 mask", "photo"], ["child mask", "photo"]],
+ "health": [["lungs", "all"], ["breathing", "photo"], ["cough", "photo"], ["doctor stethoscope", "photo"]],
+ "winter_fog": [["winter fog", "photo"], ["fog morning city", "photo"], ["haze sun", "photo"], ["foggy road", "photo"]],
+ "geography": [["himalaya", "photo"], ["india map", "all"], ["earth from space india", "all"], ["ganges plains", "photo"]],
+ "beijing": [["beijing", "photo"], ["beijing blue sky", "photo"], ["beijing smog", "photo"], ["forbidden city", "photo"]],
+ "solutions": [["electric bus", "photo"], ["metro train india", "photo"], ["electric car charging", "photo"], ["solar panels", "photo"]],
+ "clean": [["blue sky trees", "photo"], ["clean air", "photo"], ["tree planting", "photo"], ["air purifier", "photo"]],
+ "smoke_abstract": [["smoke", "photo"], ["dark smoke", "photo"], ["particles light", "photo"], ["dust particles", "photo"]],
+ "people_delhi": [["delhi street", "photo"], ["old delhi", "photo"], ["india people street", "photo"], ["rickshaw delhi", "photo"]],
+ "farmer": [["farmer india", "photo"], ["harvester", "photo"], ["rice harvest", "photo"], ["wheat sowing", "photo"]],
+ "sky_sun": [["red sun haze", "photo"], ["sunset smog", "photo"], ["orange sky pollution", "photo"], ["sun through haze", "photo"]]
+}
