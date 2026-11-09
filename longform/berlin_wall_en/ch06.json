@@ -1,0 +1,218 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 306
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 7,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "The Night the Berlin Wall Fell, part 6: The Night",
+ "scenes": [
+  {
+   "narration": "The pressure was worst at the Bornholmer Strasse crossing. As the crowd grew into the thousands, chanting open the gate, the officer in charge, Harald Jäger, kept calling his superiors. Nobody would decide.",
+   "background": {
+    "type": "footage",
+    "image_id": 6129239,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Chapter 6: The Night",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch06_01"
+  },
+  {
+   "narration": "At about half past eleven, with no official order, he gave in. The barrier went up. In the next hour, around twenty thousand people walked across the bridge without being checked.",
+   "background": {
+    "type": "footage",
+    "image_id": 5174667,
+    "move": "up",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "11:30 pm: the gate opens",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "eleven,"
+    }
+   ],
+   "id": "ch06_02"
+  },
+  {
+   "narration": "One by one, the other crossings opened. Strangers hugged, cried and shared drinks. West Berliners greeted the East with flowers and applause.",
+   "background": {
+    "type": "footage",
+    "image_id": 3387324,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch06_03"
+  },
+  {
+   "narration": "Before long, people were dancing on top of the Wall at the Brandenburg Gate, the very place where, a year earlier, guards would have shot them.",
+   "background": {
+    "type": "footage",
+    "image_id": 417890,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch06_04"
+  },
+  {
+   "narration": "In the days that followed, Berliners attacked the Wall with hammers and chisels. They were nicknamed Mauerspechte, the wall woodpeckers.",
+   "background": {
+    "type": "footage",
+    "image_id": 5275153,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Mauerspechte",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "Mauerspechte,"
+    }
+   ],
+   "id": "ch06_05"
+  },
+  {
+   "narration": "That first weekend, millions of East Germans visited the West. Each was offered one hundred Deutschmarks of welcome money to spend.",
+   "background": {
+    "type": "footage",
+    "image_id": 4539321,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch06_06"
+  },
+  {
+   "narration": "Less than a year later, on October the third, 1990, the two German states were reunited. Within two more years, the Soviet Union itself was gone.",
+   "background": {
+    "type": "footage",
+    "image_id": 2463236,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "3 October 1990",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "third,"
+    }
+   ],
+   "id": "ch06_07"
+  }
+ ]
+}

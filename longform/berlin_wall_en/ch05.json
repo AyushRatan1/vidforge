@@ -1,0 +1,167 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 305
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 7,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "The Night the Berlin Wall Fell, part 5: One Sentence",
+ "scenes": [
+  {
+   "narration": "The new leadership decided to relieve the pressure with new travel rules. People would be able to apply for exit visas, and the rules would start the next day, with the border still under control.",
+   "background": {
+    "type": "footage",
+    "image_id": 350376,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Chapter 5: One Sentence",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch05_01"
+  },
+  {
+   "narration": "On the evening of November the ninth, Politburo spokesman Günter Schabowski was handed a note about the new rules shortly before a live press conference. Nobody had briefed him on the details.",
+   "background": {
+    "type": "footage",
+    "image_id": 6839248,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_02"
+  },
+  {
+   "narration": "Near the end, almost as an afterthought, he read it out. A journalist asked: when does this take effect? Schabowski shuffled his papers and said: as far as I know, immediately, without delay.",
+   "background": {
+    "type": "footage",
+    "image_id": 2654531,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "“Immediately, without delay.”",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "immediately,"
+    }
+   ],
+   "id": "ch05_03"
+  },
+  {
+   "narration": "It was just before seven in the evening. By eight, West German television was reporting that East Germany had opened its border, and East Berliners, who watched Western TV, heard it too.",
+   "background": {
+    "type": "footage",
+    "image_id": 2619649,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "7 pm, 9 November 1989",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "seven"
+    }
+   ],
+   "id": "ch05_04"
+  },
+  {
+   "narration": "Thousands headed for the checkpoints. The border guards had received no orders at all. Nobody had told them anything.",
+   "background": {
+    "type": "footage",
+    "image_id": 2676144,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch05_05"
+  }
+ ]
+}

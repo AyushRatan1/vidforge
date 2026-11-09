@@ -1,0 +1,251 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 302
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 7,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "The Night the Berlin Wall Fell, part 2: Anatomy of a Wall",
+ "scenes": [
+  {
+   "narration": "Within days, the wire turned into concrete. Over the years the Wall was rebuilt again and again, and by the 1980s it was not just a wall. It was a system.",
+   "background": {
+    "type": "footage",
+    "image_id": 1765900,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Chapter 2: Anatomy of a Wall",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch02_01"
+  },
+  {
+   "narration": "It ran for about 155 kilometres, completely encircling West Berlin. Around 43 kilometres of it cut straight through the middle of the city.",
+   "background": {
+    "type": "footage",
+    "image_id": 8429780,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "155 km around West Berlin",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "155"
+    }
+   ],
+   "id": "ch02_02"
+  },
+  {
+   "narration": "The final version was made of prefabricated concrete slabs about three and a half metres high, topped with a smooth round pipe so that nobody could get a grip.",
+   "background": {
+    "type": "footage",
+    "image_id": 113173,
+    "move": "up",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_03"
+  },
+  {
+   "narration": "Behind it lay the death strip: raked sand that showed every footprint, trip wires, anti-vehicle trenches, guard dogs, and floodlights that turned night into day.",
+   "background": {
+    "type": "footage",
+    "image_id": 3347052,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "The death strip",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "death"
+    }
+   ],
+   "id": "ch02_04"
+  },
+  {
+   "narration": "Watching it all were around 300 watchtowers, staffed by guards whose orders were to stop escapes by any means, including firearms.",
+   "background": {
+    "type": "footage",
+    "image_id": 7402090,
+    "move": "up",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "302 watchtowers",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "300"
+    }
+   ],
+   "id": "ch02_05"
+  },
+  {
+   "narration": "Families were split overnight. On Bernauer Strasse, the pavement belonged to the West while the houses belonged to the East, and people jumped from their windows to reach freedom.",
+   "background": {
+    "type": "footage",
+    "image_id": 972835,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_06"
+  },
+  {
+   "narration": "Checkpoint Charlie, the most famous crossing, became a stage for the Cold War. In October 1961, American and Soviet tanks faced each other there for about sixteen hours.",
+   "background": {
+    "type": "footage",
+    "image_id": 4394712,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Checkpoint Charlie",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "Checkpoint"
+    }
+   ],
+   "id": "ch02_07"
+  },
+  {
+   "narration": "Two American presidents came to speak in its shadow. In 1963, John F. Kennedy declared: Ich bin ein Berliner. In 1987, Ronald Reagan stood near the Brandenburg Gate and said: Mr. Gorbachev, tear down this wall.",
+   "background": {
+    "type": "footage",
+    "image_id": 5117579,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch02_08"
+  }
+ ]
+}

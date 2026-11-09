@@ -1,0 +1,185 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 307
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 7,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "The Night the Berlin Wall Fell, part 7: What Remains",
+ "scenes": [
+  {
+   "narration": "Today, only fragments of the Wall still stand. The longest, the East Side Gallery, runs for about one point three kilometres along the River Spree, covered in murals.",
+   "background": {
+    "type": "footage",
+    "image_id": 643065,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Chapter 7: What Remains",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch07_01"
+  },
+  {
+   "narration": "A double row of cobblestones traces where the Wall once ran through the city, and on Bernauer Strasse a memorial preserves a stretch of the death strip as it was.",
+   "background": {
+    "type": "footage",
+    "image_id": 113170,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch07_02"
+  },
+  {
+   "narration": "Pieces of the Wall are now scattered around the world, standing in museums, parks and embassies on almost every continent.",
+   "background": {
+    "type": "footage",
+    "image_id": 745072,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch07_03"
+  },
+  {
+   "narration": "And here is the strangest fact of all. The Berlin Wall has now been gone for longer than it ever stood. It stood for twenty eight years. It fell thirty seven years ago today.",
+   "background": {
+    "type": "footage",
+    "image_id": 745071,
+    "move": "right",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Stood 28 years. Gone 37.",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "strangest"
+    }
+   ],
+   "id": "ch07_04"
+  },
+  {
+   "narration": "It went up in one night, and it opened in one night, because of one fumbled sentence. History, it turns out, can turn on very small things.",
+   "background": {
+    "type": "footage",
+    "image_id": 201939,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch07_05"
+  },
+  {
+   "narration": "Which part of this story surprised you most? Tell us in the comments, and subscribe to Hypercurious for more stories from history.",
+   "background": {
+    "type": "footage",
+    "image_id": 3372188,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Subscribe: Hypercurious",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "subscribe"
+    }
+   ],
+   "id": "ch07_06"
+  }
+ ]
+}

@@ -1,0 +1,239 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 301
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 7,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "The Night the Berlin Wall Fell, part 1: A City Cut in Two",
+ "scenes": [
+  {
+   "narration": "On the night of November the ninth, 1989, a government spokesman fumbled a single sentence at a press conference. Within five hours, the most famous wall on Earth was open.",
+   "background": {
+    "type": "footage",
+    "image_id": 275437,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_01"
+  },
+  {
+   "narration": "This is the story of how the Berlin Wall went up overnight, how people risked everything to cross it, and how it came down by accident.",
+   "background": {
+    "type": "footage",
+    "image_id": 745066,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_02"
+  },
+  {
+   "narration": "To understand that night, we have to go back to 1945. Nazi Germany had surrendered, and the four victors, America, Britain, France and the Soviet Union, split Germany into four zones.",
+   "background": {
+    "type": "footage",
+    "image_id": 3483539,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Chapter 1: A City Cut in Two",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch01_03"
+  },
+  {
+   "narration": "Berlin sat deep inside the Soviet zone, but as the capital it was divided four ways too. Its western half became an island of the West, more than 150 kilometres inside the East.",
+   "background": {
+    "type": "footage",
+    "image_id": 7285666,
+    "move": "right",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_04"
+  },
+  {
+   "narration": "In 1949 the zones hardened into two countries. In the West, the Federal Republic, a democracy allied with America. In the East, the German Democratic Republic, a one-party state backed by Moscow.",
+   "background": {
+    "type": "footage",
+    "image_id": 2499826,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_05"
+  },
+  {
+   "narration": "And people voted with their feet. By 1961, around three and a half million East Germans had left for the West, many of them young, skilled and educated.",
+   "background": {
+    "type": "footage",
+    "image_id": 2693088,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "3.5 million left",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "three"
+    }
+   ],
+   "id": "ch01_06"
+  },
+  {
+   "narration": "Doctors, engineers and teachers were leaving by the thousands every week. In Berlin, escaping was as easy as taking a train across town.",
+   "background": {
+    "type": "footage",
+    "image_id": 4082213,
+    "move": "right",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_07"
+  },
+  {
+   "narration": "Then, on the night of August the twelfth, 1961, soldiers and workers rolled out barbed wire along the border through the city. Berliners woke up on Sunday morning to find their city cut in two.",
+   "background": {
+    "type": "footage",
+    "image_id": 9906199,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "13 August 1961",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "Sunday"
+    }
+   ],
+   "id": "ch01_08"
+  },
+  {
+   "narration": "East Germany called it the Anti-Fascist Protection Rampart, a shield against the West. Everyone else simply called it the Wall.",
+   "background": {
+    "type": "footage",
+    "image_id": 4960488,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_09"
+  }
+ ]
+}

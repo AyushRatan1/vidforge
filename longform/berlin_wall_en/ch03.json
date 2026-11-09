@@ -1,0 +1,218 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 303
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 7,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "The Night the Berlin Wall Fell, part 3: Over, Under, Through",
+ "scenes": [
+  {
+   "narration": "Despite all of this, people kept trying. Around five thousand people escaped across the Berlin Wall in its twenty eight years.",
+   "background": {
+    "type": "footage",
+    "image_id": 50730,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Chapter 3: Over, Under, Through",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch03_01"
+  },
+  {
+   "narration": "Two days after the wire went up, a nineteen year old border guard named Conrad Schumann leapt over the barbed wire into the West. A photographer caught the moment, and the picture went around the world.",
+   "background": {
+    "type": "footage",
+    "image_id": 1822503,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Conrad Schumann, 15 Aug 1961",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "Schumann"
+    }
+   ],
+   "id": "ch03_02"
+  },
+  {
+   "narration": "Others went underground. In October 1964, fifty seven people crawled to freedom through a tunnel about 145 metres long, dug from an old bakery in West Berlin, beneath the death strip.",
+   "background": {
+    "type": "footage",
+    "image_id": 7558887,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Tunnel 57",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "tunnel"
+    }
+   ],
+   "id": "ch03_03"
+  },
+  {
+   "narration": "People hid in car boots, used forged passports, and once even slid across on a homemade zip line. In 1979, two families escaped East Germany in a hot air balloon sewn together from scraps of fabric.",
+   "background": {
+    "type": "footage",
+    "image_id": 736879,
+    "move": "up",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch03_04"
+  },
+  {
+   "narration": "Many did not make it. Researchers have documented at least 140 people who were killed at the Berlin Wall, or died because of it.",
+   "background": {
+    "type": "footage",
+    "image_id": 5757998,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "At least 140 deaths",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "140"
+    }
+   ],
+   "id": "ch03_05"
+  },
+  {
+   "narration": "In August 1962, eighteen year old Peter Fechter was shot while climbing the Wall and fell back into the death strip. He bled for nearly an hour in full view of the West, and no one came to help.",
+   "background": {
+    "type": "footage",
+    "image_id": 1772560,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch03_06"
+  },
+  {
+   "narration": "The last person shot dead trying to cross was Chris Gueffroy, aged twenty, in February 1989. Nine months later, the Wall would be open.",
+   "background": {
+    "type": "footage",
+    "image_id": 1670222,
+    "move": "out",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch03_07"
+  }
+ ]
+}

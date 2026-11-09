@@ -1,0 +1,203 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.0,
+ "aspect": "16:9",
+ "made_for_kids": false,
+ "category": "education",
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.08,
+  "seed": 304
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.9,
+  "size": 0.026,
+  "max_words": 7,
+  "highlight": "#ffd54a",
+  "box": "#000000",
+  "box_alpha": 0.45,
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "The Night the Berlin Wall Fell, part 4: Cracks Appear",
+ "scenes": [
+  {
+   "narration": "By the late 1980s, the Soviet bloc was in trouble. Its economies were stagnating, and in Moscow, Mikhail Gorbachev was preaching openness and reform.",
+   "background": {
+    "type": "footage",
+    "image_id": 1045078,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Chapter 4: Cracks Appear",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.034,
+     "color": "#1c1a17",
+     "bg": "#ffd54a",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.5
+    }
+   ],
+   "id": "ch04_01"
+  },
+  {
+   "narration": "Crucially, Moscow signalled that it would no longer send tanks to keep its allies in line.",
+   "background": {
+    "type": "footage",
+    "image_id": 3618383,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_02"
+  },
+  {
+   "narration": "The first crack came from Hungary. In May 1989, Hungary began tearing down its fence on the Austrian border. That summer, thousands of East Germans went there on holiday and simply never came back.",
+   "background": {
+    "type": "footage",
+    "image_id": 2104030,
+    "move": "right",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Hungary, 1989",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "Hungary."
+    }
+   ],
+   "id": "ch04_03"
+  },
+  {
+   "narration": "In August, at a so-called Pan-European Picnic on the border, hundreds slipped through a gate into Austria. On September the eleventh, Hungary opened its border completely, and tens of thousands left.",
+   "background": {
+    "type": "footage",
+    "image_id": 5421517,
+    "move": "left",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_04"
+  },
+  {
+   "narration": "Inside East Germany, people found their voice. Every Monday in Leipzig, crowds gathered after prayers at the Nikolai Church and marched through the city, chanting: we are the people.",
+   "background": {
+    "type": "footage",
+    "image_id": 3394376,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Wir sind das Volk",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.026,
+     "color": "#ffffff",
+     "bg": "#1c1a17",
+     "bg_alpha": 0.78,
+     "style": "label",
+     "stroke": false,
+     "enter": "fade",
+     "at_word": "chanting:"
+    }
+   ],
+   "id": "ch04_05"
+  },
+  {
+   "narration": "On October the ninth, about seventy thousand people marched in Leipzig. Many feared a massacre. But the security forces did not shoot.",
+   "background": {
+    "type": "footage",
+    "image_id": 1577129,
+    "move": "in",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_06"
+  },
+  {
+   "narration": "Nine days later, the long-time leader Erich Honecker was pushed out. On November the fourth, a crowd often put at half a million people filled Alexanderplatz in East Berlin, demanding free speech and free travel.",
+   "background": {
+    "type": "footage",
+    "image_id": 5289802,
+    "move": "up",
+    "dim": 0.14,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#1d1a17",
+      "#0d0b09"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch04_07"
+  }
+ ]
+}
