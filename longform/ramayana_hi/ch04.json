@@ -64,8 +64,9 @@
    "narration": "एक दिन वहाँ आई रावण की बहन शूर्पणखा। उसने राम से विवाह का प्रस्ताव रखा, और ठुकराए जाने पर सीता पर झपटी। लक्ष्मण ने उसकी नाक काट दी।",
    "background": {
     "type": "footage",
-    "query": "forest dusk",
-    "dim": 0.18,
+    "image_id": 9820638,
+    "move": "in",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -81,8 +82,8 @@
    "narration": "अपमानित शूर्पणखा सीधे लंका पहुँची, अपने भाई रावण के पास। दस सिरों वाला रावण, महान विद्वान, शिव का भक्त, लेकिन अहंकार से भरा हुआ।",
    "background": {
     "type": "footage",
-    "image": "ravana",
-    "kind": "illustration",
+    "image_id": 2804586,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -90,8 +91,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {
@@ -115,8 +115,9 @@
    "narration": "रावण ने कठोर तपस्या से ब्रह्मा से वरदान पाया था कि कोई देवता, दानव या यक्ष उसे नहीं मार सकेगा। मनुष्यों को वह इतना तुच्छ समझता था कि उसने उनका नाम ही नहीं लिया। यही उसकी सबसे बड़ी चूक थी।",
    "background": {
     "type": "footage",
-    "query": "dark clouds lightning night",
-    "dim": 0.18,
+    "image_id": 3441687,
+    "move": "in",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -147,8 +148,8 @@
    "narration": "रावण ने एक चाल चली। उसने मारीच को सोने के हिरण का रूप देकर पंचवटी भेजा।",
    "background": {
     "type": "footage",
-    "image": "golden deer",
-    "kind": "illustration",
+    "image_id": 2634729,
+    "move": "out",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -156,8 +157,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "out"
+    }
    },
    "elements": [],
    "id": "ch04_05"
@@ -183,8 +183,9 @@
    "narration": "सीता के आग्रह पर लक्ष्मण भी चले गए। और तभी, एक साधु के वेश में, रावण कुटिया के द्वार पर आ खड़ा हुआ।",
    "background": {
     "type": "footage",
-    "query": "sunset forest silhouette",
-    "dim": 0.18,
+    "image_id": 2356564,
+    "move": "in",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -200,8 +201,9 @@
    "narration": "भिक्षा देने बाहर आईं सीता को रावण ने अपने उड़ने वाले रथ में उठा लिया, और आकाश मार्ग से लंका की ओर उड़ चला।",
    "background": {
     "type": "footage",
-    "query": "flying above clouds",
-    "dim": 0.18,
+    "image_id": 1867317,
+    "move": "up",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -217,8 +219,8 @@
    "narration": "रास्ते में बूढ़े गिद्धराज जटायु ने रावण को रोकने की कोशिश की। भीषण युद्ध हुआ, पर रावण ने जटायु के पंख काट दिए।",
    "background": {
     "type": "footage",
-    "image": "eagle",
-    "kind": "photo",
+    "image_id": 8910009,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -226,8 +228,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {

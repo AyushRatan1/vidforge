@@ -64,8 +64,8 @@
    "narration": "वहीं उनकी भेंट हुई हनुमान से। पवनपुत्र हनुमान, जो उसी क्षण से राम के सबसे बड़े भक्त बन गए।",
    "background": {
     "type": "footage",
-    "image": "hanuman",
-    "kind": "illustration",
+    "image_id": 8797246,
+    "move": "out",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -73,9 +73,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "out",
-    "skip": 1
+    }
    },
    "elements": [
     {
@@ -99,8 +97,8 @@
    "narration": "वानरों ने राम को कुछ गहने दिखाए, जो आकाश से गिरे थे। रावण के रथ से सीता ने उन्हें निशानी के तौर पर नीचे फेंका था। उन्हें देखते ही राम की आँखें भर आईं।",
    "background": {
     "type": "footage",
-    "image": "gold jewelry indian",
-    "kind": "photo",
+    "image_id": 3184582,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -108,8 +106,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [],
    "id": "ch05_03"
@@ -135,8 +132,8 @@
    "narration": "बदले में सुग्रीव ने वानर सेना को चारों दिशाओं में सीता की खोज में भेजा। राम ने हनुमान को अपनी अंगूठी दी, ताकि सीता उन्हें पहचान सकें।",
    "background": {
     "type": "footage",
-    "image": "gold ring",
-    "kind": "photo",
+    "image_id": 8320602,
+    "move": "left",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -144,8 +141,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {

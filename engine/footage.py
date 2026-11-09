@@ -12,6 +12,7 @@ import logging
 import os
 import random
 import subprocess
+import time
 
 import requests
 
@@ -120,7 +121,11 @@ def image_by_id(image_id) -> dict | None:
     if not key:
         return None
     try:
-        r = requests.get(PIXABAY_IMG_URL, params={"key": key, "id": str(image_id)}, timeout=TIMEOUT)
+        for attempt in range(4):  # parallel chapter renders can trip the 100-a-minute limit; wait it out
+            r = requests.get(PIXABAY_IMG_URL, params={"key": key, "id": str(image_id)}, timeout=TIMEOUT)
+            if r.status_code != 429:
+                break
+            time.sleep(15 * (attempt + 1))
         hits = r.json().get("hits", []) if r.status_code == 200 else []
         return _norm_image(hits[0]) if hits and hits[0].get("largeImageURL") else None
     except Exception as e:

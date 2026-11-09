@@ -64,8 +64,8 @@
    "narration": "युद्ध से पहले राम ने युवराज अंगद को दूत बनाकर रावण के पास भेजा, ताकि सीता को लौटाकर युद्ध टाला जा सके। पर रावण नहीं माना।",
    "background": {
     "type": "footage",
-    "image": "ancient palace hall",
-    "kind": "all",
+    "image_id": 639103,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -73,8 +73,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {
@@ -144,8 +143,8 @@
    "narration": "भीषण युद्ध शुरू हुआ। रावण ने अपने विशाल भाई कुंभकर्ण को गहरी नींद से जगाया। वह हज़ारों वानरों पर भारी पड़ा, पर अंत में राम के बाणों से गिर गया।",
    "background": {
     "type": "footage",
-    "image": "ancient battle",
-    "kind": "illustration",
+    "image_id": 4779546,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -153,8 +152,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {
@@ -178,8 +176,8 @@
    "narration": "फिर आया मेघनाद, जिसने कभी इंद्र को भी हराया था। उसकी शक्ति के प्रहार से लक्ष्मण मूर्छित होकर गिर पड़े।",
    "background": {
     "type": "footage",
-    "image": "warrior archer",
-    "kind": "illustration",
+    "image_id": 9252312,
+    "move": "out",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -187,8 +185,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "out"
+    }
    },
    "elements": [
     {
@@ -212,8 +209,8 @@
    "narration": "वैद्य सुषेण ने कहा: हिमालय की संजीवनी बूटी चाहिए। हनुमान उड़े, पर बूटी पहचान नहीं पाए, तो पूरा पर्वत ही उठा लाए।",
    "background": {
     "type": "footage",
-    "image": "hanuman mountain",
-    "kind": "illustration",
+    "image_id": 4702174,
+    "move": "up",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -221,8 +218,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {
@@ -246,8 +242,9 @@
    "narration": "लक्ष्मण होश में आए, और अगले युद्ध में उन्होंने मेघनाद का वध कर दिया।",
    "background": {
     "type": "footage",
-    "query": "arrow flying",
-    "dim": 0.18,
+    "image_id": 9252305,
+    "move": "in",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -263,8 +260,8 @@
    "narration": "अब बचा था सिर्फ रावण। राम और रावण का युद्ध कई दिनों तक चला। राम रावण का सिर काटते, और वह फिर उग आता।",
    "background": {
     "type": "footage",
-    "image": "ravana",
-    "kind": "illustration",
+    "image_id": 8916905,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -272,9 +269,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in",
-    "skip": 2
+    }
    },
    "elements": [],
    "id": "ch07_09"

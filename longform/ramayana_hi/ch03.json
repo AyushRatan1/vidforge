@@ -32,8 +32,9 @@
    "narration": "वर्षों बाद राजा दशरथ ने राम को युवराज बनाने का निर्णय लिया। पूरी अयोध्या में उत्सव की तैयारी होने लगी।",
    "background": {
     "type": "footage",
-    "query": "festival lamps celebration",
-    "dim": 0.18,
+    "image_id": 7439926,
+    "move": "in",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -64,8 +65,8 @@
    "narration": "लेकिन रानी कैकेयी की दासी मंथरा ने उनके मन में शंका भर दी। अगर राम राजा बने, तो भरत का क्या होगा?",
    "background": {
     "type": "footage",
-    "image": "palace window shadow",
-    "kind": "photo",
+    "image_id": 4044210,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -73,8 +74,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [],
    "id": "ch03_02"
@@ -83,8 +83,8 @@
    "narration": "कैकेयी को याद आए वो दो वरदान, जो दशरथ ने बरसों पहले एक युद्ध में उनकी जान बचाने पर दिए थे। आज उन्होंने वो वरदान माँग लिए।",
    "background": {
     "type": "footage",
-    "image": "indian queen",
-    "kind": "illustration",
+    "image_id": 10514023,
+    "move": "out",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -92,8 +92,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "right"
+    }
    },
    "elements": [
     {
@@ -117,8 +116,8 @@
    "narration": "पहला: भरत का राज्याभिषेक। दूसरा: राम को चौदह वर्ष का वनवास।",
    "background": {
     "type": "footage",
-    "image": "golden throne",
-    "kind": "all",
+    "image_id": 10514028,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -126,8 +125,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {
@@ -165,8 +163,8 @@
    "narration": "दशरथ टूट गए, लेकिन राम ने बिना किसी शिकायत के पिता का वचन स्वीकार किया। सीता और लक्ष्मण भी उनके साथ वन जाने को तैयार हो गए।",
    "background": {
     "type": "footage",
-    "image": "rama sita",
-    "kind": "illustration",
+    "image_id": 8635700,
+    "move": "out",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -174,8 +172,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "out"
+    }
    },
    "elements": [],
    "id": "ch03_05"
@@ -184,8 +181,9 @@
    "narration": "पूरी अयोध्या रोते हुए उनके पीछे चली। गंगा के तट पर निषादराज गुह ने उन्हें नाव से नदी पार कराई, और तीनों चित्रकूट के जंगलों में पहुँच गए।",
    "background": {
     "type": "footage",
-    "query": "boat river ganga",
-    "dim": 0.18,
+    "image_id": 1309206,
+    "move": "left",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -216,8 +214,9 @@
    "narration": "राम के जाने के कुछ ही दिनों बाद, पुत्र के वियोग में राजा दशरथ ने प्राण त्याग दिए।",
    "background": {
     "type": "footage",
-    "query": "candle flame dark",
-    "dim": 0.18,
+    "image_id": 2890605,
+    "move": "in",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -233,8 +232,8 @@
    "narration": "भरत लौटे तो सब जानकर बहुत दुखी हुए। वे राम को मनाने वन गए, पर राम नहीं लौटे। तब भरत राम की खड़ाऊँ लेकर आए, उन्हें सिंहासन पर रखा, और खुद तपस्वी बनकर राज्य चलाया।",
    "background": {
     "type": "footage",
-    "image": "wooden sandals",
-    "kind": "photo",
+    "image_id": 919195,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -242,8 +241,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {

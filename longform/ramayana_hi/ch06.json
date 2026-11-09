@@ -32,8 +32,8 @@
    "narration": "हनुमान ने अपना रूप विशाल किया, और एक ही छलांग में सौ योजन का समुद्र लांघ गए।",
    "background": {
     "type": "footage",
-    "image": "hanuman flying",
-    "kind": "illustration",
+    "image_id": 10246942,
+    "move": "left",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -41,8 +41,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {
@@ -83,8 +82,8 @@
    "narration": "सामने थी सोने की लंका। रात में छोटा रूप धरकर हनुमान ने महल महल खोजा, और आखिर अशोक वाटिका में एक पेड़ के नीचे सीता को पाया।",
    "background": {
     "type": "footage",
-    "image": "golden palace night",
-    "kind": "all",
+    "image_id": 5579991,
+    "move": "left",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -92,8 +91,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "left"
+    }
    },
    "elements": [
     {
@@ -134,8 +132,8 @@
    "narration": "हनुमान ने राम की अंगूठी दी। सीता की आँखें भर आईं। उन्होंने अपनी चूड़ामणि हनुमान को सौंपी, राम के लिए निशानी के तौर पर।",
    "background": {
     "type": "footage",
-    "image": "goddess sita",
-    "kind": "illustration",
+    "image_id": 3762690,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -143,9 +141,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in",
-    "skip": 1
+    }
    },
    "elements": [],
    "id": "ch06_05"
@@ -154,8 +150,8 @@
    "narration": "फिर हनुमान ने जानबूझकर अशोक वाटिका उजाड़ दी। रावण के सैनिक आए, और रावण के पुत्र मेघनाद ने उन्हें ब्रह्मास्त्र से बाँधकर दरबार में पेश किया।",
    "background": {
     "type": "footage",
-    "image": "ravana",
-    "kind": "illustration",
+    "image_id": 1807557,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -163,9 +159,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "out",
-    "skip": 1
+    }
    },
    "elements": [],
    "id": "ch06_06"
@@ -174,8 +168,9 @@
    "narration": "दरबार में हनुमान ने रावण को चेतावनी दी: सीता को लौटा दो। क्रोधित रावण ने हनुमान की पूँछ में आग लगाने का आदेश दिया।",
    "background": {
     "type": "footage",
-    "query": "fire torch flame",
-    "dim": 0.18,
+    "image_id": 2803401,
+    "move": "out",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -191,8 +186,9 @@
    "narration": "और यही उसकी सबसे बड़ी भूल थी। जलती पूँछ के साथ हनुमान एक महल से दूसरे महल पर कूदते गए, और पूरी लंका धू धू कर जलने लगी।",
    "background": {
     "type": "footage",
-    "query": "big fire burning",
-    "dim": 0.18,
+    "image_id": 9877220,
+    "move": "up",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [

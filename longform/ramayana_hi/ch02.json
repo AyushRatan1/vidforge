@@ -32,8 +32,8 @@
    "narration": "एक दिन महर्षि विश्वामित्र अयोध्या आए। उनके यज्ञ को राक्षस बार बार नष्ट कर रहे थे। रक्षा के लिए उन्होंने राजा से राम को माँगा।",
    "background": {
     "type": "footage",
-    "image": "sage meditation",
-    "kind": "illustration",
+    "image_id": 8137650,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -41,8 +41,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [
     {
@@ -100,8 +99,9 @@
    "narration": "रास्ते में, गौतम ऋषि के सूने आश्रम में, राम ने अहल्या को श्राप से मुक्ति दिलाई। बरसों से तपस्या में लीन अहल्या को राम के दर्शन से फिर से नया जीवन मिला।",
    "background": {
     "type": "footage",
-    "query": "old temple ruins forest",
-    "dim": 0.18,
+    "image_id": 7459781,
+    "move": "in",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -117,8 +117,8 @@
    "narration": "फिर विश्वामित्र उन्हें मिथिला ले गए, जहाँ राजा जनक ने अपनी पुत्री सीता के विवाह के लिए एक शर्त रखी थी।",
    "background": {
     "type": "footage",
-    "image": "goddess sita",
-    "kind": "illustration",
+    "image_id": 6688172,
+    "move": "right",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -126,13 +126,12 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "out"
+    }
    },
    "elements": [
     {
      "type": "text",
-     "text": "सीता",
+     "text": "मिथिला",
      "x": 0.5,
      "y": 0.13,
      "size": 0.026,
@@ -142,7 +141,7 @@
      "style": "label",
      "stroke": false,
      "enter": "fade",
-     "at_word": "सीता"
+     "at_word": "मिथिला"
     }
    ],
    "id": "ch02_05"
@@ -168,8 +167,8 @@
    "narration": "शर्त थी: जो शिव के विशाल धनुष पर प्रत्यंचा चढ़ा देगा, उसी से सीता का विवाह होगा। बड़े बड़े राजा उसे हिला तक नहीं पाए।",
    "background": {
     "type": "footage",
-    "image": "lord shiva",
-    "kind": "illustration",
+    "image_id": 8918729,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -177,8 +176,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [],
    "id": "ch02_07"
@@ -187,8 +185,9 @@
    "narration": "राम ने धनुष उठाया, प्रत्यंचा चढ़ाई, और खींचते ही वह धनुष बीच से टूट गया। उसकी गर्जना से पूरी सभा काँप उठी।",
    "background": {
     "type": "footage",
-    "query": "lightning storm",
-    "dim": 0.18,
+    "image_id": 3625405,
+    "move": "in",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -204,8 +203,8 @@
    "narration": "राम और सीता का विवाह हुआ, और साथ ही बाकी तीनों भाइयों का भी। अयोध्या लौटकर सबको लगा, अब सुख ही सुख है।",
    "background": {
     "type": "footage",
-    "image": "indian wedding",
-    "kind": "photo",
+    "image_id": 7141823,
+    "move": "left",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -213,8 +212,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "left"
+    }
    },
    "elements": [],
    "id": "ch02_09"

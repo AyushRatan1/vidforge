@@ -32,8 +32,8 @@
    "narration": "एक राजकुमार, जिसे राजगद्दी मिलने वाली थी, उसे चौदह साल के लिए जंगल भेज दिया गया। एक राक्षस राजा, जिसने उसकी पत्नी का हरण कर लिया। और एक वानर, जिसने समुद्र लांघकर सोने की लंका जला दी।",
    "background": {
     "type": "footage",
-    "image": "hanuman",
-    "kind": "illustration",
+    "image_id": 10045807,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -41,8 +41,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in"
+    }
    },
    "elements": [],
    "id": "ch01_01"
@@ -51,8 +50,8 @@
    "narration": "यह कहानी हज़ारों सालों से सुनाई जा रही है। रामायण फिल्म का पहला भाग अभी सिनेमाघरों में आया है, और दूसरा भाग दो हज़ार अट्ठाईस में आएगा।",
    "background": {
     "type": "footage",
-    "image": "lord rama",
-    "kind": "illustration",
+    "image_id": 6133619,
+    "move": "out",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -60,8 +59,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "out"
+    }
    },
    "elements": [],
    "id": "ch01_02"
@@ -70,8 +68,8 @@
    "narration": "लेकिन असली कहानी जानने के लिए इंतज़ार की ज़रूरत नहीं। आज, वाल्मीकि रामायण के आधार पर, शुरू से अंत तक, पूरी कहानी।",
    "background": {
     "type": "footage",
-    "image": "old book pages",
-    "kind": "photo",
+    "image_id": 419589,
+    "move": "left",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -79,8 +77,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "left"
+    }
    },
    "elements": [
     {
@@ -136,8 +133,8 @@
    "narration": "उनकी तीन रानियाँ थीं: कौशल्या, कैकेयी और सुमित्रा। राज्य में सब कुछ था, लेकिन राजा के मन में एक गहरा दुख था। उनकी कोई संतान नहीं थी।",
    "background": {
     "type": "footage",
-    "image": "indian palace",
-    "kind": "all",
+    "image_id": 3229676,
+    "move": "right",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -145,8 +142,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "right"
+    }
    },
    "elements": [
     {
@@ -170,8 +166,9 @@
    "narration": "ऋषियों की सलाह पर दशरथ ने पुत्रकामेष्टि यज्ञ किया। यज्ञ की अग्नि से एक दिव्य पुरुष प्रकट हुए, और राजा को खीर से भरा एक पात्र दिया।",
    "background": {
     "type": "footage",
-    "query": "fire ritual flames",
-    "dim": 0.18,
+    "image_id": 237699,
+    "move": "in",
+    "dim": 0.12,
     "fallback": {
      "type": "gradient",
      "colors": [
@@ -187,8 +184,8 @@
    "narration": "रानियों ने वह खीर ग्रहण की, और समय आने पर चार पुत्रों का जन्म हुआ। कौशल्या से राम, कैकेयी से भरत, और सुमित्रा से लक्ष्मण और शत्रुघ्न।",
    "background": {
     "type": "footage",
-    "image": "lord rama",
-    "kind": "illustration",
+    "image_id": 2803381,
+    "move": "in",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -196,9 +193,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "in",
-    "skip": 1
+    }
    },
    "elements": [],
    "id": "ch01_07"
@@ -207,8 +202,8 @@
    "narration": "चारों भाई साथ बड़े हुए, गुरु वशिष्ठ से शिक्षा पाई, और धनुर्विद्या में निपुण हो गए। पर राम और लक्ष्मण का साथ सबसे गहरा था।",
    "background": {
     "type": "footage",
-    "image": "bow and arrow",
-    "kind": "all",
+    "image_id": 1807558,
+    "move": "left",
     "dim": 0.12,
     "fallback": {
      "type": "gradient",
@@ -216,8 +211,7 @@
       "#2a1a0e",
       "#120a05"
      ]
-    },
-    "move": "left"
+    }
    },
    "elements": [],
    "id": "ch01_08"
