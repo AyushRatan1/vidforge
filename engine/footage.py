@@ -74,7 +74,8 @@ def _norm_pexels(v: dict, limit: int) -> dict | None:
     user = (v.get("user") or {}).get("name") or "Pexels"
     return {"id": str(v.get("id")), "provider": "pexels", "url": best["link"],
             "width": int(best.get("width") or 0), "height": int(best.get("height") or 0),
-            "duration": float(v.get("duration") or 0), "page_url": v.get("url", ""), "credit": user}
+            "duration": float(v.get("duration") or 0), "page_url": v.get("url", ""), "credit": user,
+            "thumb": v.get("image", "")}
 
 
 def _norm_pixabay(h: dict, limit: int) -> dict | None:
@@ -131,7 +132,7 @@ def _norm_image(h: dict) -> dict:
     return {"id": f"img{h.get('id')}", "provider": "pixabay", "kind": "image", "url": h["largeImageURL"],
             "width": int(h.get("imageWidth") or 0), "height": int(h.get("imageHeight") or 0),
             "likes": int(h.get("likes") or 0), "page_url": h.get("pageURL", ""), "credit": h.get("user") or "Pixabay",
-            "tags": h.get("tags", "")}
+            "tags": h.get("tags", ""), "thumb": h.get("webformatURL", "")}
 
 
 def pick_image(results: list[dict], exclude=None, skip: int = 0) -> dict | None:
@@ -152,12 +153,15 @@ def ken_burns(src: str, dst: str, W: int, H: int, duration: float, fps: int, mov
     W2, H2 = W * 2, H * 2
     iw, ih = _image_size(src)
     far = iw and ih and abs((iw / ih) / (W / H) - 1) > 0.28
+    # transparent PNGs (Pixabay vectors) would turn black: flatten them onto a warm dark ground first
+    flat = (f"color=c=0x1c140c:s={iw}x{ih}:r=1:d=1[ground];[ground][0:v]overlay=format=auto,format=rgb24,"
+            if iw and ih else "[0:v]format=rgb24,")
     if far:
-        prep = (f"[0:v]scale={W2}:{H2}:force_original_aspect_ratio=increase,crop={W2}:{H2},boxblur=40:2,"
-                f"eq=brightness=-0.18[bg];[0:v]scale={W2}:{H2}:force_original_aspect_ratio=decrease[fg];"
+        prep = (f"{flat}split=2[i1][i2];[i1]scale={W2}:{H2}:force_original_aspect_ratio=increase,crop={W2}:{H2},"
+                f"boxblur=40:2,eq=brightness=-0.18[bg];[i2]scale={W2}:{H2}:force_original_aspect_ratio=decrease[fg];"
                 f"[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1[base]")
     else:
-        prep = f"[0:v]scale={W2}:{H2}:force_original_aspect_ratio=increase,crop={W2}:{H2},setsar=1[base]"
+        prep = f"{flat}scale={W2}:{H2}:force_original_aspect_ratio=increase,crop={W2}:{H2},setsar=1[base]"
     z0, z1 = 1.0, 1.13
     move = move if move in MOVES else "in"
     zoom = {"in": f"{z0}+{z1 - z0}*on/{n}", "out": f"{z1}-{z1 - z0}*on/{n}"}.get(move, "1.12")

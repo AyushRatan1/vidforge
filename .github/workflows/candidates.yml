@@ -1,0 +1,51 @@
+name: candidates
+run-name: "image candidates ${{ inputs.file }}"
+
+# Contact sheets of Pixabay image candidates for a long video, to pin stills by id (see tools/image_candidates.py).
+on:
+  workflow_dispatch:
+    inputs:
+      file:
+        description: "Subjects file, e.g. longform/ramayana_hi/subjects.json"
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+  PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+
+jobs:
+  sheets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -q -r requirements.txt
+      - name: Load saved keys
+        run: |
+          python - <<'PY'
+          import os
+          from tools import store
+          s = store.settings() if store.enabled() else {}
+          v = s.get("pixabay_api_key")
+          if v and not os.environ.get("PIXABAY_API_KEY"):
+              print(f"::add-mask::{v}")
+              with open(os.environ["GITHUB_ENV"], "a") as f:
+                  f.write(f"PIXABAY_API_KEY={v}\n")
+          PY
+      - name: Make sheets
+        env:
+          FILE: ${{ inputs.file }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ "$FILE" =~ ^longform/[a-z0-9_]+/[a-z0-9_]+\.json$ ]] || { echo "file must be longform/<name>/<file>.json"; exit 1; }
+          python -m tools.image_candidates "$FILE" cand
+          NAME=$(basename $(dirname "$FILE"))
+          gh release delete "candidates-$NAME" -y --cleanup-tag || true
+          gh release create "candidates-$NAME" cand/*.jpg cand/candidates.json --title "Image candidates: $NAME" --notes "Pin a still with image_id" --prerelease --latest=false
