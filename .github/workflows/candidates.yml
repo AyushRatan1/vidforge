@@ -16,6 +16,7 @@ env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
   PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+  PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
 
 jobs:
   sheets:
@@ -35,11 +36,12 @@ jobs:
           import os
           from tools import store
           s = store.settings() if store.enabled() else {}
-          v = s.get("pixabay_api_key")
-          if v and not os.environ.get("PIXABAY_API_KEY"):
-              print(f"::add-mask::{v}")
-              with open(os.environ["GITHUB_ENV"], "a") as f:
-                  f.write(f"PIXABAY_API_KEY={v}\n")
+          with open(os.environ["GITHUB_ENV"], "a") as f:
+              for k, env in (("pixabay_api_key", "PIXABAY_API_KEY"), ("pexels_api_key", "PEXELS_API_KEY")):
+                  v = s.get(k)
+                  if v and not os.environ.get(env):
+                      print(f"::add-mask::{v}")
+                      f.write(f"{env}={v}\n")
           PY
       - name: Make sheets
         env:

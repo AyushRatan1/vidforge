@@ -20,8 +20,11 @@ MOODS = {"cosmic", "playful", "mystery", "epic", "calm", "upbeat", "indian", "de
 
 def _check_footage(bg: dict) -> list[str]:
     errs = []
-    if not (str(bg.get("query", "")).strip() or str(bg.get("image", "")).strip() or bg.get("image_id")):
-        errs.append("footage background needs a `query` (2-4 concrete English words), or `image` / `image_id` for a still")
+    if not (str(bg.get("query", "")).strip() or str(bg.get("image", "")).strip() or bg.get("image_id") or bg.get("video")):
+        errs.append("footage background needs a `query` (2-4 concrete English words), `video` (\"pexels:<id>\" or "
+                    "\"pixabay:<id>\"), or `image` / `image_id` for a still")
+    if bg.get("video") and str(bg["video"]).partition(":")[0] not in ("pexels", "pixabay"):
+        errs.append(f"footage video {bg['video']!r} must look like pexels:<id> or pixabay:<id>")
     if bg.get("move") is not None and bg.get("move") not in ("in", "out", "left", "right", "up", "down"):
         errs.append(f"footage move {bg.get('move')!r} must be in, out, left, right, up or down")
     try:

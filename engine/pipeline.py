@@ -149,9 +149,12 @@ def resolve_footage(spec: dict, tl: list, out_dir: str) -> list:
                         prepared = None
         elif mode != "off":
             query = str(bg.get("query", "")).strip()
-            if query not in cache:
-                cache[query] = F.search(query, orientation=orientation)
-            clip = F.pick(cache[query], seg["dur"], exclude=used, query=query + f"#{i}")
+            if bg.get("video"):
+                clip = F.video_by_id(bg["video"], orientation)
+            else:
+                if query not in cache:
+                    cache[query] = F.search(query, orientation=orientation)
+                clip = F.pick(cache[query], seg["dur"], exclude=used, query=query + f"#{i}")
             if clip:
                 src = F.fetch(clip)
                 if src:

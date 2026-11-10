@@ -88,10 +88,35 @@ def _norm_pixabay(h: dict, limit: int) -> dict | None:
     pool = fitting or sorted(cands, key=lambda kd: int(kd[1].get("width") or 0))[:1]
     pool.sort(key=lambda kd: int(kd[1].get("width") or 0), reverse=True)
     k, d = pool[0]
+    thumb = next((v.get("thumbnail") for v in (vids.get("medium"), vids.get("small"), vids.get("large"))
+                  if isinstance(v, dict) and v.get("thumbnail")), "")
     return {"id": str(h.get("id")), "provider": "pixabay", "url": d["url"],
             "width": int(d.get("width") or 0), "height": int(d.get("height") or 0),
             "duration": float(h.get("duration") or 0), "page_url": h.get("pageURL", ""),
-            "credit": h.get("user") or "Pixabay"}
+            "credit": h.get("user") or "Pixabay", "thumb": thumb}
+
+
+def video_by_id(ref: str, orientation: str = "portrait") -> dict | None:
+    """A clip chosen by eye: "pexels:<id>" or "pixabay:<id>" (see tools/image_candidates.py)."""
+    provider, _, vid = str(ref).partition(":")
+    limit = MAX_WIDTH.get(orientation, 1080)
+    try:
+        if provider == "pexels":
+            key = os.environ.get("PEXELS_API_KEY", "").strip()
+            r = requests.get(f"https://api.pexels.com/videos/videos/{vid}", headers={"Authorization": key}, timeout=TIMEOUT)
+            return _norm_pexels(r.json(), limit) if key and r.status_code == 200 else None
+        if provider == "pixabay":
+            key = os.environ.get("PIXABAY_API_KEY", "").strip()
+            for attempt in range(4):
+                r = requests.get(PIXABAY_URL, params={"key": key, "id": vid}, timeout=TIMEOUT)
+                if r.status_code != 429:
+                    break
+                time.sleep(15 * (attempt + 1))
+            hits = r.json().get("hits", []) if key and r.status_code == 200 else []
+            return _norm_pixabay(hits[0], limit) if hits else None
+    except Exception as e:
+        log.warning("video lookup %s failed: %s", ref, e)
+    return None
 
 
 # ---------------------------------------------------------------- still images (Pixabay photos and illustrations)

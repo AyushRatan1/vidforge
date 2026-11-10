@@ -2,7 +2,8 @@
 
     python -m tools.image_candidates subjects.json out_dir
 
-subjects.json may list "_fetch": [ids] to save full-size copies (full_<id>.jpg) of chosen stills; every other key maps
+A [query, "video"] pair searches stock clips instead (pin with {"type": "footage", "video": "pexels:<id>"}),
+and "_vertical": true prefers portrait stills and clips for 9:16 videos. subjects.json may also list "_fetch": [ids] to save full-size copies (full_<id>.jpg) of chosen stills; every other key maps
 a subject name to a list of [query, kind] pairs (kind: photo, illustration, vector or all):
     {"rama": [["lord rama", "illustration"], ["shri ram", "all"]], "palace": [["amer fort", "photo"]]}
 Writes out_dir/sheet_NN.jpg (two subjects per sheet, 12 candidates each, every tile labelled with its Pixabay id)
@@ -24,6 +25,8 @@ from engine import footage as F
 
 TW, TH, COLS, ROWS, GAP, HEAD = 320, 180, 4, 3, 4, 34
 PER_SHEET = 2
+IMAGE_ORIENTS = ("horizontal", "all")
+VIDEO_ORIENT = "landscape"
 
 
 def _font(size):
@@ -41,9 +44,14 @@ def candidates(queries: list, n: int = COLS * ROWS) -> list[dict]:
     lists = []
     for q, kind in queries:
         got = []
-        for orient in ("horizontal", "all"):
-            time.sleep(0.7)  # Pixabay allows 100 requests a minute
-            got += F.search_images(q, kind=kind, orientation=orient, per_page=24)
+        if kind == "video":  # stock clips (Pexels portrait first when the video is vertical)
+            time.sleep(0.7)
+            got = [dict(c, id=f"{c['provider']}:{c['id']}", tags=f"{c['duration']:.0f}s {c['width']}x{c['height']}")
+                   for c in F.search(q, orientation=VIDEO_ORIENT, per_page=12)]
+        else:
+            for orient in IMAGE_ORIENTS:
+                time.sleep(0.7)  # Pixabay allows 100 requests a minute
+                got += F.search_images(q, kind=kind, orientation=orient, per_page=24)
         lists.append([dict(c, query=q) for c in got])
     seen, out = set(), []
     for rank in range(48):
@@ -86,6 +94,8 @@ def sheet(groups: list[tuple[str, list[dict]]]) -> Image.Image:
             x, y = (i % COLS) * (TW + GAP), y0 + HEAD + (i // COLS) * (TH + GAP)
             img.paste(_thumb(c.get("thumb") or c["url"]), (x, y))
             label = f"{str(c['id']).removeprefix('img')}{'  V' if '/vectors/' in c.get('page_url', '') else ''}"
+            if c.get("provider") in ("pexels", "pixabay") and c.get("kind") != "image":
+                label += f"  {c.get('duration', 0):.0f}s"
             w = d.textlength(label, font=small)
             d.rectangle((x, y + TH - 22, x + w + 10, y + TH), fill=(0, 0, 0))
             d.text((x + 5, y + TH - 20), label, fill=(255, 255, 255), font=small)
@@ -96,6 +106,9 @@ def main(path: str, out_dir: str) -> None:
     with open(path, encoding="utf-8") as f:
         subjects = json.load(f)
     os.makedirs(out_dir, exist_ok=True)
+    global IMAGE_ORIENTS, VIDEO_ORIENT
+    if subjects.pop("_vertical", False):  # for 9:16 videos: portrait stills and clips first
+        IMAGE_ORIENTS, VIDEO_ORIENT = ("vertical", "all"), "portrait"
     for image_id in subjects.pop("_fetch", []):  # full-size copies of chosen stills (for thumbnails)
         time.sleep(0.7)
         c = F.image_by_id(image_id)

@@ -1,0 +1,17 @@
+{
+ "_vertical": true,
+ "plane_night": [["airplane night sky", "video"], ["airplane flying clouds", "video"], ["plane above clouds", "video"]],
+ "storm": [["thunderstorm clouds night", "video"], ["lightning storm clouds", "video"], ["storm clouds", "video"]],
+ "pitot_ice": [["airplane nose", "photo"], ["ice crystals", "video"], ["frost ice macro", "video"]],
+ "cockpit": [["cockpit", "video"], ["airplane cockpit night", "video"], ["pilot cockpit", "video"]],
+ "alarm": [["red warning light", "video"], ["red alarm light", "video"], ["cockpit instruments", "video"]],
+ "ocean_dark": [["dark ocean waves", "video"], ["ocean night", "video"], ["stormy sea", "video"]],
+ "search_ship": [["ship at sea", "video"], ["navy ship", "video"], ["helicopter over sea", "video"]],
+ "deep_sea": [["deep sea underwater", "video"], ["underwater dark", "video"], ["submarine underwater", "video"]],
+ "black_box": [["flight recorder", "all"], ["black box airplane", "all"], ["orange box", "photo"]],
+ "verdict": [["documents desk", "video"], ["airbus a330", "all"], ["airplane hangar", "video"]],
+ "training": [["flight simulator", "video"], ["pilot training", "video"], ["pilots", "video"]],
+ "court": [["courtroom", "video"], ["gavel", "video"], ["justice", "video"]],
+ "ending": [["airplane sunrise", "video"], ["airplane sunset", "video"], ["plane wing sunset", "video"]],
+ "rio": [["rio de janeiro night", "video"], ["airport night", "video"], ["airplane takeoff night", "video"]]
+}
