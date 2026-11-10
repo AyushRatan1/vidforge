@@ -42,7 +42,8 @@ TIME_KEYS = {"at", "from", "to", "rope_start", "rope_end", "until"}
 KIT = {"box", "slab", "cylinder", "cone", "pyramid", "dome", "sphere", "mound", "wall", "stairs", "pillar", "pavilion",
        "spire", "arch", "water", "tree", "trees", "grass", "rocks", "house", "ladder", "well", "person", "people",
        "hill", "cliff", "ramp", "blocks", "sledge", "minaret", "tomb", "bastion", "palace", "boat", "flag", "gate", "town",
-       "frustum"}
+       "frustum", "airliner", "ocean", "clouds", "cumulus", "streaks", "splash", "debris", "ship", "seabed", "wreck",
+       "recorder", "auv"}
 MACROS = {"stepwell", "pyramid", "fort", "temple"}
 STYLES = {"desert", "golden", "green", "overcast", "night"}
 FOG = {"desert": (40, 120), "golden": (35, 110), "green": (45, 130), "overcast": (35, 110), "night": (30, 90)}
@@ -954,7 +955,7 @@ def validate_world(world, scene_ids: set) -> tuple[list, list]:
             for f in ("angle", "dist", "height", "fov", "sweep"):
                 if f in key and _num(key[f]) is None:
                     errs.append(f"{where}: {f} must be a number")
-        elif "pos" not in key:
+        elif "pos" not in key and "follow" not in key:
             warns.append(f"{where}: give a shot and target (or pos and look)")
 
     def walk(x, path):

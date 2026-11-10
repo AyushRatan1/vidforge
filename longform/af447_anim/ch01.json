@@ -1,0 +1,2173 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.08,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "footage": "off",
+ "transition": "none",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.11,
+  "seed": 448
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.62,
+  "size": 0.08,
+  "max_words": 2,
+  "highlight": "#ffd54a",
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "world3d": {
+  "style": "night",
+  "terrain": false,
+  "env": [
+   {
+    "sky_top": "#02050c",
+    "sky": "#1a2642",
+    "fog": [
+     70,
+     330
+    ],
+    "hemi": 0.6,
+    "ambient": 0.25,
+    "sun": 1.4,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#5a6684",
+    "ocean": "#0c1b2b",
+    "exposure": 1.05,
+    "at": 0
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#1a2642",
+    "fog": [
+     70,
+     330
+    ],
+    "hemi": 0.6,
+    "ambient": 0.25,
+    "sun": 1.4,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#5a6684",
+    "ocean": "#0c1b2b",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s2",
+     "t": 0.45
+    }
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#151d30",
+    "fog": [
+     30,
+     170
+    ],
+    "hemi": 0.55,
+    "ambient": 0.25,
+    "sun": 1.4,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#4a546e",
+    "ocean": "#0c1b2b",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s3",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#151d30",
+    "fog": [
+     30,
+     170
+    ],
+    "hemi": 0.55,
+    "ambient": 0.25,
+    "sun": 1.4,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#4a546e",
+    "ocean": "#0c1b2b",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s6",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#151d30",
+    "fog": [
+     45,
+     230
+    ],
+    "hemi": 0.55,
+    "ambient": 0.25,
+    "sun": 1.4,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#4a546e",
+    "ocean": "#0c1b2b",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s6",
+     "t": 0.5
+    }
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#151d30",
+    "fog": [
+     45,
+     230
+    ],
+    "hemi": 0.55,
+    "ambient": 0.25,
+    "sun": 1.4,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#4a546e",
+    "ocean": "#0c1b2b",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s7",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#66778a",
+    "sky": "#b7c1cb",
+    "fog": [
+     70,
+     330
+    ],
+    "hemi": 1.25,
+    "ambient": 0.5,
+    "sun": 1.3,
+    "sun_color": "#f2f0ea",
+    "sun_dir": [
+     20,
+     50,
+     30
+    ],
+    "cloud": "#d4d9df",
+    "ocean": "#3a586a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s7",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#66778a",
+    "sky": "#b7c1cb",
+    "fog": [
+     70,
+     330
+    ],
+    "hemi": 1.25,
+    "ambient": 0.5,
+    "sun": 1.3,
+    "sun_color": "#f2f0ea",
+    "sun_dir": [
+     20,
+     50,
+     30
+    ],
+    "cloud": "#d4d9df",
+    "ocean": "#3a586a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s8",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#010a14",
+    "sky": "#072a42",
+    "fog": [
+     4,
+     55
+    ],
+    "hemi": 0.9,
+    "ambient": 0.35,
+    "sun": 0.5,
+    "sun_color": "#3f6f9a",
+    "sun_dir": [
+     0,
+     60,
+     0
+    ],
+    "cloud": "#04121f",
+    "ocean": "#04121f",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s8",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#010a14",
+    "sky": "#072a42",
+    "fog": [
+     4,
+     55
+    ],
+    "hemi": 0.9,
+    "ambient": 0.35,
+    "sun": 0.5,
+    "sun_color": "#3f6f9a",
+    "sun_dir": [
+     0,
+     60,
+     0
+    ],
+    "cloud": "#04121f",
+    "ocean": "#04121f",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s9",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#151d30",
+    "fog": [
+     30,
+     170
+    ],
+    "hemi": 0.55,
+    "ambient": 0.25,
+    "sun": 1.4,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#4a546e",
+    "ocean": "#0c1b2b",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s9",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#151d30",
+    "fog": [
+     30,
+     170
+    ],
+    "hemi": 0.55,
+    "ambient": 0.25,
+    "sun": 1.4,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#4a546e",
+    "ocean": "#0c1b2b",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s10",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#22325c",
+    "sky": "#f2a66a",
+    "fog": [
+     90,
+     360
+    ],
+    "hemi": 1.0,
+    "ambient": 0.42,
+    "sun": 2.3,
+    "sun_color": "#ffc48a",
+    "sun_dir": [
+     80,
+     14,
+     -25
+    ],
+    "cloud": "#f7d6c8",
+    "ocean": "#2c4a66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s10",
+     "t": 0
+    }
+   }
+  ],
+  "lightning": [
+   {
+    "from": {
+     "scene": "s2",
+     "t": 0.35
+    },
+    "to": {
+     "scene": "s6",
+     "t": 0.75
+    },
+    "rate": 0.9,
+    "seed": 3,
+    "strength": 1.0
+   },
+   {
+    "from": {
+     "scene": "s9",
+     "t": 0
+    },
+    "to": {
+     "scene": "s10",
+     "t": 0
+    },
+    "rate": 1.2,
+    "seed": 9,
+    "strength": 1.0
+   }
+  ],
+  "objects": [
+   {
+    "type": "ocean",
+    "y": 0,
+    "amp": 0.85
+   },
+   {
+    "type": "clouds",
+    "seed": 4,
+    "layers": [
+     {
+      "y": [
+       35,
+       66
+      ],
+      "count": 120,
+      "size": [
+       12,
+       24
+      ]
+     },
+     {
+      "y": [
+       88,
+       150
+      ],
+      "count": 22,
+      "size": [
+       6,
+       13
+      ]
+     },
+     {
+      "y": [
+       84,
+       128
+      ],
+      "count": 70,
+      "size": [
+       7,
+       15
+      ],
+      "from": {
+       "scene": "s2",
+       "t": 0.8
+      },
+      "to": {
+       "scene": "s6",
+       "t": 0.15
+      }
+     }
+    ]
+   },
+   {
+    "type": "clouds",
+    "seed": 12,
+    "layers": [
+     {
+      "y": [
+       84,
+       126
+      ],
+      "count": 70,
+      "size": [
+       7,
+       15
+      ],
+      "from": {
+       "scene": "s9",
+       "t": 0
+      },
+      "to": {
+       "scene": "s10",
+       "t": 0,
+       "offset": -0.01
+      },
+      "fade": 0.01
+     }
+    ]
+   },
+   {
+    "type": "cumulus",
+    "pos": [
+     640,
+     18,
+     26
+    ],
+    "h": 200,
+    "r": 42,
+    "seed": 2,
+    "hide": {
+     "at": {
+      "scene": "s3",
+      "t": 0
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "cumulus",
+    "pos": [
+     700,
+     12,
+     -34
+    ],
+    "h": 180,
+    "r": 38,
+    "seed": 5,
+    "hide": {
+     "at": {
+      "scene": "s3",
+      "t": 0
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "cumulus",
+    "pos": [
+     780,
+     20,
+     6
+    ],
+    "h": 220,
+    "r": 46,
+    "seed": 8,
+    "hide": {
+     "at": {
+      "scene": "s3",
+      "t": 0
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "airliner",
+    "id": "jet",
+    "ice": {
+     "from": {
+      "scene": "s3",
+      "word": "block"
+     },
+     "to": {
+      "scene": "s3",
+      "word": "block",
+      "offset": 2.6
+     }
+    },
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       0,
+       100,
+       0
+      ],
+      "rot": [
+       2,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "word": "pulls"
+      },
+      "pos": [
+       756,
+       100,
+       0
+      ],
+      "rot": [
+       2,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "word": "climbs,"
+      },
+      "pos": [
+       793,
+       106,
+       0
+      ],
+      "rot": [
+       12,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0
+      },
+      "pos": [
+       828,
+       116,
+       0
+      ],
+      "rot": [
+       15,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "word": "quiet."
+      },
+      "pos": [
+       870,
+       112,
+       0
+      ],
+      "rot": [
+       16,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "word": "Pushing"
+      },
+      "pos": [
+       874,
+       111,
+       0
+      ],
+      "rot": [
+       15,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "word": "down,"
+      },
+      "pos": [
+       883,
+       109,
+       0
+      ],
+      "rot": [
+       4,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "word": "move,"
+      },
+      "pos": [
+       892,
+       107,
+       0
+      ],
+      "rot": [
+       6,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "word": "back."
+      },
+      "pos": [
+       914,
+       103,
+       0
+      ],
+      "rot": [
+       15,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s6",
+       "t": 0
+      },
+      "pos": [
+       921,
+       100,
+       0
+      ],
+      "rot": [
+       15,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s6",
+       "word": "falls,"
+      },
+      "pos": [
+       963,
+       18,
+       0
+      ],
+      "rot": [
+       14,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s6",
+       "word": "hits"
+      },
+      "pos": [
+       973,
+       0,
+       0
+      ],
+      "rot": [
+       14,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ],
+    "wobble": [
+     {
+      "from": {
+       "scene": "s2",
+       "t": 0.6
+      },
+      "to": {
+       "scene": "s4",
+       "t": 0.3
+      },
+      "roll": 3,
+      "pitch": 0.6,
+      "freq": 0.7
+     },
+     {
+      "from": {
+       "scene": "s4",
+       "t": 0.9
+      },
+      "to": {
+       "scene": "s6",
+       "word": "hits"
+      },
+      "roll": 13,
+      "pitch": 2.5,
+      "freq": 0.28
+     }
+    ],
+    "hide": {
+     "at": {
+      "scene": "s6",
+      "word": "hits",
+      "offset": 0.05
+     },
+     "op": "sink",
+     "dur": 0.5,
+     "depth": 6
+    }
+   },
+   {
+    "type": "streaks",
+    "follow": "jet",
+    "from": {
+     "scene": "s2",
+     "t": 0.8
+    },
+    "to": {
+     "scene": "s6",
+     "t": 0.4
+    },
+    "count": 340,
+    "box": [
+     14,
+     9,
+     14
+    ],
+    "dir": [
+     -1,
+     -0.22,
+     0.05
+    ],
+    "speed": 70,
+    "len": 1.7,
+    "opacity": 0.5
+   },
+   {
+    "type": "splash",
+    "pos": [
+     973,
+     0,
+     0
+    ],
+    "at": {
+     "scene": "s6",
+     "word": "hits"
+    },
+    "size": 1.5
+   },
+   {
+    "type": "debris",
+    "pos": [
+     973,
+     0,
+     0
+    ],
+    "count": 30,
+    "spread": 16,
+    "seed": 21,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s7",
+      "t": 0
+     },
+     "to": {
+      "scene": "s7",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "ship",
+    "pos": [
+     994,
+     0,
+     20
+    ],
+    "length": 16,
+    "heading": 75,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s7",
+      "t": 0
+     },
+     "to": {
+      "scene": "s7",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "seabed",
+    "pos": [
+     973,
+     -80,
+     0
+    ],
+    "size": 170,
+    "seed": 4,
+    "clear": 9
+   },
+   {
+    "type": "wreck",
+    "pos": [
+     973,
+     -79.85,
+     0
+    ],
+    "seed": 8
+   },
+   {
+    "type": "recorder",
+    "pos": [
+     975.6,
+     -79.82,
+     1.6
+    ],
+    "rot": 35,
+    "scale": 1.3
+   },
+   {
+    "type": "auv",
+    "id": "auv",
+    "light": 55,
+    "track": [
+     {
+      "at": {
+       "scene": "s8",
+       "t": 0.1
+      },
+      "pos": [
+       957,
+       -76.3,
+       -7
+      ],
+      "rot": [
+       -6,
+       55,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "word": "four"
+      },
+      "pos": [
+       968,
+       -77.0,
+       -2.6
+      ],
+      "rot": [
+       -8,
+       52,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s9",
+       "t": 0,
+       "offset": -0.05
+      },
+      "pos": [
+       972.6,
+       -77.6,
+       -0.4
+      ],
+      "rot": [
+       -12,
+       50,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "streaks",
+    "from": {
+     "scene": "s8",
+     "t": 0
+    },
+    "to": {
+     "scene": "s9",
+     "t": 0,
+     "offset": -0.6
+    },
+    "count": 420,
+    "box": [
+     6,
+     4,
+     6
+    ],
+    "dir": [
+     0.15,
+     1,
+     0.08
+    ],
+    "speed": 0.5,
+    "len": 0.06,
+    "opacity": 0.75,
+    "color": "#b9cfdc"
+   },
+   {
+    "type": "airliner",
+    "id": "jet2",
+    "ice": {
+     "from": {
+      "scene": "s9",
+      "t": 0.05
+     },
+     "to": {
+      "scene": "s9",
+      "word": "frozen"
+     }
+    },
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s9",
+      "t": 0
+     },
+     "to": {
+      "scene": "s9",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s10",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s9",
+       "t": 0
+      },
+      "pos": [
+       3000,
+       100,
+       0
+      ],
+      "rot": [
+       2,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s10",
+       "t": 0
+      },
+      "pos": [
+       3174,
+       100,
+       0
+      ],
+      "rot": [
+       3,
+       90,
+       0
+      ]
+     }
+    ],
+    "wobble": [
+     {
+      "from": {
+       "scene": "s9",
+       "t": 0
+      },
+      "to": {
+       "scene": "s10",
+       "t": 0
+      },
+      "roll": 4,
+      "pitch": 1,
+      "freq": 0.7
+     }
+    ]
+   },
+   {
+    "type": "streaks",
+    "follow": "jet2",
+    "from": {
+     "scene": "s9",
+     "t": 0
+    },
+    "to": {
+     "scene": "s10",
+     "t": 0,
+     "offset": -0.6
+    },
+    "count": 340,
+    "box": [
+     14,
+     9,
+     14
+    ],
+    "dir": [
+     -1,
+     -0.22,
+     0.05
+    ],
+    "speed": 70,
+    "len": 1.7,
+    "opacity": 0.5
+   },
+   {
+    "type": "airliner",
+    "id": "jet3",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s10",
+      "t": 0
+     },
+     "to": {
+      "scene": "s10",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s10",
+       "t": 0
+      },
+      "pos": [
+       6000,
+       100,
+       0
+      ],
+      "rot": [
+       2,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s12",
+       "t": 1.0,
+       "offset": 0.5
+      },
+      "pos": [
+       6410,
+       101,
+       0
+      ],
+      "rot": [
+       2,
+       90,
+       0
+      ]
+     }
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "at": 0,
+    "follow": "jet",
+    "offset": [
+     6,
+     2.2,
+     -11
+    ],
+    "look_offset": [
+     0,
+     0.3,
+     2
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "s1",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "jet",
+    "offset": [
+     15,
+     2.4,
+     3
+    ],
+    "look_offset": [
+     0,
+     -0.3,
+     0
+    ],
+    "fov": 38
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 0
+    },
+    "follow": "jet",
+    "offset": [
+     -1.5,
+     2.4,
+     -14
+    ],
+    "look_offset": [
+     0,
+     6,
+     60
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "jet",
+    "offset": [
+     -1.0,
+     1.5,
+     -10.5
+    ],
+    "look_offset": [
+     0,
+     2.5,
+     40
+    ],
+    "fov": 46,
+    "shake": 0.06
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 0
+    },
+    "follow": "jet",
+    "offset": [
+     1.75,
+     0.14,
+     1.9
+    ],
+    "look_offset": [
+     0.29,
+     -0.07,
+     2.66
+    ],
+    "fov": 36,
+    "shake": 0.015
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "word": "haywire,",
+     "offset": -0.35
+    },
+    "follow": "jet",
+    "offset": [
+     1.5,
+     0.11,
+     2.15
+    ],
+    "look_offset": [
+     0.29,
+     -0.07,
+     2.66
+    ],
+    "fov": 30,
+    "shake": 0.02
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "word": "haywire,",
+     "offset": -0.33
+    },
+    "follow": "jet",
+    "offset": [
+     9,
+     1.6,
+     12
+    ],
+    "look_offset": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40,
+    "shake": 0.14
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "jet",
+    "offset": [
+     11,
+     1.2,
+     9
+    ],
+    "look_offset": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40,
+    "shake": 0.14
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 0
+    },
+    "follow": "jet",
+    "offset": [
+     18,
+     0.6,
+     1
+    ],
+    "look_offset": [
+     0,
+     -1.3,
+     0.5
+    ],
+    "fov": 31,
+    "shake": 0.05
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "jet",
+    "offset": [
+     19,
+     0,
+     -1
+    ],
+    "look_offset": [
+     0,
+     -1.3,
+     0.5
+    ],
+    "fov": 31,
+    "shake": 0.06
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 0
+    },
+    "follow": "jet",
+    "offset": [
+     9,
+     -5,
+     11
+    ],
+    "look_offset": [
+     0,
+     1.2,
+     0
+    ],
+    "fov": 40,
+    "shake": 0.12
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "word": "quiet."
+    },
+    "follow": "jet",
+    "offset": [
+     13,
+     -3,
+     5
+    ],
+    "look_offset": [
+     0,
+     0.6,
+     0
+    ],
+    "fov": 38,
+    "shake": 0.12
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "jet",
+    "offset": [
+     17,
+     0,
+     -2
+    ],
+    "look_offset": [
+     0,
+     -0.4,
+     0
+    ],
+    "fov": 36,
+    "shake": 0.1
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 0
+    },
+    "follow": "jet",
+    "offset": [
+     24,
+     3,
+     -6
+    ],
+    "look_offset": [
+     0,
+     -3,
+     2
+    ],
+    "fov": 42,
+    "shake": 0.1
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "word": "falls,",
+     "offset": -0.5
+    },
+    "follow": "jet",
+    "offset": [
+     22,
+     4,
+     -4
+    ],
+    "look_offset": [
+     0,
+     -3,
+     2
+    ],
+    "fov": 44,
+    "shake": 0.1
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "word": "hits",
+     "offset": -0.3
+    },
+    "pos": [
+     962,
+     8,
+     -30
+    ],
+    "look": [
+     973,
+     2,
+     0
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     964,
+     6.5,
+     -27
+    ],
+    "look": [
+     973,
+     0.8,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 0
+    },
+    "pos": [
+     948,
+     9,
+     -48
+    ],
+    "look": [
+     978,
+     0.5,
+     -6
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     953,
+     7,
+     -44
+    ],
+    "look": [
+     980,
+     0.5,
+     -6
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 0
+    },
+    "pos": [
+     962,
+     -45,
+     -16
+    ],
+    "look": [
+     972,
+     -80,
+     0
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "word": "four"
+    },
+    "pos": [
+     966,
+     -75.6,
+     -9
+    ],
+    "look": [
+     973,
+     -79.4,
+     0
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "word": "recorders",
+     "offset": -0.4
+    },
+    "pos": [
+     972.6,
+     -78.1,
+     -2.4
+    ],
+    "look": [
+     975.6,
+     -79.6,
+     1.6
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     973.6,
+     -78.7,
+     -1.0
+    ],
+    "look": [
+     975.6,
+     -79.7,
+     1.6
+    ],
+    "fov": 34
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "t": 0
+    },
+    "follow": "jet2",
+    "offset": [
+     -3,
+     2.4,
+     -12
+    ],
+    "look_offset": [
+     0,
+     0.4,
+     4
+    ],
+    "fov": 42,
+    "shake": 0.1
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "jet2",
+    "offset": [
+     -4.5,
+     1.6,
+     -9
+    ],
+    "look_offset": [
+     0,
+     0.2,
+     2
+    ],
+    "fov": 42,
+    "shake": 0.1
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "t": 0
+    },
+    "follow": "jet3",
+    "offset": [
+     1.8,
+     0.16,
+     1.95
+    ],
+    "look_offset": [
+     0.29,
+     -0.07,
+     2.66
+    ],
+    "fov": 32
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "word": "train",
+     "offset": -0.6
+    },
+    "follow": "jet3",
+    "offset": [
+     1.6,
+     0.14,
+     2.1
+    ],
+    "look_offset": [
+     0.29,
+     -0.07,
+     2.66
+    ],
+    "fov": 30
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "jet3",
+    "offset": [
+     15,
+     2.5,
+     -1
+    ],
+    "look_offset": [
+     0,
+     -0.6,
+     0.8
+    ],
+    "fov": 36
+   },
+   {
+    "at": {
+     "scene": "s11",
+     "t": 0.55
+    },
+    "follow": "jet3",
+    "offset": [
+     3,
+     4,
+     -18
+    ],
+    "look_offset": [
+     0,
+     0.5,
+     4
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s11",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "jet3",
+    "offset": [
+     1.5,
+     3,
+     -22
+    ],
+    "look_offset": [
+     0,
+     1,
+     10
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "s12",
+     "t": 0
+    },
+    "pos": [
+     6338,
+     103,
+     6
+    ],
+    "look": [
+     6420,
+     100,
+     -4
+    ],
+    "fov": 40
+   }
+  ]
+ },
+ "title": "Air France 447: what really happened",
+ "scenes": [
+  {
+   "narration": "In 2009, a jet carrying 228 people vanished over the Atlantic. The answer was hiding four kilometres under the sea.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Air France 447",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "text",
+     "text": "1 June 2009",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2
+    }
+   ],
+   "id": "s1"
+  },
+  {
+   "narration": "Air France 447, Rio to Paris. After midnight it flies into a wall of storms, and the captain goes for his rest break.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Rio de Janeiro to Paris",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.0
+    }
+   ],
+   "id": "s2"
+  },
+  {
+   "narration": "Ice crystals block the pitot tubes, the probes that measure speed. The readings go haywire, and the autopilot switches off.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Pitot tubes icing up",
+     "x": 0.5,
+     "y": 0.15,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "pitot",
+     "until": 5.0
+    },
+    {
+     "type": "text",
+     "text": "AUTOPILOT OFF",
+     "x": 0.5,
+     "y": 0.15,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "autopilot"
+    }
+   ],
+   "id": "s3"
+  },
+  {
+   "narration": "The co-pilot takes manual control and pulls the nose up. The jet climbs, loses speed, and stalls.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "counter",
+     "from": 35000,
+     "to": 38000,
+     "suffix": " ft",
+     "grouping": "western",
+     "count_dur": 1.8,
+     "x": 0.5,
+     "y": 0.23,
+     "size": 0.05,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "climbs,"
+    },
+    {
+     "type": "text",
+     "text": "STALL",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "stalls."
+    }
+   ],
+   "id": "s4"
+  },
+  {
+   "narration": "The stall alarm blares. But when the plane got too slow, the computer ignored its own data and went quiet. Pushing the nose down, the right move, made the alarm come back.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "STALL!  STALL!",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "blares.",
+     "until": 5.6
+    },
+    {
+     "type": "text",
+     "text": "Too slow: the alarm goes silent",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "quiet.",
+     "until": 8.0
+    },
+    {
+     "type": "text",
+     "text": "Nose down: the alarm returns",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "down,"
+    }
+   ],
+   "id": "s5"
+  },
+  {
+   "narration": "The captain rushes back, but it is too late. For three and a half minutes the jet falls, nose up, and hits the ocean. No one survives.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "3 min 30 s",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "three",
+     "until": 6.4
+    },
+    {
+     "type": "counter",
+     "from": 38000,
+     "to": 0,
+     "suffix": " ft",
+     "grouping": "western",
+     "count_dur": 6.3,
+     "x": 0.5,
+     "y": 0.23,
+     "size": 0.05,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 6.6
+    },
+    {
+     "type": "text",
+     "text": "228 lives lost",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "survives."
+    }
+   ],
+   "id": "s6"
+  },
+  {
+   "narration": "Wreckage is found within days. The black boxes are not.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "June 2009: the search",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2
+    }
+   ],
+   "id": "s7"
+  },
+  {
+   "narration": "Then in April 2011, a sonar search finds the wreck almost four kilometres down. Both recorders still work.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "April 2011",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 4.0
+    },
+    {
+     "type": "text",
+     "text": "3,980 m deep",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "four"
+    },
+    {
+     "type": "text",
+     "text": "Flight recorders recovered",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "recorders"
+    }
+   ],
+   "id": "s8"
+  },
+  {
+   "narration": "The verdict: frozen sensors, a confusing alarm, and pilots never trained to fly by hand up there.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "1. Frozen sensors",
+     "x": 0.5,
+     "y": 0.12,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "frozen"
+    },
+    {
+     "type": "text",
+     "text": "2. A confusing alarm",
+     "x": 0.5,
+     "y": 0.18,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "confusing"
+    },
+    {
+     "type": "text",
+     "text": "3. No training for this",
+     "x": 0.5,
+     "y": 0.24,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "pilots"
+    }
+   ],
+   "id": "s9"
+  },
+  {
+   "narration": "The sensors were replaced, and pilots now train for exactly this kind of stall.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "New pitot tubes",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "sensors",
+     "until": 2.6
+    },
+    {
+     "type": "text",
+     "text": "New stall training",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "train"
+    }
+   ],
+   "id": "s10"
+  },
+  {
+   "narration": "And in May 2026, a Paris court found Airbus and Air France guilty of manslaughter. Airbus plans to appeal.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Guilty, 21 May 2026",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "guilty"
+    },
+    {
+     "type": "text",
+     "text": "Airbus to appeal",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "appeal."
+    }
+   ],
+   "id": "s11"
+  },
+  {
+   "narration": "Follow for more true stories.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [],
+   "id": "s12"
+  }
+ ]
+}
