@@ -1,0 +1,331 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.08,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "footage": "auto",
+ "transition": "fade",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.1,
+  "seed": 448
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.6,
+  "size": 0.084,
+  "max_words": 2,
+  "highlight": "#ffd54a",
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "title": "Air France 447: what really happened",
+ "scenes": [
+  {
+   "narration": "In 2009, a jet carrying 228 people vanished over the Atlantic. The answer was hiding four kilometres under the sea.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:142647",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Air France 447",
+     "x": 0.5,
+     "y": 0.16,
+     "size": 0.052,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "text",
+     "text": "1 June 2009",
+     "x": 0.5,
+     "y": 0.23,
+     "size": 0.052,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2
+    }
+   ],
+   "id": "ch01_01"
+  },
+  {
+   "narration": "Air France 447, Rio to Paris. After midnight it flies into a wall of storms, and the captain goes for his rest break.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:16160",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_02"
+  },
+  {
+   "narration": "Ice crystals block the pitot tubes, the probes that measure speed. The readings go haywire, and the autopilot switches off.",
+   "background": {
+    "type": "footage",
+    "image_id": 4765504,
+    "move": "in",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Pitot tubes iced",
+     "x": 0.5,
+     "y": 0.16,
+     "size": 0.052,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "pitot"
+    }
+   ],
+   "id": "ch01_03"
+  },
+  {
+   "narration": "The co-pilot takes manual control and pulls the nose up. The jet climbs, loses speed, and stalls.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:51016",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "STALL",
+     "x": 0.5,
+     "y": 0.16,
+     "size": 0.052,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "stalls."
+    }
+   ],
+   "id": "ch01_04"
+  },
+  {
+   "narration": "The stall alarm blares. But when the plane got too slow, the computer ignored its own data and went quiet. Pushing the nose down, the right move, made the alarm come back.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:242",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_05"
+  },
+  {
+   "narration": "The captain rushes back, but it is too late. For three and a half minutes the jet falls, nose up, and hits the ocean. No one survives.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:212057",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "3 min 30 s",
+     "x": 0.5,
+     "y": 0.16,
+     "size": 0.052,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "three"
+    }
+   ],
+   "id": "ch01_06"
+  },
+  {
+   "narration": "Wreckage is found within days. The black boxes are not.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:170300",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_07"
+  },
+  {
+   "narration": "Then in April 2011, a sonar search finds the wreck almost four kilometres down. Both recorders still work.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:13823",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "3,980 m deep",
+     "x": 0.5,
+     "y": 0.16,
+     "size": 0.052,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "four"
+    }
+   ],
+   "id": "ch01_08"
+  },
+  {
+   "narration": "The verdict: frozen sensors, a confusing alarm, and pilots never trained to fly by hand up there.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:34258",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_09"
+  },
+  {
+   "narration": "The sensors were replaced, and pilots now train for exactly this kind of stall.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:51021",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_10"
+  },
+  {
+   "narration": "And in May 2026, a Paris court found Airbus and Air France guilty of manslaughter. Airbus plans to appeal.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:162047",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Guilty, 21 May 2026",
+     "x": 0.5,
+     "y": 0.16,
+     "size": 0.052,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "guilty"
+    }
+   ],
+   "id": "ch01_11"
+  },
+  {
+   "narration": "Follow for more true stories.",
+   "background": {
+    "type": "footage",
+    "video": "pixabay:88270",
+    "dim": 0.25,
+    "fallback": {
+     "type": "gradient",
+     "colors": [
+      "#141b26",
+      "#06090e"
+     ]
+    }
+   },
+   "elements": [],
+   "id": "ch01_12"
+  }
+ ]
+}
