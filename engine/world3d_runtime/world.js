@@ -1935,6 +1935,143 @@ KIT.auv = (o) => {
   return g;
 };
 
+// ---------------- gulf kit: tankers, sea mines, missiles, explosions (shipping-lane stories)
+// tanker: bow at +z like the airliner (track yaw 90 = heading +x); with no track it sits at o.pos and rides the waves.
+// o.fire {at, z, dur}: a fire with a smoke column at local z from `at` for `dur` seconds.
+KIT.tanker = (o) => {
+  const g = new THREE.Group(), L = num(o.length, 24), W = L * 0.16, D = L * 0.055;
+  const hullHex = o.color || "#1d242c", deckHex = o.deck || "#8a2f2a";
+  const plan = [[-W / 2, -L / 2], [W / 2, -L / 2], [W / 2, L * 0.3], [W * 0.18, L / 2], [-W * 0.18, L / 2], [-W / 2, L * 0.3]];
+  const hull = new THREE.Mesh(new THREE.ExtrudeGeometry(planShape(plan), { depth: D, bevelEnabled: false }), mat(hullHex));
+  hull.rotation.x = -Math.PI / 2; hull.position.y = -D * 0.55; g.add(hull);
+  const band = new THREE.Mesh(new THREE.ExtrudeGeometry(planShape(plan.map(([x, y]) => [x * 1.01, y * 1.004])), { depth: D * 0.22, bevelEnabled: false }), mat("#b23a2e"));
+  band.rotation.x = -Math.PI / 2; band.position.y = -D * 0.45; g.add(band);
+  const deck = new THREE.Mesh(new THREE.ExtrudeGeometry(planShape(plan.map(([x, y]) => [x * 0.985, y * 0.995])), { depth: 0.02, bevelEnabled: false }), mat(deckHex));
+  deck.rotation.x = -Math.PI / 2; deck.position.y = D * 0.46; g.add(deck);
+  const y0 = D * 0.47;
+  // cargo pipework along the centre line, a walkway, tank hatches
+  for (const [x, c] of [[0, "#e8e2d0"], [W * 0.12, "#d9b24a"], [-W * 0.12, "#d9b24a"]]) {
+    const p = new THREE.Mesh(new THREE.CylinderGeometry(W * 0.035, W * 0.035, L * 0.68, 8), mat(c));
+    p.rotation.x = Math.PI / 2; p.position.set(x, y0 + W * 0.05, L * 0.03); g.add(p);
+  }
+  g.add(box(W * 0.5, W * 0.015, L * 0.68, mat("#cfd3cf"), 0, y0 + W * 0.095, L * 0.03));
+  for (let k = 0; k < 6; k++) for (const sx of [-1, 1]) g.add(box(W * 0.18, W * 0.07, W * 0.18, mat("#c9c3b0"), sx * W * 0.3, y0 + W * 0.03, -L * 0.26 + k * L * 0.115));
+  // the bridge aft, funnel, mast at the bow
+  g.add(box(W * 0.86, W * 0.42, L * 0.1, mat("#f0efe9"), 0, y0 + W * 0.21, -L * 0.37));
+  g.add(box(W * 0.9, W * 0.12, L * 0.05, mat("#f0efe9"), 0, y0 + W * 0.48, -L * 0.36));
+  g.add(box(W * 0.92, W * 0.03, L * 0.052, mat("#243040"), 0, y0 + W * 0.455, -L * 0.36));
+  const fun = new THREE.Mesh(new THREE.CylinderGeometry(W * 0.09, W * 0.1, W * 0.3, 10), mat("#b23a2e"));
+  fun.position.set(0, y0 + W * 0.6, -L * 0.43); g.add(fun);
+  g.add(box(W * 0.03, W * 0.5, W * 0.03, mat("#d8d8d4"), 0, y0 + W * 0.25, L * 0.44));
+  for (const [c, x] of [["#ff3b3b", -W * 0.46], ["#37ff7a", W * 0.46]]) { const s = glow(c, W * 0.22); s.position.set(x, y0 + W * 0.5, -L * 0.34); g.add(s); }
+  const bob = !Array.isArray(o.track);
+  const p0 = vec(o.pos);
+  if (bob) { g.userData.abs = true; g.rotation.y = num(o.heading, 0) * DEG; }
+  const fire = o.fire ? makeFire(num(o.fire.at, 0), num(o.fire.dur, 1e9), num(o.fire.size, 1) * W * 0.5, num(o.fire.z, 0.1 * L), y0) : null;
+  if (fire) g.add(fire.group);
+  const ph = num(o.seed, 1) * 1.7;
+  g.userData.tick = (t) => {
+    if (bob) g.position.set(p0[0], waveH(p0[0], p0[2], t) * 0.35 + num(o.y, 0), p0[2]);
+    g.rotation.x = Math.sin(t * 0.5 + ph) * 0.012; g.rotation.z = Math.sin(t * 0.42 + ph + 1) * 0.02;
+    if (fire) fire.tick(t);
+  };
+  g.traverse((m) => { if (m.isMesh) m.castShadow = false; });
+  return g;
+};
+
+// a fire with smoke: flickering flames and a rising column of puffs that cycle while it burns
+function makeFire(at, dur, size, z, y) {
+  const group = new THREE.Group();
+  const r = rng(77), N = 36;
+  const smoke = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 1), new THREE.MeshLambertMaterial({ color: "#2a2a2c", transparent: true, opacity: 0.85 }), N);
+  smoke.frustumCulled = false; group.add(smoke);
+  const puffs = []; for (let k = 0; k < N; k++) puffs.push({ ph: (k / N) * 7, dx: (r() - 0.5) * 0.8, dz: (r() - 0.5) * 0.8, s: 0.6 + r() * 0.7, w: r() * 6 });
+  const flames = []; for (let k = 0; k < 7; k++) { const f = glow(k % 2 ? "#ff9a2a" : "#ffd36a", size * (1.6 + r())); flames.push({ f, ph: r() * 6, dx: (r() - 0.5) * size * 1.4, dz: (r() - 0.5) * size * 1.4 }); group.add(f); }
+  const light = new THREE.PointLight("#ff8a2a", 0, size * 40, 1.5); light.position.set(0, y + size, z); group.add(light);
+  const M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3(), P = new THREE.Vector3();
+  const tick = (t) => {
+    const d = t - at, on = d >= 0 && d < dur, fade = on ? clamp(d / 0.5) * clamp((dur - d) / 2) : 0;
+    group.visible = d >= 0 && d < dur + 7;
+    if (!group.visible) return;
+    const fl = 0.75 + 0.25 * Math.sin(t * 23) * Math.sin(t * 7.3);
+    flames.forEach((x, k) => { x.f.visible = on; x.f.position.set(x.dx, y + size * (0.6 + 0.5 * Math.abs(Math.sin(t * 9 + x.ph))), z + x.dz); x.f.material.opacity = fade * (0.55 + 0.45 * Math.sin(t * 17 + x.ph)); });
+    light.intensity = fade * fl * size * size * 160;
+    const life = 7;
+    puffs.forEach((p, k) => {
+      const age = on ? (d + p.ph) % life : Math.max(0, d - dur + ((p.ph) % life));
+      const alive = on || age < life;
+      const u = age / life, s = alive ? size * p.s * (0.5 + u * 3.2) : 1e-3;
+      P.set(p.dx * size * (1 + u * 4) + Math.sin(t * 0.6 + p.w) * u * size, y + size * (0.4 + u * 22), z + p.dz * size * (1 + u * 4) - u * size * 6);
+      S.set(s, s, s); M.compose(P, Q, S); smoke.setMatrixAt(k, M);
+    });
+    smoke.instanceMatrix.needsUpdate = true;
+    smoke.material.opacity = 0.85 * (on ? 1 : clamp(1 - (d - dur) / 7));
+  };
+  return { group, tick };
+}
+
+// mine: a spiked sphere riding at the surface (o.depth > 0 sinks it below)
+KIT.mine = (o) => {
+  const g = new THREE.Group(), R = num(o.r, 0.55);
+  const m = new THREE.Mesh(new THREE.SphereGeometry(R, 14, 10), new THREE.MeshPhongMaterial({ color: "#6b4f35", shininess: 30 })); g.add(m);
+  for (const d of [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1], [0.7, 0.7, 0], [-0.7, 0.7, 0], [0, 0.7, 0.7], [0, 0.7, -0.7]]) {
+    const c = new THREE.Mesh(new THREE.ConeGeometry(R * 0.13, R * 0.5, 6), mat("#7a6048"));
+    c.position.set(d[0] * R, d[1] * R, d[2] * R); c.lookAt(d[0] * 2 * R, d[1] * 2 * R, d[2] * 2 * R); c.rotateX(Math.PI / 2); g.add(c);
+  }
+  const p0 = vec(o.pos), ph = num(o.seed, 2) * 2.1;
+  g.userData.abs = true;
+  g.userData.tick = (t) => { g.position.set(p0[0], waveH(p0[0], p0[2], t) * 0.5 - num(o.depth, 0) + R * 0.35, p0[2]); g.rotation.y = t * 0.15 + ph; g.rotation.x = Math.sin(t * 0.8 + ph) * 0.1; };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
+// missile: nose at +z, a flame and a fading exhaust trail (moves along o.track)
+KIT.missile = (o) => {
+  const g = new THREE.Group(), L = num(o.length, 2.2), R = L * 0.07;
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(R, R, L * 0.8, 10), mat(o.color || "#d8d8d8")); body.rotation.x = Math.PI / 2; g.add(body);
+  const nose = new THREE.Mesh(new THREE.ConeGeometry(R, L * 0.2, 10), mat("#9a9a9a")); nose.rotation.x = Math.PI / 2; nose.position.z = L * 0.5; g.add(nose);
+  for (const a of [0, 1, 2, 3]) { const f = box(R * 0.1, R * 2.6, L * 0.14, mat("#777"), 0, 0, -L * 0.33); f.rotation.z = a * Math.PI / 2; g.add(f); }
+  const flame = glow("#ffb347", L * 0.9); flame.position.z = -L * 0.48; g.add(flame);
+  const trail = []; for (let k = 0; k < 18; k++) { const s = glow("#cfcfcf", L * (0.5 + k * 0.12)); s.material.blending = THREE.NormalBlending; s.material.opacity = 0.35 * (1 - k / 18); s.position.z = -L * (0.6 + k * 0.9); g.add(s); trail.push(s); }
+  g.userData.tick = (t) => { flame.material.opacity = 0.7 + 0.3 * Math.sin(t * 40); };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
+// blast: a fireball, a shock ring, flying sparks and a smoke column at o.pos from o.at; o.burn keeps a fire going
+KIT.blast = (o) => {
+  const at = num(o.at, 0), sz = num(o.size, 1), r = rng(num(o.seed, 5));
+  const g = new THREE.Group(); g.userData.abs = true;
+  const p0 = vec(o.pos); g.position.set(p0[0], p0[1], p0[2]);
+  const ball = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 2), new THREE.MeshBasicMaterial({ color: "#ffb24a", transparent: true, opacity: 1 })); g.add(ball);
+  const core = glow("#fff2c0", 1); g.add(core);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.92, 1, 40), new THREE.MeshBasicMaterial({ color: "#ffd9a0", transparent: true, opacity: 0.7, side: THREE.DoubleSide }));
+  ring.rotation.x = -Math.PI / 2; ring.position.y = 0.3; g.add(ring);
+  const N = 160, sparks = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 0), new THREE.MeshBasicMaterial({ color: "#ff9a3a" }), N);
+  sparks.frustumCulled = false; g.add(sparks);
+  const parts = []; for (let k = 0; k < N; k++) { const a = r() * 6.283, up = r(); parts.push({ vx: Math.cos(a) * (3 + r() * 14) * sz, vz: Math.sin(a) * (3 + r() * 14) * sz, vy: (8 + up * up * 30) * sz, s: (0.06 + r() * 0.2) * sz }); }
+  const fire = makeFire(at, num(o.burn, 0), sz * 1.6, 0, 0.2); g.add(fire.group);
+  const light = new THREE.PointLight("#ffb060", 0, sz * 90, 1.4); light.position.y = sz * 2; g.add(light);
+  const M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3(), P = new THREE.Vector3();
+  g.userData.tick = (t) => {
+    const d = t - at;
+    const show = d >= 0;
+    ball.visible = core.visible = ring.visible = sparks.visible = show && d < 4;
+    light.intensity = show ? sz * sz * 2600 * Math.exp(-d * 2.2) : 0;
+    fire.tick(t);
+    if (!ball.visible) return;
+    const bs = sz * (1.2 + 7 * (1 - Math.exp(-d * 3.2)));
+    ball.scale.setScalar(bs); ball.material.opacity = clamp(1 - d / 1.4); ball.material.color.setHSL(0.07 - d * 0.03, 1, 0.6 - d * 0.2);
+    core.scale.setScalar(bs * 3.2); core.material.opacity = clamp(1 - d / 0.6);
+    ring.scale.setScalar(sz * (2 + d * 26)); ring.material.opacity = 0.7 * clamp(1 - d / 1.2);
+    parts.forEach((p, k) => { const y = p.vy * d - 12 * d * d, s = y < -1 ? 1e-3 : p.s * clamp(1.5 - d / 2); P.set(p.vx * d, y, p.vz * d); S.set(s, s, s); M.compose(P, Q, S); sparks.setMatrixAt(k, M); });
+    sparks.instanceMatrix.needsUpdate = true;
+  };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+for (const k of ["tanker", "mine", "missile", "blast"]) FLIGHT_KIT.add(k);
+
 // ------------------------------------------------------------------ camera
 function makeCamera(keys, W, H) {
   const cam = new THREE.PerspectiveCamera(35, W / H, 0.1, 400);

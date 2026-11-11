@@ -1,0 +1,3685 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.08,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "footage": "off",
+ "transition": "none",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.11,
+  "seed": 35
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.62,
+  "size": 0.08,
+  "max_words": 2,
+  "highlight": "#ffd54a",
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "world3d": {
+  "style": "night",
+  "terrain": false,
+  "env": [
+   {
+    "sky_top": "#02050c",
+    "sky": "#17223a",
+    "fog": [
+     140,
+     900
+    ],
+    "hemi": 0.6,
+    "ambient": 0.25,
+    "sun": 1.3,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#5a6684",
+    "ocean": "#0b1a2a",
+    "exposure": 1.05,
+    "at": 0
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#17223a",
+    "fog": [
+     140,
+     900
+    ],
+    "hemi": 0.6,
+    "ambient": 0.25,
+    "sun": 1.3,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#5a6684",
+    "ocean": "#0b1a2a",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s2",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#5d6d80",
+    "sky": "#c4b9a6",
+    "fog": [
+     700,
+     2600
+    ],
+    "hemi": 1.15,
+    "ambient": 0.5,
+    "sun": 1.4,
+    "sun_color": "#f3e6cf",
+    "sun_dir": [
+     25,
+     46,
+     30
+    ],
+    "cloud": "#d6d1c6",
+    "ocean": "#2d4f66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s2",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#5d6d80",
+    "sky": "#c4b9a6",
+    "fog": [
+     700,
+     2600
+    ],
+    "hemi": 1.15,
+    "ambient": 0.5,
+    "sun": 1.4,
+    "sun_color": "#f3e6cf",
+    "sun_dir": [
+     25,
+     46,
+     30
+    ],
+    "cloud": "#d6d1c6",
+    "ocean": "#2d4f66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s3",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#17223a",
+    "fog": [
+     140,
+     900
+    ],
+    "hemi": 0.6,
+    "ambient": 0.25,
+    "sun": 1.3,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#5a6684",
+    "ocean": "#0b1a2a",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s3",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#17223a",
+    "fog": [
+     140,
+     900
+    ],
+    "hemi": 0.6,
+    "ambient": 0.25,
+    "sun": 1.3,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#5a6684",
+    "ocean": "#0b1a2a",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s4",
+     "t": 1.0
+    }
+   },
+   {
+    "sky_top": "#02050c",
+    "sky": "#17223a",
+    "fog": [
+     140,
+     900
+    ],
+    "hemi": 0.6,
+    "ambient": 0.25,
+    "sun": 1.3,
+    "sun_color": "#a9bce8",
+    "sun_dir": [
+     -30,
+     60,
+     -45
+    ],
+    "cloud": "#5a6684",
+    "ocean": "#0b1a2a",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s5",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#22325c",
+    "sky": "#f2b47a",
+    "fog": [
+     140,
+     900
+    ],
+    "hemi": 1.0,
+    "ambient": 0.42,
+    "sun": 2.3,
+    "sun_color": "#ffc48a",
+    "sun_dir": [
+     80,
+     14,
+     -25
+    ],
+    "cloud": "#f7d6c8",
+    "ocean": "#2c4a66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s5",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#22325c",
+    "sky": "#f2b47a",
+    "fog": [
+     140,
+     900
+    ],
+    "hemi": 1.0,
+    "ambient": 0.42,
+    "sun": 2.3,
+    "sun_color": "#ffc48a",
+    "sun_dir": [
+     80,
+     14,
+     -25
+    ],
+    "cloud": "#f7d6c8",
+    "ocean": "#2c4a66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s6",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#3f6ea0",
+    "sky": "#a9c6de",
+    "fog": [
+     160,
+     980
+    ],
+    "hemi": 1.3,
+    "ambient": 0.5,
+    "sun": 1.6,
+    "sun_color": "#fff3dd",
+    "sun_dir": [
+     30,
+     60,
+     20
+    ],
+    "cloud": "#e4e9ee",
+    "ocean": "#1f5572",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s6",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#3f6ea0",
+    "sky": "#a9c6de",
+    "fog": [
+     160,
+     980
+    ],
+    "hemi": 1.3,
+    "ambient": 0.5,
+    "sun": 1.6,
+    "sun_color": "#fff3dd",
+    "sun_dir": [
+     30,
+     60,
+     20
+    ],
+    "cloud": "#e4e9ee",
+    "ocean": "#1f5572",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s8",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#5d6d80",
+    "sky": "#c4b9a6",
+    "fog": [
+     120,
+     760
+    ],
+    "hemi": 1.15,
+    "ambient": 0.5,
+    "sun": 1.4,
+    "sun_color": "#f3e6cf",
+    "sun_dir": [
+     25,
+     46,
+     30
+    ],
+    "cloud": "#d6d1c6",
+    "ocean": "#2d4f66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s8",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#5d6d80",
+    "sky": "#c4b9a6",
+    "fog": [
+     120,
+     760
+    ],
+    "hemi": 1.15,
+    "ambient": 0.5,
+    "sun": 1.4,
+    "sun_color": "#f3e6cf",
+    "sun_dir": [
+     25,
+     46,
+     30
+    ],
+    "cloud": "#d6d1c6",
+    "ocean": "#2d4f66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s10",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#1d1f3d",
+    "sky": "#d8683a",
+    "fog": [
+     110,
+     700
+    ],
+    "hemi": 0.9,
+    "ambient": 0.4,
+    "sun": 1.9,
+    "sun_color": "#ffb070",
+    "sun_dir": [
+     -80,
+     10,
+     20
+    ],
+    "cloud": "#e0a080",
+    "ocean": "#24364a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s10",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#1d1f3d",
+    "sky": "#d8683a",
+    "fog": [
+     110,
+     700
+    ],
+    "hemi": 0.9,
+    "ambient": 0.4,
+    "sun": 1.9,
+    "sun_color": "#ffb070",
+    "sun_dir": [
+     -80,
+     10,
+     20
+    ],
+    "cloud": "#e0a080",
+    "ocean": "#24364a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s11",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#22325c",
+    "sky": "#f2b47a",
+    "fog": [
+     140,
+     900
+    ],
+    "hemi": 1.0,
+    "ambient": 0.42,
+    "sun": 2.3,
+    "sun_color": "#ffc48a",
+    "sun_dir": [
+     80,
+     14,
+     -25
+    ],
+    "cloud": "#f7d6c8",
+    "ocean": "#2c4a66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s11",
+     "t": 0
+    }
+   }
+  ],
+  "lightning": [
+   {
+    "from": {
+     "scene": "s3",
+     "word": "struck"
+    },
+    "to": {
+     "scene": "s3",
+     "word": "answered"
+    },
+    "rate": 2.2,
+    "seed": 3,
+    "strength": 0.9
+   }
+  ],
+  "objects": [
+   {
+    "type": "ocean",
+    "y": 0,
+    "amp": 0.5,
+    "size": 1400,
+    "segs": 170
+   },
+   {
+    "type": "clouds",
+    "seed": 4,
+    "layers": [
+     {
+      "y": [
+       120,
+       190
+      ],
+      "count": 50,
+      "size": [
+       14,
+       30
+      ],
+      "from": {
+       "scene": "s3",
+       "t": 0
+      },
+      "to": {
+       "scene": "s12",
+       "t": 1.0,
+       "offset": 1
+      }
+     }
+    ]
+   },
+   {
+    "type": "hill",
+    "pos": [
+     0,
+     0,
+     175
+    ],
+    "w": 1500,
+    "d": 220,
+    "h": 14,
+    "sides": 26,
+    "seed": 11,
+    "colors": [
+     "#8c7b62",
+     "#7a6b55",
+     "#9a8a6e"
+    ],
+    "top": "#a4967a",
+    "facet": 14,
+    "band": 2.2,
+    "jag": 0.05
+   },
+   {
+    "type": "hill",
+    "pos": [
+     260,
+     0,
+     235
+    ],
+    "w": 520,
+    "d": 180,
+    "h": 34,
+    "sides": 14,
+    "seed": 12,
+    "colors": [
+     "#8c7b62",
+     "#7a6b55",
+     "#9a8a6e"
+    ],
+    "top": "#a4967a",
+    "facet": 14,
+    "band": 2.2,
+    "jag": 0.05
+   },
+   {
+    "type": "hill",
+    "pos": [
+     -420,
+     0,
+     240
+    ],
+    "w": 520,
+    "d": 170,
+    "h": 26,
+    "sides": 14,
+    "seed": 13,
+    "colors": [
+     "#8c7b62",
+     "#7a6b55",
+     "#9a8a6e"
+    ],
+    "top": "#a4967a",
+    "facet": 14,
+    "band": 2.2,
+    "jag": 0.05
+   },
+   {
+    "type": "hill",
+    "pos": [
+     40,
+     0,
+     -175
+    ],
+    "w": 1400,
+    "d": 210,
+    "h": 18,
+    "sides": 26,
+    "seed": 14,
+    "colors": [
+     "#8c7b62",
+     "#7a6b55",
+     "#9a8a6e"
+    ],
+    "top": "#a4967a",
+    "facet": 14,
+    "band": 2.2,
+    "jag": 0.05
+   },
+   {
+    "type": "hill",
+    "pos": [
+     -120,
+     0,
+     -230
+    ],
+    "w": 440,
+    "d": 170,
+    "h": 46,
+    "sides": 14,
+    "seed": 15,
+    "colors": [
+     "#8c7b62",
+     "#7a6b55",
+     "#9a8a6e"
+    ],
+    "top": "#a4967a",
+    "facet": 14,
+    "band": 2.2,
+    "jag": 0.05
+   },
+   {
+    "type": "hill",
+    "pos": [
+     330,
+     0,
+     -225
+    ],
+    "w": 400,
+    "d": 150,
+    "h": 38,
+    "sides": 14,
+    "seed": 16,
+    "colors": [
+     "#8c7b62",
+     "#7a6b55",
+     "#9a8a6e"
+    ],
+    "top": "#a4967a",
+    "facet": 14,
+    "band": 2.2,
+    "jag": 0.05
+   },
+   {
+    "type": "tanker",
+    "id": "t1",
+    "length": 24,
+    "seed": 1,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       -40,
+       0,
+       -6
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "closing"
+      },
+      "pos": [
+       120,
+       0,
+       -6
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "fell"
+      },
+      "pos": [
+       132,
+       0,
+       -2
+      ],
+      "rot": [
+       0,
+       70,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 1.0
+      },
+      "pos": [
+       132,
+       0,
+       -2
+      ],
+      "rot": [
+       0,
+       70,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "tanker",
+    "id": "t2",
+    "length": 26,
+    "seed": 2,
+    "fire": {
+     "at": {
+      "scene": "s4",
+      "word": "missiles"
+     },
+     "z": 2,
+     "size": 1.2,
+     "dur": 17
+    },
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       -110,
+       0,
+       4
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "closing"
+      },
+      "pos": [
+       50,
+       0,
+       4
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "fell"
+      },
+      "pos": [
+       60,
+       0,
+       3
+      ],
+      "rot": [
+       0,
+       88,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "word": "missiles",
+       "offset": -0.01
+      },
+      "pos": [
+       60,
+       0,
+       3
+      ],
+      "rot": [
+       0,
+       88,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "word": "missiles",
+       "offset": 0.25
+      },
+      "pos": [
+       60,
+       0,
+       3
+      ],
+      "rot": [
+       0,
+       88,
+       4
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 1.0
+      },
+      "pos": [
+       62,
+       -1.2,
+       3
+      ],
+      "rot": [
+       0,
+       88,
+       9
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "tanker",
+    "id": "t3",
+    "length": 24,
+    "seed": 3,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       -180,
+       0,
+       -4
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "closing"
+      },
+      "pos": [
+       -20,
+       0,
+       -4
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "fell"
+      },
+      "pos": [
+       -12,
+       0,
+       -4
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 1.0
+      },
+      "pos": [
+       -12,
+       0,
+       -4
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "tanker",
+    "id": "t4",
+    "length": 22,
+    "seed": 4,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       -250,
+       0,
+       8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "closing"
+      },
+      "pos": [
+       -90,
+       0,
+       8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "fell"
+      },
+      "pos": [
+       -82,
+       0,
+       8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 1.0
+      },
+      "pos": [
+       -82,
+       0,
+       8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "ship",
+    "id": "pb",
+    "length": 9,
+    "color": "#4a5560",
+    "track": [
+     {
+      "at": {
+       "scene": "s3",
+       "word": "Guard"
+      },
+      "pos": [
+       160,
+       0,
+       90
+      ],
+      "rot": [
+       0,
+       200,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 0.3
+      },
+      "pos": [
+       150,
+       0,
+       -30
+      ],
+      "rot": [
+       0,
+       190,
+       0
+      ],
+      "ease": "linear"
+     }
+    ],
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "missile",
+    "id": "m1",
+    "length": 2.4,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "t": 0
+     },
+     "to": {
+      "scene": "s4",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "word": "missiles"
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "t": 0
+      },
+      "pos": [
+       90,
+       70,
+       260
+      ],
+      "rot": [
+       -16,
+       185,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "word": "missiles"
+      },
+      "pos": [
+       61,
+       2.4,
+       3
+      ],
+      "rot": [
+       -16,
+       185,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "blast",
+    "pos": [
+     61,
+     2.2,
+     3
+    ],
+    "at": {
+     "scene": "s4",
+     "word": "missiles"
+    },
+    "size": 1.3,
+    "seed": 5
+   },
+   {
+    "type": "mine",
+    "pos": [
+     30,
+     0,
+     12
+    ],
+    "r": 1.1,
+    "seed": 0,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.3
+     },
+     "to": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.29
+     }
+    }
+   },
+   {
+    "type": "mine",
+    "pos": [
+     37,
+     0,
+     16
+    ],
+    "r": 1.1,
+    "seed": 1,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.3
+     },
+     "to": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.29
+     }
+    }
+   },
+   {
+    "type": "mine",
+    "pos": [
+     44,
+     0,
+     20
+    ],
+    "r": 1.1,
+    "seed": 2,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.3
+     },
+     "to": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.29
+     }
+    }
+   },
+   {
+    "type": "mine",
+    "pos": [
+     51,
+     0,
+     12
+    ],
+    "r": 1.1,
+    "seed": 3,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.3
+     },
+     "to": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.29
+     }
+    }
+   },
+   {
+    "type": "mine",
+    "pos": [
+     58,
+     0,
+     16
+    ],
+    "r": 1.1,
+    "seed": 4,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.3
+     },
+     "to": {
+      "scene": "s4",
+      "word": "Mines",
+      "offset": -0.29
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -900,
+     0,
+     -40
+    ],
+    "heading": 60,
+    "length": 22,
+    "seed": 3,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -842,
+     0,
+     -31
+    ],
+    "heading": 97,
+    "length": 25,
+    "seed": 4,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -784,
+     0,
+     -22
+    ],
+    "heading": 84,
+    "length": 28,
+    "seed": 5,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -726,
+     0,
+     -40
+    ],
+    "heading": 71,
+    "length": 22,
+    "seed": 6,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -668,
+     0,
+     -31
+    ],
+    "heading": 108,
+    "length": 25,
+    "seed": 7,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -883,
+     0,
+     30
+    ],
+    "heading": 95,
+    "length": 28,
+    "seed": 8,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -825,
+     0,
+     12
+    ],
+    "heading": 82,
+    "length": 22,
+    "seed": 9,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -767,
+     0,
+     21
+    ],
+    "heading": 69,
+    "length": 25,
+    "seed": 10,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -709,
+     0,
+     30
+    ],
+    "heading": 106,
+    "length": 28,
+    "seed": 11,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -651,
+     0,
+     12
+    ],
+    "heading": 93,
+    "length": 22,
+    "seed": 12,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -866,
+     0,
+     73
+    ],
+    "heading": 80,
+    "length": 25,
+    "seed": 13,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -808,
+     0,
+     82
+    ],
+    "heading": 67,
+    "length": 28,
+    "seed": 14,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -750,
+     0,
+     64
+    ],
+    "heading": 104,
+    "length": 22,
+    "seed": 15,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -692,
+     0,
+     73
+    ],
+    "heading": 91,
+    "length": 25,
+    "seed": 16,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     -634,
+     0,
+     82
+    ],
+    "heading": 78,
+    "length": 28,
+    "seed": 17,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s7",
+      "t": 0,
+      "offset": -0.01
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "tanker",
+    "id": "c1",
+    "length": 24,
+    "seed": 20,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       1560,
+       0,
+       -3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "closed"
+      },
+      "pos": [
+       1620,
+       0,
+       -3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "deal,"
+      },
+      "pos": [
+       1620,
+       0,
+       -3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s12",
+       "t": 1.0
+      },
+      "pos": [
+       1680,
+       0,
+       -3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "tanker",
+    "id": "c2",
+    "length": 24,
+    "seed": 21,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       1512,
+       0,
+       3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "closed"
+      },
+      "pos": [
+       1572,
+       0,
+       3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "deal,"
+      },
+      "pos": [
+       1572,
+       0,
+       3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s12",
+       "t": 1.0
+      },
+      "pos": [
+       1632,
+       0,
+       3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "tanker",
+    "id": "c3",
+    "length": 24,
+    "seed": 22,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       1464,
+       0,
+       -3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "closed"
+      },
+      "pos": [
+       1524,
+       0,
+       -3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "deal,"
+      },
+      "pos": [
+       1524,
+       0,
+       -3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s12",
+       "t": 1.0
+      },
+      "pos": [
+       1584,
+       0,
+       -3
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "tanker",
+    "id": "ind",
+    "length": 26,
+    "seed": 30,
+    "deck": "#2f6b3a",
+    "track": [
+     {
+      "at": {
+       "scene": "s8",
+       "t": 0
+      },
+      "pos": [
+       -200,
+       0,
+       -4
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s9",
+       "t": 1.0,
+       "offset": 0.1
+      },
+      "pos": [
+       60,
+       0,
+       -4
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "ship",
+    "id": "esc",
+    "length": 10,
+    "color": "#3b4652",
+    "track": [
+     {
+      "at": {
+       "scene": "s8",
+       "t": 0
+      },
+      "pos": [
+       -186,
+       0,
+       16
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s9",
+       "t": 1.0,
+       "offset": 0.1
+      },
+      "pos": [
+       74,
+       0,
+       16
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "tanker",
+    "id": "nv",
+    "length": 26,
+    "seed": 40,
+    "fire": {
+     "at": {
+      "scene": "s10",
+      "word": "attacked"
+     },
+     "z": -3,
+     "size": 1.3
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s10",
+       "t": 0
+      },
+      "pos": [
+       3280,
+       0,
+       0
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s10",
+       "word": "attacked",
+       "offset": -0.01
+      },
+      "pos": [
+       3300,
+       0,
+       0
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s10",
+       "word": "Three"
+      },
+      "pos": [
+       3304,
+       -0.6,
+       0
+      ],
+      "rot": [
+       -4,
+       90,
+       6
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s10",
+       "t": 1.0
+      },
+      "pos": [
+       3308,
+       -3.2,
+       0
+      ],
+      "rot": [
+       -14,
+       90,
+       12
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "tanker",
+    "id": "nv2",
+    "length": 24,
+    "seed": 41,
+    "track": [
+     {
+      "at": {
+       "scene": "s10",
+       "t": 0
+      },
+      "pos": [
+       3210,
+       0,
+       40
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s10",
+       "t": 1.0
+      },
+      "pos": [
+       3250,
+       0,
+       40
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "missile",
+    "id": "m2",
+    "length": 2.4,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s10",
+      "t": 0
+     },
+     "to": {
+      "scene": "s10",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s10",
+      "word": "attacked"
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s10",
+       "t": 0
+      },
+      "pos": [
+       3340,
+       60,
+       230
+      ],
+      "rot": [
+       -15,
+       190,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s10",
+       "word": "attacked"
+      },
+      "pos": [
+       3298,
+       2.4,
+       1
+      ],
+      "rot": [
+       -15,
+       190,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "blast",
+    "pos": [
+     3298,
+     2.2,
+     1
+    ],
+    "at": {
+     "scene": "s10",
+     "word": "attacked"
+    },
+    "size": 1.4,
+    "seed": 6
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5000,
+     0,
+     -30
+    ],
+    "heading": 40,
+    "length": 22,
+    "seed": 50,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5070,
+     0,
+     -18
+    ],
+    "heading": 69,
+    "length": 25,
+    "seed": 51,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5140,
+     0,
+     -30
+    ],
+    "heading": 98,
+    "length": 28,
+    "seed": 52,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5210,
+     0,
+     -18
+    ],
+    "heading": 67,
+    "length": 22,
+    "seed": 53,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5025,
+     0,
+     30
+    ],
+    "heading": 96,
+    "length": 25,
+    "seed": 54,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5095,
+     0,
+     42
+    ],
+    "heading": 65,
+    "length": 28,
+    "seed": 55,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5165,
+     0,
+     30
+    ],
+    "heading": 94,
+    "length": 22,
+    "seed": 56,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5235,
+     0,
+     42
+    ],
+    "heading": 63,
+    "length": 25,
+    "seed": 57,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5050,
+     0,
+     90
+    ],
+    "heading": 92,
+    "length": 28,
+    "seed": 58,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   },
+   {
+    "type": "tanker",
+    "pos": [
+     5120,
+     0,
+     102
+    ],
+    "heading": 61,
+    "length": 22,
+    "seed": 59,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s11",
+      "t": 0
+     },
+     "to": {
+      "scene": "s11",
+      "t": 0,
+      "offset": 0.01
+     }
+    }
+   }
+  ],
+  "camera": [
+   {
+    "at": 0,
+    "follow": "t1",
+    "offset": [
+     -16,
+     3.5,
+     30
+    ],
+    "look_offset": [
+     0,
+     1.5,
+     0
+    ],
+    "fov": 44
+   },
+   {
+    "at": {
+     "scene": "s1",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "t1",
+    "offset": [
+     -30,
+     4.5,
+     26
+    ],
+    "look_offset": [
+     0,
+     2,
+     0
+    ],
+    "fov": 44
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 0
+    },
+    "pos": [
+     0,
+     390,
+     -10
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     60,
+     330,
+     -140
+    ],
+    "look": [
+     40,
+     0,
+     10
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 0
+    },
+    "pos": [
+     -10,
+     16,
+     -34
+    ],
+    "look": [
+     110,
+     6,
+     40
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "word": "closing"
+    },
+    "pos": [
+     10,
+     13,
+     -32
+    ],
+    "look": [
+     120,
+     4,
+     20
+    ],
+    "fov": 44
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     30,
+     10,
+     -30
+    ],
+    "look": [
+     130,
+     3,
+     10
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 0
+    },
+    "pos": [
+     26,
+     9,
+     -30
+    ],
+    "look": [
+     66,
+     12,
+     40
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "word": "missiles",
+     "offset": -0.1
+    },
+    "pos": [
+     30,
+     7,
+     -30
+    ],
+    "look": [
+     62,
+     3,
+     2
+    ],
+    "fov": 44
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "word": "missiles",
+     "offset": 0.1
+    },
+    "pos": [
+     32,
+     6,
+     -28
+    ],
+    "look": [
+     62,
+     3,
+     2
+    ],
+    "fov": 44,
+    "shake": 0.5
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "word": "drones."
+    },
+    "pos": [
+     34,
+     6,
+     -26
+    ],
+    "look": [
+     62,
+     4,
+     2
+    ],
+    "fov": 44,
+    "shake": 0.08
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "word": "Mines",
+     "offset": -0.01
+    },
+    "pos": [
+     34,
+     6,
+     -26
+    ],
+    "look": [
+     62,
+     4,
+     2
+    ],
+    "fov": 44
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "word": "Mines"
+    },
+    "pos": [
+     29,
+     2.4,
+     6
+    ],
+    "look": [
+     37,
+     0.4,
+     14
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "word": "Indian",
+     "offset": -0.01
+    },
+    "pos": [
+     31,
+     2.2,
+     7
+    ],
+    "look": [
+     39,
+     0.4,
+     15
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "word": "Indian"
+    },
+    "pos": [
+     10,
+     12,
+     -45
+    ],
+    "look": [
+     62,
+     4,
+     2
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     6,
+     13,
+     -48
+    ],
+    "look": [
+     62,
+     4,
+     2
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 0
+    },
+    "pos": [
+     -70,
+     14,
+     -20
+    ],
+    "look": [
+     60,
+     6,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     -50,
+     12,
+     -18
+    ],
+    "look": [
+     60,
+     6,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 0
+    },
+    "pos": [
+     -820,
+     180,
+     -260
+    ],
+    "look": [
+     -800,
+     0,
+     20
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     -780,
+     130,
+     -200
+    ],
+    "look": [
+     -800,
+     0,
+     20
+    ],
+    "fov": 48
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 0
+    },
+    "follow": "c1",
+    "offset": [
+     -30,
+     9,
+     -36
+    ],
+    "look_offset": [
+     0,
+     2,
+     10
+    ],
+    "fov": 44
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "c1",
+    "offset": [
+     -40,
+     12,
+     -30
+    ],
+    "look_offset": [
+     -10,
+     2,
+     10
+    ],
+    "fov": 44
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 0
+    },
+    "follow": "ind",
+    "offset": [
+     0,
+     3.6,
+     -8.0
+    ],
+    "look_offset": [
+     0,
+     1.2,
+     20
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "word": "third",
+     "offset": -0.3
+    },
+    "follow": "ind",
+    "offset": [
+     0,
+     3.5,
+     -7.6
+    ],
+    "look_offset": [
+     0,
+     1.2,
+     20
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "word": "third",
+     "offset": -0.28
+    },
+    "follow": "ind",
+    "offset": [
+     26,
+     7,
+     6
+    ],
+    "look_offset": [
+     0,
+     1.5,
+     0
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "ind",
+    "offset": [
+     28,
+     7,
+     -4
+    ],
+    "look_offset": [
+     0,
+     1.5,
+     0
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "t": 0
+    },
+    "follow": "ind",
+    "offset": [
+     -28,
+     14,
+     -40
+    ],
+    "look_offset": [
+     0,
+     2,
+     14
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "word": "fee.",
+     "offset": -0.5
+    },
+    "follow": "ind",
+    "offset": [
+     -14,
+     9,
+     -34
+    ],
+    "look_offset": [
+     0,
+     2,
+     10
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "ind",
+    "offset": [
+     -10,
+     8,
+     -32
+    ],
+    "look_offset": [
+     0,
+     2,
+     8
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "t": 0
+    },
+    "pos": [
+     3260,
+     8,
+     -34
+    ],
+    "look": [
+     3300,
+     3,
+     0
+    ],
+    "fov": 44
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "word": "attacked",
+     "offset": 0.05
+    },
+    "pos": [
+     3262,
+     7,
+     -32
+    ],
+    "look": [
+     3300,
+     3,
+     0
+    ],
+    "fov": 44,
+    "shake": 0.5
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "word": "Three",
+     "offset": -0.2
+    },
+    "pos": [
+     3268,
+     6,
+     -30
+    ],
+    "look": [
+     3302,
+     2,
+     0
+    ],
+    "fov": 42,
+    "shake": 0.05
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     3276,
+     5,
+     -36
+    ],
+    "look": [
+     3304,
+     0,
+     0
+    ],
+    "fov": 42
+   },
+   {
+    "at": {
+     "scene": "s11",
+     "t": 0
+    },
+    "pos": [
+     4960,
+     40,
+     -170
+    ],
+    "look": [
+     5100,
+     0,
+     20
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s11",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     5000,
+     30,
+     -150
+    ],
+    "look": [
+     5100,
+     0,
+     20
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s12",
+     "t": 1.0,
+     "offset": 0.5
+    },
+    "pos": [
+     5020,
+     26,
+     -140
+    ],
+    "look": [
+     5100,
+     0,
+     20
+    ],
+    "fov": 46
+   }
+  ]
+ },
+ "title": "The 34 km gap that sets your petrol price",
+ "scenes": [
+  {
+   "narration": "There is a 34 kilometre gap of water that decides what you pay for petrol. And right now, it is a war zone.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Strait of Hormuz",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "text",
+     "text": "34 km wide",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "gap"
+    }
+   ],
+   "id": "s1"
+  },
+  {
+   "narration": "The Strait of Hormuz, between Iran and Oman. In a normal year, a fifth of the world's oil sails through here, around 20 million barrels a day. And a fifth of its liquefied gas.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "IRAN",
+     "x": 0.5,
+     "y": 0.1,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "OMAN",
+     "x": 0.5,
+     "y": 0.9,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "20 million barrels a day",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "20"
+    },
+    {
+     "type": "text",
+     "text": "20% of the world's LNG",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "liquefied"
+    }
+   ],
+   "id": "s2"
+  },
+  {
+   "narration": "On 28 February 2026, the US and Israel struck Iran. Iran's Revolutionary Guard answered by closing the strait. Ship traffic fell 70 percent overnight.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "28 February 2026",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 5.0
+    },
+    {
+     "type": "text",
+     "text": "STRAIT CLOSED",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "closing"
+    },
+    {
+     "type": "text",
+     "text": "Traffic down 70%",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "fell"
+    }
+   ],
+   "id": "s3"
+  },
+  {
+   "narration": "Then the attacks began. Tankers hit by missiles and drones. Mines laid in the shipping lanes. Within days, Indian seafarers were among the dead.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Missile strikes",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "missiles",
+     "until": 5.5
+    },
+    {
+     "type": "text",
+     "text": "Mines in the lanes",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Mines",
+     "until": 6.5
+    },
+    {
+     "type": "text",
+     "text": "Indian crew killed, 1 to 2 March",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Indian"
+    }
+   ],
+   "id": "s4"
+  },
+  {
+   "narration": "Within ten days, Brent crude crossed 100 dollars a barrel. By 19 March, Dubai crude hit a record 166.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "counter",
+     "from": 72,
+     "to": 100,
+     "prefix": "Brent  $",
+     "suffix": " / barrel",
+     "grouping": "western",
+     "count_dur": 2.0,
+     "x": 0.5,
+     "y": 0.22,
+     "size": 0.05,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "crossed",
+     "until": 5.2
+    },
+    {
+     "type": "text",
+     "text": "Dubai crude: $166, a record",
+     "x": 0.5,
+     "y": 0.22,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "record"
+    }
+   ],
+   "id": "s5"
+  },
+  {
+   "narration": "Two thousand ships and twenty thousand sailors were trapped inside the Gulf. Insurers pulled out.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "2,000 ships stranded",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Two"
+    },
+    {
+     "type": "text",
+     "text": "20,000 sailors",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "twenty"
+    }
+   ],
+   "id": "s6"
+  },
+  {
+   "narration": "A ceasefire in April reopened it. Ten days later it closed again. A deal in June, broken in July. Each time, the tankers stopped.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "8 April: ceasefire",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "ceasefire"
+    },
+    {
+     "type": "text",
+     "text": "18 April: closed again",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "closed"
+    },
+    {
+     "type": "text",
+     "text": "17 June: deal.  8 July: broken",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "deal"
+    }
+   ],
+   "id": "s7"
+  },
+  {
+   "narration": "Why does India care? We import about 90 percent of our crude oil, and nearly a third of it came through this strait.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "India: ~90% of crude is imported",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "90"
+    },
+    {
+     "type": "text",
+     "text": "~30% of it via Hormuz",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "third"
+    }
+   ],
+   "id": "s8"
+  },
+  {
+   "narration": "So India rerouted. By March, 70 percent of its crude was being bought from outside the Gulf. And Iran now lets Indian ships through, for a fee.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "70% of crude now sourced outside the Gulf",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "70"
+    },
+    {
+     "type": "text",
+     "text": "Indian ships allowed, for a fee",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "fee."
+    }
+   ],
+   "id": "s9"
+  },
+  {
+   "narration": "This month, eleven ships were attacked in a single week. Three of them sank. Traffic is still 65 percent below normal.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "11 ships attacked in one week",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "eleven"
+    },
+    {
+     "type": "text",
+     "text": "3 sank",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Three"
+    },
+    {
+     "type": "text",
+     "text": "Traffic still 65% below normal",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "65"
+    }
+   ],
+   "id": "s10"
+  },
+  {
+   "narration": "Mediators are talking. Iran has seven demands. The US has its blockade. And every tanker that waits out here adds a few rupees to your fuel bill.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Iran: 7 demands",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "seven"
+    },
+    {
+     "type": "text",
+     "text": "US: naval blockade",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "blockade."
+    }
+   ],
+   "id": "s11"
+  },
+  {
+   "narration": "Follow for more true stories.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [],
+   "id": "s12"
+  }
+ ]
+}

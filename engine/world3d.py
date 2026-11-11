@@ -42,7 +42,7 @@ TIME_KEYS = {"at", "from", "to", "rope_start", "rope_end", "until"}
 KIT = {"box", "slab", "cylinder", "cone", "pyramid", "dome", "sphere", "mound", "wall", "stairs", "pillar", "pavilion",
        "spire", "arch", "water", "tree", "trees", "grass", "rocks", "house", "ladder", "well", "person", "people",
        "hill", "cliff", "ramp", "blocks", "sledge", "minaret", "tomb", "bastion", "palace", "boat", "flag", "gate", "town",
-       "frustum", "airliner", "ocean", "clouds", "cumulus", "streaks", "splash", "debris", "ship", "seabed", "wreck",
+       "frustum", "airliner", "ocean", "clouds", "cumulus", "streaks", "splash", "debris", "ship", "seabed", "wreck", "tanker", "mine", "missile", "blast",
        "recorder", "auv"}
 MACROS = {"stepwell", "pyramid", "fort", "temple"}
 STYLES = {"desert", "golden", "green", "overcast", "night"}
