@@ -2072,6 +2072,144 @@ KIT.blast = (o) => {
 };
 for (const k of ["tanker", "mine", "missile", "blast"]) FLIGHT_KIT.add(k);
 
+// ---------------- planet kit: stars, a procedural earth, modern towers and dense crowds (population stories)
+function vnoise(seed, N = 64) {
+  const r = rng(seed), g = new Float32Array(N * N);
+  for (let k = 0; k < N * N; k++) g[k] = r();
+  const at = (x, y) => g[((y % N + N) % N) * N + ((x % N + N) % N)];
+  const one = (x, y) => {
+    const x0 = Math.floor(x), y0 = Math.floor(y), fx = x - x0, fy = y - y0, sx = fx * fx * (3 - 2 * fx), sy = fy * fy * (3 - 2 * fy);
+    return lerp(lerp(at(x0, y0), at(x0 + 1, y0), sx), lerp(at(x0, y0 + 1), at(x0 + 1, y0 + 1), sx), sy);
+  };
+  return (x, y, oct = 5) => { let v = 0, a = 0.5, f = 1; for (let o = 0; o < oct; o++) { v += a * one(x * f, y * f); a *= 0.5; f *= 2; } return v; };
+}
+
+// stars: a point cloud that rides with the camera
+KIT.stars = (o) => {
+  const r = rng(num(o.seed, 21)), N = num(o.count, 1800), pos = new Float32Array(N * 3), R0 = 300;
+  for (let k = 0; k < N; k++) { const th = r() * 6.283, ph = Math.acos(2 * r() - 1); pos[3 * k] = R0 * Math.sin(ph) * Math.cos(th); pos[3 * k + 1] = R0 * Math.cos(ph); pos[3 * k + 2] = R0 * Math.sin(ph) * Math.sin(th); }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  const p = new THREE.Points(geo, new THREE.PointsMaterial({ color: "#ffffff", size: num(o.size, 1.4), sizeAttenuation: false, fog: false, transparent: true, opacity: num(o.opacity, 0.9) }));
+  p.renderOrder = -9; p.frustumCulled = false; p.userData.abs = true;
+  POST.push((t, cp) => { p.position.copy(cp); });
+  return p;
+};
+
+// earth: a stylised planet with noise continents, ice caps, a cloud shell, an atmosphere glow; o.tint keys [{at, warm}]
+// warm the land and seas (0 normal .. 1 scorched) for the scenario shots
+KIT.earth = (o) => {
+  const R = num(o.r, 20), g = new THREE.Group();
+  const W = 1024, H = 512, c = document.createElement("canvas"); c.width = W; c.height = H;
+  const ctx = c.getContext("2d"), img = ctx.createImageData(W, H), n = vnoise(num(o.seed, 3), 8), n2 = vnoise(num(o.seed, 3) + 9, 24);
+  const sea = [26, 70, 120], shelf = [40, 110, 150], land = [96, 128, 62], dry = [168, 150, 96], ice = [236, 240, 244];
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const lat = (y / H - 0.5) * 2, u = x / W * 8, v = y / H * 4, u2 = x / W * 24, v2 = y / H * 12;
+    const h = n(u, v) + 0.18 * n2(u2, v2) - 0.09 - 0.25 * Math.pow(Math.abs(lat), 6);
+    let col;
+    if (Math.abs(lat) > 0.86 + 0.06 * n2(u2, 1)) col = ice;
+    else if (h > 0.52) col = lerp3(land, dry, clamp((n2(u2 / 3, v2 / 3) - 0.35) * 2.2 + Math.abs(lat) * 0.4));
+    else if (h > 0.48) col = shelf;
+    else col = sea;
+    const k = 4 * (y * W + x); img.data[k] = col[0]; img.data[k + 1] = col[1]; img.data[k + 2] = col[2]; img.data[k + 3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  const mt = new THREE.MeshLambertMaterial({ map: tex });
+  const sph = new THREE.Mesh(new THREE.SphereGeometry(R, 64, 40), mt); g.add(sph);
+  // clouds
+  const cc = document.createElement("canvas"); cc.width = W; cc.height = H; const cx = cc.getContext("2d"), ci = cx.createImageData(W, H), n3 = vnoise(num(o.seed, 3) + 77, 10);
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const a = clamp((n3(x / W * 10, y / H * 5, 6) - 0.5) * 3.2); const k = 4 * (y * W + x); ci.data[k] = ci.data[k + 1] = ci.data[k + 2] = 255; ci.data[k + 3] = Math.round(a * 170); }
+  cx.putImageData(ci, 0, 0);
+  const ctex = new THREE.CanvasTexture(cc);
+  const clouds = new THREE.Mesh(new THREE.SphereGeometry(R * 1.015, 48, 32), new THREE.MeshLambertMaterial({ map: ctex, transparent: true, depthWrite: false })); g.add(clouds);
+  const halo = glow(o.halo || "#6fb1ff", R * 2.7); halo.material.opacity = 0.55; halo.material.depthWrite = false; g.add(halo);
+  // city lights on the night side are faked by a faint warm sprite on the far hemisphere: skipped for simplicity
+  const p0 = vec(o.pos); g.position.set(p0[0], p0[1], p0[2]); g.userData.abs = true;
+  const tint = (o.tint || []).map((k) => ({ at: num(k.at, 0), warm: num(k.warm, 0) })).sort((a, b) => a.at - b.at);
+  const warmAt = (t) => { if (!tint.length) return 0; let i = 0; while (i < tint.length - 1 && t > tint[i + 1].at) i++; const a = tint[i], b = tint[Math.min(i + 1, tint.length - 1)]; return lerp(a.warm, b.warm, b === a ? 0 : easeInOut(clamp((t - a.at) / Math.max(1e-6, b.at - a.at)))); };
+  const spin = num(o.spin, 0.02);
+  g.userData.tick = (t) => {
+    sph.rotation.y = t * spin; clouds.rotation.y = t * spin * 1.3; g.rotation.z = num(o.tilt, 23) * DEG;
+    const w = warmAt(t);
+    mt.color.setRGB(1, 1 - w * 0.55, 1 - w * 0.8); clouds.material.opacity = 1 - w * 0.6; halo.material.color.set(o.halo || "#6fb1ff").lerp(C2.set("#ff7a3a"), w);
+  };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+function lerp3(a, b, u) { return [lerp(a[0], b[0], u), lerp(a[1], b[1], u), lerp(a[2], b[2], u)]; }
+
+// towers: a modern skyline scattered over o.area; windows lit by o.lit (0..1); o.rise [{at, s}] scales the height over time
+KIT.towers = (o) => {
+  const r = rng(num(o.seed, 12)), area = o.area || [-60, -60, 60, 60], N = num(o.count, 60), g = new THREE.Group();
+  const cs = o.colors || ["#3a4652", "#2d3741", "#4b5867", "#5a6673", "#232b33"];
+  const cv = document.createElement("canvas"); cv.width = 64; cv.height = 128; const cx = cv.getContext("2d");
+  cx.fillStyle = "#11161c"; cx.fillRect(0, 0, 64, 128);
+  const lit = num(o.lit, 0.6), rr = rng(num(o.seed, 12) + 1);
+  for (let y = 4; y < 128; y += 8) for (let x = 4; x < 64; x += 8) { cx.fillStyle = rr() < lit ? (rr() < 0.5 ? "#ffe9a8" : "#cfe2ff") : "#1a2029"; cx.fillRect(x, y, 4, 5); }
+  const tex = new THREE.CanvasTexture(cv); tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  const items = [];
+  for (let k = 0; k < N; k++) {
+    const w = 3 + r() * 5, d = 3 + r() * 5, h = (6 + Math.pow(r(), 2.2) * 60) * num(o.scale, 1);
+    const m = new THREE.MeshLambertMaterial({ color: cs[Math.floor(r() * cs.length)], map: tex, emissive: "#ffe0a0", emissiveMap: tex, emissiveIntensity: num(o.glow, 0.9) });
+    const t = tex.clone(); t.needsUpdate = true; t.repeat.set(Math.max(1, Math.round(w / 3)), Math.max(1, Math.round(h / 6))); m.map = t; m.emissiveMap = t;
+    const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); b.position.set(lerp(area[0], area[2], r()), h / 2, lerp(area[1], area[3], r()));
+    b.userData.h = h; g.add(b); items.push(b);
+    const roof = box(w + 0.2, 0.3, d + 0.2, mat("#1b2129"), b.position.x, h + 0.15, b.position.z); roof.userData.h = h; g.add(roof); items.push(roof);
+  }
+  g.userData.abs = true;
+  const rise = (o.rise || []).map((k) => ({ at: num(k.at, 0), s: num(k.s, 1) })).sort((a, b) => a.at - b.at);
+  g.userData.tick = (t) => {
+    if (!rise.length) return;
+    let i = 0; while (i < rise.length - 1 && t > rise[i + 1].at) i++;
+    const a = rise[i], b = rise[Math.min(i + 1, rise.length - 1)];
+    const s = lerp(a.s, b.s, b === a ? 0 : easeInOut(clamp((t - a.at) / Math.max(1e-6, b.at - a.at))));
+    for (const m of items) { if (m.geometry.type === "BoxGeometry" && m.userData.h) { const isRoof = m.geometry.parameters.height < 0.5; if (isRoof) m.position.y = m.userData.h * s + 0.15; else { m.scale.y = s; m.position.y = m.userData.h * s / 2; } } }
+  };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
+// crowd: up to o.count simple figures over o.area; o.n [{at, n}] sets how many stand there over time (the rest are hidden),
+// so a crowd can fill a square as the story goes on. Figures shuffle on the spot.
+KIT.crowd = (o) => {
+  const r = rng(num(o.seed, 15)), area = o.area || [-20, -20, 20, 20], N = num(o.count, 2000), s = num(o.scale, 1);
+  const g = new THREE.Group();
+  const bodyG = new THREE.CylinderGeometry(0.16 * s, 0.22 * s, 0.95 * s, 6); bodyG.translate(0, 0.48 * s, 0);
+  const headG = new THREE.SphereGeometry(0.14 * s, 7, 6); headG.translate(0, 1.1 * s, 0);
+  const bodies = new THREE.InstancedMesh(bodyG, new THREE.MeshLambertMaterial({ color: "#ffffff" }), N);
+  const heads = new THREE.InstancedMesh(headG, new THREE.MeshLambertMaterial({ color: "#ffffff" }), N);
+  bodies.frustumCulled = heads.frustumCulled = false;
+  const cloths = (o.cloths || ["#d9534f", "#3b6fb6", "#e3c25a", "#4a9a6a", "#f0ece4", "#2f2f35", "#b07bc9", "#e08a4a"]).map((c) => new THREE.Color(c));
+  const skins = ["#8a5a3a", "#c89a72", "#5b3a26", "#e8c3a0", "#a9754f"].map((c) => new THREE.Color(c));
+  const P = []; const cw = num(area[2] - area[0], 40), ch = num(area[3] - area[1], 40);
+  // jittered grid so dense crowds pack without overlapping
+  const cols = Math.ceil(Math.sqrt(N * cw / ch)), rows = Math.ceil(N / cols), order = [];
+  for (let k = 0; k < cols * rows; k++) order.push(k);
+  for (let k = order.length - 1; k > 0; k--) { const j = Math.floor(r() * (k + 1)); [order[k], order[j]] = [order[j], order[k]]; }
+  for (let k = 0; k < N; k++) {
+    const q = order[k], i = q % cols, j = Math.floor(q / cols);
+    P.push({ x: area[0] + (i + 0.3 + r() * 0.4) / cols * cw, z: area[1] + (j + 0.3 + r() * 0.4) / rows * ch, ry: r() * 6.283, ph: r() * 6.283 });
+    bodies.setColorAt(k, cloths[Math.floor(r() * cloths.length)]); heads.setColorAt(k, skins[Math.floor(r() * skins.length)]);
+  }
+  g.add(bodies); g.add(heads); g.userData.abs = true;
+  const nk = (o.n || [{ at: 0, n: N }]).map((k) => ({ at: num(k.at, 0), n: num(k.n, N) })).sort((a, b) => a.at - b.at);
+  const M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3(), V = new THREE.Vector3(), E = new THREE.Euler();
+  g.userData.tick = (t) => {
+    let i = 0; while (i < nk.length - 1 && t > nk[i + 1].at) i++;
+    const a = nk[i], b = nk[Math.min(i + 1, nk.length - 1)];
+    const n = Math.round(lerp(a.n, b.n, b === a ? 0 : clamp((t - a.at) / Math.max(1e-6, b.at - a.at))));
+    for (let k = 0; k < N; k++) {
+      const p = P[k], on = k < n, sc = on ? 1 : 1e-4;
+      V.set(p.x, num(o.y, 0) + (on ? Math.abs(Math.sin(t * 2.1 + p.ph)) * 0.03 : 0), p.z); E.set(0, p.ry + Math.sin(t * 0.7 + p.ph) * 0.25, 0); Q.setFromEuler(E); S.set(sc, sc, sc);
+      M.compose(V, Q, S); bodies.setMatrixAt(k, M); heads.setMatrixAt(k, M);
+    }
+    bodies.instanceMatrix.needsUpdate = heads.instanceMatrix.needsUpdate = true;
+  };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+for (const k of ["stars", "earth", "towers", "crowd"]) FLIGHT_KIT.add(k);
+
 // ------------------------------------------------------------------ camera
 function makeCamera(keys, W, H) {
   const cam = new THREE.PerspectiveCamera(35, W / H, 0.1, 400);

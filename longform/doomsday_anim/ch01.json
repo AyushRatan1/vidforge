@@ -1,0 +1,1449 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.08,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "footage": "off",
+ "transition": "none",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.11,
+  "seed": 14
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.62,
+  "size": 0.08,
+  "max_words": 2,
+  "highlight": "#ffd54a",
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "world3d": {
+  "style": "night",
+  "terrain": false,
+  "env": [
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": 0
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s3",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#1b2238",
+    "sky": "#e0834e",
+    "fog": [
+     120,
+     520
+    ],
+    "hemi": 0.9,
+    "ambient": 0.4,
+    "sun": 1.5,
+    "sun_color": "#ffb27a",
+    "sun_dir": [
+     -70,
+     12,
+     30
+    ],
+    "cloud": "#e8b090",
+    "ocean": "#24364a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s3",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#1b2238",
+    "sky": "#e0834e",
+    "fog": [
+     120,
+     520
+    ],
+    "hemi": 0.9,
+    "ambient": 0.4,
+    "sun": 1.5,
+    "sun_color": "#ffb27a",
+    "sun_dir": [
+     -70,
+     12,
+     30
+    ],
+    "cloud": "#e8b090",
+    "ocean": "#24364a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s5",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#6a5a4a",
+    "sky": "#c9a07a",
+    "fog": [
+     60,
+     320
+    ],
+    "hemi": 0.95,
+    "ambient": 0.5,
+    "sun": 1.2,
+    "sun_color": "#f0c8a0",
+    "sun_dir": [
+     30,
+     40,
+     20
+    ],
+    "cloud": "#c9a890",
+    "ocean": "#2c3a44",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s5",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#6a5a4a",
+    "sky": "#c9a07a",
+    "fog": [
+     60,
+     320
+    ],
+    "hemi": 0.95,
+    "ambient": 0.5,
+    "sun": 1.2,
+    "sun_color": "#f0c8a0",
+    "sun_dir": [
+     30,
+     40,
+     20
+    ],
+    "cloud": "#c9a890",
+    "ocean": "#2c3a44",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s6",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#3a1208",
+    "sky": "#c8441c",
+    "fog": [
+     40,
+     240
+    ],
+    "hemi": 0.9,
+    "ambient": 0.5,
+    "sun": 1.6,
+    "sun_color": "#ff8a4a",
+    "sun_dir": [
+     0,
+     70,
+     0
+    ],
+    "cloud": "#c86a40",
+    "ocean": "#3a2a2a",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s6",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#3a1208",
+    "sky": "#c8441c",
+    "fog": [
+     40,
+     240
+    ],
+    "hemi": 0.9,
+    "ambient": 0.5,
+    "sun": 1.6,
+    "sun_color": "#ff8a4a",
+    "sun_dir": [
+     0,
+     70,
+     0
+    ],
+    "cloud": "#c86a40",
+    "ocean": "#3a2a2a",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s7",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s7",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s8",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#3a1208",
+    "sky": "#c8441c",
+    "fog": [
+     40,
+     240
+    ],
+    "hemi": 0.9,
+    "ambient": 0.5,
+    "sun": 1.6,
+    "sun_color": "#ff8a4a",
+    "sun_dir": [
+     0,
+     70,
+     0
+    ],
+    "cloud": "#c86a40",
+    "ocean": "#3a2a2a",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s8",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#3a1208",
+    "sky": "#c8441c",
+    "fog": [
+     40,
+     240
+    ],
+    "hemi": 0.9,
+    "ambient": 0.5,
+    "sun": 1.6,
+    "sun_color": "#ff8a4a",
+    "sun_dir": [
+     0,
+     70,
+     0
+    ],
+    "cloud": "#c86a40",
+    "ocean": "#3a2a2a",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s8",
+     "word": "squeezed",
+     "offset": -0.1
+    }
+   },
+   {
+    "sky_top": "#ffffff",
+    "sky": "#ffffff",
+    "fog": [
+     1,
+     2
+    ],
+    "hemi": 3.0,
+    "ambient": 3.0,
+    "sun": 0.0,
+    "sun_color": "#ffffff",
+    "sun_dir": [
+     0,
+     70,
+     0
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#ffffff",
+    "exposure": 2.5,
+    "at": {
+     "scene": "s8",
+     "word": "squeezed",
+     "offset": 0.5
+    }
+   },
+   {
+    "sky_top": "#ffffff",
+    "sky": "#ffffff",
+    "fog": [
+     1,
+     2
+    ],
+    "hemi": 3.0,
+    "ambient": 3.0,
+    "sun": 0.0,
+    "sun_color": "#ffffff",
+    "sun_dir": [
+     0,
+     70,
+     0
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#ffffff",
+    "exposure": 2.5,
+    "at": {
+     "scene": "s8",
+     "t": 1.0
+    }
+   },
+   {
+    "sky_top": "#ffffff",
+    "sky": "#ffffff",
+    "fog": [
+     1,
+     2
+    ],
+    "hemi": 3.0,
+    "ambient": 3.0,
+    "sun": 0.0,
+    "sun_color": "#ffffff",
+    "sun_dir": [
+     0,
+     70,
+     0
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#ffffff",
+    "exposure": 2.5,
+    "at": {
+     "scene": "s9",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s9",
+     "t": 0
+    }
+   }
+  ],
+  "objects": [
+   {
+    "type": "stars",
+    "seed": 21,
+    "count": 2200,
+    "size": 1.6
+   },
+   {
+    "type": "earth",
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "r": 20,
+    "seed": 3,
+    "spin": 0.03,
+    "tilt": 23,
+    "tint": [
+     {
+      "at": 0,
+      "warm": 0
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "t": 0
+      },
+      "warm": 0.55
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "t": 1.0
+      },
+      "warm": 0.85
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "t": 0
+      },
+      "warm": 0.95
+     },
+     {
+      "at": {
+       "scene": "s9",
+       "t": 0,
+       "offset": -0.012
+      },
+      "warm": 0.95
+     },
+     {
+      "at": {
+       "scene": "s9",
+       "t": 0
+      },
+      "warm": 0
+     }
+    ]
+   },
+   {
+    "type": "box",
+    "pos": [
+     3000,
+     -0.5,
+     0
+    ],
+    "w": 900,
+    "h": 1,
+    "d": 900,
+    "color": "#2a2d32"
+   },
+   {
+    "type": "towers",
+    "seed": 12,
+    "count": 90,
+    "area": [
+     2840,
+     -160,
+     3160,
+     160
+    ],
+    "lit": 0.55,
+    "glow": 0.8,
+    "rise": [
+     {
+      "at": 0,
+      "s": 0.55
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 0
+      },
+      "s": 0.55
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0
+      },
+      "s": 1.0
+     },
+     {
+      "at": {
+       "scene": "s6",
+       "t": 1.0
+      },
+      "s": 1.35
+     }
+    ]
+   },
+   {
+    "type": "crowd",
+    "seed": 15,
+    "count": 9000,
+    "area": [
+     2964,
+     -36,
+     3036,
+     36
+    ],
+    "y": 0,
+    "scale": 1.0,
+    "n": [
+     {
+      "at": 0,
+      "n": 180
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 0
+      },
+      "n": 180
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0
+      },
+      "n": 900
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 1.0
+      },
+      "n": 2600
+     },
+     {
+      "at": {
+       "scene": "s6",
+       "word": "hundred."
+      },
+      "n": 9000
+     }
+    ]
+   },
+   {
+    "type": "box",
+    "pos": [
+     3000,
+     0,
+     0
+    ],
+    "w": 76,
+    "h": 0.2,
+    "d": 76,
+    "color": "#6e6c66"
+   }
+  ],
+  "camera": [
+   {
+    "at": 0,
+    "pos": [
+     -70,
+     22,
+     60
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s1",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     -52,
+     14,
+     48
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 0
+    },
+    "pos": [
+     40,
+     14,
+     66
+    ],
+    "look": [
+     2,
+     2,
+     0
+    ],
+    "fov": 38
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     46,
+     8,
+     56
+    ],
+    "look": [
+     2,
+     2,
+     0
+    ],
+    "fov": 38
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 0
+    },
+    "pos": [
+     2850,
+     60,
+     170
+    ],
+    "look": [
+     3000,
+     8,
+     0
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     2880,
+     50,
+     140
+    ],
+    "look": [
+     3000,
+     8,
+     0
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 0
+    },
+    "pos": [
+     2960,
+     3,
+     70
+    ],
+    "look": [
+     3000,
+     6,
+     0
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     2970,
+     4,
+     62
+    ],
+    "look": [
+     3000,
+     10,
+     0
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 0
+    },
+    "pos": [
+     3030,
+     12,
+     60
+    ],
+    "look": [
+     3000,
+     1,
+     0
+    ],
+    "fov": 48
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     3020,
+     9,
+     50
+    ],
+    "look": [
+     3000,
+     1,
+     0
+    ],
+    "fov": 48
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 0
+    },
+    "pos": [
+     3002,
+     44,
+     2
+    ],
+    "look": [
+     3000,
+     0,
+     0
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "word": "hundred."
+    },
+    "pos": [
+     3001,
+     24,
+     1
+    ],
+    "look": [
+     3000,
+     0,
+     0
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     3001,
+     18,
+     1
+    ],
+    "look": [
+     3000,
+     0,
+     0
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 0
+    },
+    "pos": [
+     40,
+     12,
+     50
+    ],
+    "look": [
+     2,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     34,
+     8,
+     44
+    ],
+    "look": [
+     2,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 0
+    },
+    "pos": [
+     2994,
+     1.6,
+     10
+    ],
+    "look": [
+     3000,
+     1.2,
+     0
+    ],
+    "fov": 56,
+    "shake": 0.12
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "word": "squeezed",
+     "offset": -0.1
+    },
+    "pos": [
+     2997,
+     1.5,
+     5
+    ],
+    "look": [
+     3000,
+     1.2,
+     0
+    ],
+    "fov": 60,
+    "shake": 0.25
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     2999,
+     1.4,
+     2.5
+    ],
+    "look": [
+     3000,
+     1.2,
+     0
+    ],
+    "fov": 64,
+    "shake": 0.3
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "t": 0
+    },
+    "pos": [
+     58,
+     16,
+     60
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "t": 1.0
+    },
+    "pos": [
+     34,
+     22,
+     76
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s12",
+     "t": 1.0,
+     "offset": 0.5
+    },
+    "pos": [
+     14,
+     20,
+     82
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   }
+  ]
+ },
+ "title": "Doomsday: Friday 13 November 2026",
+ "scenes": [
+  {
+   "narration": "In 1960, three scientists published an equation in Science magazine. Its title: Doomsday, Friday, 13 November, 2026. That is tomorrow.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Science, 1960",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "DOOMSDAY: FRIDAY 13 NOV 2026",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Doomsday,"
+    }
+   ],
+   "id": "s1"
+  },
+  {
+   "narration": "Not an asteroid. Not a war. Us. The maths said the human population was growing faster and faster, and on that Friday the number of people on Earth would reach infinity.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "counter",
+     "from": 0.3,
+     "to": 3.0,
+     "prefix": "",
+     "suffix": " billion in 1960",
+     "grouping": "western",
+     "decimals": 1,
+     "count_dur": 3.0,
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "growing",
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "Population: infinity",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "infinity."
+    }
+   ],
+   "id": "s2"
+  },
+  {
+   "narration": "So let's play it out. Suppose the equation was right.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "What if it were true?",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2
+    }
+   ],
+   "id": "s3"
+  },
+  {
+   "narration": "By the 1990s there are 12 billion of us. Cities swallow the farms, the forests, the rivers. There is nowhere left to grow food.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "1990s",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "counter",
+     "from": 6,
+     "to": 12,
+     "prefix": "",
+     "suffix": " billion people",
+     "grouping": "western",
+     "decimals": 1,
+     "count_dur": 2.5,
+     "x": 0.5,
+     "y": 0.22,
+     "size": 0.05,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "12",
+     "until": 99
+    }
+   ],
+   "id": "s4"
+  },
+  {
+   "narration": "By 2010, 60 billion. The oceans are fished empty. Water is rationed by the cup. Every roof, every road, every field is covered in people.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "2010",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "counter",
+     "from": 12,
+     "to": 60,
+     "prefix": "",
+     "suffix": " billion people",
+     "grouping": "western",
+     "decimals": 0,
+     "count_dur": 2.5,
+     "x": 0.5,
+     "y": 0.22,
+     "size": 0.05,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "60",
+     "until": 99
+    }
+   ],
+   "id": "s5"
+  },
+  {
+   "narration": "By 2020, a trillion. One person per square metre of land. Then ten. Then a hundred. The crowd becomes a single mass, moving as one.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "2020",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "counter",
+     "from": 60,
+     "to": 1000,
+     "prefix": "",
+     "suffix": " billion people",
+     "grouping": "western",
+     "decimals": 0,
+     "count_dur": 2.5,
+     "x": 0.5,
+     "y": 0.22,
+     "size": 0.05,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "trillion.",
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "1 person per m²",
+     "x": 0.5,
+     "y": 0.29,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "One",
+     "until": 99
+    }
+   ],
+   "id": "s6"
+  },
+  {
+   "narration": "The last week. The weight of humanity outweighs the oceans. The heat of our bodies alone warms the planet like a furnace.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "November 2026",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "Humans outweigh the oceans",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "outweighs"
+    }
+   ],
+   "id": "s7"
+  },
+  {
+   "narration": "Friday, 13 November, 2026. Infinity. In the paper's own words, humanity is squeezed to death.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "FRIDAY 13 NOV 2026",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2
+    },
+    {
+     "type": "text",
+     "text": "∞ people",
+     "x": 0.5,
+     "y": 0.21,
+     "size": 0.07,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Infinity."
+    },
+    {
+     "type": "text",
+     "text": "“squeezed to death”",
+     "x": 0.5,
+     "y": 0.3,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "squeezed"
+    }
+   ],
+   "id": "s8"
+  },
+  {
+   "narration": "Here is what really happened. World population growth peaked in 1963, at 2.2 percent a year. Today it is 0.8. We are 8.2 billion, not infinite.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Growth peaked in 1963: 2.2% a year",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "peaked"
+    },
+    {
+     "type": "text",
+     "text": "2026: 0.8% a year",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "0.8."
+    },
+    {
+     "type": "counter",
+     "from": 3.0,
+     "to": 8.2,
+     "prefix": "",
+     "suffix": " billion people",
+     "grouping": "western",
+     "decimals": 1,
+     "count_dur": 2.0,
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.05,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "8.2"
+    }
+   ],
+   "id": "s9"
+  },
+  {
+   "narration": "Run the equation backwards and the first human is born 200 billion years ago, before the universe existed. The authors admitted it was partly a joke.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "First human: 200 billion years ago?",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "200"
+    },
+    {
+     "type": "text",
+     "text": "Universe: 13.8 billion years old",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "universe"
+    }
+   ],
+   "id": "s10"
+  },
+  {
+   "narration": "So tomorrow, the world does not end. But the question the paper asked still stands: how many of us can one planet hold?",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Not the end of the world",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "not"
+    },
+    {
+     "type": "text",
+     "text": "How many can one planet hold?",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "how"
+    }
+   ],
+   "id": "s11"
+  },
+  {
+   "narration": "Follow for more true stories.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [],
+   "id": "s12"
+  }
+ ]
+}
