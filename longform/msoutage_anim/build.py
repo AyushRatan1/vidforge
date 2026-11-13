@@ -83,7 +83,7 @@ SCENES = [
            W3, T("Reality check", y=0.13, red=False, size=0.044, until=99), T("Outages last hours, not weeks", at_word="hours,", y=0.2),
            T("Servers returning, 13 Nov", at_word="coming", y=0.27, red=False, size=0.04)), id="s10"),
     dict(S("But it shows how much of the world runs through one company. Keep a backup: important files offline, and key numbers written down.",
-           W3, T("One company, half the world's work", at_word="world", y=0.13, red=False, size=0.04), T("Keep a backup", at_word="backup:", y=0.2)), id="s11"),
+           W3, T("So much runs through one company", at_word="world", y=0.13, red=False, size=0.04), T("Keep a backup", at_word="backup:", y=0.2)), id="s11"),
     dict(S("Follow for more true stories.", W3), id="s12"),
 ]
 
