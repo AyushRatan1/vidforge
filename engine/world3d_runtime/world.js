@@ -1622,6 +1622,13 @@ KIT.airliner = (o) => {
     caps.push(cap);
   }
   g.traverse((m) => { if (m.isMesh) { m.castShadow = false; m.receiveShadow = false; } });
+  if (o.gear) {
+    const gm = mat("#9a9ea4"), tm = mat("#1b1d20");
+    for (const [x, z, n] of [[0, L * 0.36, 1], [-0.42, -0.25, 2], [0.42, -0.25, 2]]) {
+      const st = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.36, 6), gm); st.position.set(x, -0.42, z); g.add(st);
+      for (let w = 0; w < n; w++) { const wh = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.085, 0.07, 12), tm); wh.rotation.z = Math.PI / 2; wh.position.set(x + (n === 2 ? (w ? 0.05 : -0.05) : 0), -0.6, z); g.add(wh); }
+    }
+  }
   const sc = num(o.scale, 1);
   g.scale.setScalar(sc);
   g.userData.tick = (t) => {
@@ -2102,9 +2109,11 @@ KIT.earth = (o) => {
   const W = 1024, H = 512, c = document.createElement("canvas"); c.width = W; c.height = H;
   const ctx = c.getContext("2d"), img = ctx.createImageData(W, H), n = vnoise(num(o.seed, 3), 8), n2 = vnoise(num(o.seed, 3) + 9, 24);
   const sea = [26, 70, 120], shelf = [40, 110, 150], land = [96, 128, 62], dry = [168, 150, 96], ice = [236, 240, 244];
+  const hmap = new Float32Array(W * H);
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
     const lat = (y / H - 0.5) * 2, u = x / W * 8, v = y / H * 4, u2 = x / W * 24, v2 = y / H * 12;
     const h = n(u, v) + 0.18 * n2(u2, v2) - 0.09 - 0.25 * Math.pow(Math.abs(lat), 6);
+    hmap[y * W + x] = h;
     let col;
     if (Math.abs(lat) > 0.86 + 0.06 * n2(u2, 1)) col = ice;
     else if (h > 0.52) col = lerp3(land, dry, clamp((n2(u2 / 3, v2 / 3) - 0.35) * 2.2 + Math.abs(lat) * 0.4));
@@ -2116,6 +2125,30 @@ KIT.earth = (o) => {
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
   const mt = new THREE.MeshLambertMaterial({ map: tex });
   const sph = new THREE.Mesh(new THREE.SphereGeometry(R, 64, 40), mt); g.add(sph);
+  // network: o.arcs {count, seed, color, power: [{at, p}]} draws glowing links between land points with pulses running
+  // along them; power is the share of links alive (0..1), so the network can go dark and come back
+  const arcs = [];
+  const toXYZ = (x, y, rr) => { const phi = x / W * 2 * Math.PI, th = y / H * Math.PI; return new THREE.Vector3(-rr * Math.cos(phi) * Math.sin(th), rr * Math.cos(th), rr * Math.sin(phi) * Math.sin(th)); };
+  if (o.arcs) {
+    const A = o.arcs, ra = rng(num(A.seed, 31)), NA = num(A.count, 36), col = A.color || "#7fd4ff";
+    const pts = []; let guard = 0;
+    while (pts.length < NA * 0.7 && guard++ < 20000) { const x = Math.floor(ra() * W), y = Math.floor(H * (0.18 + ra() * 0.6)); if (hmap[y * W + x] > 0.53) pts.push([x, y]); }
+    for (const [x, y] of pts) { const d = glow(A.city || "#ffd27a", R * 0.07); d.position.copy(toXYZ(x, y, R * 1.004)); d.material.opacity = 0.9; sph.add(d); arcs.push({ dot: d, thr: ra() }); }
+    for (let k = 0; k < NA && pts.length > 1; k++) {
+      const a = pts[Math.floor(ra() * pts.length)], b = pts[Math.floor(ra() * pts.length)];
+      const pa = toXYZ(a[0], a[1], 1), pb = toXYZ(b[0], b[1], 1), ang = pa.angleTo(pb);
+      if (ang < 0.3 || ang > 1.5) { k--; if (++guard > 40000) break; continue; }
+      const cps = [];
+      for (let s = 0; s <= 40; s++) { const u = s / 40, q = new THREE.Vector3().copy(pa).lerp(pb, u).normalize(); cps.push(q.multiplyScalar(R * (1.006 + 0.13 * ang * Math.sin(Math.PI * u)))); }
+      const curve = new THREE.CatmullRomCurve3(cps);
+      const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 48, R * 0.0035, 4, false), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.8, depthWrite: false, blending: THREE.AdditiveBlending }));
+      sph.add(tube);
+      const pulse = glow("#ffffff", R * 0.05); sph.add(pulse);
+      arcs.push({ tube, pulse, curve, thr: ra(), ph: ra(), sp: 0.25 + ra() * 0.35 });
+    }
+  }
+  const powerKeys = ((o.arcs && o.arcs.power) || [{ at: 0, p: 1 }]).map((k) => ({ at: num(k.at, 0), p: num(k.p, 1) })).sort((a, b) => a.at - b.at);
+  const powerAt = (t) => { let i = 0; while (i < powerKeys.length - 1 && t > powerKeys[i + 1].at) i++; const a = powerKeys[i], b = powerKeys[Math.min(i + 1, powerKeys.length - 1)]; return lerp(a.p, b.p, b === a ? 0 : clamp((t - a.at) / Math.max(1e-6, b.at - a.at))); };
   // clouds
   const cc = document.createElement("canvas"); cc.width = W; cc.height = H; const cx = cc.getContext("2d"), ci = cx.createImageData(W, H), n3 = vnoise(num(o.seed, 3) + 77, 10);
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const a = clamp((n3(x / W * 10, y / H * 5, 6) - 0.5) * 3.2); const k = 4 * (y * W + x); ci.data[k] = ci.data[k + 1] = ci.data[k + 2] = 255; ci.data[k + 3] = Math.round(a * 170); }
@@ -2132,6 +2165,16 @@ KIT.earth = (o) => {
     sph.rotation.y = t * spin; clouds.rotation.y = t * spin * 1.3; g.rotation.z = num(o.tilt, 23) * DEG;
     const w = warmAt(t);
     mt.color.setRGB(1, 1 - w * 0.55, 1 - w * 0.8); clouds.material.opacity = 1 - w * 0.6; halo.material.color.set(o.halo || "#6fb1ff").lerp(C2.set("#ff7a3a"), w);
+    if (arcs.length) {
+      const p = powerAt(t);
+      for (const a of arcs) {
+        const edge = Math.abs(a.thr - p) < 0.06, flick = edge ? (Math.sin(t * 47 + a.thr * 90) > 0 ? 1 : 0.15) : 1;
+        const on = a.thr < p ? flick : (edge ? flick * 0.3 : 0);
+        if (a.dot) { a.dot.material.opacity = 0.15 + 0.8 * on; continue; }
+        a.tube.material.opacity = 0.03 + 0.75 * on;
+        a.pulse.visible = on > 0.5; if (a.pulse.visible) a.pulse.position.copy(a.curve.getPointAt((t * a.sp + a.ph) % 1));
+      }
+    }
   };
   g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
   return g;
@@ -2208,7 +2251,75 @@ KIT.crowd = (o) => {
   g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
   return g;
 };
-for (const k of ["stars", "earth", "towers", "crowd"]) FLIGHT_KIT.add(k);
+for (const k of ["stars", "earth", "towers", "crowd", "racks"]) FLIGHT_KIT.add(k);
+// racks: a data-centre aisle running from o.pos towards -z, rows of server racks either side with status LEDs.
+// o.health [{at, h}] is the share of racks up (0..1): healthy racks blink green and blue, failed ones glow red, and a
+// red alarm light pulses when health is low. o.count racks per side.
+KIT.racks = (o) => {
+  const g = new THREE.Group(), r = rng(num(o.seed, 41)), NR = num(o.count, 14), RW = 0.72, RH = 2.3, RD = 1.15, AIS = num(o.aisle, 1.6);
+  const L = NR * RW;
+  g.add(box(AIS + 2 * RD + 1.2, 0.05, L + 2, mat("#2a2f36"), 0, -0.025, -L / 2));
+  // floor tiles
+  const ft = document.createElement("canvas"); ft.width = ft.height = 64; const fx = ft.getContext("2d"); fx.fillStyle = "#3a4048"; fx.fillRect(0, 0, 64, 64); fx.strokeStyle = "#20252b"; fx.lineWidth = 3; fx.strokeRect(0, 0, 64, 64);
+  for (let k = 0; k < 9; k++) { fx.fillStyle = "#2c3238"; fx.fillRect(6 + (k % 3) * 20, 6 + Math.floor(k / 3) * 20, 8, 8); }
+  const ftex = new THREE.CanvasTexture(ft); ftex.wrapS = ftex.wrapT = THREE.RepeatWrapping; ftex.repeat.set((AIS + 2 * RD + 1.2) / 0.6, (L + 2) / 0.6);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(AIS + 2 * RD + 1.2, L + 2), new THREE.MeshLambertMaterial({ map: ftex }));
+  floor.rotation.x = -Math.PI / 2; floor.position.set(0, 0.002, -L / 2); g.add(floor);
+  // the rack faces: a mesh grille texture
+  const gc = document.createElement("canvas"); gc.width = 64; gc.height = 192; const gx = gc.getContext("2d");
+  gx.fillStyle = "#14171b"; gx.fillRect(0, 0, 64, 192);
+  for (let y = 4; y < 192; y += 12) { gx.fillStyle = "#1f242a"; gx.fillRect(3, y, 58, 9); for (let x = 6; x < 58; x += 4) { gx.fillStyle = "#0c0e10"; gx.fillRect(x, y + 2, 2, 5); } }
+  const gtex = new THREE.CanvasTexture(gc);
+  const body = mat("#1a1e23"), face = new THREE.MeshLambertMaterial({ map: gtex });
+  const LEDS = [], PER = 22;
+  for (const side of [-1, 1]) for (let k = 0; k < NR; k++) {
+    const x = side * (AIS / 2 + RD / 2), z = -RW / 2 - k * RW;
+    g.add(box(RD, RH, RW * 0.96, body, x, RH / 2, z));
+    const f = new THREE.Mesh(new THREE.PlaneGeometry(RW * 0.86, RH * 0.94), face);
+    f.position.set(x - side * (RD / 2 + 0.003), RH / 2, z); f.rotation.y = side > 0 ? -Math.PI / 2 : Math.PI / 2; g.add(f);
+    const thr = r();
+    for (let q = 0; q < PER; q++) LEDS.push({ x: x - side * (RD / 2 + 0.01), y: 0.18 + (q % 11) * (RH - 0.36) / 10, z: z + (q < 11 ? -0.22 : 0.22) * RW, thr, ph: r() * 6.283, sp: 2 + r() * 9, blue: r() < 0.3 });
+  }
+  const ledM = new THREE.InstancedMesh(new THREE.SphereGeometry(0.022, 6, 4), new THREE.MeshBasicMaterial({ color: "#ffffff" }), LEDS.length);
+  ledM.frustumCulled = false; g.add(ledM);
+  const halo = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.16, 0.16), new THREE.MeshBasicMaterial({ color: "#ffffff", map: glowTex(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.6 }), LEDS.length);
+  halo.frustumCulled = false; g.add(halo);
+  // ceiling: cable trays and light strips
+  for (const sx of [-1, 1]) g.add(box(0.5, 0.08, L + 1, mat("#5a6068"), sx * (AIS / 2 + RD / 2), RH + 0.35, -L / 2));
+  const strips = [];
+  for (let k = 0; k < NR; k += 2) { const s = box(0.12, 0.04, RW * 1.6, new THREE.MeshBasicMaterial({ color: "#e8f2ff" }), 0, RH + 0.75, -RW - k * RW); g.add(s); strips.push(s); }
+  const lights = [];
+  for (let k = 0; k < 3; k++) { const pl = new THREE.PointLight("#cfe4ff", 6, 9, 1.4); pl.position.set(0, RH + 0.5, -L * (k + 0.5) / 3); g.add(pl); lights.push(pl); }
+  const alarm = new THREE.PointLight("#ff2a2a", 0, 14, 1.2); alarm.position.set(0, RH + 0.2, -L * 0.5); g.add(alarm);
+  const beacon = glow("#ff3a2a", 0.9); beacon.position.set(0, RH + 0.55, -0.4); g.add(beacon);
+  const p0 = vec(o.pos); g.position.set(p0[0], p0[1], p0[2]); g.rotation.y = num(o.heading, 0) * DEG; g.userData.abs = true;
+  const hk = (o.health || [{ at: 0, h: 1 }]).map((k) => ({ at: num(k.at, 0), h: num(k.h, 1) })).sort((a, b) => a.at - b.at);
+  const healthAt = (t) => { let i = 0; while (i < hk.length - 1 && t > hk[i + 1].at) i++; const a = hk[i], b = hk[Math.min(i + 1, hk.length - 1)]; return lerp(a.h, b.h, b === a ? 0 : clamp((t - a.at) / Math.max(1e-6, b.at - a.at))); };
+  const M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3(1, 1, 1), V = new THREE.Vector3(), CL = new THREE.Color(), E = new THREE.Euler();
+  const GREEN = new THREE.Color("#38ff7a"), BLUE = new THREE.Color("#4ab8ff"), RED = new THREE.Color("#ff2a1a"), OFF = new THREE.Color("#101010");
+  g.userData.tick = (t) => {
+    const h = healthAt(t);
+    LEDS.forEach((l, k) => {
+      const up = l.thr < h, edge = Math.abs(l.thr - h) < 0.04;
+      let c, on;
+      if (up && !edge) { on = Math.sin(t * l.sp + l.ph) > -0.3 ? 1 : 0; c = l.blue ? BLUE : GREEN; }
+      else if (edge) { on = Math.sin(t * 31 + l.ph) > 0 ? 1 : 0; c = Math.sin(t * 7 + l.ph) > 0 ? GREEN : RED; }
+      else { on = Math.sin(t * 3.2 + l.thr * 20) > -0.6 ? 1 : 0.2; c = RED; }
+      CL.copy(OFF).lerp(c, on);
+      V.set(l.x, l.y, l.z); M.compose(V, Q, S); ledM.setMatrixAt(k, M); ledM.setColorAt(k, CL);
+      E.set(0, l.x < 0 ? Math.PI / 2 : -Math.PI / 2, 0); const q2 = new THREE.Quaternion().setFromEuler(E);
+      V.x += l.x < 0 ? 0.01 : -0.01; M.compose(V, q2, S); halo.setMatrixAt(k, M); halo.setColorAt(k, CL);
+    });
+    ledM.instanceMatrix.needsUpdate = halo.instanceMatrix.needsUpdate = true; ledM.instanceColor.needsUpdate = halo.instanceColor.needsUpdate = true;
+    const bad = clamp((0.75 - h) / 0.6), pulse = 0.5 + 0.5 * Math.sin(t * 6);
+    alarm.intensity = bad * pulse * 22; beacon.material.opacity = bad * (0.3 + 0.7 * pulse);
+    lights.forEach((pl) => { pl.intensity = 6 * (0.35 + 0.65 * h); });
+    strips.forEach((s) => s.material.color.setRGB(0.55 + 0.45 * h, 0.6 + 0.35 * h, 0.65 + 0.35 * h));
+  };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
 
 // ------------------------------------------------------------------ camera
 function makeCamera(keys, W, H) {

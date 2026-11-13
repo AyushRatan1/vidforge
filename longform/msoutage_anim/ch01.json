@@ -1,0 +1,1773 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.08,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "footage": "off",
+ "transition": "none",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.11,
+  "seed": 366
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.62,
+  "size": 0.08,
+  "max_words": 2,
+  "highlight": "#ffd54a",
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "world3d": {
+  "style": "night",
+  "terrain": false,
+  "env": [
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": 0
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s2",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#020305",
+    "sky": "#06080b",
+    "fog": [
+     6,
+     26
+    ],
+    "hemi": 0.2,
+    "ambient": 0.12,
+    "sun": 0.25,
+    "sun_color": "#9fb6d8",
+    "sun_dir": [
+     10,
+     60,
+     20
+    ],
+    "cloud": "#222222",
+    "ocean": "#111111",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s2",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#020305",
+    "sky": "#06080b",
+    "fog": [
+     6,
+     26
+    ],
+    "hemi": 0.2,
+    "ambient": 0.12,
+    "sun": 0.25,
+    "sun_color": "#9fb6d8",
+    "sun_dir": [
+     10,
+     60,
+     20
+    ],
+    "cloud": "#222222",
+    "ocean": "#111111",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s4",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s4",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s5",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#03050d",
+    "sky": "#14203a",
+    "fog": [
+     140,
+     620
+    ],
+    "hemi": 0.5,
+    "ambient": 0.25,
+    "sun": 0.6,
+    "sun_color": "#9fb2e0",
+    "sun_dir": [
+     -30,
+     50,
+     -40
+    ],
+    "cloud": "#3a4660",
+    "ocean": "#0b1a2a",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s5",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#03050d",
+    "sky": "#14203a",
+    "fog": [
+     140,
+     620
+    ],
+    "hemi": 0.5,
+    "ambient": 0.25,
+    "sun": 0.6,
+    "sun_color": "#9fb2e0",
+    "sun_dir": [
+     -30,
+     50,
+     -40
+    ],
+    "cloud": "#3a4660",
+    "ocean": "#0b1a2a",
+    "exposure": 1.05,
+    "at": {
+     "scene": "s6",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#7d8794",
+    "sky": "#c9ced4",
+    "fog": [
+     120,
+     560
+    ],
+    "hemi": 1.2,
+    "ambient": 0.55,
+    "sun": 1.0,
+    "sun_color": "#eef2f6",
+    "sun_dir": [
+     30,
+     60,
+     20
+    ],
+    "cloud": "#dde2e8",
+    "ocean": "#4a5a66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s6",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#7d8794",
+    "sky": "#c9ced4",
+    "fog": [
+     120,
+     560
+    ],
+    "hemi": 1.2,
+    "ambient": 0.55,
+    "sun": 1.0,
+    "sun_color": "#eef2f6",
+    "sun_dir": [
+     30,
+     60,
+     20
+    ],
+    "cloud": "#dde2e8",
+    "ocean": "#4a5a66",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s7",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#020305",
+    "sky": "#06080b",
+    "fog": [
+     6,
+     26
+    ],
+    "hemi": 0.2,
+    "ambient": 0.12,
+    "sun": 0.25,
+    "sun_color": "#9fb6d8",
+    "sun_dir": [
+     10,
+     60,
+     20
+    ],
+    "cloud": "#222222",
+    "ocean": "#111111",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s7",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#020305",
+    "sky": "#06080b",
+    "fog": [
+     6,
+     26
+    ],
+    "hemi": 0.2,
+    "ambient": 0.12,
+    "sun": 0.25,
+    "sun_color": "#9fb6d8",
+    "sun_dir": [
+     10,
+     60,
+     20
+    ],
+    "cloud": "#222222",
+    "ocean": "#111111",
+    "exposure": 1.1,
+    "at": {
+     "scene": "s8",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#1d1f3d",
+    "sky": "#d8683a",
+    "fog": [
+     160,
+     700
+    ],
+    "hemi": 1.3,
+    "ambient": 0.65,
+    "sun": 1.8,
+    "sun_color": "#ffb070",
+    "sun_dir": [
+     -80,
+     12,
+     20
+    ],
+    "cloud": "#e0a080",
+    "ocean": "#24364a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s8",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#1d1f3d",
+    "sky": "#d8683a",
+    "fog": [
+     160,
+     700
+    ],
+    "hemi": 1.3,
+    "ambient": 0.65,
+    "sun": 1.8,
+    "sun_color": "#ffb070",
+    "sun_dir": [
+     -80,
+     12,
+     20
+    ],
+    "cloud": "#e0a080",
+    "ocean": "#24364a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s9",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     3000,
+     6000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.18,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     20,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s9",
+     "t": 0
+    }
+   }
+  ],
+  "objects": [
+   {
+    "type": "stars",
+    "seed": 21,
+    "count": 2200,
+    "size": 1.6
+   },
+   {
+    "type": "earth",
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "r": 20,
+    "seed": 5,
+    "spin": 0.03,
+    "tilt": 20,
+    "arcs": {
+     "count": 46,
+     "seed": 31,
+     "color": "#7fd4ff",
+     "power": [
+      {
+       "at": 0,
+       "p": 1
+      },
+      {
+       "at": {
+        "scene": "s1",
+        "word": "broke,"
+       },
+       "p": 1
+      },
+      {
+       "at": {
+        "scene": "s1",
+        "word": "countries,"
+       },
+       "p": 0.12
+      },
+      {
+       "at": {
+        "scene": "s4",
+        "t": 0,
+        "offset": -0.012
+       },
+       "p": 0.12
+      },
+      {
+       "at": {
+        "scene": "s4",
+        "t": 0
+       },
+       "p": 1
+      },
+      {
+       "at": {
+        "scene": "s4",
+        "word": "What"
+       },
+       "p": 1
+      },
+      {
+       "at": {
+        "scene": "s4",
+        "t": 1.0
+       },
+       "p": 0.25
+      },
+      {
+       "at": {
+        "scene": "s9",
+        "t": 0
+       },
+       "p": 0.08
+      },
+      {
+       "at": {
+        "scene": "s9",
+        "t": 1.0
+       },
+       "p": 0.04
+      },
+      {
+       "at": {
+        "scene": "s10",
+        "t": 0
+       },
+       "p": 0.04
+      },
+      {
+       "at": {
+        "scene": "s10",
+        "word": "coming"
+       },
+       "p": 1
+      }
+     ]
+    }
+   },
+   {
+    "type": "racks",
+    "pos": [
+     2000,
+     0,
+     0
+    ],
+    "count": 14,
+    "seed": 41,
+    "health": [
+     {
+      "at": 0,
+      "h": 1
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "t": 0
+      },
+      "h": 1
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "word": "dropping"
+      },
+      "h": 0.95
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "t": 1.0
+      },
+      "h": 0.22
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "back."
+      },
+      "h": 0.75
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "fell"
+      },
+      "h": 0.72
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "again."
+      },
+      "h": 0.15
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "t": 0
+      },
+      "h": 0.06
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "t": 1.0
+      },
+      "h": 0.0
+     }
+    ]
+   },
+   {
+    "type": "box",
+    "pos": [
+     3000,
+     -0.5,
+     0
+    ],
+    "w": 900,
+    "h": 1,
+    "d": 900,
+    "color": "#9aa0a8"
+   },
+   {
+    "type": "towers",
+    "seed": 12,
+    "count": 90,
+    "area": [
+     2840,
+     -160,
+     3160,
+     160
+    ],
+    "lit": 0.6,
+    "glow": 0.85
+   },
+   {
+    "type": "box",
+    "pos": [
+     3000,
+     0,
+     0
+    ],
+    "w": 70,
+    "h": 0.2,
+    "d": 70,
+    "color": "#d8d0c0"
+   },
+   {
+    "type": "crowd",
+    "seed": 16,
+    "count": 1400,
+    "area": [
+     2972,
+     -28,
+     3028,
+     28
+    ],
+    "scale": 1.0
+   },
+   {
+    "type": "box",
+    "pos": [
+     4000,
+     -0.5,
+     0
+    ],
+    "w": 600,
+    "h": 1,
+    "d": 600,
+    "color": "#61656b"
+   },
+   {
+    "type": "box",
+    "pos": [
+     4000,
+     0,
+     -38
+    ],
+    "w": 150,
+    "h": 12,
+    "d": 18,
+    "color": "#b9c0c8"
+   },
+   {
+    "type": "box",
+    "pos": [
+     4000,
+     6,
+     -28.9
+    ],
+    "w": 150,
+    "h": 7,
+    "d": 0.3,
+    "color": "#2f4a66"
+   },
+   {
+    "type": "airliner",
+    "scale": 3,
+    "gear": true,
+    "lights": false,
+    "livery": 0,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       3964,
+       2.055,
+       -6
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     },
+     {
+      "at": 1,
+      "pos": [
+       3964,
+       2.055,
+       -6
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "airliner",
+    "scale": 3,
+    "gear": true,
+    "lights": false,
+    "livery": 1,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       3990,
+       2.055,
+       -9
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     },
+     {
+      "at": 1,
+      "pos": [
+       3990,
+       2.055,
+       -9
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "airliner",
+    "scale": 3,
+    "gear": true,
+    "lights": false,
+    "livery": 2,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       4016,
+       2.055,
+       -6
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     },
+     {
+      "at": 1,
+      "pos": [
+       4016,
+       2.055,
+       -6
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "airliner",
+    "scale": 3,
+    "gear": true,
+    "lights": false,
+    "livery": 3,
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       4042,
+       2.055,
+       -9
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     },
+     {
+      "at": 1,
+      "pos": [
+       4042,
+       2.055,
+       -9
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "crowd",
+    "seed": 17,
+    "count": 500,
+    "area": [
+     3940,
+     -27,
+     4060,
+     -21
+    ],
+    "scale": 1.0
+   }
+  ],
+  "camera": [
+   {
+    "at": 0,
+    "pos": [
+     -18,
+     16,
+     70
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s1",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     -8,
+     12,
+     62
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 0
+    },
+    "pos": [
+     2000.2,
+     1.5,
+     2.2
+    ],
+    "look": [
+     2000,
+     1.3,
+     -10
+    ],
+    "fov": 58
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     2000.1,
+     1.4,
+     -0.8
+    ],
+    "look": [
+     2000,
+     1.2,
+     -10
+    ],
+    "fov": 58
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 0
+    },
+    "pos": [
+     1999.5,
+     0.6,
+     -2.5
+    ],
+    "look": [
+     2001.4,
+     1.4,
+     -6
+    ],
+    "fov": 60
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     1999.6,
+     0.7,
+     -4.5
+    ],
+    "look": [
+     2001.4,
+     1.4,
+     -8
+    ],
+    "fov": 60
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 0
+    },
+    "pos": [
+     44,
+     14,
+     62
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     36,
+     12,
+     58
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 0
+    },
+    "pos": [
+     2968,
+     2.5,
+     44
+    ],
+    "look": [
+     3010,
+     26,
+     -40
+    ],
+    "fov": 54
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     2974,
+     3,
+     36
+    ],
+    "look": [
+     3010,
+     30,
+     -40
+    ],
+    "fov": 54
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 0
+    },
+    "pos": [
+     3044,
+     22,
+     60
+    ],
+    "look": [
+     3000,
+     6,
+     -30
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     3034,
+     18,
+     50
+    ],
+    "look": [
+     3000,
+     6,
+     -30
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 0
+    },
+    "pos": [
+     2000.3,
+     2.1,
+     1.8
+    ],
+    "look": [
+     2000,
+     1.0,
+     -9
+    ],
+    "fov": 56,
+    "shake": 0.03
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     2000.2,
+     1.8,
+     -1.5
+    ],
+    "look": [
+     2000,
+     1.0,
+     -9
+    ],
+    "fov": 56,
+    "shake": 0.03
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 0
+    },
+    "pos": [
+     3944,
+     14,
+     30
+    ],
+    "look": [
+     3992,
+     2,
+     -10
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     3956,
+     11,
+     24
+    ],
+    "look": [
+     3996,
+     2,
+     -10
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "t": 0
+    },
+    "pos": [
+     -30,
+     10,
+     62
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     -24,
+     8,
+     58
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "t": 0
+    },
+    "pos": [
+     40,
+     16,
+     60
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s11",
+     "t": 1.0
+    },
+    "pos": [
+     20,
+     22,
+     74
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s12",
+     "t": 1.0,
+     "offset": 0.5
+    },
+    "pos": [
+     10,
+     22,
+     80
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   }
+  ]
+ },
+ "title": "What if Microsoft never came back?",
+ "scenes": [
+  {
+   "narration": "On Thursday night, Microsoft broke. Outlook, Teams and Copilot went down in 74 countries, for more than ten hours. Now imagine it never came back.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Microsoft outage",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "12 November 2026",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "74 countries",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "74"
+    },
+    {
+     "type": "text",
+     "text": "10+ hours",
+     "x": 0.5,
+     "y": 0.34,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "ten"
+    }
+   ],
+   "id": "s1"
+  },
+  {
+   "narration": "Inside Microsoft's data centres, servers started dropping out, and the ones left standing buckled under the extra load.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Servers dropping out",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "dropping"
+    }
+   ],
+   "id": "s2"
+  },
+  {
+   "narration": "Engineers brought them back. The moment traffic hit them, they fell over again. A process that sets up secure connections was overwhelmed.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Fixed...",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "back."
+    },
+    {
+     "type": "text",
+     "text": "...then down again",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "fell"
+    },
+    {
+     "type": "text",
+     "text": "Cause: secure connections overloaded",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "process"
+    }
+   ],
+   "id": "s3"
+  },
+  {
+   "narration": "Over 450 million people pay for Microsoft 365 at work. So let's play it out. What if the fix never worked?",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "counter",
+     "from": 0,
+     "to": 450,
+     "suffix": " million paid users",
+     "grouping": "western",
+     "count_dur": 2.0,
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "450"
+    },
+    {
+     "type": "text",
+     "text": "What if it never came back?",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "What"
+    }
+   ],
+   "id": "s4"
+  },
+  {
+   "narration": "Hour one. Emails stop arriving. Teams calls freeze mid sentence. Login codes don't come through, so people get locked out of other apps too.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "WHAT IF",
+     "x": 0.5,
+     "y": 0.065,
+     "size": 0.034,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.05
+    },
+    {
+     "type": "text",
+     "text": "HOUR 1",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "Outlook: can't connect",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Emails"
+    },
+    {
+     "type": "text",
+     "text": "Teams: reconnecting...",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Teams"
+    },
+    {
+     "type": "text",
+     "text": "Login codes failing",
+     "x": 0.5,
+     "y": 0.34,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Login"
+    }
+   ],
+   "id": "s5"
+  },
+  {
+   "narration": "Day one. Offices go quiet. Invoices, contracts and payroll sit in inboxes no one can open. Schools can't reach parents.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "WHAT IF",
+     "x": 0.5,
+     "y": 0.065,
+     "size": 0.034,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.05
+    },
+    {
+     "type": "text",
+     "text": "DAY 1",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "Payroll stuck in inboxes",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "payroll"
+    },
+    {
+     "type": "text",
+     "text": "Schools can't reach parents",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Schools"
+    }
+   ],
+   "id": "s6"
+  },
+  {
+   "narration": "Day three. Now suppose it spreads to Azure, Microsoft's cloud. Bank portals, airline check-ins and hospital systems built on it start failing.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "WHAT IF",
+     "x": 0.5,
+     "y": 0.065,
+     "size": 0.034,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.05
+    },
+    {
+     "type": "text",
+     "text": "DAY 3",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "Azure down too?",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Azure,"
+    },
+    {
+     "type": "text",
+     "text": "Banks, airlines, hospitals",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Bank"
+    }
+   ],
+   "id": "s7"
+  },
+  {
+   "narration": "We have seen a preview. In July 2024, one bad CrowdStrike update crashed 8.5 million Windows computers. Flights were grounded. One morning cost Fortune 500 companies 5.4 billion dollars.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Real: CrowdStrike, July 2024",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "8.5 million PCs crashed",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "8.5"
+    },
+    {
+     "type": "text",
+     "text": "$5.4 billion in one morning",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "5.4"
+    }
+   ],
+   "id": "s8"
+  },
+  {
+   "narration": "Day seven. A week of this would cost many times more. Companies fall back to paper, phone calls and USB drives.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "WHAT IF",
+     "x": 0.5,
+     "y": 0.065,
+     "size": 0.034,
+     "color": "#ffd54a",
+     "bg": "#14181f",
+     "bg_alpha": 0.85,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.05
+    },
+    {
+     "type": "text",
+     "text": "DAY 7",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "Back to paper",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "paper,"
+    }
+   ],
+   "id": "s9"
+  },
+  {
+   "narration": "In reality, that is very unlikely. Microsoft runs data centres across dozens of regions, and even big outages last hours, not weeks. By Friday morning, servers were coming back.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Reality check",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "Outages last hours, not weeks",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "hours,"
+    },
+    {
+     "type": "text",
+     "text": "Servers returning, 13 Nov",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "coming"
+    }
+   ],
+   "id": "s10"
+  },
+  {
+   "narration": "But it shows how much of the world runs through one company. Keep a backup: important files offline, and key numbers written down.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "One company, half the world's work",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.04,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "world"
+    },
+    {
+     "type": "text",
+     "text": "Keep a backup",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "backup:"
+    }
+   ],
+   "id": "s11"
+  },
+  {
+   "narration": "Follow for more true stories.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [],
+   "id": "s12"
+  }
+ ]
+}
