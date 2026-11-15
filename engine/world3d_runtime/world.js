@@ -1374,7 +1374,7 @@ function fillEnv(keys, style) {
 function makeEnv(world, style) {
   const keys = fillEnv((world.env || []).slice().sort((a, b) => num(a.at, 0) - num(b.at, 0)), style);
   if (!keys.length) return null;
-  const geo = new THREE.SphereGeometry(380, 32, 16);
+  const geo = new THREE.SphereGeometry(0.95 * num(world.far, 400), 32, 16);
   geo.setAttribute("color", new THREE.BufferAttribute(new Float32Array(geo.attributes.position.count * 3), 3));
   const dome = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide, fog: false, depthWrite: false }));
   dome.renderOrder = -10;
@@ -2156,6 +2156,7 @@ KIT.earth = (o) => {
   const ctex = new THREE.CanvasTexture(cc);
   const clouds = new THREE.Mesh(new THREE.SphereGeometry(R * 1.015, 48, 32), new THREE.MeshLambertMaterial({ map: ctex, transparent: true, depthWrite: false })); g.add(clouds);
   const halo = glow(o.halo || "#6fb1ff", R * 2.7); halo.material.opacity = 0.55; halo.material.depthWrite = false; g.add(halo);
+  if (o.halo === false) halo.visible = false;
   // city lights on the night side are faked by a faint warm sprite on the far hemisphere: skipped for simplicity
   const p0 = vec(o.pos); g.position.set(p0[0], p0[1], p0[2]); g.userData.abs = true;
   const tint = (o.tint || []).map((k) => ({ at: num(k.at, 0), warm: num(k.warm, 0) })).sort((a, b) => a.at - b.at);
@@ -2252,6 +2253,218 @@ KIT.crowd = (o) => {
   return g;
 };
 for (const k of ["stars", "earth", "towers", "crowd", "racks"]) FLIGHT_KIT.add(k);
+
+// ---------------- rocket kit: Starship and Super Heavy, the launch tower with its catch arms, a launch mount, the
+// launch plume, Starlink satellites. Units are metres. A rocket's nose points along local +z (like the airliner), its
+// heat-shielded belly faces local -y, its flaps stick out along +-x: on a track, pitch 90 stands it upright and pitch 0
+// lays it belly-down for the belly-flop fall.
+function keyed(list, field, dflt) {
+  const ks = (list || []).map((k) => ({ at: num(k.at, 0), v: num(k[field], dflt) })).sort((a, b) => a.at - b.at);
+  return (t) => {
+    if (!ks.length) return dflt;
+    let i = 0; while (i < ks.length - 1 && t > ks[i + 1].at) i++;
+    const a = ks[i], b = ks[Math.min(i + 1, ks.length - 1)];
+    return lerp(a.v, b.v, b === a ? 0 : easeInOut(clamp((t - a.at) / Math.max(1e-6, b.at - a.at))));
+  };
+}
+let TILE_TEX = null;
+function tilesTex() {
+  if (TILE_TEX) return TILE_TEX;
+  const c = document.createElement("canvas"); c.width = c.height = 256; const x = c.getContext("2d"), r = rng(91);
+  x.fillStyle = "#0d0e10"; x.fillRect(0, 0, 256, 256);
+  for (let j = 0; j < 16; j++) for (let i = 0; i < 17; i++) {
+    const v = 26 + Math.floor(r() * 18); x.fillStyle = `rgb(${v},${v},${v + 3})`;
+    x.fillRect(i * 16 + (j % 2) * 8 - 8 + 1, j * 16 + 1, 14, 14);
+  }
+  TILE_TEX = new THREE.CanvasTexture(c); TILE_TEX.wrapS = TILE_TEX.wrapT = THREE.RepeatWrapping;
+  return TILE_TEX;
+}
+function steelMat() { return new THREE.MeshPhongMaterial({ color: "#c3c8cf", specular: "#e2e6ec", shininess: 55 }); }
+
+// a rocket plume along -z from z0: an outer cone, a bright core, a glow at the nozzles
+function makeFlame(R, len, z0) {
+  const g = new THREE.Group();
+  const mk = (rTip, rBase, l, color, op) => {
+    const geo = new THREE.CylinderGeometry(rTip, rBase, l, 24, 1, true); geo.rotateX(-Math.PI / 2); geo.translate(0, 0, z0 - l / 2);
+    const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color, transparent: true, opacity: op, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }));
+    g.add(m); return m;
+  };
+  const outer = mk(R * 1.6, R, len, "#ff9a3c", 0.55), core = mk(R * 0.35, R * 0.8, len * 0.55, "#fff1c8", 0.9);
+  const glw = glow("#ffd59a", R * 5); glw.position.z = z0 - R * 0.6; g.add(glw);
+  const set = (b, t) => {
+    g.visible = b > 0.01; if (!g.visible) return;
+    const fl = 0.9 + 0.1 * Math.sin(t * 53) * Math.sin(t * 17.3);
+    g.scale.set(1, 1, Math.max(0.05, b * fl));
+    outer.material.opacity = 0.55 * Math.min(1, b * 1.5); core.material.opacity = 0.9 * Math.min(1, b * 1.5); glw.material.opacity = Math.min(1, b * 1.5);
+  };
+  return { group: g, set };
+}
+
+// o.kind "ship" (52 m, six engines, flaps, heat shield, catch pins) or "booster" (71 m, 33 engines, grid fins);
+// o.burn [{at, b}] engine thrust 0..1; o.plasma [{at, p}] re-entry glow 0..1; o.flame scales the plume.
+KIT.starship = (o) => {
+  const g = new THREE.Group(), R = 4.5, ship = (o.kind || "ship") === "ship", L = ship ? 52 : 71;
+  const st = steelMat(), dark = mat("#2a2c30"), eng = mat("#3a3c42");
+  const bodyLen = ship ? L - 13 : L;
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(R, R, bodyLen, 48, 1, false), st);
+  body.rotation.x = Math.PI / 2; body.position.z = -L / 2 + bodyLen / 2; g.add(body);
+  // weld rings
+  for (let k = 1; k < bodyLen / 4; k++) { const ring = new THREE.Mesh(new THREE.TorusGeometry(R * 1.002, 0.04, 4, 48), mat("#9da3ab")); ring.position.z = -L / 2 + k * 4; g.add(ring); }
+  const tiles = new THREE.MeshLambertMaterial({ map: tilesTex() });
+  if (ship) {
+    const pts = []; for (let k = 0; k <= 16; k++) { const u = k / 16; pts.push(new THREE.Vector2(R * Math.sqrt(1 - u * u * 0.98) * (1 - 0.15 * u), u * 13)); }
+    const nose = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), st); nose.rotation.x = Math.PI / 2; nose.position.z = -L / 2 + bodyLen; g.add(nose);
+    // heat shield on the belly half: hull and nose
+    const tex = tilesTex().clone(); tex.needsUpdate = true; tex.repeat.set(6, bodyLen / 3);
+    const shield = new THREE.Mesh(new THREE.CylinderGeometry(R * 1.012, R * 1.012, bodyLen, 48, 1, true, -Math.PI * 0.55, Math.PI * 1.1), new THREE.MeshLambertMaterial({ map: tex }));
+    shield.rotation.x = Math.PI / 2; shield.position.z = body.position.z; g.add(shield);
+    const npts = pts.map((v) => new THREE.Vector2(v.x * 1.012, v.y));
+    const nshield = new THREE.Mesh(new THREE.LatheGeometry(npts, 48, -Math.PI * 0.55, Math.PI * 1.1), tiles); nshield.rotation.x = Math.PI / 2; nshield.position.z = nose.position.z; g.add(nshield);
+    // flaps: steel on top, tiled underneath
+    for (const sx of [-1, 1]) {
+      for (const [zc, span, len] of [[-L / 2 + 9, 6.2, 12], [L / 2 - 12, 3.6, 7]]) {
+        g.add(box(span, 0.45, len, st, sx * (R + span / 2 - 0.3), -0.6, zc));
+        g.add(box(span, 0.12, len, dark, sx * (R + span / 2 - 0.3), -0.88, zc));
+      }
+      g.add(box(0.7, 0.7, 0.5, mat("#8b9097"), sx * (R + 0.35), 0, L / 2 - 14));   // catch pin
+    }
+    for (const [rr, n, br, ph] of [[1.5, 3, 0.75, 0], [3.0, 3, 1.25, Math.PI / 3]]) for (let k = 0; k < n; k++) {
+      const a = ph + k * 2 * Math.PI / n, h = br * 2.2;
+      const bell = new THREE.Mesh(new THREE.CylinderGeometry(br * 0.35, br, h, 16, 1, true), new THREE.MeshLambertMaterial({ color: "#3a3c42", side: THREE.DoubleSide }));
+      bell.rotation.x = Math.PI / 2; bell.position.set(Math.cos(a) * rr, Math.sin(a) * rr, -L / 2 - h / 2 + 0.2); g.add(bell);
+    }
+  } else {
+    // hot-staging ring and cap, grid fins, engines
+    const ring = new THREE.Mesh(new THREE.CylinderGeometry(R * 1.01, R * 1.01, 3.2, 48, 1, false), mat("#34373c"));
+    ring.rotation.x = Math.PI / 2; ring.position.z = L / 2 - 1.6; g.add(ring);
+    for (let k = 0; k < 24; k++) { const a = k * Math.PI / 12; g.add(box(0.5, 0.5, 2.4, mat("#15171a"), Math.cos(a) * R * 1.02, Math.sin(a) * R * 1.02, L / 2 - 1.6)); }
+    const cap = new THREE.Mesh(new THREE.CircleGeometry(R, 40), mat("#5d6168")); cap.position.z = L / 2 + 0.01; g.add(cap);
+    for (let k = 0; k < 3; k++) {
+      const a = Math.PI / 2 + k * 2 * Math.PI / 3, fin = new THREE.Group();
+      fin.add(box(4.2, 0.6, 5.2, mat("#4a4e55"), 0, 0, 0));
+      for (let q = -1; q <= 1; q++) fin.add(box(4.3, 0.65, 0.18, mat("#2a2c30"), 0, 0, q * 1.6));
+      fin.position.set(Math.cos(a) * (R + 2.1), Math.sin(a) * (R + 2.1), L / 2 - 6); fin.rotation.z = a; g.add(fin);
+    }
+    for (const [rr, n, br] of [[0, 1, 0.65], [1.6, 2, 0.65], [2.75, 10, 0.6], [3.95, 20, 0.5]]) for (let k = 0; k < n; k++) {
+      const a = k * 2 * Math.PI / n + (rr > 3 ? 0.1 : 0), h = br * 2;
+      const bell = new THREE.Mesh(new THREE.CylinderGeometry(br * 0.4, br, h, 12, 1, true), new THREE.MeshLambertMaterial({ color: "#3a3c42", side: THREE.DoubleSide }));
+      bell.rotation.x = Math.PI / 2; bell.position.set(Math.cos(a) * rr, Math.sin(a) * rr, -L / 2 - h / 2 + 0.2); g.add(bell);
+    }
+  }
+  const fs = num(o.flame, 1);
+  const flame = makeFlame(ship ? 3.6 * fs : 4.6 * fs, (ship ? 30 : 55) * fs, -L / 2 - (ship ? 2 : 1.2)); g.add(flame.group);
+  // plasma: glowing sheath under the belly, streaming up and back
+  const pl = new THREE.Group(); g.add(pl);
+  const pr = rng(7), PS = [];
+  for (let k = 0; k < 26; k++) {
+    const s = glow(k % 3 ? "#ff7a3c" : "#ff4fa0", R * (2.2 + pr() * 2.4));
+    const base = new THREE.Vector3((pr() - 0.5) * R * 2.2, -R * (1.1 + pr() * 0.9), -L / 2 + pr() * L);
+    pl.add(s); PS.push({ s, base, ph: pr() * 6.283, up: pr() });
+  }
+  for (let k = 0; k < 18; k++) {
+    const s = glow("#ff8a50", R * (3 + k * 0.5)); const base = new THREE.Vector3((pr() - 0.5) * R * 3, R * (1 + k * 1.7), -L / 2 + pr() * L);
+    pl.add(s); PS.push({ s, base, ph: pr() * 6.283, up: 1 - k / 18, trail: true });
+  }
+  const plight = new THREE.PointLight("#ff7a3c", 0, 120, 1.5); plight.position.set(0, -R * 2, 0); g.add(plight);
+  if (o.marker) { const mk = glow(o.marker, num(o.marker_size, 30)); g.add(mk); }
+  g.scale.setScalar(num(o.scale, 1));
+  const burn = keyed(o.burn, "b", 0), plasma = keyed(o.plasma, "p", 0);
+  g.userData.tick = (t) => {
+    flame.set(burn(t), t);
+    const p = plasma(t); pl.visible = p > 0.01; plight.intensity = p * 2600;
+    if (pl.visible) PS.forEach((q) => {
+      const fl = 0.75 + 0.25 * Math.sin(t * 19 + q.ph);
+      q.s.position.copy(q.base); if (!q.trail) q.s.position.y += Math.sin(t * 7 + q.ph) * 0.4;
+      q.s.material.opacity = p * fl * (q.trail ? 0.35 * q.up : 0.85);
+    });
+  };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
+// tower: a lattice tower H m tall (base at o.pos), a carriage with two catch arms ("chopsticks") reaching out along
+// local +z from its front face. o.arms [{at, y, open}] sets the carriage height and how far each arm swings out (deg).
+// A rocket caught by the arms sits at tower-local (0, ., S/2 + 22).
+KIT.tower = (o) => {
+  const g = new THREE.Group(), H = num(o.h, 150), S = 14;
+  const lc = document.createElement("canvas"); lc.width = 128; lc.height = 128; const lx = lc.getContext("2d");
+  lx.clearRect(0, 0, 128, 128); lx.strokeStyle = "#5c6067"; lx.lineWidth = 9; lx.strokeRect(4, 4, 120, 120);
+  lx.lineWidth = 6; lx.beginPath(); lx.moveTo(6, 6); lx.lineTo(122, 122); lx.moveTo(122, 6); lx.lineTo(6, 122); lx.stroke();
+  const lt = new THREE.CanvasTexture(lc); lt.wrapS = lt.wrapT = THREE.RepeatWrapping; lt.repeat.set(1, H / S);
+  const lm = new THREE.MeshLambertMaterial({ map: lt, transparent: true, alphaTest: 0.4, side: THREE.DoubleSide });
+  for (const [x, z, ry] of [[0, S / 2, 0], [0, -S / 2, 0], [S / 2, 0, Math.PI / 2], [-S / 2, 0, Math.PI / 2]]) {
+    const f = new THREE.Mesh(new THREE.PlaneGeometry(S, H), lm); f.position.set(x, H / 2, z); f.rotation.y = ry; g.add(f);
+  }
+  const col = mat("#4b4f56");
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) g.add(box(1.4, H, 1.4, col, sx * S / 2, H / 2, sz * S / 2));
+  g.add(box(S + 3, 2.5, S + 3, col, 0, H + 1.25, 0));
+  g.add(box(2, 9, 2, mat("#7b8088"), 0, H + 6.5, 0));
+  const beacon = glow("#ff3b2a", 3); beacon.position.set(0, H + 11.5, 0); g.add(beacon);
+  // carriage and arms
+  const car = new THREE.Group(); g.add(car);
+  car.add(box(S + 3, 7, 3, mat("#3d4147"), 0, 0, S / 2 + 1.5));
+  const arm = (sx) => {
+    const piv = new THREE.Group(); piv.position.set(sx * (S / 2 - 0.5), 0, S / 2 + 2.5);
+    const a = new THREE.Group();
+    a.add(box(3, 4, 42, mat("#565b62"), 0, 0, 21));
+    a.add(box(3.2, 0.5, 42, mat("#2f3237"), 0, 2.2, 21));
+    for (let k = 0; k < 7; k++) a.add(box(3.25, 3.6, 0.35, mat("#3a3e44"), 0, 0, 3 + k * 6));
+    a.add(box(1.6, 1.0, 6, mat("#c8a23a"), -sx * 1.4, 1.6, 26));   // the catch rail the pins land on
+    piv.add(a); car.add(piv); return piv;
+  };
+  const L = arm(-1), Rr = arm(1);
+  const ay = keyed(o.arms, "y", 100), op = keyed(o.arms, "open", 0);
+  const p0 = vec(o.pos); g.position.set(p0[0], p0[1], p0[2]); g.rotation.y = num(o.heading, 0) * DEG; g.userData.abs = true;
+  g.userData.tick = (t) => { car.position.y = ay(t); L.rotation.y = -op(t) * DEG; Rr.rotation.y = op(t) * DEG; beacon.material.opacity = 0.4 + 0.6 * (Math.sin(t * 3) > 0 ? 1 : 0); };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
+// launch mount: a ring table on legs (o.h tall) with a flame trench, centred at o.pos
+KIT.mount = (o) => {
+  const g = new THREE.Group(), H = num(o.h, 20), m = mat("#5b5f66");
+  const ring = new THREE.Mesh(new THREE.CylinderGeometry(7.5, 7.5, 3, 40, 1, true), new THREE.MeshLambertMaterial({ color: "#5b5f66", side: THREE.DoubleSide }));
+  ring.position.y = H - 1.5; g.add(ring);
+  const top = new THREE.Mesh(new THREE.RingGeometry(4.6, 7.6, 40), new THREE.MeshLambertMaterial({ color: "#6a6e75", side: THREE.DoubleSide })); top.rotation.x = -Math.PI / 2; top.position.y = H; g.add(top);
+  for (let k = 0; k < 6; k++) { const a = k * Math.PI / 3; g.add(box(1.6, H, 1.6, m, Math.cos(a) * 7, H / 2, Math.sin(a) * 7)); }
+  g.add(box(26, 0.3, 26, mat("#4a4d52"), 0, 0.15, 0));
+  const p0 = vec(o.pos); g.position.set(p0[0], p0[1], p0[2]); g.userData.abs = true;
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
+// plume: billowing launch clouds spreading out over the ground from o.pos, from o.at for o.dur seconds
+KIT.plume = (o) => {
+  const g = new THREE.Group(), r = rng(num(o.seed, 61)), N = num(o.count, 160), at = num(o.at, 0), dur = num(o.dur, 12), sz = num(o.size, 1);
+  const puffs = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 1), new THREE.MeshLambertMaterial({ color: o.color || "#e4e1da" }), N);
+  puffs.frustumCulled = false; g.add(puffs);
+  const P = []; for (let k = 0; k < N; k++) P.push({ a: r() * 6.283, sp: (10 + r() * 26) * sz, lift: (1 + r() * 6) * sz, s: (5 + r() * 7) * sz, d: r() * 1.2 });
+  const M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3(), V = new THREE.Vector3();
+  const p0 = vec(o.pos); g.position.set(p0[0], p0[1], p0[2]); g.userData.abs = true;
+  g.userData.tick = (t) => {
+    const d = t - at; g.visible = d > 0; if (!g.visible) return;
+    P.forEach((p, k) => {
+      const age = Math.max(0, d - p.d), u = 1 - Math.exp(-age / 3.5);
+      const rad = p.sp * u * 3, sc = age > 0 ? p.s * (0.4 + 1.6 * u) : 1e-3;
+      V.set(Math.cos(p.a) * rad, sc * 0.6 + p.lift * u * 3, Math.sin(p.a) * rad); S.set(sc, sc * 0.8, sc);
+      M.compose(V, Q, S); puffs.setMatrixAt(k, M);
+    });
+    puffs.instanceMatrix.needsUpdate = true;
+  };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
+// starlink: a flat satellite bus with its folded solar array (moves along o.track)
+KIT.starlink = () => {
+  const g = new THREE.Group();
+  g.add(box(2.6, 0.35, 5.2, mat("#2b2f36")));
+  g.add(box(2.2, 0.08, 4.6, mat("#1d3566"), 0, 0.22, 0));
+  g.add(box(2.7, 0.06, 0.12, mat("#c9cdd3"), 0, 0.2, 2.5));
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+for (const k of ["starship", "tower", "mount", "plume", "starlink"]) FLIGHT_KIT.add(k);
 // racks: a data-centre aisle running from o.pos towards -z, rows of server racks either side with status LEDs.
 // o.health [{at, h}] is the share of racks up (0..1): healthy racks blink green and blue, failed ones glow red, and a
 // red alarm light pulses when health is low. o.count racks per side.
@@ -2322,8 +2535,8 @@ KIT.racks = (o) => {
 
 
 // ------------------------------------------------------------------ camera
-function makeCamera(keys, W, H) {
-  const cam = new THREE.PerspectiveCamera(35, W / H, 0.1, 400);
+function makeCamera(keys, W, H, far = 400) {
+  const cam = new THREE.PerspectiveCamera(35, W / H, far > 1000 ? 0.5 : 0.1, far);
   const ks = (keys && keys.length ? keys : [{ at: 0, pos: [22, 16, 26], look: [0, -2, -8] }])
     .map((k) => ({ at: num(k.at, 0), pos: new THREE.Vector3(...vec(k.pos, [20, 14, 24])), look: new THREE.Vector3(...vec(k.look, [0, -2, -8])),
                    fov: num(k.fov, 35), ease: k.ease || "inout", follow: k.follow, off: vec(k.offset, [0, 2, 12]),
@@ -2452,7 +2665,7 @@ function setup(world, opts = {}) {
     if (o.id !== undefined) FOLLOW.set(String(o.id), holder);
     ITEMS.push(it);
   }
-  CAM = makeCamera(world.camera, W, H);
+  CAM = makeCamera(world.camera, W, H, num(world.far, 400));
   return { objects: ITEMS.length, width: W, height: H };
 }
 

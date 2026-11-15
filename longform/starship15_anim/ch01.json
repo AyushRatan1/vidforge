@@ -1,0 +1,3668 @@
+{
+ "language": "en",
+ "voice": "bm_george",
+ "speed": 1.08,
+ "aspect": "9:16",
+ "made_for_kids": false,
+ "footage": "off",
+ "transition": "none",
+ "music": {
+  "mood": "mystery",
+  "volume": 0.11,
+  "seed": 16
+ },
+ "captions": {
+  "style": "karaoke",
+  "y": 0.62,
+  "size": 0.08,
+  "max_words": 2,
+  "highlight": "#ffd54a",
+  "uppercase": false
+ },
+ "overlay": {
+  "handle": "@hypercurious96",
+  "progress_bar": false
+ },
+ "world3d": {
+  "style": "night",
+  "terrain": false,
+  "far": 9000,
+  "env": [
+   {
+    "sky_top": "#3d6fa8",
+    "sky": "#b5d0e6",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.25,
+    "ambient": 0.5,
+    "sun": 1.7,
+    "sun_color": "#fff3dd",
+    "sun_dir": [
+     30,
+     50,
+     60
+    ],
+    "cloud": "#e4e9ee",
+    "ocean": "#2f6b8a",
+    "exposure": 1.0,
+    "at": 0
+   },
+   {
+    "sky_top": "#3d6fa8",
+    "sky": "#b5d0e6",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.25,
+    "ambient": 0.5,
+    "sun": 1.7,
+    "sun_color": "#fff3dd",
+    "sun_dir": [
+     30,
+     50,
+     60
+    ],
+    "cloud": "#e4e9ee",
+    "ocean": "#2f6b8a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s2",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#33507e",
+    "sky": "#efb27a",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.1,
+    "ambient": 0.5,
+    "sun": 2.0,
+    "sun_color": "#ffc58e",
+    "sun_dir": [
+     -70,
+     16,
+     40
+    ],
+    "cloud": "#f2c9a8",
+    "ocean": "#2c587a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s2",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#33507e",
+    "sky": "#efb27a",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.1,
+    "ambient": 0.5,
+    "sun": 2.0,
+    "sun_color": "#ffc58e",
+    "sun_dir": [
+     -70,
+     16,
+     40
+    ],
+    "cloud": "#f2c9a8",
+    "ocean": "#2c587a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s3",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#33507e",
+    "sky": "#efb27a",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.1,
+    "ambient": 0.5,
+    "sun": 2.0,
+    "sun_color": "#ffc58e",
+    "sun_dir": [
+     -70,
+     16,
+     40
+    ],
+    "cloud": "#f2c9a8",
+    "ocean": "#2c587a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s3",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#33507e",
+    "sky": "#efb27a",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.1,
+    "ambient": 0.5,
+    "sun": 2.0,
+    "sun_color": "#ffc58e",
+    "sun_dir": [
+     -70,
+     16,
+     40
+    ],
+    "cloud": "#f2c9a8",
+    "ocean": "#2c587a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s4",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     6000,
+     12000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.2,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     30,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s4",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     6000,
+     12000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.2,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     30,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s5",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     6000,
+     12000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.2,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     30,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s5",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     6000,
+     12000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.2,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     30,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s6",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#00000a",
+    "sky": "#0d2450",
+    "fog": [
+     6000,
+     12000
+    ],
+    "hemi": 0.35,
+    "ambient": 0.25,
+    "sun": 2.0,
+    "sun_color": "#fff2de",
+    "sun_dir": [
+     40,
+     40,
+     30
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s6",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#00000a",
+    "sky": "#0d2450",
+    "fog": [
+     6000,
+     12000
+    ],
+    "hemi": 0.35,
+    "ambient": 0.25,
+    "sun": 2.0,
+    "sun_color": "#fff2de",
+    "sun_dir": [
+     40,
+     40,
+     30
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s7",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#3d6fa8",
+    "sky": "#b5d0e6",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.25,
+    "ambient": 0.5,
+    "sun": 1.7,
+    "sun_color": "#fff3dd",
+    "sun_dir": [
+     30,
+     50,
+     60
+    ],
+    "cloud": "#e4e9ee",
+    "ocean": "#2f6b8a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s7",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#3d6fa8",
+    "sky": "#b5d0e6",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.25,
+    "ambient": 0.5,
+    "sun": 1.7,
+    "sun_color": "#fff3dd",
+    "sun_dir": [
+     30,
+     50,
+     60
+    ],
+    "cloud": "#e4e9ee",
+    "ocean": "#2f6b8a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s9",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#33507e",
+    "sky": "#efb27a",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.1,
+    "ambient": 0.5,
+    "sun": 2.0,
+    "sun_color": "#ffc58e",
+    "sun_dir": [
+     -70,
+     16,
+     40
+    ],
+    "cloud": "#f2c9a8",
+    "ocean": "#2c587a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s9",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#33507e",
+    "sky": "#efb27a",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.1,
+    "ambient": 0.5,
+    "sun": 2.0,
+    "sun_color": "#ffc58e",
+    "sun_dir": [
+     -70,
+     16,
+     40
+    ],
+    "cloud": "#f2c9a8",
+    "ocean": "#2c587a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s10",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     6000,
+     12000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.2,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     30,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s10",
+     "t": 0
+    }
+   },
+   {
+    "sky_top": "#000003",
+    "sky": "#02030a",
+    "fog": [
+     6000,
+     12000
+    ],
+    "hemi": 0.25,
+    "ambient": 0.2,
+    "sun": 2.4,
+    "sun_color": "#fff6e6",
+    "sun_dir": [
+     60,
+     30,
+     40
+    ],
+    "cloud": "#ffffff",
+    "ocean": "#1d3b52",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s11",
+     "t": 0,
+     "offset": -0.012
+    }
+   },
+   {
+    "sky_top": "#1d1f3d",
+    "sky": "#d8683a",
+    "fog": [
+     900,
+     6000
+    ],
+    "hemi": 1.0,
+    "ambient": 0.5,
+    "sun": 1.6,
+    "sun_color": "#ffb070",
+    "sun_dir": [
+     -80,
+     10,
+     30
+    ],
+    "cloud": "#e0a080",
+    "ocean": "#24364a",
+    "exposure": 1.0,
+    "at": {
+     "scene": "s11",
+     "t": 0
+    }
+   }
+  ],
+  "objects": [
+   {
+    "type": "stars",
+    "seed": 21,
+    "count": 2400,
+    "size": 1.6
+   },
+   {
+    "type": "earth",
+    "pos": [
+     0,
+     0,
+     0
+    ],
+    "r": 20,
+    "seed": 5,
+    "spin": 0.03,
+    "tilt": 20
+   },
+   {
+    "type": "earth",
+    "pos": [
+     40000,
+     -640,
+     0
+    ],
+    "r": 420,
+    "seed": 9,
+    "spin": 0.004,
+    "tilt": 10,
+    "halo": false
+   },
+   {
+    "type": "box",
+    "pos": [
+     20000,
+     -1,
+     0
+    ],
+    "w": 6000,
+    "h": 1,
+    "d": 6000,
+    "color": "#8e8a6a"
+   },
+   {
+    "type": "box",
+    "pos": [
+     20000,
+     -0.9,
+     1700
+    ],
+    "w": 6000,
+    "h": 1,
+    "d": 2400,
+    "color": "#2f6b8a"
+   },
+   {
+    "type": "box",
+    "pos": [
+     19940,
+     0,
+     -70
+    ],
+    "w": 70,
+    "h": 34,
+    "d": 50,
+    "color": "#d9dbde"
+   },
+   {
+    "type": "box",
+    "pos": [
+     20080,
+     0,
+     -90
+    ],
+    "w": 40,
+    "h": 18,
+    "d": 40,
+    "color": "#c8cbcf"
+   },
+   {
+    "type": "tower",
+    "pos": [
+     20000,
+     0,
+     0
+    ],
+    "h": 150,
+    "arms": [
+     {
+      "at": 0,
+      "y": 100,
+      "open": 24
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "caught"
+      },
+      "y": 100,
+      "open": 24
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "caught",
+       "offset": 0.9
+      },
+      "y": 100,
+      "open": 0
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "t": 0,
+       "offset": -0.012
+      },
+      "y": 100,
+      "open": 0
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "t": 0
+      },
+      "y": 150,
+      "open": 55
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "t": 0,
+       "offset": -0.012
+      },
+      "y": 150,
+      "open": 55
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "t": 0
+      },
+      "y": 100,
+      "open": 24
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "word": "arms,"
+      },
+      "y": 100,
+      "open": 24
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "word": "tower"
+      },
+      "y": 100,
+      "open": 0
+     }
+    ]
+   },
+   {
+    "type": "mount",
+    "pos": [
+     20000,
+     0,
+     29
+    ],
+    "h": 20
+   },
+   {
+    "type": "plume",
+    "pos": [
+     20000,
+     0,
+     29
+    ],
+    "at": {
+     "scene": "s2",
+     "word": "lit"
+    },
+    "dur": 14,
+    "size": 1.3,
+    "count": 170,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s2",
+      "t": 0
+     },
+     "to": {
+      "scene": "s2",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s2",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "starship",
+    "kind": "ship",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s1",
+      "t": 0
+     },
+     "to": {
+      "scene": "s1",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s1",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "burn": [
+     {
+      "at": 0,
+      "b": 0
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "flipped",
+       "offset": -0.4
+      },
+      "b": 0
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "flipped"
+      },
+      "b": 1
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "caught"
+      },
+      "b": 0.6
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "caught",
+       "offset": 0.7
+      },
+      "b": 0
+     }
+    ],
+    "track": [
+     {
+      "at": {
+       "scene": "s1",
+       "t": 0
+      },
+      "pos": [
+       20000,
+       330,
+       119
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "flipped"
+      },
+      "pos": [
+       20000,
+       210,
+       59
+      ],
+      "rot": [
+       30,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "upright,"
+      },
+      "pos": [
+       20000,
+       160,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "caught"
+      },
+      "pos": [
+       20000,
+       94.35,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "word": "caught",
+       "offset": 0.8
+      },
+      "pos": [
+       20000,
+       90.35,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s1",
+       "t": 1.0
+      },
+      "pos": [
+       20000,
+       90.35,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starship",
+    "kind": "booster",
+    "flame": 1.7,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s2",
+      "t": 0
+     },
+     "to": {
+      "scene": "s2",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s2",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "burn": [
+     {
+      "at": 0,
+      "b": 0
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "word": "lit"
+      },
+      "b": 0
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "word": "lit",
+       "offset": 0.6
+      },
+      "b": 1
+     }
+    ],
+    "track": [
+     {
+      "at": {
+       "scene": "s2",
+       "t": 0
+      },
+      "pos": [
+       20000,
+       55.5,
+       29
+      ],
+      "rot": [
+       90,
+       0,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "word": "lifted"
+      },
+      "pos": [
+       20000,
+       55.5,
+       29
+      ],
+      "rot": [
+       90,
+       0,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "word": "lifted",
+       "offset": 2.0
+      },
+      "pos": [
+       20000,
+       66,
+       29
+      ],
+      "rot": [
+       90,
+       0,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "t": 1.0,
+       "offset": 0.1
+      },
+      "pos": [
+       20000,
+       150,
+       29
+      ],
+      "rot": [
+       90,
+       0,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starship",
+    "kind": "ship",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s2",
+      "t": 0
+     },
+     "to": {
+      "scene": "s2",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s2",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s2",
+       "t": 0
+      },
+      "pos": [
+       20000,
+       117,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "word": "lifted"
+      },
+      "pos": [
+       20000,
+       117,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "word": "lifted",
+       "offset": 2.0
+      },
+      "pos": [
+       20000,
+       127.5,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s2",
+       "t": 1.0,
+       "offset": 0.1
+      },
+      "pos": [
+       20000,
+       211.5,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "ocean",
+    "y": 0,
+    "amp": 0.6,
+    "size": 3000,
+    "segs": 160,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s3",
+      "t": 0
+     },
+     "to": {
+      "scene": "s3",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s3",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    }
+   },
+   {
+    "type": "starship",
+    "kind": "booster",
+    "id": "bb",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s3",
+      "t": 0
+     },
+     "to": {
+      "scene": "s3",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s3",
+      "word": "blew",
+      "offset": 0.12
+     },
+     "dur": 0.01
+    },
+    "burn": [
+     {
+      "at": 0,
+      "b": 0
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "Gulf,",
+       "offset": -1.2
+      },
+      "b": 0
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "Gulf,",
+       "offset": -0.6
+      },
+      "b": 0.8
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "blew"
+      },
+      "b": 0.6
+     }
+    ],
+    "track": [
+     {
+      "at": {
+       "scene": "s3",
+       "t": 0
+      },
+      "pos": [
+       29850,
+       520,
+       0
+      ],
+      "rot": [
+       90,
+       0,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "home,"
+      },
+      "pos": [
+       29900,
+       360,
+       0
+      ],
+      "rot": [
+       90,
+       0,
+       4
+      ]
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "guidance"
+      },
+      "pos": [
+       29950,
+       220,
+       0
+      ],
+      "rot": [
+       90,
+       0,
+       -3
+      ]
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "Gulf,"
+      },
+      "pos": [
+       30000,
+       80,
+       0
+      ],
+      "rot": [
+       90,
+       0,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "hovered,"
+      },
+      "pos": [
+       30000,
+       48,
+       0
+      ],
+      "rot": [
+       90,
+       0,
+       2
+      ]
+     },
+     {
+      "at": {
+       "scene": "s3",
+       "word": "blew"
+      },
+      "pos": [
+       30000,
+       46,
+       0
+      ],
+      "rot": [
+       90,
+       0,
+       -2
+      ]
+     }
+    ]
+   },
+   {
+    "type": "blast",
+    "pos": [
+     30000,
+     14,
+     0
+    ],
+    "at": {
+     "scene": "s3",
+     "word": "blew"
+    },
+    "size": 4.0,
+    "seed": 8
+   },
+   {
+    "type": "blast",
+    "pos": [
+     30000,
+     50,
+     0
+    ],
+    "at": {
+     "scene": "s3",
+     "word": "blew",
+     "offset": 0.15
+    },
+    "size": 3.0,
+    "seed": 9
+   },
+   {
+    "type": "starship",
+    "kind": "ship",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "t": 0
+     },
+     "to": {
+      "scene": "s4",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       40000,
+       0,
+       0
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": 1,
+      "pos": [
+       40000,
+       0,
+       0
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starlink",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "released",
+      "offset": -0.01
+     },
+     "to": {
+      "scene": "s4",
+      "word": "released"
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "word": "released"
+      },
+      "pos": [
+       39992.0,
+       0.5,
+       4.8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0,
+       "offset": 0.3
+      },
+      "pos": [
+       39986.0,
+       -3.0,
+       15.0
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starlink",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 0.41
+     },
+     "to": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 0.42
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "word": "released",
+       "offset": 0.42
+      },
+      "pos": [
+       39994.2,
+       0.5,
+       4.8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0,
+       "offset": 0.3
+      },
+      "pos": [
+       39989.2,
+       -3.8,
+       18.5
+      ],
+      "rot": [
+       8,
+       99,
+       4
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starlink",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 0.83
+     },
+     "to": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 0.84
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "word": "released",
+       "offset": 0.84
+      },
+      "pos": [
+       39996.4,
+       0.5,
+       4.8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0,
+       "offset": 0.3
+      },
+      "pos": [
+       39992.4,
+       -4.6,
+       22.0
+      ],
+      "rot": [
+       16,
+       108,
+       8
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starlink",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 1.25
+     },
+     "to": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 1.26
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "word": "released",
+       "offset": 1.26
+      },
+      "pos": [
+       39998.6,
+       0.5,
+       4.8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0,
+       "offset": 0.3
+      },
+      "pos": [
+       39995.6,
+       -5.4,
+       25.5
+      ],
+      "rot": [
+       24,
+       117,
+       12
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starlink",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 1.67
+     },
+     "to": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 1.68
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "word": "released",
+       "offset": 1.68
+      },
+      "pos": [
+       40000.8,
+       0.5,
+       4.8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0,
+       "offset": 0.3
+      },
+      "pos": [
+       39998.8,
+       -6.2,
+       29.0
+      ],
+      "rot": [
+       32,
+       126,
+       16
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starlink",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 2.0900000000000003
+     },
+     "to": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 2.1
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "word": "released",
+       "offset": 2.1
+      },
+      "pos": [
+       40003.0,
+       0.5,
+       4.8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0,
+       "offset": 0.3
+      },
+      "pos": [
+       40002.0,
+       -7.0,
+       32.5
+      ],
+      "rot": [
+       40,
+       135,
+       20
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starlink",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 2.5100000000000002
+     },
+     "to": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 2.52
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "word": "released",
+       "offset": 2.52
+      },
+      "pos": [
+       40005.2,
+       0.5,
+       4.8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0,
+       "offset": 0.3
+      },
+      "pos": [
+       40005.2,
+       -7.800000000000001,
+       36.0
+      ],
+      "rot": [
+       48,
+       144,
+       24
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starlink",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 2.93
+     },
+     "to": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 2.94
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "word": "released",
+       "offset": 2.94
+      },
+      "pos": [
+       40007.4,
+       0.5,
+       4.8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0,
+       "offset": 0.3
+      },
+      "pos": [
+       40008.4,
+       -8.600000000000001,
+       39.5
+      ],
+      "rot": [
+       56,
+       153,
+       28
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starlink",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 3.35
+     },
+     "to": {
+      "scene": "s4",
+      "word": "released",
+      "offset": 3.36
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s4",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s4",
+       "word": "released",
+       "offset": 3.36
+      },
+      "pos": [
+       40009.6,
+       0.5,
+       4.8
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s4",
+       "t": 1.0,
+       "offset": 0.3
+      },
+      "pos": [
+       40011.6,
+       -9.4,
+       43.0
+      ],
+      "rot": [
+       64,
+       162,
+       32
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starship",
+    "kind": "ship",
+    "scale": 0.05,
+    "marker": "#ffffff",
+    "marker_size": 110,
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s5",
+      "t": 0
+     },
+     "to": {
+      "scene": "s5",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s5",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.0
+      },
+      "pos": [
+       22.928,
+       1.478,
+       7.092
+      ],
+      "rot": [
+       0,
+       -17.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.07692307692307693
+      },
+      "pos": [
+       14.38,
+       4.003,
+       19.215
+      ],
+      "rot": [
+       0,
+       -53.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.15384615384615385
+      },
+      "pos": [
+       0.34,
+       4.999,
+       23.998
+      ],
+      "rot": [
+       0,
+       -89.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.23076923076923078
+      },
+      "pos": [
+       -13.831,
+       4.086,
+       19.614
+      ],
+      "rot": [
+       0,
+       -125.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.3076923076923077
+      },
+      "pos": [
+       -22.718,
+       1.612,
+       7.739
+      ],
+      "rot": [
+       0,
+       -161.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.38461538461538464
+      },
+      "pos": [
+       -22.928,
+       -1.478,
+       -7.092
+      ],
+      "rot": [
+       0,
+       -197.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.46153846153846156
+      },
+      "pos": [
+       -14.38,
+       -4.003,
+       -19.215
+      ],
+      "rot": [
+       0,
+       -233.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.5384615384615384
+      },
+      "pos": [
+       -0.34,
+       -4.999,
+       -23.998
+      ],
+      "rot": [
+       0,
+       -269.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.6153846153846154
+      },
+      "pos": [
+       13.831,
+       -4.086,
+       -19.614
+      ],
+      "rot": [
+       0,
+       -305.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.6923076923076923
+      },
+      "pos": [
+       22.718,
+       -1.612,
+       -7.739
+      ],
+      "rot": [
+       0,
+       -341.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.7692307692307693
+      },
+      "pos": [
+       22.928,
+       1.478,
+       7.092
+      ],
+      "rot": [
+       0,
+       -377.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.8461538461538461
+      },
+      "pos": [
+       14.38,
+       4.003,
+       19.215
+      ],
+      "rot": [
+       0,
+       -413.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 0.9230769230769231
+      },
+      "pos": [
+       0.34,
+       4.999,
+       23.998
+      ],
+      "rot": [
+       0,
+       -449.19,
+       0
+      ],
+      "ease": "linear"
+     },
+     {
+      "at": {
+       "scene": "s5",
+       "t": 1.0
+      },
+      "pos": [
+       -13.831,
+       4.086,
+       19.614
+      ],
+      "rot": [
+       0,
+       -485.19,
+       0
+      ],
+      "ease": "linear"
+     }
+    ]
+   },
+   {
+    "type": "starship",
+    "kind": "ship",
+    "id": "rs",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s6",
+      "t": 0
+     },
+     "to": {
+      "scene": "s6",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s6",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "plasma": [
+     {
+      "at": 0,
+      "p": 0
+     },
+     {
+      "at": {
+       "scene": "s6",
+       "word": "atmosphere",
+       "offset": -0.6
+      },
+      "p": 0
+     },
+     {
+      "at": {
+       "scene": "s6",
+       "word": "heat"
+      },
+      "p": 1
+     }
+    ],
+    "track": [
+     {
+      "at": {
+       "scene": "s6",
+       "t": 0
+      },
+      "pos": [
+       39800,
+       60,
+       0
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s6",
+       "t": 1.0,
+       "offset": 0.2
+      },
+      "pos": [
+       40200,
+       20,
+       0
+      ],
+      "rot": [
+       -4,
+       90,
+       0
+      ],
+      "ease": "linear"
+     }
+    ],
+    "wobble": [
+     {
+      "from": {
+       "scene": "s6",
+       "word": "atmosphere"
+      },
+      "to": {
+       "scene": "s6",
+       "t": 1.0
+      },
+      "roll": 2.5,
+      "pitch": 1.5,
+      "freq": 1.3
+     }
+    ]
+   },
+   {
+    "type": "starship",
+    "kind": "ship",
+    "id": "cs",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s7",
+      "t": 0
+     },
+     "to": {
+      "scene": "s7",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s12",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "burn": [
+     {
+      "at": 0,
+      "b": 0
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "lit,",
+       "offset": -0.3
+      },
+      "b": 0
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "lit,",
+       "offset": 0.2
+      },
+      "b": 1
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "word": "slowed,"
+      },
+      "b": 0.75
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "word": "pins,"
+      },
+      "b": 0.5
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "word": "pins,",
+       "offset": 0.5
+      },
+      "b": 0
+     }
+    ],
+    "track": [
+     {
+      "at": {
+       "scene": "s7",
+       "t": 0
+      },
+      "pos": [
+       20000,
+       560,
+       199
+      ],
+      "rot": [
+       0,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "skydiver."
+      },
+      "pos": [
+       20000,
+       400,
+       119
+      ],
+      "rot": [
+       3,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "lit,"
+      },
+      "pos": [
+       20000,
+       270,
+       59
+      ],
+      "rot": [
+       18,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s7",
+       "word": "upright."
+      },
+      "pos": [
+       20000,
+       205,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "word": "slowed,"
+      },
+      "pos": [
+       20000,
+       140,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "word": "arms,"
+      },
+      "pos": [
+       20000,
+       95.35,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s8",
+       "word": "pins,"
+      },
+      "pos": [
+       20000,
+       90.35,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s12",
+       "t": 1.0,
+       "offset": 1
+      },
+      "pos": [
+       20000,
+       90.35,
+       29
+      ],
+      "rot": [
+       90,
+       180,
+       0
+      ]
+     }
+    ],
+    "wobble": [
+     {
+      "from": {
+       "scene": "s7",
+       "t": 0
+      },
+      "to": {
+       "scene": "s7",
+       "word": "lit,"
+      },
+      "roll": 3,
+      "pitch": 2,
+      "freq": 0.7
+     }
+    ]
+   },
+   {
+    "type": "starship",
+    "kind": "ship",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s10",
+      "t": 0
+     },
+     "to": {
+      "scene": "s10",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s10",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": 0,
+      "pos": [
+       40000,
+       0,
+       0
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     },
+     {
+      "at": 1,
+      "pos": [
+       40000,
+       0,
+       0
+      ],
+      "rot": [
+       0,
+       90,
+       0
+      ]
+     }
+    ]
+   },
+   {
+    "type": "starship",
+    "kind": "ship",
+    "build": {
+     "op": "slide",
+     "offset": [
+      0,
+      0,
+      0
+     ],
+     "from": {
+      "scene": "s10",
+      "t": 0
+     },
+     "to": {
+      "scene": "s10",
+      "t": 0,
+      "offset": 0.01
+     }
+    },
+    "hide": {
+     "at": {
+      "scene": "s10",
+      "t": 1.0,
+      "offset": 0.02
+     },
+     "dur": 0.01
+    },
+    "track": [
+     {
+      "at": {
+       "scene": "s10",
+       "t": 0
+      },
+      "pos": [
+       39920,
+       0.4,
+       0.3
+      ],
+      "rot": [
+       0,
+       -90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s10",
+       "word": "NASA"
+      },
+      "pos": [
+       39942.6,
+       0,
+       0
+      ],
+      "rot": [
+       0,
+       -90,
+       0
+      ]
+     },
+     {
+      "at": {
+       "scene": "s10",
+       "t": 1.0,
+       "offset": 0.2
+      },
+      "pos": [
+       39942.6,
+       0,
+       0
+      ],
+      "rot": [
+       0,
+       -90,
+       0
+      ]
+     }
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "at": 0,
+    "pos": [
+     20120,
+     18,
+     204
+    ],
+    "look": [
+     20000,
+     210,
+     69
+    ],
+    "fov": 48
+   },
+   {
+    "at": {
+     "scene": "s1",
+     "word": "upright,"
+    },
+    "pos": [
+     20115,
+     20,
+     197
+    ],
+    "look": [
+     20000,
+     140,
+     29
+    ],
+    "fov": 48
+   },
+   {
+    "at": {
+     "scene": "s1",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     20105,
+     22,
+     184
+    ],
+    "look": [
+     20000,
+     100,
+     29
+    ],
+    "fov": 48
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 0
+    },
+    "pos": [
+     19850,
+     10,
+     259
+    ],
+    "look": [
+     20000,
+     75,
+     29
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "word": "lifted"
+    },
+    "pos": [
+     19852,
+     10,
+     257
+    ],
+    "look": [
+     20000,
+     85,
+     29
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s2",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     19855,
+     10,
+     254
+    ],
+    "look": [
+     20000,
+     165,
+     29
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 0
+    },
+    "pos": [
+     29940,
+     30,
+     150
+    ],
+    "look": [
+     29850,
+     500,
+     0
+    ],
+    "fov": 52
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "word": "guidance"
+    },
+    "pos": [
+     29940,
+     26,
+     150
+    ],
+    "look": [
+     29950,
+     220,
+     0
+    ],
+    "fov": 52
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "word": "Gulf,"
+    },
+    "pos": [
+     29940,
+     22,
+     150
+    ],
+    "look": [
+     30000,
+     72,
+     0
+    ],
+    "fov": 52
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "word": "blew"
+    },
+    "pos": [
+     29940,
+     22,
+     150
+    ],
+    "look": [
+     30000,
+     48,
+     0
+    ],
+    "fov": 52,
+    "shake": 0.15
+   },
+   {
+    "at": {
+     "scene": "s3",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     29934,
+     22,
+     156
+    ],
+    "look": [
+     30000,
+     48,
+     0
+    ],
+    "fov": 52
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 0
+    },
+    "pos": [
+     39964,
+     34,
+     50
+    ],
+    "look": [
+     40002,
+     -26,
+     -8
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s4",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     39984,
+     30,
+     58
+    ],
+    "look": [
+     40002,
+     -26,
+     -2
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 0
+    },
+    "pos": [
+     0,
+     26,
+     110
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s5",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     10,
+     28,
+     106
+    ],
+    "look": [
+     0,
+     0,
+     0
+    ],
+    "fov": 40
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 0
+    },
+    "follow": "rs",
+    "offset": [
+     -44,
+     -5,
+     16
+    ],
+    "look_offset": [
+     0,
+     4,
+     0
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s6",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "rs",
+    "offset": [
+     -38,
+     -7,
+     6
+    ],
+    "look_offset": [
+     0,
+     4,
+     0
+    ],
+    "fov": 50
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 0
+    },
+    "follow": "cs",
+    "offset": [
+     -120,
+     -30,
+     30
+    ],
+    "look_offset": [
+     0,
+     0,
+     0
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "word": "lit,"
+    },
+    "follow": "cs",
+    "offset": [
+     -105,
+     -26,
+     10
+    ],
+    "look_offset": [
+     0,
+     0,
+     0
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s7",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "follow": "cs",
+    "offset": [
+     -100,
+     -30,
+     0
+    ],
+    "look_offset": [
+     0,
+     -6,
+     0
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 0
+    },
+    "pos": [
+     20062,
+     96,
+     87
+    ],
+    "look": [
+     20000,
+     112,
+     27
+    ],
+    "fov": 52
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "word": "arms,"
+    },
+    "pos": [
+     20058,
+     94,
+     83
+    ],
+    "look": [
+     20000,
+     100,
+     27
+    ],
+    "fov": 52
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "word": "Caught."
+    },
+    "pos": [
+     20054,
+     93,
+     79
+    ],
+    "look": [
+     20000,
+     97,
+     27
+    ],
+    "fov": 52,
+    "shake": 0.12
+   },
+   {
+    "at": {
+     "scene": "s8",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     20050,
+     92,
+     75
+    ],
+    "look": [
+     20000,
+     97,
+     27
+    ],
+    "fov": 52
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "t": 0
+    },
+    "pos": [
+     19930,
+     6,
+     169
+    ],
+    "look": [
+     20000,
+     88,
+     29
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s9",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     19970,
+     6,
+     184
+    ],
+    "look": [
+     20000,
+     90,
+     29
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "t": 0
+    },
+    "pos": [
+     39956,
+     38,
+     58
+    ],
+    "look": [
+     39972,
+     -26,
+     -10
+    ],
+    "fov": 52
+   },
+   {
+    "at": {
+     "scene": "s10",
+     "t": 1.0,
+     "offset": -0.05
+    },
+    "pos": [
+     39966,
+     34,
+     52
+    ],
+    "look": [
+     39972,
+     -26,
+     -10
+    ],
+    "fov": 52
+   },
+   {
+    "at": {
+     "scene": "s11",
+     "t": 0
+    },
+    "pos": [
+     20150,
+     30,
+     259
+    ],
+    "look": [
+     20000,
+     85,
+     29
+    ],
+    "fov": 46
+   },
+   {
+    "at": {
+     "scene": "s12",
+     "t": 1.0,
+     "offset": 0.5
+    },
+    "pos": [
+     20185,
+     42,
+     319
+    ],
+    "look": [
+     20000,
+     85,
+     29
+    ],
+    "fov": 46
+   }
+  ]
+ },
+ "title": "SpaceX caught a spaceship falling from orbit",
+ "scenes": [
+  {
+   "narration": "On Saturday, a giant steel spaceship fell back from orbit, flipped upright, and was caught in mid-air by a tower's arms. No spaceship returning from orbit had ever been caught before.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Starship Flight 15",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.05,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "14 November 2026",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "First ship caught from orbit",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "caught"
+    }
+   ],
+   "id": "s1"
+  },
+  {
+   "narration": "It started on Friday at Starbase, Texas. Starship, the tallest rocket ever built at 124 metres, lit 33 engines and lifted off on its 15th test flight.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Fri 13 Nov, Starbase, Texas",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "124 m: tallest rocket ever",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "124"
+    },
+    {
+     "type": "text",
+     "text": "33 Raptor engines",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "33"
+    }
+   ],
+   "id": "s2"
+  },
+  {
+   "narration": "The plan was a first: catch both stages. But on the way home, the Super Heavy booster detected a guidance problem and called off its catch. It diverted over the Gulf, hovered, and blew itself up just above the water.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Plan: catch BOTH stages",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "both"
+    },
+    {
+     "type": "text",
+     "text": "Booster: guidance problem",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "guidance"
+    },
+    {
+     "type": "text",
+     "text": "Booster lost over the Gulf",
+     "x": 0.5,
+     "y": 0.27,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "blew"
+    }
+   ],
+   "id": "s3"
+  },
+  {
+   "narration": "The ship kept climbing into orbit, about 275 kilometres up, and released 26 new Starlink satellites.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Orbit: ~275 km up",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "275"
+    },
+    {
+     "type": "text",
+     "text": "26 Starlink V3 satellites",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "26"
+    }
+   ],
+   "id": "s4"
+  },
+  {
+   "narration": "Then it circled the Earth for nearly a day: about 14 orbits in 22 and a half hours, the longest Starship flight so far.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "~14 orbits",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "14"
+    },
+    {
+     "type": "text",
+     "text": "22.5 hours: longest flight yet",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "22"
+    }
+   ],
+   "id": "s5"
+  },
+  {
+   "narration": "On Saturday afternoon, it came home. The ship hit the atmosphere belly first, its black heat shield glowing inside a sheath of plasma.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Saturday: re-entry",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at": 0.2,
+     "until": 99
+    },
+    {
+     "type": "text",
+     "text": "Heat shield first",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "heat"
+    }
+   ],
+   "id": "s6"
+  },
+  {
+   "narration": "Over Texas it fell like a skydiver. Then, close to the tower, three engines lit, and it swung upright.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Belly-flop fall",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "skydiver."
+    },
+    {
+     "type": "text",
+     "text": "Flip: 3 engines",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "lit,"
+    }
+   ],
+   "id": "s7"
+  },
+  {
+   "narration": "It slowed, slid between the arms, and the tower caught it by two small pins, each about a foot long. Caught. A first for any spaceship coming back from orbit.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Caught by 2 pins, ~30 cm each",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.042,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "pins,"
+    },
+    {
+     "type": "text",
+     "text": "“Mechazilla catches Starship!”",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "Caught."
+    }
+   ],
+   "id": "s8"
+  },
+  {
+   "narration": "Why does it matter? Rockets are usually thrown away after one flight. SpaceX wants a fully and rapidly reusable rocket, refuelled and flown again, like an airliner.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Most rockets: used once",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "thrown"
+    },
+    {
+     "type": "text",
+     "text": "Goal: fully reusable",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "fully"
+    }
+   ],
+   "id": "s9"
+  },
+  {
+   "narration": "Next comes refuelling in orbit, one Starship filling another. NASA needs that before Starship can land astronauts on the Moon, a landing now targeted for 2028.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Next: refuelling in orbit",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "refuelling"
+    },
+    {
+     "type": "text",
+     "text": "Moon landing target: 2028",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "2028."
+    }
+   ],
+   "id": "s10"
+  },
+  {
+   "narration": "But it was only half a win. The booster was lost, and SpaceX has yet to catch one of its newest boosters. Next flight, the goal is both.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [
+    {
+     "type": "text",
+     "text": "Booster: still not caught",
+     "x": 0.5,
+     "y": 0.13,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#14181f",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "booster"
+    },
+    {
+     "type": "text",
+     "text": "Next goal: catch both",
+     "x": 0.5,
+     "y": 0.2,
+     "size": 0.044,
+     "color": "#ffffff",
+     "bg": "#c62828",
+     "bg_alpha": 0.9,
+     "style": "label",
+     "stroke": false,
+     "enter": "pop",
+     "at_word": "both."
+    }
+   ],
+   "id": "s11"
+  },
+  {
+   "narration": "Follow for more true stories.",
+   "background": {
+    "type": "world3d"
+   },
+   "elements": [],
+   "id": "s12"
+  }
+ ]
+}
