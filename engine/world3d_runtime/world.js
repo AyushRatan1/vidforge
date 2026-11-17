@@ -2532,10 +2532,10 @@ KIT.liner = (o) => {
     for (let k = 0; k < 900; k++) { const v = rr(); x.fillStyle = `rgba(255,255,255,${0.25 + 0.6 * rr()})`; x.beginPath(); x.arc(rr() * 64, v * 256, 1 + rr() * 3, 0, 6.283); x.fill(); }
     const tx = new THREE.CanvasTexture(c); tx.wrapS = tx.wrapT = THREE.RepeatWrapping; return tx; })();
   const fm = new THREE.MeshBasicMaterial({ color: "#eef4f7", map: foamTex, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
-  const wakeShape = planShape([[-B / 2 - 1, -L / 2 + 10], [B / 2 + 1, -L / 2 + 10], [B * 1.6, -L / 2 - 420], [-B * 1.6, -L / 2 - 420]]);
+  const wakeShape = planShape([[-B / 2 - 1, -L / 2 + 10], [B / 2 + 1, -L / 2 + 10], [B * 1.2, -L / 2 - 380], [-B * 1.2, -L / 2 - 380]]);
   const wake = new THREE.Mesh(new THREE.ShapeGeometry(wakeShape), fm); wake.rotation.x = Math.PI / 2; wake.position.y = 0.8; g.add(wake);
   for (const sx of [-1, 1]) {
-    const bw = new THREE.Mesh(new THREE.ShapeGeometry(planShape([[0, L / 2 - 2], [sx * (B / 2 + 1), L / 2 - 60], [sx * (B / 2 + 26), L / 2 - 260], [sx * (B / 2 + 8), L / 2 - 240], [sx * (B / 2 - 1), L / 2 - 50]])), fm);
+    const bw = new THREE.Mesh(new THREE.ShapeGeometry(planShape([[0, L / 2 - 2], [sx * (B / 2 + 1.5), L / 2 - 40], [sx * (B / 2 + 7), L / 2 - 150], [sx * (B / 2 + 3), L / 2 - 150], [sx * (B / 2 - 1), L / 2 - 40]])), fm);
     bw.rotation.x = Math.PI / 2; bw.position.y = 0.85; g.add(bw);
   }
   // anchor lights
@@ -2551,7 +2551,7 @@ KIT.liner = (o) => {
     const rr = rust(t), gg = growth(t), pp = pk(t), ll = lk(t);
     const ly = lift(t); tops.position.y = ly; tops.visible = ly < 50;
     const hh = hk(t); holes.visible = hh > 0.01; holes.children.forEach((h) => h.scale.set(hh, 1, hh));
-    fm.opacity = 0.75 * wk(t); wake.visible = fm.opacity > 0.01; foamTex.offset.y = -t * 0.35;
+    fm.opacity = 0.5 * wk(t); wake.visible = fm.opacity > 0.01; foamTex.offset.y = -t * 0.35;
     const al = ak(t); alights.forEach((s) => { s.material.opacity = al; s.visible = al > 0.01; });
     const sig = [rr, gg, pp, ll].map((v) => v.toFixed(3)).join();
     if (sig === last) return; last = sig;
