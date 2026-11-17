@@ -2465,6 +2465,203 @@ KIT.starlink = () => {
   return g;
 };
 for (const k of ["starship", "tower", "mount", "plume", "starlink"]) FLIGHT_KIT.add(k);
+
+// ---------------- ocean-liner kit (metres): a 1950s liner with a black hull, white superstructure and two red, white
+// and blue funnels; bow along local +z, waterline at local y = 0 (sink it by moving the track down and rolling it).
+// Keyed options: o.rust [{at, r}] ages the paint, o.growth [{at, g}] covers it in reef life, o.lift [{at, y}] lifts the
+// funnels and masts off (gone above 50), o.holes [{at, h}] opens the flooding holes in the decks, o.ports [{at, p}]
+// empties the portholes, o.lit [{at, l}] lights the windows, o.wake [{at, w}] the bow wave and wake, o.lights [{at, l}]
+// the anchor lights. o.funnels false builds it without funnels or masts.
+KIT.liner = (o) => {
+  const g = new THREE.Group(), L = num(o.length, 302), B = num(o.beam, 31), r = rng(num(o.seed, 52));
+  const plan = new THREE.Shape();
+  plan.moveTo(-B / 2, -L / 2 + 14); plan.quadraticCurveTo(-B / 2, -L / 2, 0, -L / 2); plan.quadraticCurveTo(B / 2, -L / 2, B / 2, -L / 2 + 14);
+  plan.lineTo(B / 2, L / 2 - 75); plan.quadraticCurveTo(B / 2, L / 2 - 22, 0, L / 2); plan.quadraticCurveTo(-B / 2, L / 2 - 22, -B / 2, L / 2 - 75); plan.closePath();
+  const lam = (c) => new THREE.MeshLambertMaterial({ color: c });
+  const M = { hull: lam("#16181b"), boot: lam("#9e2a22"), white: lam("#eceae4"), deck: new THREE.MeshLambertMaterial({ color: "#a78b64", side: THREE.DoubleSide }),
+    blue: lam("#1f3a7a"), red: lam("#c3272b"), fwhite: lam("#f2f2ee"), dark: lam("#1d2328"), port: lam("#7d8e9a"), win: lam("#2a3238") };
+  const BASE = Object.fromEntries(Object.entries(M).map(([k, m]) => [k, m.color.clone()]));
+  const hull = new THREE.Mesh(new THREE.ExtrudeGeometry(plan, { depth: 22, bevelEnabled: false, curveSegments: 20 }), M.hull);
+  hull.rotation.x = Math.PI / 2; hull.position.y = 12; g.add(hull);
+  const boot = new THREE.Mesh(new THREE.ExtrudeGeometry(plan, { depth: 11, bevelEnabled: false, curveSegments: 20 }), M.boot);
+  boot.rotation.x = Math.PI / 2; boot.position.y = 1; boot.scale.set(1.006, 1.002, 1); g.add(boot);
+  const deck = new THREE.Mesh(new THREE.ShapeGeometry(plan, 20), M.deck); deck.rotation.x = Math.PI / 2; deck.position.y = 12.03; g.add(deck);
+  // portholes along the straight run of the hull
+  const ports = []; for (let row = 0; row < 2; row++) for (let z = -L / 2 + 22; z < L / 2 - 80; z += 2.6) for (const sx of [-1, 1]) ports.push([sx * (B / 2 + 0.06), 4.5 + row * 3.6, z]);
+  const pm = new THREE.InstancedMesh(new THREE.BoxGeometry(0.12, 0.9, 0.9), M.port, ports.length); const PM = new THREE.Matrix4();
+  ports.forEach(([x, y, z], k) => { PM.makeTranslation(x, y, z); pm.setMatrixAt(k, PM); }); g.add(pm);
+  // superstructure tiers with window bands, and the bridge at the front of the second tier
+  const tier = (w, h, l, y, z) => { g.add(box(w, h, l, M.white, 0, y + h / 2, z)); for (const sx of [-1, 1]) g.add(box(0.1, h * 0.3, l * 0.96, M.win, sx * (w / 2 + 0.03), y + h * 0.55, z)); };
+  tier(B - 3, 6, 196, 12, 4); tier(B - 7, 5, 170, 18, 11); tier(B - 12, 4.5, 104, 23, 12);
+  g.add(box(B - 4, 4.2, 10, M.white, 0, 25.1, 91)); g.add(box(B - 4.2, 1.3, 0.2, M.win, 0, 25.7, 96.05));
+  for (const sx of [-1, 1]) g.add(box(2.5, 0.5, 4, M.white, sx * (B / 2 - 0.5), 26.9, 93));   // bridge wings
+  // the stripped-off parts: funnels (blue base, white band, red top, side fins) and masts
+  const tops = new THREE.Group(); g.add(tops);
+  if (o.funnels !== false) {
+    for (const fz of [40, -22]) {
+      const f = new THREE.Group(); f.position.set(0, 27.5, fz); f.scale.set(0.62, 1, 1);
+      const seg = (h, y, m, r0, r1) => { const c = new THREE.Mesh(new THREE.CylinderGeometry(r1, r0, h, 36), m); c.position.y = y + h / 2; f.add(c); };
+      seg(9, 0, M.blue, 6.4, 6.1); seg(2.6, 9, M.fwhite, 6.1, 6.0); seg(6.2, 11.6, M.red, 6.0, 5.8);
+      const cap = new THREE.Mesh(new THREE.CircleGeometry(5.8, 36), M.dark); cap.rotation.x = -Math.PI / 2; cap.position.y = 17.82; f.add(cap);
+      tops.add(f);
+      for (const sx of [-1, 1]) tops.add(box(3.4, 1.0, 9, M.red, sx * 5.3, 27.5 + 16.5, fz - 1));
+    }
+    const mast = (x, y, z, h) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.55, h, 8), M.white); m.position.set(x, y + h / 2, z); tops.add(m); };
+    mast(0, 12, 116, 24); mast(0, 27.3, 90, 12); mast(0, 23, -60, 14);
+    tops.add(box(10, 0.5, 0.5, M.white, 0, 33, 116)); tops.add(box(7, 0.4, 0.4, M.white, 0, 37.5, 90));
+  }
+  for (const [z, w] of [[126, 6], [134, 4], [-118, 6], [-128, 5]]) g.add(box(w, 2, 3, M.dark, 0, 13, z));
+  // flooding holes in the decks
+  const holes = new THREE.Group(); g.add(holes);
+  const holeMat = new THREE.MeshBasicMaterial({ color: "#050505" });
+  for (const [x, y, z] of [[-4, 27.56, 0], [4, 27.56, 22], [-3, 27.56, 55], [3, 27.56, -32], [-5, 23.06, -66], [5, 23.06, 78], [-6, 18.06, 96], [6, 18.06, -86], [0, 12.08, 120], [3, 12.08, 140], [0, 12.08, -110], [-6, 12.08, -125]])
+    holes.add(box(3.2, 0.06, 3.2, holeMat, x, y, z));
+  // reef growth: lumps of coral and sponge on the decks and the hull
+  const NG = 560, gm = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 0), new THREE.MeshLambertMaterial({ color: "#ffffff" }), NG);
+  gm.frustumCulled = false; g.add(gm);
+  const GP = [], gcol = ["#7a5b8c", "#c07a3a", "#6b7a3a", "#a14d5a", "#8a8f5a", "#d1a14a"].map((c) => new THREE.Color(c));
+  const surf = [[B - 7, 23, 170, 11], [B - 12, 27.5, 104, 12], [B - 3, 18, 196, 4], [B * 0.4, 12.05, 40, 122], [B - 6, 12.05, 44, -118]];
+  for (let k = 0; k < NG; k++) {
+    let x, y, z;
+    if (k < NG * 0.7) { const t = surf[Math.floor(r() * surf.length)]; x = (r() - 0.5) * t[0]; y = t[1]; z = t[3] + (r() - 0.5) * t[2]; }
+    else { const sx = r() < 0.5 ? -1 : 1; x = sx * (B / 2 + 0.2); y = -8 + r() * 18; z = -130 + r() * 200; }
+    GP.push({ x, y, z, s: 0.35 + r() * 1.1, th: r() }); gm.setColorAt(k, gcol[Math.floor(r() * gcol.length)]);
+  }
+  // bow wave and wake (children: only for a liner that is not rolling)
+  const foamTex = (() => { const c = document.createElement("canvas"); c.width = 64; c.height = 256; const x = c.getContext("2d"), rr = rng(7);
+    for (let k = 0; k < 900; k++) { const v = rr(); x.fillStyle = `rgba(255,255,255,${0.25 + 0.6 * rr()})`; x.beginPath(); x.arc(rr() * 64, v * 256, 1 + rr() * 3, 0, 6.283); x.fill(); }
+    const tx = new THREE.CanvasTexture(c); tx.wrapS = tx.wrapT = THREE.RepeatWrapping; return tx; })();
+  const fm = new THREE.MeshBasicMaterial({ color: "#eef4f7", map: foamTex, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
+  const wakeShape = planShape([[-B / 2 - 1, -L / 2 + 10], [B / 2 + 1, -L / 2 + 10], [B * 1.6, -L / 2 - 420], [-B * 1.6, -L / 2 - 420]]);
+  const wake = new THREE.Mesh(new THREE.ShapeGeometry(wakeShape), fm); wake.rotation.x = Math.PI / 2; wake.position.y = 0.8; g.add(wake);
+  for (const sx of [-1, 1]) {
+    const bw = new THREE.Mesh(new THREE.ShapeGeometry(planShape([[0, L / 2 - 2], [sx * (B / 2 + 1), L / 2 - 60], [sx * (B / 2 + 26), L / 2 - 260], [sx * (B / 2 + 8), L / 2 - 240], [sx * (B / 2 - 1), L / 2 - 50]])), fm);
+    bw.rotation.x = Math.PI / 2; bw.position.y = 0.85; g.add(bw);
+  }
+  // anchor lights
+  const alights = [glow("#fff4dc", 7), glow("#fff4dc", 7), glow("#ff5a4a", 4), glow("#5aff8a", 4)];
+  alights[0].position.set(0, 14, L / 2 - 6); alights[1].position.set(0, 14, -L / 2 + 4); alights[2].position.set(-B / 2, 19, 94); alights[3].position.set(B / 2, 19, 94);
+  alights.forEach((s) => g.add(s));
+  const rust = keyed(o.rust, "r", 0), growth = keyed(o.growth, "g", 0), lift = keyed(o.lift, "y", 0), hk = keyed(o.holes, "h", 0),
+    pk = keyed(o.ports, "p", 0), lk = keyed(o.lit, "l", 0), wk = keyed(o.wake, "w", 0), ak = keyed(o.lights, "l", 0);
+  const RUST = { hull: "#3f2a22", boot: "#5e2a20", white: "#a8977c", deck: "#5f4a36", blue: "#4f5866", red: "#8a4636", fwhite: "#c0b29a", dark: "#2a2420", port: "#4a3a30", win: "#3a3028" };
+  const ALGAE = new THREE.Color("#4f6a52"), C = new THREE.Color(), GM = new THREE.Matrix4(), GQ = new THREE.Quaternion(), GS = new THREE.Vector3(), GV = new THREE.Vector3(), HOLE = new THREE.Color("#050505");
+  let last = "";
+  g.userData.tick = (t) => {
+    const rr = rust(t), gg = growth(t), pp = pk(t), ll = lk(t);
+    const ly = lift(t); tops.position.y = ly; tops.visible = ly < 50;
+    const hh = hk(t); holes.visible = hh > 0.01; holes.children.forEach((h) => h.scale.set(hh, 1, hh));
+    fm.opacity = 0.75 * wk(t); wake.visible = fm.opacity > 0.01; foamTex.offset.y = -t * 0.35;
+    const al = ak(t); alights.forEach((s) => { s.material.opacity = al; s.visible = al > 0.01; });
+    const sig = [rr, gg, pp, ll].map((v) => v.toFixed(3)).join();
+    if (sig === last) return; last = sig;
+    for (const k of Object.keys(M)) { C.copy(BASE[k]).lerp(new THREE.Color(RUST[k]), rr).lerp(ALGAE, gg * 0.7); M[k].color.copy(C); }
+    M.port.color.lerp(HOLE, pp);
+    for (const k of ["win", "port"]) { M[k].emissive.set("#ffcf7a"); M[k].emissiveIntensity = k === "port" ? ll * (1 - pp) : ll; }
+    GP.forEach((p, k) => { const s = gg > p.th * 0.85 ? p.s * clamp((gg - p.th * 0.85) / 0.25) : 1e-4; GV.set(p.x, p.y + s * 0.4, p.z); GS.set(s, s * 0.7, s); GM.compose(GV, GQ, GS); gm.setMatrixAt(k, GM); });
+    gm.instanceMatrix.needsUpdate = true; if (gm.instanceColor) gm.instanceColor.needsUpdate = true;
+  };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
+// flotilla: small motorboats scattered in a ring around o.pos (r0 to r1), bobbing on the waves; o.lights [{at, l}]
+KIT.flotilla = (o) => {
+  const r = rng(num(o.seed, 31)), N = num(o.count, 40), R0 = num(o.r0, 250), R1 = num(o.r1, 600), p0 = vec(o.pos), g = new THREE.Group();
+  g.userData.abs = true;
+  const hullC = ["#f2f2ee", "#e8e4da", "#d9dee3", "#2b3a4f", "#b0302b"], boats = [], lightsK = keyed(o.lights, "l", 0), sprites = [];
+  for (let k = 0; k < N; k++) {
+    const a = r() * 6.283, d = lerp(R0, R1, Math.sqrt(r())), Lb = 7 + r() * 16, b = new THREE.Group();
+    const hl = new THREE.Shape(); hl.moveTo(-Lb * 0.18, -Lb / 2); hl.lineTo(Lb * 0.18, -Lb / 2); hl.lineTo(Lb * 0.18, Lb * 0.2); hl.lineTo(0, Lb / 2); hl.lineTo(-Lb * 0.18, Lb * 0.2); hl.closePath();
+    const hm = new THREE.Mesh(new THREE.ExtrudeGeometry(hl, { depth: Lb * 0.12, bevelEnabled: false }), mat(hullC[Math.floor(r() * hullC.length)]));
+    hm.rotation.x = Math.PI / 2; hm.position.y = Lb * 0.09; b.add(hm);
+    b.add(box(Lb * 0.26, Lb * 0.1, Lb * 0.3, mat("#f4f4f0"), 0, Lb * 0.14, -Lb * 0.05));
+    b.add(box(Lb * 0.27, Lb * 0.04, Lb * 0.06, mat("#22303a"), 0, Lb * 0.16, Lb * 0.1));
+    const s = glow(r() < 0.3 ? "#ff6a5a" : "#fff1d0", 2.2 + Lb * 0.12); s.position.y = Lb * 0.32; b.add(s); sprites.push(s);
+    const x = p0[0] + Math.cos(a) * d, z = p0[2] + Math.sin(a) * d;
+    b.position.set(x, 0, z); b.rotation.y = Math.atan2(p0[0] - x, p0[2] - z) + (r() - 0.5) * 1.6;
+    g.add(b); boats.push({ b, x, z, ph: r() * 6.283 });
+  }
+  g.userData.tick = (t) => {
+    for (const q of boats) { q.b.position.y = waveH(q.x, q.z, t) - 0.25; q.b.rotation.z = Math.sin(t * 1.3 + q.ph) * 0.05; q.b.rotation.x = Math.sin(t * 1.1 + q.ph * 2) * 0.04; }
+    const l = lightsK(t); sprites.forEach((s) => { s.material.opacity = l; s.visible = l > 0.01; });
+  };
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+
+// foam: a flat patch of white water at o.pos (o.w across, o.l long, o.heading in degrees), o.op [{at, o}] its opacity
+KIT.foam = (o) => {
+  const c = document.createElement("canvas"); c.width = c.height = 256; const x = c.getContext("2d"), rr = rng(num(o.seed, 3));
+  const gr = x.createRadialGradient(128, 128, 10, 128, 128, 128); gr.addColorStop(0, "rgba(255,255,255,0.9)"); gr.addColorStop(0.7, "rgba(255,255,255,0.45)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+  x.fillStyle = gr; x.fillRect(0, 0, 256, 256);
+  x.globalCompositeOperation = "destination-out";
+  for (let k = 0; k < 500; k++) { x.fillStyle = `rgba(0,0,0,${0.3 + rr() * 0.5})`; x.beginPath(); x.arc(rr() * 256, rr() * 256, 2 + rr() * 9, 0, 6.283); x.fill(); }
+  const tex = new THREE.CanvasTexture(c);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(num(o.w, 80), num(o.l, 320)), new THREE.MeshBasicMaterial({ color: o.color || "#eef4f7", map: tex, transparent: true, opacity: 0, depthWrite: false }));
+  m.rotation.x = -Math.PI / 2;
+  const g = new THREE.Group(); g.add(m); g.rotation.y = num(o.heading, 0) * DEG;
+  const ok = keyed(o.op, "o", 0);
+  g.userData.tick = (t) => { const v = ok(t); m.material.opacity = v; m.visible = v > 0.01; const s = 1 + 0.15 * v; m.scale.set(s, s, 1); };
+  return g;
+};
+
+// fish: a school circling o.pos in a band of radii and heights; o.n [{at, n}] how many are there over time
+KIT.fish = (o) => {
+  const r = rng(num(o.seed, 77)), N = num(o.count, 300), R0 = num(o.r0, 10), R1 = num(o.r1, 60), Y0 = num(o.y0, -10), Y1 = num(o.y1, 10), sz = num(o.size, 1);
+  const geo = new THREE.SphereGeometry(1, 8, 6); geo.scale(0.25, 0.32, 1);
+  const tail = new THREE.ConeGeometry(0.3, 0.5, 4); tail.rotateX(-Math.PI / 2); tail.translate(0, 0, -1.1);
+  const merged = mergeGeos([geo, tail]);
+  const mesh = new THREE.InstancedMesh(merged, new THREE.MeshLambertMaterial({ color: "#ffffff" }), N); mesh.frustumCulled = false;
+  const cols = (o.colors || ["#c9d3dc", "#e8c34a", "#7fa6c8", "#d98a4a", "#b8c2c8"]).map((c) => new THREE.Color(c));
+  const F = []; for (let k = 0; k < N; k++) { F.push({ rad: lerp(R0, R1, r()), y: lerp(Y0, Y1, r()), ph: r() * 6.283, w: (0.08 + r() * 0.12) * (r() < 0.5 ? 1 : -1), s: sz * (0.6 + r() * 0.8), bob: r() * 6.283 }); mesh.setColorAt(k, cols[Math.floor(r() * cols.length)]); }
+  const g = new THREE.Group(); g.add(mesh); g.userData.abs = true;
+  const p0 = vec(o.pos); g.position.set(p0[0], p0[1], p0[2]);
+  const nk = keyed(o.n, "n", N);
+  const M = new THREE.Matrix4(), Q = new THREE.Quaternion(), S = new THREE.Vector3(), V = new THREE.Vector3(), E = new THREE.Euler();
+  g.userData.tick = (t) => {
+    const n = Math.round(nk(t));
+    F.forEach((f, k) => {
+      const a = f.ph + f.w * t, on = k < n, s = on ? f.s : 1e-4;
+      V.set(Math.cos(a) * f.rad, f.y + Math.sin(t * 0.7 + f.bob) * 0.6, Math.sin(a) * f.rad);
+      E.set(0, -a + (f.w > 0 ? 0 : Math.PI) + Math.sin(t * 4 + f.bob) * 0.15, 0); Q.setFromEuler(E); S.set(s, s, s);
+      M.compose(V, Q, S); mesh.setMatrixAt(k, M);
+    });
+    mesh.instanceMatrix.needsUpdate = true;
+  };
+  return g;
+};
+function mergeGeos(list) {
+  let pos = [], nor = [], idx = [], off = 0;
+  for (const gg of list) {
+    const ng = gg.index ? gg.toNonIndexed() : gg; ng.computeVertexNormals();
+    pos.push(...ng.attributes.position.array); nor.push(...ng.attributes.normal.array);
+  }
+  const out = new THREE.BufferGeometry();
+  out.setAttribute("position", new THREE.BufferAttribute(new Float32Array(pos), 3)); out.setAttribute("normal", new THREE.BufferAttribute(new Float32Array(nor), 3));
+  return out;
+}
+
+// diver: a scuba diver swimming along local +z (move along o.track), kicking, with bubbles rising
+KIT.diver = (o) => {
+  const g = new THREE.Group(), suit = mat(o.suit || "#1b1f24"), tank = mat("#e2b33a"), skin = mat("#c99a76");
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.2, 0.9, 10), suit); body.rotation.x = Math.PI / 2; g.add(body);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.15, 10, 8), suit); head.position.z = 0.6; g.add(head);
+  g.add(box(0.26, 0.08, 0.1, mat("#9fd3ff"), 0, 0.03, 0.72));
+  const tk = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.62, 10), tank); tk.rotation.x = Math.PI / 2; tk.position.set(0, 0.24, 0.05); g.add(tk);
+  for (const sx of [-1, 1]) { const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.55, 6), suit); arm.rotation.x = Math.PI / 2; arm.position.set(sx * 0.27, -0.02, 0.25); g.add(arm); }
+  const legs = [-1, 1].map((sx) => { const lg = new THREE.Group(); lg.position.set(sx * 0.1, 0, -0.45); const th = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.07, 0.75, 6), suit); th.rotation.x = Math.PI / 2; th.position.z = -0.37; lg.add(th); lg.add(box(0.2, 0.03, 0.38, mat(o.fin || "#2b6fd6"), 0, 0, -0.9)); g.add(lg); return lg; });
+  const bubbles = []; for (let k = 0; k < 10; k++) { const b = glow("#dff4ff", 0.16 + (k % 3) * 0.05); g.add(b); bubbles.push(b); }
+  const ph = num(o.seed, 1) * 1.3;
+  g.userData.tick = (t) => {
+    legs.forEach((lg, k) => { lg.rotation.x = Math.sin(t * 3.2 + ph + k * Math.PI) * 0.35; });
+    bubbles.forEach((b, k) => { const u = ((t * 0.55 + k / bubbles.length) % 1); b.position.set(Math.sin(k * 2.1 + t) * 0.12, 0.25 + u * 4.5, 0.65 - u * 0.4); b.material.opacity = 0.8 * (1 - u); });
+  };
+  g.scale.setScalar(num(o.scale, 1.8));
+  g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
+  return g;
+};
+for (const k of ["liner", "fish", "diver", "flotilla", "foam"]) FLIGHT_KIT.add(k);
 // racks: a data-centre aisle running from o.pos towards -z, rows of server racks either side with status LEDs.
 // o.health [{at, h}] is the share of racks up (0..1): healthy racks blink green and blue, failed ones glow red, and a
 // red alarm light pulses when health is low. o.count racks per side.
