@@ -2662,6 +2662,131 @@ KIT.diver = (o) => {
   return g;
 };
 for (const k of ["liner", "fish", "diver", "flotilla", "foam"]) FLIGHT_KIT.add(k);
+
+// ---------------- business-jet kit: a Learjet-style jet (same units as the airliner: nose along +z, about 6.2 long)
+// with low swept wings and winglets, two engines on the rear fuselage and a T-tail. o.ice {from, to} frosts the
+// leading edges and the windscreen; o.elevator {at} tears the left elevator off in three pieces that fly away aft;
+// o.stripe the cheatline colour; o.lights false hides the beacon, nav lights and strobes.
+function rodBetween(a, b, rad, m) {
+  const A = new THREE.Vector3(...a), B = new THREE.Vector3(...b), d = B.clone().sub(A);
+  const c = new THREE.Mesh(new THREE.CylinderGeometry(rad, rad, d.length(), 8), m);
+  c.position.copy(A).add(B).multiplyScalar(0.5);
+  c.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize());
+  return c;
+}
+KIT.bizjet = (o) => {
+  const g = new THREE.Group(), L = 6.2, R = 0.31;
+  const white = new THREE.MeshPhongMaterial({ color: "#f3f4f6", shininess: 60, specular: "#777777" });
+  const stripeM = mat(o.stripe || "#1f3a6b"), dark = mat("#161b22"), metal = mat("#9aa1a9");
+  const prof = [];
+  for (let k = 0; k <= 48; k++) {
+    const s = k / 48;
+    let r;
+    if (s < 0.3) r = R * (0.18 + 0.82 * Math.sin((s / 0.3) * Math.PI / 2));
+    else if (s < 0.8) r = R;
+    else r = R * Math.sqrt(Math.max(0, 1 - Math.pow((s - 0.8) / 0.2, 2)));
+    prof.push(new THREE.Vector2(Math.max(r, 0.002), (s - 0.5) * L));
+  }
+  const fus = new THREE.Mesh(new THREE.LatheGeometry(prof, 28), white); fus.rotation.x = Math.PI / 2; g.add(fus);
+  // windscreen, cabin windows, cheatline
+  const ws = box(0.4, 0.1, 0.34, dark, 0, 0.2, 1.95); ws.rotation.x = -0.5; g.add(ws);
+  const frost = box(0.42, 0.11, 0.36, new THREE.MeshPhongMaterial({ color: "#eef7ff", transparent: true, opacity: 0, shininess: 80 }), 0, 0.205, 1.95); frost.rotation.x = -0.5; g.add(frost);
+  for (const sx of [-1, 1]) {
+    for (let z = -0.7; z < 1.3; z += 0.34) g.add(box(0.02, 0.1, 0.13, dark, sx * (R - 0.004), 0.07, z));
+    g.add(box(0.02, 0.045, 3.2, stripeM, sx * (R - 0.002), -0.06, 0.3));
+  }
+  // wings with winglets
+  const wingPts = (sx) => [[sx * 0.2, -0.75], [sx * 2.3, 0.3], [sx * 2.3, 0.62], [sx * 0.2, 0.55]];
+  const iceM = new THREE.MeshPhongMaterial({ color: "#f4fbff", emissive: "#2a3a48", shininess: 90, specular: "#ffffff", flatShading: true });
+  const ices = [];
+  for (const sx of [-1, 1]) {
+    const w = new THREE.Mesh(surfaceGeo(wingPts(sx), 0.06), white); w.position.set(0, -0.2, -0.1); g.add(w);
+    const wl = box(0.03, 0.4, 0.3, white, sx * 2.31, -0.02, -0.1 - 0.46); wl.rotation.x = 0.35; g.add(wl);
+    const ic = rodBetween([sx * 0.25, -0.2, -0.1 + 0.72], [sx * 2.28, -0.2, -0.1 - 0.31], 0.035, iceM); g.add(ic); ices.push(ic);
+    // nav light and strobe on each tip
+    const nav = glow(sx < 0 ? "#ff3020" : "#30ff60", 0.35); nav.position.set(sx * 2.34, -0.15, -0.35); g.add(nav);
+    const st = glow("#ffffff", 0.6); st.position.set(sx * 2.34, -0.12, -0.45); st.userData.strobe = sx; g.add(st);
+  }
+  // engines on the rear fuselage
+  for (const sx of [-1, 1]) {
+    const n = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.15, 0.95, 18), white); n.rotation.x = Math.PI / 2; n.position.set(sx * 0.52, 0.2, -1.75); g.add(n);
+    const intake = new THREE.Mesh(new THREE.CircleGeometry(0.15, 18), dark); intake.position.set(sx * 0.52, 0.2, -1.27); g.add(intake);
+    const ex = new THREE.Mesh(new THREE.CircleGeometry(0.13, 18), dark); ex.rotation.y = Math.PI; ex.position.set(sx * 0.52, 0.2, -2.23); g.add(ex);
+    g.add(box(0.28, 0.05, 0.4, white, sx * 0.34, 0.17, -1.8));
+  }
+  // T-tail: swept fin, stabiliser on top, elevators behind it
+  const fs = new THREE.Shape(); fs.moveTo(2.0, 0.22); fs.lineTo(3.0, 0.2); fs.lineTo(3.42, 1.38); fs.lineTo(2.9, 1.38); fs.closePath();
+  const fin = new THREE.Mesh(new THREE.ExtrudeGeometry(fs, { depth: 0.06, bevelEnabled: false }), white);
+  fin.geometry.rotateY(Math.PI / 2); fin.geometry.translate(-0.03, 0, 0); g.add(fin);
+  // the extrusion was built with x = aft; after rotateY(90) shape x maps to -z, so the fin sits at z from -2.0 to -3.42
+  const finIce = rodBetween([0, 0.25, -2.02], [0, 1.36, -2.92], 0.03, iceM); g.add(finIce); ices.push(finIce);
+  const stab = new THREE.Mesh(surfaceGeo([[-1.15, 0.35], [1.15, 0.35], [1.15, 0.6], [0.0, 0.62], [-1.15, 0.6], [-1.15, 0.35]].map(([x, y]) => [x, y]), 0.05), white);
+  // a swept planform: rebuild with sweep
+  stab.geometry.dispose();
+  stab.geometry = surfaceGeo([[0, -0.05], [1.15, 0.3], [1.15, 0.52], [0, 0.42], [-1.15, 0.52], [-1.15, 0.3]], 0.05);
+  stab.position.set(0, 1.4, -2.95); g.add(stab);
+  const stabIce = [-1, 1].map((sx) => rodBetween([0, 1.4, -2.95 + 0.05], [sx * 1.13, 1.4, -2.95 - 0.3], 0.028, iceM));
+  stabIce.forEach((s) => { g.add(s); ices.push(s); });
+  const elevs = [-1, 1].map((sx) => { const e = new THREE.Mesh(surfaceGeo([[sx * 0.06, 0.42], [sx * 1.15, 0.52], [sx * 1.15, 0.68], [sx * 0.06, 0.62]], 0.04), white); e.position.set(0, 1.4, -2.95); g.add(e); return e; });
+  // the torn-off left elevator: three pieces
+  const pieces = [0, 1, 2].map((k) => { const pc = new THREE.Group(); const m = box(0.46, 0.04, 0.2, white); pc.add(m); pc.add(box(0.46, 0.042, 0.05, stripeM, 0, 0, 0.07)); pc.visible = false; g.add(pc); return pc; });
+  const PV = [[-0.8, 0.6, -2.4], [-1.5, 1.1, -3.4], [-0.3, -0.2, -4.4]];
+  // lights
+  const beacon = glow("#ff2a1a", 0.55); beacon.position.set(0, 0.34, 0.4); g.add(beacon);
+  const tailLight = glow("#ffffff", 0.35); tailLight.position.set(0, 1.42, -3.45); g.add(tailLight);
+  g.traverse((m) => { if (m.isMesh) { m.castShadow = false; m.receiveShadow = false; } });
+  g.scale.setScalar(num(o.scale, 1));
+  const eAt = o.elevator ? num(o.elevator.at, 1e9) : 1e9;
+  g.userData.tick = (t) => {
+    g.children.forEach((ch) => { if (ch.userData.strobe) ch.visible = o.lights !== false && ((t + (ch.userData.strobe > 0 ? 0 : 0.08)) % 1.3) < 0.06; });
+    beacon.material.opacity = o.lights === false ? 0 : 0.35 + 0.65 * Math.max(0, Math.sin(t * 6.2));
+    const ip = o.ice ? prog(o.ice, t) : 0;
+    ices.forEach((c) => { c.visible = ip > 0.01; c.scale.set(0.2 + 0.8 * ip, 1, 0.2 + 0.8 * ip); });
+    frost.material.opacity = 0.75 * ip;
+    const dt = t - eAt;
+    elevs[0].visible = dt < 0;
+    pieces.forEach((pc, k) => {
+      pc.visible = dt >= 0 && dt < 4;
+      if (!pc.visible) return;
+      const v = PV[k];
+      pc.position.set(-0.6 + (k - 1) * 0.3 + v[0] * dt, 1.4 + v[1] * dt - 0.4 * dt * dt, -3.5 + v[2] * dt - 0.6 * dt * dt);
+      pc.rotation.set(dt * (5 + k * 2), dt * (3 - k), dt * (7 - k * 3));
+    });
+  };
+  return g;
+};
+
+// wreckage: small static pieces scattered on the ground around o.pos (o.spread, o.count)
+KIT.wreckage = (o) => {
+  const r = rng(num(o.seed, 23)), g = new THREE.Group(), cols = ["#e6e8ea", "#c9cdd2", "#9aa1a8", "#3a3d42", "#1f3a6b"];
+  for (let k = 0; k < num(o.count, 40); k++) {
+    const a = r() * 6.283, d = Math.pow(r(), 0.7) * num(o.spread, 20), s = num(o.size, 0.5) * (0.3 + r());
+    const m = box(s * (1 + r()), s * 0.15, s * (0.6 + r()), mat(cols[Math.floor(r() * cols.length)]), Math.cos(a) * d, s * 0.08, Math.sin(a) * d);
+    m.rotation.set((r() - 0.5) * 0.4, r() * 6.283, (r() - 0.5) * 0.4); g.add(m);
+  }
+  return g;
+};
+
+// crater: a scorched pit with a ring of earth, o.r radius, o.water fills the bottom
+KIT.crater = (o) => {
+  const R = num(o.r, 4), g = new THREE.Group();
+  const scorch = new THREE.Mesh(new THREE.CircleGeometry(R * 2.4, 40), new THREE.MeshLambertMaterial({ color: "#2a2622", transparent: true, opacity: 0.85 }));
+  scorch.rotation.x = -Math.PI / 2; scorch.position.y = 0.03; g.add(scorch);
+  const pit = new THREE.Mesh(new THREE.CircleGeometry(R, 40), mat("#141210")); pit.rotation.x = -Math.PI / 2; pit.position.y = 0.05; g.add(pit);
+  if (o.water) { const w = new THREE.Mesh(new THREE.CircleGeometry(R * 0.7, 32), new THREE.MeshPhongMaterial({ color: "#3d4a52", shininess: 90 })); w.rotation.x = -Math.PI / 2; w.position.y = 0.07; g.add(w); }
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(R * 1.05, R * 0.18, 8, 40), mat("#5a4a3a")); rim.rotation.x = Math.PI / 2; rim.scale.z = 0.5; rim.position.y = 0.05; g.add(rim);
+  return g;
+};
+
+// part: a small spinning panel (o.w, o.d, o.color) moved by its track, o.spin [x, y, z] in turns per second
+KIT.part = (o) => {
+  const g = new THREE.Group(), inner = box(num(o.w, 0.4), 0.04, num(o.d, 0.18), mat(o.color || "#f3f4f6")); g.add(inner);
+  const sp = vec(o.spin, [1, 0.6, 1.4]);
+  g.userData.tick = (t) => inner.rotation.set(t * sp[0] * 6.283, t * sp[1] * 6.283, t * sp[2] * 6.283);
+  g.scale.setScalar(num(o.scale, 1));
+  return g;
+};
+for (const k of ["bizjet", "wreckage", "crater", "part"]) FLIGHT_KIT.add(k);
 // racks: a data-centre aisle running from o.pos towards -z, rows of server racks either side with status LEDs.
 // o.health [{at, h}] is the share of racks up (0..1): healthy racks blink green and blue, failed ones glow red, and a
 // red alarm light pulses when health is low. o.count racks per side.
