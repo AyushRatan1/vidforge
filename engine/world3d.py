@@ -1027,7 +1027,7 @@ class World3DRenderer:
 
     def setup(self, world: dict):
         return self.page.evaluate("([w, o]) => window.VF.setup(w, o)",
-                                  [world, {"width": self.rw, "height": self.rh, "quality": self.quality}])
+                                  [world, {"width": self.rw, "height": self.rh, "quality": self.quality, "antialias": os.environ.get("VIDFORGE_3D_AA", "1") != "0"}])
 
     def frame_jpeg(self, t: float) -> bytes:
         url = self.page.evaluate("(t) => window.VF.frame(t)", t)

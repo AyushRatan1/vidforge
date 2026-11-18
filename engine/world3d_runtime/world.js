@@ -1701,13 +1701,17 @@ KIT.clouds = (o) => {
       return Ly.from === undefined ? 1 : clamp(Math.min(prog({ from: Ly.from, to: num(Ly.from, 0) + fd }, t),
         Ly.to === undefined ? 1 : 1 - prog({ from: Ly.to, to: Ly.to + fd }, t)));
     });
-    puffs.forEach((p, k) => {
+    // only the puffs of layers in view are drawn: hidden layers cost nothing (they used to be drawn shrunk to a speck)
+    let n = 0;
+    for (const p of puffs) {
       const v = vis[p.li] ?? 1;
+      if (v < 1e-3) continue;
       P.set(wrap(p.x, cp.x), p.y, wrap(p.z, cp.z));
       S.set(Math.max(1e-3, p.s * v), Math.max(1e-3, p.s * p.sy * v), Math.max(1e-3, p.s * v));
       M.compose(P, Q, S);
-      im.setMatrixAt(k, M);
-    });
+      im.setMatrixAt(n++, M);
+    }
+    im.count = n; im.visible = n > 0;
     im.instanceMatrix.needsUpdate = true;
   });
   return g;
@@ -3210,7 +3214,7 @@ function setup(world, opts = {}) {
   QUALITY = num(opts.quality, 0.9);
   const canvas = document.getElementById("c");
   if (!R) {
-    R = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+    R = new THREE.WebGLRenderer({ canvas, antialias: opts.antialias !== false, preserveDrawingBuffer: true });
     R.shadowMap.enabled = true;
     R.shadowMap.type = THREE.PCFShadowMap;
     R.outputColorSpace = THREE.SRGBColorSpace;
@@ -3218,6 +3222,7 @@ function setup(world, opts = {}) {
   }
   R.setPixelRatio(1);
   R.setSize(W, H, false);
+  R.shadowMap.enabled = world.shadows !== false;
   const style = { ...STYLES[world.style] || STYLES.desert, ...(world.style_overrides || {}) };
   SCENE = new THREE.Scene();
   SCENE.background = new THREE.Color(style.sky);
@@ -3314,4 +3319,15 @@ function renderOnly(t) {   // profiling: draw a frame and wait for it, without e
   return px[0];
 }
 
-export const VF = { setup, frame, renderOnly, kit: Object.keys(KIT), styles: Object.keys(STYLES), info: () => ({ calls: R ? R.info.render.calls : 0, triangles: R ? R.info.render.triangles : 0 }) };
+function benchSplit(t) {   // profiling: time update() and render() separately
+  const a = performance.now(); update(t); const b = performance.now();
+  R.render(SCENE, CAM.cam); const gl = R.getContext(), px = new Uint8Array(4); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+  const c = performance.now(); return [Math.round(b - a), Math.round(c - b), R.info.render.calls];
+}
+function bench(mode) {   // profiling switches: "base", "noshadow", "noaa" (needs a fresh renderer), "info"
+  if (mode === "noshadow") { R.shadowMap.enabled = false; SCENE.traverse((m) => { if (m.material) m.material.needsUpdate = true; }); }
+  if (mode === "base") { R.shadowMap.enabled = true; SCENE.traverse((m) => { if (m.material) m.material.needsUpdate = true; }); }
+  return { calls: R.info.render.calls, tris: R.info.render.triangles, meshes: (() => { let n = 0; SCENE.traverse((m) => { if (m.isMesh) n++; }); return n; })() };
+}
+
+export const VF = { setup, frame, renderOnly, bench, benchSplit, kit: Object.keys(KIT), styles: Object.keys(STYLES), info: () => ({ calls: R ? R.info.render.calls : 0, triangles: R ? R.info.render.triangles : 0 }) };

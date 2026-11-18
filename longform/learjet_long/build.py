@@ -340,7 +340,7 @@ DIVE_TOWN = {"type": "bizjet", "id": "jtown", "build": {"op": "slide", "offset":
              "track": [{"at": at("s31", 0), "pos": [TX - 75, 140, -20], "rot": [-62, 90, 38]}, {"at": at("s31", word="Greenacres"), "pos": [TX, 1, 0], "rot": [-66, 90, 44]}]}
 
 WORLD = {
-    "style": "night", "terrain": False, "far": 3000,
+    "style": "night", "terrain": False, "far": 3000, "shadows": False,
     "env": envs,
     "lightning": [{"from": at(a, 0), "to": at(b, 1.0), "rate": 0.45, "seed": 3 + i, "strength": 0.55} for i, (a, b) in enumerate(CLOUD_WINDOWS)],
     "objects": [
