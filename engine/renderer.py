@@ -348,7 +348,7 @@ class Renderer:
         img.save(path, fmt, 92) if fmt == skia.kJPEG else img.save(path, fmt)
         return path
 
-    def encode_scene(self, i, path, crf=20, preset="veryfast", threads=0):
+    def encode_scene(self, i, path, crf=17, preset="veryfast", threads=0):
         seg = self.tl[i]
         W, H = self.W, self.H
         tmp = path[:-4] + ".part.mp4"

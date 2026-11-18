@@ -2727,10 +2727,18 @@ KIT.bizjet = (o) => {
   stab.position.set(0, 1.4, -2.95); g.add(stab);
   const stabIce = [-1, 1].map((sx) => rodBetween([0, 1.4, -2.95 + 0.05], [sx * 1.13, 1.4, -2.95 - 0.3], 0.028, iceM));
   stabIce.forEach((s) => { g.add(s); ices.push(s); });
-  const elevs = [-1, 1].map((sx) => { const e = new THREE.Mesh(surfaceGeo([[sx * 0.06, 0.42], [sx * 1.15, 0.52], [sx * 1.15, 0.68], [sx * 0.06, 0.62]], 0.04), white); e.position.set(0, 1.4, -2.95); g.add(e); return e; });
+  const elevM = o.elev_color ? new THREE.MeshPhongMaterial({ color: o.elev_color, emissive: o.elev_color, emissiveIntensity: 0.35 }) : white;
+  const elevs = [-1, 1].map((sx) => { const e = new THREE.Mesh(surfaceGeo([[sx * 0.06, 0.42], [sx * 1.15, 0.52], [sx * 1.15, 0.68], [sx * 0.06, 0.62]], 0.04), elevM); e.position.set(0, 1.4, -2.95); g.add(e); return e; });
   // the torn-off left elevator: three pieces
   const pieces = [0, 1, 2].map((k) => { const pc = new THREE.Group(); const m = box(0.46, 0.04, 0.2, white); pc.add(m); pc.add(box(0.46, 0.042, 0.05, stripeM, 0, 0, 0.07)); pc.visible = false; g.add(pc); return pc; });
   const PV = [[-0.8, 0.6, -2.4], [-1.5, 1.1, -3.4], [-0.3, -0.2, -4.4]];
+  if (o.gear) {   // landing gear: nose and two mains
+    const strut = mat("#8a9099"), tyre = mat("#1a1c1f");
+    for (const [gx, gz] of [[0, 1.9], [-0.55, -0.35], [0.55, -0.35]]) {
+      g.add(box(0.06, 0.36, 0.06, strut, gx, -0.42, gz));
+      const wh = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.1, 14), tyre); wh.rotation.z = Math.PI / 2; wh.position.set(gx, -0.62, gz); g.add(wh);
+    }
+  }
   // lights
   const beacon = glow("#ff2a1a", 0.55); beacon.position.set(0, 0.34, 0.4); g.add(beacon);
   const tailLight = glow("#ffffff", 0.35); tailLight.position.set(0, 1.42, -3.45); g.add(tailLight);
@@ -2787,6 +2795,256 @@ KIT.part = (o) => {
   return g;
 };
 for (const k of ["bizjet", "wreckage", "crater", "part"]) FLIGHT_KIT.add(k);
+
+// ---------------- explainer kit for documentary scenes
+// mapboard: a flat map on the XZ plane (north is -z) drawn from a land mask: o.bounds [lon0, lat0, lon1, lat1],
+// o.rows (strings of 0/1, north row first), o.size [W, D]; o.pins [{lon, lat, label, color}] are printed on it;
+// o.route [[lon, lat], ...] is a glowing line revealed by o.reveal [{at, p}] with a marker at o.marker [{at, p}];
+// o.storms [{lon, lat, r}] (r in degrees) are radar-style rain cells faded in by o.storm_op [{at, o}].
+KIT.mapboard = (o) => {
+  const b = o.bounds || [-100, 22, -74, 32], rows = o.rows || [], R = rows.length, C = R ? rows[0].length : 1;
+  const [W, D] = vec(o.size, [260, 100]);
+  const px = 4, cw = C * px, ch = R * px;
+  const cv = document.createElement("canvas"); cv.width = cw; cv.height = ch;
+  const x = cv.getContext("2d");
+  x.fillStyle = o.water || "#0a1626"; x.fillRect(0, 0, cw, ch);
+  // the mask goes into a small canvas pixel by pixel, then is scaled up (smooth coasts) with one blurred copy as a glow
+  const maskCanvas = (hex) => { const sm = document.createElement("canvas"); sm.width = C; sm.height = R; const sx = sm.getContext("2d"), id = sx.createImageData(C, R), col = new THREE.Color(hex);
+    const cr = Math.round(col.r * 255), cg = Math.round(col.g * 255), cb = Math.round(col.b * 255);
+    for (let r = 0; r < R; r++) { const s = rows[r]; for (let c = 0; c < C; c++) if (s.charCodeAt(c) === 49) { const q = (r * C + c) * 4; id.data[q] = cr; id.data[q + 1] = cg; id.data[q + 2] = cb; id.data[q + 3] = 255; } }
+    sx.putImageData(id, 0, 0); return sm; };
+  x.imageSmoothingEnabled = true;
+  x.filter = "blur(6px)"; x.drawImage(maskCanvas(o.coast || "#4aa6d0"), 0, 0, cw, ch); x.filter = "none"; x.drawImage(maskCanvas(o.land || "#42606a"), 0, 0, cw, ch);
+  x.strokeStyle = "rgba(160,200,230,0.10)"; x.lineWidth = 1.5;
+  const toPx = (lon, lat) => [(lon - b[0]) / (b[2] - b[0]) * cw, (b[3] - lat) / (b[3] - b[1]) * ch];
+  for (let lon = Math.ceil(b[0] / 2) * 2; lon <= b[2]; lon += 2) { const [a] = toPx(lon, b[1]); x.beginPath(); x.moveTo(a, 0); x.lineTo(a, ch); x.stroke(); }
+  for (let lat = Math.ceil(b[1] / 2) * 2; lat <= b[3]; lat += 2) { const [, a] = toPx(b[0], lat); x.beginPath(); x.moveTo(0, a); x.lineTo(cw, a); x.stroke(); }
+  for (const p of o.pins || []) {
+    const [u, v] = toPx(p.lon, p.lat);
+    x.fillStyle = p.color || "#ffd54a"; x.beginPath(); x.arc(u, v, 9, 0, 6.283); x.fill();
+    x.strokeStyle = "rgba(0,0,0,0.6)"; x.lineWidth = 3; x.stroke();
+    x.font = `bold ${num(p.size, 34)}px sans-serif`; x.lineWidth = 7; x.strokeStyle = "rgba(5,10,18,0.85)"; x.fillStyle = "#f4f6f8";
+    const tx = u + num(p.dx, 16), ty = v + num(p.dy, -14); x.strokeText(p.label || "", tx, ty); x.fillText(p.label || "", tx, ty);
+  }
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  const g = new THREE.Group();
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(W, D), new THREE.MeshBasicMaterial({ map: tex })); plane.rotation.x = -Math.PI / 2; g.add(plane);
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(W + 2, 1, D + 2), mat("#0a0f16")); frame.position.y = -0.55; g.add(frame);
+  const at = (lon, lat, y = 0) => new THREE.Vector3((lon - b[0]) / (b[2] - b[0]) * W - W / 2, y, (b[3] - lat) / (b[3] - b[1]) * D - D / 2);
+  // radar cells
+  let stormMesh = null;
+  if (o.storms) {
+    const sc = document.createElement("canvas"); sc.width = cw; sc.height = ch; const s = sc.getContext("2d"), rr = rng(num(o.seed, 9));
+    for (const st of o.storms) {
+      const [u, v] = toPx(st.lon, st.lat), rad = num(st.r, 0.6) / (b[2] - b[0]) * cw;
+      for (let k = 0; k < 70; k++) {
+        const a = rr() * 6.283, d = Math.pow(rr(), 0.7) * rad, cu = u + Math.cos(a) * d, cv2 = v + Math.sin(a) * d * 0.8, core = 1 - d / rad;
+        const col = core > 0.75 ? "rgba(230,40,40,0.55)" : core > 0.45 ? "rgba(240,200,40,0.45)" : "rgba(40,190,80,0.35)";
+        const gr = s.createRadialGradient(cu, cv2, 0, cu, cv2, rad * (0.25 + 0.35 * rr())); gr.addColorStop(0, col); gr.addColorStop(1, "rgba(0,0,0,0)");
+        s.fillStyle = gr; s.beginPath(); s.arc(cu, cv2, rad * 0.6, 0, 6.283); s.fill();
+      }
+    }
+    const stex = new THREE.CanvasTexture(sc); stex.colorSpace = THREE.SRGBColorSpace;
+    stormMesh = new THREE.Mesh(new THREE.PlaneGeometry(W, D), new THREE.MeshBasicMaterial({ map: stex, transparent: true, opacity: 0, depthWrite: false }));
+    stormMesh.rotation.x = -Math.PI / 2; stormMesh.position.y = 0.15; g.add(stormMesh);
+  }
+  // route and marker
+  let tube = null, curve = null, idx = 0, marker = null;
+  if (o.route && o.route.length > 1) {
+    curve = new THREE.CatmullRomCurve3(o.route.map(([lon, lat]) => at(lon, lat, 0.5)), false, "centripetal");
+    const tg = new THREE.TubeGeometry(curve, 240, num(o.line_w, 0.5), 8, false); idx = tg.index.count;
+    tube = new THREE.Mesh(tg, new THREE.MeshBasicMaterial({ color: o.route_color || "#ffd54a" })); g.add(tube);
+    marker = glow(o.route_color || "#ffe680", num(o.marker_size, 5)); g.add(marker);
+  }
+  const rev = keyed(o.reveal, "p", 1), mk = keyed(o.marker, "p", -1), so = keyed(o.storm_op, "o", 0);
+  g.userData.tick = (t) => {
+    if (tube) { const p = clamp(rev(t)); tube.geometry.setDrawRange(0, Math.floor(idx * p / 48) * 48); tube.visible = p > 0.002; }
+    if (marker) { const p = mk(t); marker.visible = p >= 0; if (p >= 0) { marker.position.copy(curve.getPoint(clamp(p))); marker.position.y += 0.6; marker.material.opacity = 0.75 + 0.25 * Math.sin(t * 6); } }
+    if (stormMesh) { stormMesh.material.opacity = so(t); stormMesh.visible = stormMesh.material.opacity > 0.01; }
+  };
+  return g;
+};
+
+// airfoil: a wing cross-section (NACA 2412, chord o.chord, leading edge at x = 0, span along z) in a stream of
+// supercooled droplets; o.ice [{at, i}] grows clear ice with horns on the leading edge, o.flow [{at, f}] the droplets,
+// and the streamlines behind the ice start to break up as it grows.
+KIT.airfoil = (o) => {
+  const c = num(o.chord, 10), span = num(o.span, 6), g = new THREE.Group(), N = 70;
+  const prof = (xc) => {   // NACA 2412: camber line and thickness at x / c
+    const m = 0.02, p = 0.4, t = 0.12;
+    const yt = 5 * t * (0.2969 * Math.sqrt(xc) - 0.126 * xc - 0.3516 * xc * xc + 0.2843 * xc ** 3 - 0.1015 * xc ** 4);
+    const yc = xc < p ? m / (p * p) * (2 * p * xc - xc * xc) : m / ((1 - p) ** 2) * ((1 - 2 * p) + 2 * p * xc - xc * xc);
+    return [yc, yt];
+  };
+  const upper = [], lower = [];
+  for (let k = 0; k <= N; k++) { const xc = 0.5 * (1 - Math.cos(Math.PI * k / N)), [yc, yt] = prof(xc); upper.push([xc * c, (yc + yt) * c]); lower.push([xc * c, (yc - yt) * c]); }
+  const sh = new THREE.Shape(); sh.moveTo(...upper[N]); for (let k = N - 1; k >= 0; k--) sh.lineTo(...upper[k]); for (let k = 1; k <= N; k++) sh.lineTo(...lower[k]); sh.closePath();
+  const wingM = new THREE.MeshPhongMaterial({ color: o.color || "#c9cfd6", shininess: 50, specular: "#666" });
+  const wing = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: span, bevelEnabled: false, curveSegments: 4 }), wingM); wing.position.z = -span / 2; g.add(wing);
+  // ice: an offset contour around the front of the section, thickest in two horns
+  const iceM = new THREE.MeshPhongMaterial({ color: "#e8f6ff", emissive: "#203848", transparent: true, opacity: 0.88, shininess: 120, specular: "#ffffff" });
+  const ice = new THREE.Mesh(new THREE.BufferGeometry(), iceM); ice.position.z = -span / 2 - 0.05; g.add(ice);
+  const front = []; for (let k = 22; k >= 0; k--) front.push(upper[k]); for (let k = 1; k <= 22; k++) front.push(lower[k]);
+  let lastI = -1;
+  const buildIce = (ii) => {
+    const out = [];
+    for (let k = 0; k < front.length; k++) {
+      const a = front[Math.max(0, k - 1)], bb = front[Math.min(front.length - 1, k + 1)], tx = bb[0] - a[0], ty = bb[1] - a[1], L = Math.hypot(tx, ty) || 1;
+      const nx = ty / L, ny = -tx / L, s = k / (front.length - 1);   // outward normal
+      const horn = Math.exp(-(((s - 0.36) / 0.07) ** 2)) + 0.8 * Math.exp(-(((s - 0.62) / 0.07) ** 2)), taper = Math.min(1, Math.min(s, 1 - s) * 5);
+      const th = ii * c * (0.012 + 0.05 * horn) * taper;
+      out.push([front[k][0] - nx * th, front[k][1] - ny * th]);
+    }
+    const s2 = new THREE.Shape(); s2.moveTo(...out[0]); for (const q of out.slice(1)) s2.lineTo(...q); for (let k = front.length - 1; k >= 0; k--) s2.lineTo(...front[k]); s2.closePath();
+    ice.geometry.dispose(); ice.geometry = new THREE.ExtrudeGeometry(s2, { depth: span + 0.1, bevelEnabled: false, curveSegments: 2 });
+  };
+  // droplets
+  const ND = num(o.drops, 160), rr = rng(num(o.seed, 5));
+  const dm = new THREE.InstancedMesh(new THREE.SphereGeometry(0.07, 6, 4), new THREE.MeshBasicMaterial({ color: "#9fd6ff" }), ND); dm.frustumCulled = false; g.add(dm);
+  const DP = []; for (let k = 0; k < ND; k++) DP.push({ y: (rr() - 0.5) * c * 0.5, z: (rr() - 0.5) * span * 0.9, ph: rr(), sp: 0.8 + rr() * 0.4 });
+  // streamlines
+  const lines = [], NL = 9;
+  for (let k = 0; k < NL; k++) {
+    const y0 = (k - (NL - 1) / 2) * c * 0.06 + c * 0.02;
+    const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(120 * 3), 3));
+    const ln = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: "#7fb8e0", transparent: true, opacity: 0.55 })); ln.position.z = span / 2 + 0.02; g.add(ln); lines.push({ ln, y0 });
+  }
+  const ik = keyed(o.ice, "i", 0), fk = keyed(o.flow, "f", 1), M = new THREE.Matrix4();
+  const thick = (xx) => { const xc = clamp(xx / c); const [yc, yt] = prof(xc); return [(yc + yt) * c, (yc - yt) * c]; };
+  g.userData.tick = (t) => {
+    const ii = ik(t); if (Math.abs(ii - lastI) > 0.004) { buildIce(ii); lastI = ii; } ice.visible = ii > 0.005;
+    const f = fk(t);
+    DP.forEach((d, k) => {
+      const u = ((t * 0.35 * d.sp + d.ph) % 1), xx = -c * 0.9 + u * c * 1.3;
+      let y = d.y, s = f > 0.02 ? 1 : 1e-4;
+      if (xx > -c * 0.12 && Math.abs(y) < c * 0.06) s *= Math.max(0, 1 - (xx + c * 0.12) / (c * 0.1));   // freezes on the leading edge
+      else if (xx > -c * 0.2) { const [yu, yl] = thick(Math.max(0, xx)); y = y > 0 ? Math.max(y, yu + 0.15) : Math.min(y, yl - 0.15); }
+      M.makeTranslation(xx, y, d.z); M.scale(new THREE.Vector3(s, s, s)); dm.setMatrixAt(k, M);
+    });
+    dm.instanceMatrix.needsUpdate = true;
+    lines.forEach(({ ln, y0 }, k) => {
+      const pa = ln.geometry.attributes.position.array;
+      for (let q = 0; q < 120; q++) {
+        const xx = -c * 0.6 + (q / 119) * c * 2.0;
+        let y = y0;
+        const [yu, yl] = thick(Math.max(0, Math.min(c, xx)));
+        const near = xx > -c * 0.15 && xx < c * 1.05;
+        if (near) y = y0 >= c * 0.02 ? Math.max(y0, yu + (y0 - c * 0.02) * 0.6 + 0.12) : Math.min(y0, yl + (y0 - c * 0.02) * 0.6 - 0.12);
+        if (y0 > c * 0.02 && xx > c * 0.05) y += ii * c * 0.06 * Math.sin(xx * 2.2 - t * 6 + k) * Math.min(1, (xx - c * 0.05) / (c * 0.3)) * (1 - Math.abs(k - (NL - 1) / 2) / NL);
+        pa[q * 3] = xx; pa[q * 3 + 1] = y; pa[q * 3 + 2] = 0;
+      }
+      ln.geometry.attributes.position.needsUpdate = true;
+    });
+  };
+  return g;
+};
+
+// flow: chevrons streaming from o.from to o.to (air moving: updrafts, downdrafts), o.op [{at, o}] fades it in
+KIT.flow = (o) => {
+  const A = new THREE.Vector3(...vec(o.from)), B = new THREE.Vector3(...vec(o.to)), dir = B.clone().sub(A), L = dir.length(); dir.normalize();
+  const g = new THREE.Group(); g.userData.abs = true;
+  const n = num(o.count, 8), sz = num(o.size, 3), m = new THREE.MeshBasicMaterial({ color: o.color || "#ff6a4a", transparent: true, opacity: 0 });
+  const geo = new THREE.ConeGeometry(sz * 0.6, sz * 1.2, 4); geo.rotateY(Math.PI / 4);
+  const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+  const cones = []; for (let k = 0; k < n; k++) { const c = new THREE.Mesh(geo, m); c.quaternion.copy(q); g.add(c); cones.push(c); }
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(sz * 0.12, sz * 0.12, L, 6), m); shaft.quaternion.copy(q); shaft.position.copy(A).add(B).multiplyScalar(0.5); g.add(shaft);
+  const ok = keyed(o.op, "o", 1), sp = num(o.speed, 0.25);
+  g.userData.tick = (t) => {
+    m.opacity = ok(t); g.visible = m.opacity > 0.01;
+    cones.forEach((c, k) => { const u = (k / n + t * sp) % 1; c.position.copy(A).addScaledVector(dir, u * L); c.scale.setScalar(Math.sin(u * Math.PI) * 0.8 + 0.2); });
+  };
+  return g;
+};
+
+// ring: a flat ring of radius o.r on the ground (a distance marker), o.op [{at, o}]
+KIT.ring = (o) => {
+  const r = num(o.r, 50), w = num(o.w, 1.2);
+  const m = new THREE.Mesh(new THREE.RingGeometry(r - w / 2, r + w / 2, 128), new THREE.MeshBasicMaterial({ color: o.color || "#ffd54a", transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false }));
+  m.rotation.x = -Math.PI / 2; m.position.y = num(o.y, 0.2);
+  const g = new THREE.Group(); g.add(m); const ok = keyed(o.op, "o", 1);
+  g.userData.tick = (t) => { m.material.opacity = ok(t); m.visible = m.material.opacity > 0.01; };
+  return g;
+};
+
+// gauge: a speed dial facing +z, o.label under the hub, needle at o.value [{at, v}] (0 to 1 across the arc, red zone
+// from o.red), a flashing warning (o.warn text) when the needle is in the red
+KIT.gauge = (o) => {
+  const S = num(o.size, 10), red = num(o.red, 0.8), g = new THREE.Group();
+  const cv = document.createElement("canvas"); cv.width = cv.height = 1024; const x = cv.getContext("2d"), C = 512;
+  x.fillStyle = "#0d1117"; x.beginPath(); x.arc(C, C, 500, 0, 6.283); x.fill();
+  x.strokeStyle = "#3a4250"; x.lineWidth = 18; x.stroke();
+  const a0 = Math.PI * 0.75, a1 = Math.PI * 2.25, ang = (v) => a0 + (a1 - a0) * v;
+  x.lineWidth = 40; x.strokeStyle = "#c62828"; x.beginPath(); x.arc(C, C, 400, ang(red), a1); x.stroke();
+  for (let k = 0; k <= 40; k++) { const v = k / 40, a = ang(v), L = k % 5 === 0 ? 70 : 34; x.strokeStyle = v >= red ? "#ff8a80" : "#e8ecf0"; x.lineWidth = k % 5 === 0 ? 10 : 5;
+    x.beginPath(); x.moveTo(C + Math.cos(a) * 440, C + Math.sin(a) * 440); x.lineTo(C + Math.cos(a) * (440 - L), C + Math.sin(a) * (440 - L)); x.stroke(); }
+  x.fillStyle = "#e8ecf0"; x.font = "bold 72px sans-serif"; x.textAlign = "center"; x.fillText(o.label || "AIRSPEED", C, C + 230);
+  x.fillStyle = "#ff8a80"; x.font = "bold 56px sans-serif"; x.fillText("MAX", C + Math.cos(ang((red + 1) / 2)) * 300, C + Math.sin(ang((red + 1) / 2)) * 300 + 20);
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+  const face = new THREE.Mesh(new THREE.CircleGeometry(S, 64), new THREE.MeshBasicMaterial({ map: tex })); g.add(face);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(S * 1.0, S * 0.04, 8, 64), mat("#596270")); g.add(rim);
+  const needle = new THREE.Group(); const nm = new THREE.MeshBasicMaterial({ color: "#ffffff" });
+  const nd = new THREE.Mesh(new THREE.BoxGeometry(S * 0.035, S * 0.8, S * 0.02), nm); nd.position.y = S * 0.36; needle.add(nd);
+  needle.add(new THREE.Mesh(new THREE.CircleGeometry(S * 0.08, 24), mat("#c9cfd6"))); needle.position.z = 0.05; g.add(needle);
+  const wc = document.createElement("canvas"); wc.width = 1024; wc.height = 200; const w = wc.getContext("2d");
+  w.fillStyle = "#c62828"; w.fillRect(0, 0, 1024, 200); w.fillStyle = "#ffffff"; w.font = "bold 120px sans-serif"; w.textAlign = "center"; w.fillText(o.warn || "OVERSPEED", 512, 145);
+  const wt = new THREE.CanvasTexture(wc); wt.colorSpace = THREE.SRGBColorSpace;
+  const warn = new THREE.Mesh(new THREE.PlaneGeometry(S * 1.4, S * 0.27), new THREE.MeshBasicMaterial({ map: wt, transparent: true })); warn.position.set(0, -S * 1.25, 0.05); g.add(warn);
+  const vk = keyed(o.value, "v", 0);
+  g.userData.tick = (t) => {
+    const v = vk(t) + (vk(t) > 0.05 ? Math.sin(t * 23) * 0.004 : 0);
+    needle.rotation.z = -(ang(clamp(v, 0, 1.05)) - Math.PI * 1.5);
+    nm.color.set(v >= red ? "#ff5252" : "#ffffff");
+    warn.visible = v >= red && Math.sin(t * 9) > -0.2;
+  };
+  return g;
+};
+
+// plot: a chart panel facing +z (o.w by o.h) with a line through o.data [[x, y], ...] (both 0 to 1) drawn by
+// o.reveal [{at, p}]; o.yticks [{v, label}] and o.xlabel / o.ylabel print on the panel
+KIT.plot = (o) => {
+  const W = num(o.w, 40), H = num(o.h, 22), g = new THREE.Group();
+  const cv = document.createElement("canvas"); cv.width = 1600; cv.height = Math.round(1600 * H / W); const x = cv.getContext("2d"), cw = cv.width, ch = cv.height;
+  const L = 270, Rm = 80, T = 60, Bm = 140, toX = (u) => L + u * (cw - L - Rm), toY = (v) => ch - Bm - v * (ch - T - Bm);
+  x.fillStyle = "rgba(10,14,20,0.92)"; x.fillRect(0, 0, cw, ch);
+  x.strokeStyle = "rgba(200,215,230,0.14)"; x.lineWidth = 2; x.font = "bold 40px sans-serif"; x.fillStyle = "#c9d3dd"; x.textAlign = "right";
+  for (const tk of o.yticks || []) { const yy = toY(tk.v); x.beginPath(); x.moveTo(L, yy); x.lineTo(cw - Rm, yy); x.stroke(); x.fillText(tk.label, L - 18, yy + 14); }
+  x.strokeStyle = "#c9d3dd"; x.lineWidth = 4; x.beginPath(); x.moveTo(L, T); x.lineTo(L, ch - Bm); x.lineTo(cw - Rm, ch - Bm); x.stroke();
+  x.textAlign = "center"; if (o.xlabel) x.fillText(o.xlabel, (L + cw - Rm) / 2, ch - 40);
+  for (const tk of o.xticks || []) { const xx = toX(tk.v); x.strokeStyle = "#c9d3dd"; x.lineWidth = 4; x.beginPath(); x.moveTo(xx, ch - Bm); x.lineTo(xx, ch - Bm + 18); x.stroke();
+    x.textAlign = tk.align || "center"; x.fillStyle = "#e8ecf0"; x.fillText(tk.label, xx, ch - Bm + 66 + num(tk.row, 0) * 52); }
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+  g.add(new THREE.Mesh(new THREE.PlaneGeometry(W, H), new THREE.MeshBasicMaterial({ map: tex })));
+  const toW = ([u, v]) => new THREE.Vector3(toX(u) / cw * W - W / 2, H / 2 - toY(v) / ch * H, 0.08);
+  const path = new THREE.CurvePath(); const pts = (o.data || [[0, 0], [1, 1]]).map(toW);
+  for (let k = 0; k < pts.length - 1; k++) path.add(new THREE.LineCurve3(pts[k], pts[k + 1]));
+  const segs = Math.max(40, pts.length * 12), tg = new THREE.TubeGeometry(path, segs, num(o.line_w, 0.22), 6, false), idx = tg.index.count;
+  const line = new THREE.Mesh(tg, new THREE.MeshBasicMaterial({ color: o.color || "#ffd54a" })); g.add(line);
+  const head = glow(o.color || "#ffd54a", num(o.line_w, 0.22) * 9); g.add(head);
+  const rk = keyed(o.reveal, "p", 1);
+  g.userData.tick = (t) => {
+    const p = clamp(rk(t)); line.geometry.setDrawRange(0, Math.floor(idx * p / 36) * 36); line.visible = p > 0.003;
+    head.visible = p > 0.003 && p < 0.999; if (head.visible) { head.position.copy(path.getPointAt(p)); head.position.z = 0.15; }
+  };
+  return g;
+};
+
+// gridfloor: an investigation floor (o.size, o.div) with a dark slab under a grid
+KIT.gridfloor = (o) => {
+  const s = num(o.size, 60), g = new THREE.Group();
+  const slab = new THREE.Mesh(new THREE.BoxGeometry(s, 0.2, s), mat(o.color || "#2a3038")); slab.position.y = -0.1; g.add(slab);
+  const grid = new THREE.GridHelper(s, num(o.div, 30), o.line || "#556070", o.line || "#3e4652"); grid.position.y = 0.01; g.add(grid);
+  return g;
+};
+
+// pole: a utility pole o.h tall with a crossarm, leaning o.lean degrees
+KIT.pole = (o) => {
+  const h = num(o.h, 12), g = new THREE.Group(), wood = mat(o.color || "#6b5644");
+  const p = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.22, h, 8), wood); p.position.y = h / 2; g.add(p);
+  g.add(box(2.4, 0.18, 0.18, wood, 0, h - 0.8, 0));
+  g.rotation.z = num(o.lean, 0) * DEG;
+  return g;
+};
+for (const k of ["mapboard", "airfoil", "flow", "ring", "gauge", "plot", "gridfloor", "pole"]) FLIGHT_KIT.add(k);
 // racks: a data-centre aisle running from o.pos towards -z, rows of server racks either side with status LEDs.
 // o.health [{at, h}] is the share of racks up (0..1): healthy racks blink green and blue, failed ones glow red, and a
 // red alarm light pulses when health is low. o.count racks per side.
@@ -2885,33 +3143,52 @@ function makeCamera(keys, W, H, far = 400) {
     r.pos = r.keys.length > 1 ? new THREE.CatmullRomCurve3(r.keys.map((k) => k.pos), false, "centripetal") : null;
     r.look = r.keys.length > 1 ? new THREE.CatmullRomCurve3(r.keys.map((k) => k.look), false, "centripetal") : null;
   }
+  // Where along a shot the camera is: a monotone cubic (Fritsch-Carlson) through (key time, key index), so the
+  // camera keeps moving through its keys instead of stopping at each one; it only eases in and out at the ends
+  // of a shot. A key with ease "linear" keeps the old constant-speed segments.
+  for (const r of runs) {
+    const n = r.keys.length, xs = r.keys.map((k) => k.at), ys = r.keys.map((k, i) => i / Math.max(1, n - 1));
+    const d = [], m = new Array(n).fill(0);
+    for (let i = 0; i < n - 1; i++) d.push((ys[i + 1] - ys[i]) / Math.max(1e-6, xs[i + 1] - xs[i]));
+    for (let i = 1; i < n - 1; i++) {
+      if (d[i - 1] <= 0 || d[i] <= 0) { m[i] = 0; continue; }
+      const h0 = xs[i] - xs[i - 1], h1 = xs[i + 1] - xs[i], w1 = 2 * h1 + h0, w2 = h1 + 2 * h0;
+      m[i] = (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]);
+    }
+    if (n > 1) { m[0] = 0.35 * d[0]; m[n - 1] = 0.35 * d[n - 2]; }
+    r.linear = r.keys.some((k) => k.ease === "linear");
+    r.param = (t) => {
+      if (n < 2 || t <= xs[0]) return 0;
+      if (t >= xs[n - 1]) return 1;
+      let i = 0;
+      while (i < n - 2 && t > xs[i + 1]) i++;
+      const h = Math.max(1e-6, xs[i + 1] - xs[i]), u = (t - xs[i]) / h;
+      if (r.linear) return (i + u) / (n - 1);
+      const u2 = u * u, u3 = u2 * u;
+      const s = (2 * u3 - 3 * u2 + 1) * ys[i] + (u3 - 2 * u2 + u) * h * m[i] + (-2 * u3 + 3 * u2) * ys[i + 1] + (u3 - u2) * h * m[i + 1];
+      return clamp(s);
+    };
+    if (r.dyn) { r.dpos = r.keys.map(() => new THREE.Vector3()); r.dlook = r.keys.map(() => new THREE.Vector3()); }
+  }
   const tmp = new THREE.Vector3(), tmpL = new THREE.Vector3();
+  const catmull = (pts, s, out) => {     // centripetal Catmull-Rom through moving points, evaluated at s in [0, 1]
+    if (pts.length === 1) return out.copy(pts[0]);
+    return new THREE.CatmullRomCurve3(pts, false, "centripetal").getPoint(s, out);
+  };
   return {
     cam,
     update(t) {
       let ri = 0;
       while (ri < runs.length - 1 && t >= runs[ri + 1].keys[0].at) ri++;
-      const r = runs[ri], rk = r.keys;
-      let i = 0;
-      while (i < rk.length - 1 && t > rk[i + 1].at) i++;
-      let fov, shake = 0, roll = 0;
+      const r = runs[ri], rk = r.keys, n = rk.length;
+      const s = r.param(t), f = s * Math.max(1, n - 1), i = Math.min(n - 1, Math.floor(f)), u = f - i;
+      const a = rk[i], b = rk[Math.min(i + 1, n - 1)];
+      const fov = lerp(a.fov, b.fov, u), shake = lerp(a.shake, b.shake, u), roll = lerp(a.roll, b.roll, u);
       if (r.dyn) {
-        const a = rk[Math.min(i, rk.length - 1)], b = rk[Math.min(i + 1, rk.length - 1)];
-        let u = (b === a || t <= a.at) ? 0 : clamp((t - a.at) / Math.max(1e-6, b.at - a.at));
-        u = b.ease === "linear" ? u : easeInOut(u);
-        tmp.copy(at3(a, "pos", A)).lerp(at3(b, "pos", B), u);
-        tmpL.copy(at3(a, "look", A)).lerp(at3(b, "look", B), u);
-        fov = lerp(a.fov, b.fov, u); shake = lerp(a.shake, b.shake, u); roll = lerp(a.roll, b.roll, u);
-      } else if (rk.length === 1 || t <= rk[0].at) { fov = rk[0].fov; tmp.copy(rk[0].pos); tmpL.copy(rk[0].look); shake = rk[0].shake; roll = rk[0].roll; }
-      else if (i >= rk.length - 1) { fov = rk[rk.length - 1].fov; tmp.copy(rk[rk.length - 1].pos); tmpL.copy(rk[rk.length - 1].look); }
-      else {
-        const a = rk[i], b = rk[i + 1];
-        let u = clamp((t - a.at) / Math.max(1e-6, b.at - a.at));
-        u = b.ease === "linear" ? u : easeInOut(u);
-        const s = (i + u) / (rk.length - 1);
-        r.pos.getPoint(s, tmp); r.look.getPoint(s, tmpL);
-        fov = lerp(a.fov, b.fov, u);
-      }
+        rk.forEach((k, q) => { at3(k, "pos", r.dpos[q]); at3(k, "look", r.dlook[q]); });
+        catmull(r.dpos, s, tmp); catmull(r.dlook, s, tmpL);
+      } else if (n === 1) { tmp.copy(rk[0].pos); tmpL.copy(rk[0].look); }
+      else { r.pos.getPoint(s, tmp); r.look.getPoint(s, tmpL); }
       // a gentle handheld drift so held shots never freeze
       tmp.x += Math.sin(t * 0.45) * 0.12; tmp.y += Math.sin(t * 0.37 + 1) * 0.08;
       if (shake) {     // turbulence
@@ -3029,4 +3306,12 @@ function frame(t, type = "image/jpeg") {
   return R.domElement.toDataURL(type, QUALITY);
 }
 
-export const VF = { setup, frame, kit: Object.keys(KIT), styles: Object.keys(STYLES), info: () => ({ calls: R ? R.info.render.calls : 0, triangles: R ? R.info.render.triangles : 0 }) };
+function renderOnly(t) {   // profiling: draw a frame and wait for it, without encoding it
+  update(t);
+  R.render(SCENE, CAM.cam);
+  const gl = R.getContext(), px = new Uint8Array(4);
+  gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+  return px[0];
+}
+
+export const VF = { setup, frame, renderOnly, kit: Object.keys(KIT), styles: Object.keys(STYLES), info: () => ({ calls: R ? R.info.render.calls : 0, triangles: R ? R.info.render.triangles : 0 }) };

@@ -42,7 +42,7 @@ TIME_KEYS = {"at", "from", "to", "rope_start", "rope_end", "until"}
 KIT = {"box", "slab", "cylinder", "cone", "pyramid", "dome", "sphere", "mound", "wall", "stairs", "pillar", "pavilion",
        "spire", "arch", "water", "tree", "trees", "grass", "rocks", "house", "ladder", "well", "person", "people",
        "hill", "cliff", "ramp", "blocks", "sledge", "minaret", "tomb", "bastion", "palace", "boat", "flag", "gate", "town",
-       "frustum", "airliner", "ocean", "clouds", "cumulus", "streaks", "splash", "debris", "ship", "seabed", "wreck", "tanker", "mine", "missile", "blast", "stars", "earth", "towers", "crowd", "racks", "starship", "tower", "mount", "plume", "starlink", "liner", "fish", "diver", "flotilla", "foam", "bizjet", "wreckage", "crater", "part",
+       "frustum", "airliner", "ocean", "clouds", "cumulus", "streaks", "splash", "debris", "ship", "seabed", "wreck", "tanker", "mine", "missile", "blast", "stars", "earth", "towers", "crowd", "racks", "starship", "tower", "mount", "plume", "starlink", "liner", "fish", "diver", "flotilla", "foam", "bizjet", "wreckage", "crater", "part", "mapboard", "airfoil", "flow", "ring", "gauge", "plot", "gridfloor", "pole",
        "recorder", "auv"}
 MACROS = {"stepwell", "pyramid", "fort", "temple"}
 STYLES = {"desert", "golden", "green", "overcast", "night"}
@@ -980,9 +980,9 @@ class _Quiet(http.server.SimpleHTTPRequestHandler):
 class World3DRenderer:
     """One headless browser session. Use as a context manager."""
 
-    def __init__(self, W: int, H: int, scale: float | None = None, quality: float = 0.9):
+    def __init__(self, W: int, H: int, scale: float | None = None, quality: float = 0.95):
         self.W, self.H = W, H
-        self.scale = float(scale or os.environ.get("VIDFORGE_3D_SCALE", 0.75))
+        self.scale = float(scale or os.environ.get("VIDFORGE_3D_SCALE", 1.0))
         self.rw, self.rh = int(round(W * self.scale / 2) * 2), int(round(H * self.scale / 2) * 2)
         self.quality = quality
 
@@ -1083,7 +1083,7 @@ def resolve_world3d(spec: dict, tl: list, out_dir: str, stills_only: bool = Fals
     try:
         world = prepare_world(spec, tl)
         key_base = hashlib.sha1(json.dumps([world, W, H, runtime_version(),
-                                            os.environ.get("VIDFORGE_3D_SCALE", "0.75")], sort_keys=True).encode()).hexdigest()[:10]
+                                            os.environ.get("VIDFORGE_3D_SCALE", "1.0")], sort_keys=True).encode()).hexdigest()[:10]
         work = os.path.join(out_dir, "work")
         os.makedirs(work, exist_ok=True)
         from .footage import extract_frame
