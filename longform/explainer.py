@@ -27,9 +27,9 @@ def at(scene, t=None, word=None, offset=0.0):
     return ref
 
 
-def CHIP(text, at_time=0.05, until=None, y=0.052):
+def CHIP(text, at_time=0.05, until=None, y=0.1):
     """The small dark context chip at the top of the frame."""
-    el = {"type": "text", "text": text, "x": 0.5, "y": y, "size": 0.026, "color": "#ffffff", "bg": "#14181f",
+    el = {"type": "text", "text": text, "x": 0.5, "y": y, "size": 0.03, "color": "#ffffff", "bg": "#14181f",
           "bg_alpha": 0.82, "style": "label", "stroke": False, "enter": "fade", "at": at_time}
     if until is not None:
         el["until"] = until
