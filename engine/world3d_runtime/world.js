@@ -2203,15 +2203,27 @@ KIT.towers = (o) => {
     const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); b.position.set(lerp(area[0], area[2], r()), h / 2, lerp(area[1], area[3], r()));
     b.userData.h = h; g.add(b); items.push(b);
     const roof = box(w + 0.2, 0.3, d + 0.2, mat("#1b2129"), b.position.x, h + 0.15, b.position.z); roof.userData.h = h; g.add(roof); items.push(roof);
+    if (o.neon && r() < num(o.neon_share, 0.45)) {   // a neon strip around the top of some towers
+      const nc = o.neon[Math.floor(r() * o.neon.length)], nm = new THREE.MeshBasicMaterial({ color: nc, toneMapped: false });
+      const strip = new THREE.Group(); strip.position.set(b.position.x, h - 0.6, b.position.z); strip.userData.h = h - 0.6;
+      strip.add(box(w + 0.12, 0.22, 0.06, nm, 0, 0, d / 2 + 0.03)); strip.add(box(w + 0.12, 0.22, 0.06, nm, 0, 0, -d / 2 - 0.03));
+      strip.add(box(0.06, 0.22, d + 0.12, nm, w / 2 + 0.03, 0, 0)); strip.add(box(0.06, 0.22, d + 0.12, nm, -w / 2 - 0.03, 0, 0));
+      g.add(strip); items.push(strip);
+    }
   }
   g.userData.abs = true;
+  const flk = keyed(o.flicker, "f", 0);
   const rise = (o.rise || []).map((k) => ({ at: num(k.at, 0), s: num(k.s, 1) })).sort((a, b) => a.at - b.at);
   g.userData.tick = (t) => {
+    if (o.flicker) {   // o.flicker [{at, f}]: 0 steady, 1 lights stuttering and dimming (a grid under strain)
+      const f = flk(t), base = num(o.glow, 0.9);
+      items.forEach((m, k) => { if (m.material && m.material.emissiveIntensity !== undefined && m.material.emissiveMap) m.material.emissiveIntensity = base * (1 - f * (0.35 + 0.65 * (Math.sin(t * 13 + k * 7.1) > 0.4 ? 1 : 0.2))); });
+    }
     if (!rise.length) return;
     let i = 0; while (i < rise.length - 1 && t > rise[i + 1].at) i++;
     const a = rise[i], b = rise[Math.min(i + 1, rise.length - 1)];
     const s = lerp(a.s, b.s, b === a ? 0 : easeInOut(clamp((t - a.at) / Math.max(1e-6, b.at - a.at))));
-    for (const m of items) { if (m.geometry.type === "BoxGeometry" && m.userData.h) { const isRoof = m.geometry.parameters.height < 0.5; if (isRoof) m.position.y = m.userData.h * s + 0.15; else { m.scale.y = s; m.position.y = m.userData.h * s / 2; } } }
+    for (const m of items) { if (m.geometry && m.geometry.type === "BoxGeometry" && m.userData.h) { const isRoof = m.geometry.parameters.height < 0.5; if (isRoof) m.position.y = m.userData.h * s + 0.15; else { m.scale.y = s; m.position.y = m.userData.h * s / 2; } } }
   };
   g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
   return g;
@@ -3049,6 +3061,120 @@ KIT.pole = (o) => {
   return g;
 };
 for (const k of ["mapboard", "airfoil", "flow", "ring", "gauge", "plot", "gridfloor", "pole"]) FLIGHT_KIT.add(k);
+
+// ---------------- launch-night kit
+// tvroom: a dark living room (TV on a stand, a console, a sofa, a lamp) whose TV shows a generic download screen:
+// o.title, o.size_label; o.progress [{at, p}] fills the bar, o.speed [{at, v}] prints Mbps, o.queue [{at, q}] prints
+// a queue position, o.state [{at, s}]: 0 downloading, 1 in queue, 2 server busy error, 3 ready to play. o.clock [{at, c}]
+// (minutes before midnight, negative after) prints a clock in the corner.
+KIT.tvroom = (o) => {
+  const g = new THREE.Group();
+  g.add(box(14, 0.1, 10, mat("#2a2420"), 0, -0.05, 0));                       // floor
+  g.add(box(14, 6, 0.2, mat("#1d2330"), 0, 3, -3.2));                         // back wall
+  g.add(box(3.6, 0.7, 0.9, mat("#2b2b30"), 0, 0.35, -2.5));                   // TV stand
+  const cv = document.createElement("canvas"); cv.width = 1280; cv.height = 720; const x = cv.getContext("2d");
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+  const screen = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 1.8), new THREE.MeshBasicMaterial({ map: tex, toneMapped: false }));
+  screen.position.set(0, 1.75, -2.43); g.add(screen);
+  g.add(box(3.32, 1.92, 0.08, mat("#0b0c0f"), 0, 1.75, -2.49));                // bezel
+  g.add(box(0.5, 0.1, 0.3, mat("#0b0c0f"), 0, 0.75, -2.5));
+  // a console standing beside the TV: white panels around a black core, a light strip
+  const con = new THREE.Group(); con.position.set(1.35, 0.7, -2.45);
+  con.add(box(0.12, 0.62, 0.42, mat("#121317"), 0, 0.31, 0)); con.add(box(0.05, 0.66, 0.44, mat("#e9ebee"), -0.085, 0.33, 0)); con.add(box(0.05, 0.66, 0.44, mat("#e9ebee"), 0.085, 0.33, 0));
+  const led = glow("#5ab0ff", 0.25); led.position.set(0, 0.62, 0.23); con.add(led); g.add(con);
+  // sofa and lamp
+  const sofa = mat("#3b4a5c"); g.add(box(3.6, 0.5, 1.2, sofa, 0, 0.45, 2.6)); g.add(box(3.6, 0.9, 0.3, sofa, 0, 0.9, 3.15)); g.add(box(0.3, 0.75, 1.2, sofa, -1.95, 0.6, 2.6)); g.add(box(0.3, 0.75, 1.2, sofa, 1.95, 0.6, 2.6));
+  g.add(box(0.06, 1.6, 0.06, mat("#555"), -3, 0.8, -1.8)); const lamp = glow("#ffcf8a", 1.4); lamp.position.set(-3, 1.7, -1.8); g.add(lamp);
+  const tvLight = new THREE.PointLight("#7fb0ff", 2.2, 9, 1.6); tvLight.position.set(0, 1.7, -1.6); g.add(tvLight);
+  const pk = keyed(o.progress, "p", 0), sk = keyed(o.speed, "v", 0), qk = keyed(o.queue, "q", 0), ck = keyed(o.clock, "c", 9999);
+  const stK = (o.state || [{ at: 0, s: 0 }]).map((k) => ({ at: num(k.at, 0), s: num(k.s, 0) })).sort((a, b) => a.at - b.at);
+  const stateAt = (t) => { let s = stK.length ? stK[0].s : 0; for (const k of stK) if (t >= k.at) s = k.s; return s; };
+  let last = "";
+  const draw = (t) => {
+    const p = clamp(pk(t)), v = sk(t), q = Math.round(qk(t)), s = stateAt(t), c = ck(t);
+    const blink = s === 2 ? (Math.sin(t * 7) > 0 ? 1 : 0) : 0, spin = Math.floor(t * 8) % 8;
+    const sig = [p.toFixed(3), v.toFixed(0), q, s, Math.round(c * 60), blink, s === 1 ? spin : 0].join();
+    if (sig === last) return; last = sig;
+    const gr = x.createLinearGradient(0, 0, 0, 720); gr.addColorStop(0, "#0d1b33"); gr.addColorStop(1, "#060b16"); x.fillStyle = gr; x.fillRect(0, 0, 1280, 720);
+    x.fillStyle = "#e8eef6"; x.font = "bold 64px sans-serif"; x.textAlign = "left"; x.fillText(o.title || "NEW GAME", 90, 170);
+    x.fillStyle = "#8fa3bd"; x.font = "36px sans-serif"; x.fillText(o.size_label || "212 GB", 90, 225);
+    if (c < 9000) { const m = Math.round(c * 60), neg = m <= 0, mm = Math.abs(m); const hh = neg ? 0 : 23 - Math.floor(mm / 3600), mi = neg ? Math.floor(mm / 60) : 59 - Math.floor((mm % 3600) / 60), se = neg ? mm % 60 : (60 - (mm % 60)) % 60;
+      x.textAlign = "right"; x.fillStyle = m <= 0 ? "#ffd54a" : "#cfd8e3"; x.font = "bold 46px monospace"; x.fillText(`${String(hh).padStart(2, "0")}:${String(mi).padStart(2, "0")}:${String(se).padStart(2, "0")}`, 1190, 110); x.textAlign = "left"; }
+    x.fillStyle = "#1f2c40"; x.fillRect(90, 330, 1100, 38);
+    x.fillStyle = s === 2 ? "#e53935" : s === 3 ? "#43a047" : "#3d8bff"; x.fillRect(90, 330, 1100 * p, 38);
+    x.font = "bold 44px sans-serif"; x.fillStyle = "#e8eef6"; x.fillText(`${Math.floor(p * 100)}%`, 90, 440);
+    x.textAlign = "right"; x.fillStyle = "#8fa3bd"; x.font = "38px sans-serif";
+    if (s === 0) x.fillText(`${v >= 10 ? v.toFixed(0) : v.toFixed(1)} Mbps`, 1190, 440);
+    x.textAlign = "left";
+    if (s === 1) { x.fillStyle = "#ffd54a"; x.font = "bold 48px sans-serif"; x.fillText("Waiting in queue", 90, 560); x.fillStyle = "#cfd8e3"; x.font = "40px sans-serif"; x.fillText(`Position: ${q.toLocaleString("en-US")}`, 90, 620);
+      for (let k = 0; k < 8; k++) { x.fillStyle = `rgba(232,238,246,${k === spin ? 1 : 0.25})`; x.beginPath(); x.arc(1120 + Math.cos(k * 0.785) * 34, 580 + Math.sin(k * 0.785) * 34, 9, 0, 6.283); x.fill(); } }
+    if (s === 2) { if (blink) { x.fillStyle = "#e53935"; x.fillRect(90, 520, 1100, 120); } x.fillStyle = "#ffffff"; x.font = "bold 50px sans-serif"; x.fillText("Error: servers are busy. Try again later.", 120, 598); }
+    if (s === 3) { x.fillStyle = "#43a047"; x.fillRect(90, 520, 520, 110); x.fillStyle = "#ffffff"; x.font = "bold 56px sans-serif"; x.fillText("▶  Ready to play", 120, 595); }
+    tex.needsUpdate = true;
+  };
+  g.userData.tick = (t) => { draw(t); led.material.opacity = 0.6 + 0.4 * Math.sin(t * 2); tvLight.color.set(stateAt(t) === 2 ? "#ff6a6a" : "#7fb0ff"); };
+  g.traverse((m) => { if (m.isMesh) m.castShadow = false; });
+  return g;
+};
+
+// datacube: a cube of n x n x n glowing blocks (o.size across) that drains from the top as o.drain [{at, d}] goes 0 to 1
+KIT.datacube = (o) => {
+  const n = num(o.n, 14), S = num(o.size, 20), cell = S / n, g = new THREE.Group();
+  const im = new THREE.InstancedMesh(new THREE.BoxGeometry(cell * 0.82, cell * 0.82, cell * 0.82), new THREE.MeshBasicMaterial({ color: "#ffffff", toneMapped: false }), n * n * n);
+  const r = rng(num(o.seed, 8)), cols = (o.colors || ["#2bd1ff", "#5a8cff", "#9b6bff", "#25e0b0"]).map((c) => new THREE.Color(c)), M = new THREE.Matrix4(), C = new THREE.Color();
+  const cells = []; for (let a = 0; a < n; a++) for (let b = 0; b < n; b++) for (let c = 0; c < n; c++) cells.push({ x: (a - (n - 1) / 2) * cell, y: b * cell + cell / 2, z: (c - (n - 1) / 2) * cell, ph: r() * 6.283, col: cols[Math.floor(r() * cols.length)] });
+  cells.sort((p, q) => q.y - p.y || p.ph - q.ph);
+  cells.forEach((cl, k) => { M.makeTranslation(cl.x, cl.y, cl.z); im.setMatrixAt(k, M); im.setColorAt(k, cl.col); });
+  g.add(im);
+  const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(S * 1.02, S * 1.02, S * 1.02)), new THREE.LineBasicMaterial({ color: "#7fe3ff", transparent: true, opacity: 0.5 }));
+  edge.position.y = S / 2; g.add(edge);
+  const dk = keyed(o.drain, "d", 0);
+  g.userData.tick = (t) => {
+    const gone = Math.floor(clamp(dk(t)) * cells.length);
+    im.count = cells.length - gone;
+    for (let k = gone; k < cells.length; k++) { const cl = cells[k], b = 0.55 + 0.45 * Math.sin(t * 2 + cl.ph); C.copy(cl.col).multiplyScalar(b); im.setColorAt(k - gone, C); M.makeTranslation(cl.x, cl.y, cl.z); im.setMatrixAt(k - gone, M); }
+    im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
+  };
+  return g;
+};
+
+// pipe: a glass tube from o.from to o.to (radius o.r) with data blocks crawling through it at o.speed
+KIT.pipe = (o) => {
+  const A = new THREE.Vector3(...vec(o.from)), B = new THREE.Vector3(...vec(o.to)), d = B.clone().sub(A), L = d.length(), dir = d.clone().normalize(), R = num(o.r, 1);
+  const g = new THREE.Group(); g.userData.abs = true;
+  const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+  const tube = new THREE.Mesh(new THREE.CylinderGeometry(R, R, L, 32, 1, true), new THREE.MeshPhongMaterial({ color: "#9fdcff", transparent: true, opacity: 0.22, shininess: 100, side: THREE.DoubleSide, depthWrite: false }));
+  tube.quaternion.copy(q); tube.position.copy(A).add(B).multiplyScalar(0.5); g.add(tube);
+  for (const e of [A, B]) { const rim = new THREE.Mesh(new THREE.TorusGeometry(R, R * 0.08, 8, 32), mat("#7fe3ff")); rim.quaternion.copy(q).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 2)); rim.position.copy(e); g.add(rim); }
+  const nb = num(o.count, 24), cube = new THREE.BoxGeometry(R * 0.7, R * 0.7, R * 0.7), bm = new THREE.MeshBasicMaterial({ color: o.color || "#2bd1ff", toneMapped: false });
+  const blocks = []; for (let k = 0; k < nb; k++) { const b = new THREE.Mesh(cube, bm); g.add(b); blocks.push(b); }
+  const sp = num(o.speed, 0.05);
+  g.userData.tick = (t) => blocks.forEach((b, k) => { const u = (k / nb + t * sp) % 1; b.position.copy(A).addScaledVector(dir, u * L); b.rotation.set(t + k, t * 0.7 + k, 0); });
+  return g;
+};
+
+// palm: a palm tree o.h tall, its trunk leaning o.lean, swaying a little
+KIT.palm = (o, r = rng(num(o.seed, 4))) => {
+  const g = new THREE.Group(), h = num(o.h, 9) * (0.8 + r() * 0.4), lean = (r() - 0.5) * 0.5, segs = 8, trunkM = mat("#6e5a45");
+  const top = new THREE.Vector3();
+  for (let k = 0; k < segs; k++) {
+    const u = k / segs, s = new THREE.Mesh(new THREE.CylinderGeometry(0.16 - u * 0.05, 0.2 - u * 0.05, h / segs, 7), trunkM);
+    s.position.set(Math.sin(u * 1.2) * lean * h * 0.3, (u + 0.5 / segs) * h, 0); g.add(s);
+    top.set(Math.sin(1.2) * lean * h * 0.3, h, 0);
+  }
+  const crown = new THREE.Group(); crown.position.copy(top); g.add(crown);
+  const leafM = new THREE.MeshLambertMaterial({ color: o.color || "#2f6b3a", side: THREE.DoubleSide });
+  for (let k = 0; k < 9; k++) {
+    const sh = new THREE.Shape(); sh.moveTo(0, 0); sh.quadraticCurveTo(1.6, 0.5, 3.2, -0.6); sh.quadraticCurveTo(1.6, -0.1, 0, 0);
+    const leaf = new THREE.Mesh(new THREE.ShapeGeometry(sh), leafM); leaf.rotation.y = (k / 9) * 6.283 + r(); leaf.rotation.z = -0.25 - r() * 0.3; crown.add(leaf);
+  }
+  const ph = r() * 6.283;
+  g.userData.tick = (t) => { crown.rotation.z = Math.sin(t * 0.8 + ph) * 0.05; crown.rotation.x = Math.cos(t * 0.6 + ph) * 0.04; };
+  g.scale.setScalar(num(o.scale, 1));
+  return g;
+};
+KIT.palms = (o, terrain) => scatter(o, (r) => KIT.palm({ ...o, seed: Math.floor(r() * 1e6) }, r), terrain);
+for (const k of ["tvroom", "datacube", "pipe", "palm", "palms"]) FLIGHT_KIT.add(k);
 // racks: a data-centre aisle running from o.pos towards -z, rows of server racks either side with status LEDs.
 // o.health [{at, h}] is the share of racks up (0..1): healthy racks blink green and blue, failed ones glow red, and a
 // red alarm light pulses when health is low. o.count racks per side.
