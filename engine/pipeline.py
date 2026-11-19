@@ -49,6 +49,52 @@ def _place(buf, sig, start_s):
     buf[a:b] += sig[: b - a]
 
 
+def sound_design(spec: dict, tl: list, n: int):
+    """spec.sound = {cuts: "swish", cut_gain, pops: gain, hits: [{at: ref, kind}], first: "riser"|"boom"|None}:
+    a sound on every cut (scene changes and the 3D camera's hard cuts), a soft pop when a label pops in, and extra
+    hits where asked. Kept on its own track so it never ducks the music."""
+    snd = spec.get("sound")
+    if not snd:
+        return None
+    fx = np.zeros(n, dtype=np.float32)
+    cut_kind, cut_gain = snd.get("cuts", "swish"), float(snd.get("cut_gain", 0.32))
+    cuts = [seg["start"] for seg in tl[1:]]
+    try:
+        from .world3d import prepare_world
+        if spec.get("world3d"):
+            cam = sorted(float(k["at"]) for k in prepare_world(spec, tl).get("camera", []) if isinstance(k.get("at"), (int, float)))
+            cuts += [b for a, b in zip(cam, cam[1:]) if 0 < b - a < 0.03]
+    except Exception as e:  # sound is a garnish; never fail the render over it
+        print(f"   sound: camera cuts unavailable ({e})", flush=True)
+    cuts = sorted(set(round(c, 3) for c in cuts))
+    merged = []
+    for c in cuts:
+        if not merged or c - merged[-1] > 0.6:
+            merged.append(c)
+    if cut_kind:
+        lead = {"swish": 0.16, "whoosh": 0.5}.get(cut_kind, 0.0)
+        for k, c in enumerate(merged):
+            _place(fx, A.sfx_v2(cut_kind, seed=4 + k % 5) * cut_gain, max(0.0, c - lead))
+    first = snd.get("first")
+    if first:
+        _place(fx, A.sfx(first) * float(snd.get("first_gain", 0.5)), 0.0)
+    pop_gain = float(snd.get("pops", 0.0) or 0.0)
+    for sc, seg in zip(spec["scenes"], tl):
+        for el in sc.get("elements", []) or []:
+            if pop_gain and el.get("type") in ("text", "counter") and el.get("enter") == "pop" and not el.get("sfx"):
+                _place(fx, A.sfx("pop") * pop_gain, seg["start"] + float(el.get("at", 0) or 0))
+    from .world3d import resolve_time, scene_index
+    sidx = scene_index(spec)
+    for h in snd.get("hits", []) or []:
+        at = h.get("at")
+        try:
+            t0 = resolve_time(at, spec, tl, sidx) if isinstance(at, dict) else float(at or 0)
+        except Exception:
+            continue
+        _place(fx, A.sfx(h.get("kind", "hit")) * float(h.get("gain", 0.5)), max(0.0, t0 - float(h.get("lead", 0.0))))
+    return fx
+
+
 def build_timeline(spec: dict, voices: list) -> list:
     fps = spec["fps"]
     tl, frame = [], 0
@@ -251,6 +297,12 @@ def render_episode(spec: dict, out_dir: str, progress=None, stills_only: bool = 
     else:
         bed = np.zeros_like(vtrack)
     mixed = A.mixdown(vtrack, bed, duck=float(mus.get("duck", 0.6)), music_gain=float(mus.get("volume", 0.18)))
+    fxtrack = sound_design(spec, tl, len(mixed))
+    if fxtrack is not None:
+        mixed = mixed + fxtrack
+        peak = float(np.max(np.abs(mixed)) or 1.0)
+        if peak > 0.98:
+            mixed = (mixed / peak * 0.98).astype(np.float32)
     mixed = mixed[: int(duration * A.SR)]
     wav = os.path.join(work, "mix.wav")
     sf.write(wav, mixed, A.SR)

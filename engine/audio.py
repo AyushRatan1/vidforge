@@ -333,7 +333,89 @@ def load_music_file(path: str, duration: float) -> np.ndarray:
     return a / (np.max(np.abs(a)) or 1.0) * 0.8
 
 
+def _bandsweep(n: np.ndarray, f0: float, f1: float, steps: int = 24) -> np.ndarray:
+    """Band-pass filtered noise whose centre frequency glides from f0 to f1 (block-wise, crossfaded)."""
+    from scipy.signal import butter, sosfilt
+    out = np.zeros_like(n)
+    L = len(n)
+    edges = np.linspace(0, L, steps + 1).astype(int)
+    win = np.zeros(L)
+    for k in range(steps):
+        fc = f0 * (f1 / f0) ** (k / max(1, steps - 1))
+        sos = butter(2, [max(30, fc * 0.6) / (SR / 2), min(SR / 2 - 100, fc * 1.6) / (SR / 2)], "band", output="sos")
+        a, b = max(0, edges[k] - 400), min(L, edges[k + 1] + 400)
+        seg = sosfilt(sos, n[a:b])
+        w = np.ones(b - a)
+        ramp = min(400, (b - a) // 2)
+        if a > 0:
+            w[:ramp] = np.linspace(0, 1, ramp)
+        if b < L:
+            w[-ramp:] = np.linspace(1, 0, ramp)
+        out[a:b] += seg * w
+        win[a:b] += w
+    return out / np.maximum(win, 1e-6)
+
+
+def sfx_v2(kind: str, seed: int = 4) -> np.ndarray:
+    """Sound design for cuts and beats, all synthesised (no samples, no licences):
+    swish (a cut), whoosh (a bigger transition), hit (an impact on a number or reveal), boom (a big moment),
+    riser (tension into a reveal), tick (a counter or a label), pop (a label appearing), glitch (an error)."""
+    rng = np.random.default_rng(seed)
+    if kind == "swish":
+        n = int(0.32 * SR); t = np.arange(n) / SR
+        env = np.sin(np.pi * np.clip(t / t[-1], 0, 1)) ** 3
+        sig = _bandsweep(rng.normal(0, 1, n), 700, 5200) * env
+        return (sig / (np.abs(sig).max() or 1) * 0.5).astype(np.float32)
+    if kind == "whoosh":
+        n = int(0.7 * SR); t = np.arange(n) / SR
+        env = (t / t[-1]) ** 1.6 * np.exp(-np.clip(t - 0.5, 0, None) * 18)
+        sig = _bandsweep(rng.normal(0, 1, n), 220, 3200) * env
+        return (sig / (np.abs(sig).max() or 1) * 0.55).astype(np.float32)
+    if kind in ("hit", "boom"):
+        dur = 0.9 if kind == "hit" else 2.2
+        n = int(dur * SR); t = np.arange(n) / SR
+        f = 48 + 70 * np.exp(-t * (22 if kind == "hit" else 9))
+        body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * (6.5 if kind == "hit" else 2.4))
+        from scipy.signal import butter, sosfilt
+        crack = sosfilt(butter(2, 2400 / (SR / 2), "low", output="sos"), rng.normal(0, 1, n)) * np.exp(-t * 38)
+        sig = body * 0.9 + crack * (0.5 if kind == "hit" else 0.8)
+        if kind == "boom":
+            tail = sosfilt(butter(2, 500 / (SR / 2), "low", output="sos"), rng.normal(0, 1, n)) * np.exp(-t * 1.8) * 0.5
+            sig = sig + tail
+        return (np.tanh(sig * 1.6) / np.tanh(1.6) * 0.7).astype(np.float32)
+    if kind == "riser":
+        n = int(1.4 * SR); t = np.arange(n) / SR
+        env = (t / t[-1]) ** 2.2
+        sig = _bandsweep(rng.normal(0, 1, n), 300, 7000, steps=32) * env
+        tone = np.sin(2 * np.pi * np.cumsum(180 + 520 * (t / t[-1]) ** 2) / SR) * env * 0.25
+        out = sig / (np.abs(sig).max() or 1) * 0.45 + tone
+        return out.astype(np.float32)
+    if kind == "tick":
+        n = int(0.06 * SR); t = np.arange(n) / SR
+        return (np.sin(2 * np.pi * 2600 * t) * np.exp(-t * 140) * 0.35).astype(np.float32)
+    if kind == "pop":
+        n = int(0.14 * SR); t = np.arange(n) / SR
+        f = 380 + 700 * np.exp(-t * 45)
+        return (np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 32) * 0.4).astype(np.float32)
+    if kind == "glitch":
+        n = int(0.45 * SR)
+        sig = np.zeros(n)
+        k = 0
+        while k < n:
+            L = int(rng.uniform(0.012, 0.05) * SR)
+            f = rng.choice([180, 360, 720, 1440, 95])
+            seg = np.sign(np.sin(2 * np.pi * f * np.arange(L) / SR)) * rng.uniform(0.2, 0.6)
+            if rng.random() < 0.3:
+                seg = rng.normal(0, 0.4, L)
+            sig[k:k + L] = seg[: max(0, min(L, n - k))]
+            k += L + int(rng.uniform(0, 0.02) * SR)
+        return (sig * 0.35).astype(np.float32)
+    return sfx(kind)
+
+
 def sfx(kind: str) -> np.ndarray:
+    if kind in ("swish", "hit", "boom", "riser", "tick", "glitch"):
+        return sfx_v2(kind)
     t = np.arange(int(0.4 * SR)) / SR
     if kind == "whoosh":
         rng = np.random.default_rng(4)

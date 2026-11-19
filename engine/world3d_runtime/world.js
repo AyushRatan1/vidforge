@@ -3,8 +3,115 @@
 // All times in the world are absolute seconds (Python resolves scene references before calling setup).
 // Everything is deterministic: no Math.random, no wall clock.
 
-import * as THREE from "./vendor/three.module.js";
+import * as T3 from "./vendor/three.module.js";
 import { mergeGeometries } from "./vendor/BufferGeometryUtils.js";
+import { HDRLoader } from "./vendor/HDRLoader.js";
+
+// ------------------------------------------------------------------ look: physically based mode
+// world.look = {pbr: true, ...} turns every Lambert/Phong material the kits make into a MeshStandardMaterial, so the
+// scene picks up image-based light from an HDRI (env keys: hdri, bg, bg_blur, env_intensity). Kits keep their code:
+// THREE.MeshLambertMaterial / MeshPhongMaterial below are factories that return the PBR material in that mode.
+let PBR = false, LOOK = {};
+function stdParams(p = {}, kind) {
+  const q = { ...p };
+  const shin = num(q.shininess, 30), spec = q.specular;
+  for (const k of ["shininess", "specular", "combine", "reflectivity", "refractionRatio", "specularMap"]) delete q[k];
+  if (q.flatShading && !LOOK.flat) q.flatShading = false;
+  if (kind === "lambert") {
+    if (q.roughness === undefined) q.roughness = num(LOOK.rough, 0.78);
+    if (q.metalness === undefined) q.metalness = 0;
+  } else {
+    if (q.roughness === undefined) q.roughness = clamp(1.05 - Math.log10(shin + 1) * 0.33, 0.25, 0.9);
+    const c = new T3.Color(spec === undefined ? 0x111111 : spec);
+    if (q.metalness === undefined) q.metalness = clamp(((c.r + c.g + c.b) / 3 - 0.15) * 1.4, 0, 0.75);
+  }
+  if (q.envMapIntensity === undefined) q.envMapIntensity = num(LOOK.env, 1);
+  return q;
+}
+function LambertShim(p) { return PBR ? new T3.MeshStandardMaterial(stdParams(p, "lambert")) : new T3.MeshLambertMaterial(p); }
+function PhongShim(p) { return PBR ? new T3.MeshStandardMaterial(stdParams(p, "phong")) : new T3.MeshPhongMaterial(p); }
+const THREE = { ...T3, MeshLambertMaterial: LambertShim, MeshPhongMaterial: PhongShim };
+
+// ------------------------------------------------------------------ assets (served from ./assets, loaded before setup)
+// HDRI skies (Poly Haven, CC0) and NASA Earth maps (public domain), via the three.js examples.
+const HDRI_NAMES = ["coast", "clear", "golden", "sunset", "studio", "studio2", "night", "bridge"];
+const HDR = {}, IMG = {}, TEXC = {};
+let PMREM = null;
+async function loadHDR(name) {
+  if (HDR[name]) return HDR[name];
+  const tex = await new HDRLoader().loadAsync(`assets/hdri/${name}.hdr`);
+  tex.mapping = T3.EquirectangularReflectionMapping;
+  if (!PMREM) PMREM = new T3.PMREMGenerator(R);
+  const pmrem = PMREM.fromEquirectangular(tex).texture;
+  // horizon colour (average of the rows just above the horizon), used as the fog colour so far objects melt into the sky
+  const { data, width, height } = tex.image, isHalf = tex.type === T3.HalfFloatType;
+  const val = (i) => (isHalf ? T3.DataUtils.fromHalfFloat(data[i]) : data[i]);
+  const ch = data.length / (width * height);
+  let r = 0, g = 0, b = 0, n = 0;
+  for (let y = Math.floor(height * 0.44); y < Math.floor(height * 0.49); y++) for (let x = 0; x < width; x += 4) {
+    const i = (y * width + x) * ch; r += val(i); g += val(i + 1); b += val(i + 2); n++;
+  }
+  const horizon = new T3.Color().setRGB(Math.min(r / n, 1.5), Math.min(g / n, 1.5), Math.min(b / n, 1.5), T3.LinearSRGBColorSpace);
+  HDR[name] = { tex, pmrem, horizon, sky: skyOnly(tex, name) };
+  return HDR[name];
+}
+// The photo with everything low on the horizon (dunes, trees, buildings) replaced by a smooth haze: the sky above a
+// per-photo cut line stays, below it the colour runs smoothly from the sky at the cut to a bright horizon haze, and
+// the ground is that haze. Used as the backdrop for open-sea and aerial shots.
+const SKY_CUT = { coast: 0.3, clear: 0.4, golden: 0.3, sunset: 0.13, night: 0.42, bridge: 0.25, studio: 0.3, studio2: 0.3 };
+function skyOnly(tex, name) {
+  const { data, width: w, height: h } = tex.image, isHalf = tex.type === T3.HalfFloatType, ch = data.length / (w * h);
+  const get = (i) => (isHalf ? T3.DataUtils.fromHalfFloat(data[i]) : data[i]);
+  const out = new data.constructor(data.length);
+  out.set(data);
+  const put = (i, v) => { out[i] = isHalf ? T3.DataUtils.toHalfFloat(v) : v; };
+  const yc = Math.floor(h * (SKY_CUT[name] || 0.36)), yb = Math.max(0, yc - Math.floor(h * 0.07)), yh = Math.floor(h * 0.5);
+  // colour at the cut: blurred along the row (local) and averaged over the whole row (global)
+  const loc = new Float32Array(w * 3), glob = [0, 0, 0];
+  for (let x = 0; x < w; x++) for (let c = 0; c < 3; c++) {
+    let a = 0, m = 0;
+    for (let y = Math.max(0, yb - 6); y < yb; y++) for (let dx = -64; dx <= 64; dx += 8) { a += get((y * w + ((x + dx + w) % w)) * ch + c); m++; }
+    loc[x * 3 + c] = a / m; glob[c] += a / m / w;
+  }
+  const hz = glob.map((v) => v * 1.12);
+  for (let y = yb; y < h; y++) {
+    const fade = clamp((y - yb) / Math.max(1, yc - yb)), f2 = fade * fade * (3 - 2 * fade);
+    const u = clamp((y - yc) / Math.max(1, yh - yc)), below = clamp((y - yh) / (h - yh));
+    for (let x = 0; x < w; x++) for (let c = 0; c < 3; c++) {
+      const i = (y * w + x) * ch + c;
+      const grad = y < yc ? loc[x * 3 + c] : lerp(lerp(loc[x * 3 + c], glob[c], clamp(u * 2)), hz[c], u * u) * (1 - 0.15 * below);
+      put(i, y < yc ? lerp(get(i), grad, f2) : grad);
+    }
+  }
+  const t = new T3.DataTexture(out, w, h, tex.format, tex.type);
+  t.mapping = T3.EquirectangularReflectionMapping; t.colorSpace = tex.colorSpace; t.flipY = tex.flipY;
+  t.minFilter = tex.minFilter; t.magFilter = tex.magFilter; t.generateMipmaps = tex.generateMipmaps; t.needsUpdate = true;
+  return t;
+}
+function loadImage(url) {
+  if (IMG[url]) return Promise.resolve(IMG[url]);
+  return new Promise((res, rej) => { const im = new Image(); im.onload = () => { IMG[url] = im; res(im); }; im.onerror = () => rej(new Error("asset " + url)); im.src = url; });
+}
+function imgTex(url, srgb = true) {
+  const key = url + (srgb ? ":s" : ":l");
+  if (TEXC[key]) return TEXC[key];
+  const t = new T3.Texture(IMG[url]); t.needsUpdate = true; t.anisotropy = 4;
+  if (srgb) t.colorSpace = T3.SRGBColorSpace;
+  TEXC[key] = t; return t;
+}
+async function preload(world) {
+  const want = new Set();
+  for (const k of world.env || []) if (k.hdri) want.add(k.hdri);
+  if (world.look && world.look.hdri) want.add(world.look.hdri);
+  for (const n of want) if (HDRI_NAMES.includes(n)) await loadHDR(n);
+  const objs = world.objects || [];
+  const urls = [];
+  if (objs.some((o) => o.type === "earth" && o.real)) urls.push("assets/earth/day.jpg", "assets/earth/night.jpg", "assets/earth/brc.jpg", "assets/earth/spec.jpg");
+  if (objs.some((o) => o.type === "satmap")) urls.push("assets/earth/day.jpg", "assets/earth/brc.jpg");
+  if (world.look && world.look.pbr && objs.some((o) => o.type === "ocean")) urls.push("assets/water/normals.jpg");
+  for (const u of urls) await loadImage(u);
+  if (objs.some((o) => o.type === "tag")) { try { await document.fonts.load("600 72px Poppins"); } catch (e) { /* falls back to sans-serif */ } }
+}
 
 // ------------------------------------------------------------------ helpers
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -1418,7 +1525,29 @@ function envAt(t) {
   const col = (k, out) => out.copy(C1.set(a[k])).lerp(C2.set(b[k]), u);
   const n = (k) => lerp(num(a[k], 0), num(b[k], 0), u);
   const v3 = (k) => [0, 1, 2].map((j) => lerp(vec(a[k])[j], vec(b[k])[j], u));
-  return { col, n, v3, fog: [lerp(a.fog[0], b.fog[0], u), lerp(a.fog[1], b.fog[1], u)] };
+  return { col, n, v3, fog: [lerp(a.fog[0], b.fog[0], u), lerp(a.fog[1], b.fog[1], u)], key: u < 0.5 ? a : b };
+}
+
+// HDRI per env key: hdri (name), bg ("hdri" shows the photo sky, "sky" keeps the gradient dome), bg_blur (0..1),
+// bg_intensity, env_intensity (image light strength), hdri_rot (degrees), fog_auto (fog takes the horizon colour)
+function applyHDRI(e) {
+  const k = e.key, h = k.hdri && HDR[k.hdri];
+  if (!h) { SCENE.environment = null; ENV.dome.visible = true; return; }
+  SCENE.environment = h.pmrem;
+  SCENE.environmentIntensity = num(k.env_intensity, 1);
+  const rot = num(k.hdri_rot, 0) * Math.PI / 180;
+  SCENE.environmentRotation.set(0, rot, 0);
+  const bg = k.bg || "sky";
+  if (bg === "sky" || bg === "photo" || bg === "hdri") {
+    SCENE.background = bg === "sky" ? h.sky : h.tex;
+    SCENE.backgroundBlurriness = num(k.bg_blur, 0.05);
+    SCENE.backgroundIntensity = num(k.bg_intensity, 1);
+    SCENE.backgroundRotation.set(0, rot, 0);
+    ENV.dome.visible = false;
+    if (SCENE.fog && k.fog_auto !== false) SCENE.fog.color.copy(h.horizon).multiplyScalar(num(k.bg_intensity, 1));
+  } else {
+    ENV.dome.visible = true;
+  }
 }
 
 function applyEnv(t) {
@@ -1452,6 +1581,7 @@ function applyEnv(t) {
   e.col("ocean", ENV.ocean);
   if (OCEAN) OCEAN.material.color.copy(ENV.ocean);
   R.toneMappingExposure = e.n("exposure") || 1;
+  applyHDRI(e);
 }
 
 function postFrame(t) {
@@ -1657,6 +1787,17 @@ KIT.ocean = (o) => {
   const m = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ color: o.color || "#1d3b52", flatShading: true, shininess: 70, specular: "#4d6680" }));
   m.userData.amp = num(o.amp, 0.6);
   OCEAN = m;
+  // PBR look: smooth glossy water that mirrors the HDRI sky, with scrolling ripple normals for detail
+  const glossy = PBR && m.material.isMeshStandardMaterial;
+  if (glossy) {
+    m.material.roughness = num(o.rough, 0.2); m.material.metalness = 0; m.material.flatShading = false;
+    m.material.envMapIntensity = num(o.reflect, 0.6);
+    if (IMG["assets/water/normals.jpg"]) {
+      const nt = imgTex("assets/water/normals.jpg", false).clone(); nt.needsUpdate = true;
+      nt.wrapS = nt.wrapT = T3.RepeatWrapping; nt.repeat.set(size / num(o.ripple, 14), size / num(o.ripple, 14));
+      m.material.normalMap = nt; m.material.normalScale.set(num(o.ripple_k, 0.45), num(o.ripple_k, 0.45));
+    }
+  }
   const g = new THREE.Group(); g.add(m);
   g.userData.abs = true;
   POST.push((t, cp) => {
@@ -1665,6 +1806,11 @@ KIT.ocean = (o) => {
     const pa = geo.attributes.position;
     for (let k = 0; k < pa.count; k++) pa.array[k * 3 + 1] = waveH(base[k * 3] + cx, base[k * 3 + 2] + cz, t);
     pa.needsUpdate = true;
+    if (glossy) {
+      geo.computeVertexNormals();
+      const nm = m.material.normalMap;
+      if (nm) nm.offset.set((cx / size) * nm.repeat.x + t * 0.012, (-cz / size) * nm.repeat.y + t * 0.008);
+    }
     m.visible = cp.y > y0 - 0.5;
   });
   return g;
@@ -2108,6 +2254,49 @@ KIT.stars = (o) => {
 
 // earth: a stylised planet with noise continents, ice caps, a cloud shell, an atmosphere glow; o.tint keys [{at, warm}]
 // warm the land and seas (0 normal .. 1 scorched) for the scenario shots
+const EARTH_VS = `varying vec2 vUv; varying vec3 vN; varying vec3 vV;
+void main() { vUv = uv; vN = normalize(mat3(modelMatrix) * normal); vec4 wp = modelMatrix * vec4(position, 1.0);
+  vV = normalize(cameraPosition - wp.xyz); gl_Position = projectionMatrix * viewMatrix * wp; }`;
+function realEarthMat(o) {
+  return new T3.ShaderMaterial({
+    uniforms: { day: { value: imgTex("assets/earth/day.jpg") }, night: { value: imgTex("assets/earth/night.jpg") },
+                spec: { value: imgTex("assets/earth/spec.jpg", false) }, sunDir: { value: new T3.Vector3(1, 0.3, 0.6).normalize() },
+                nightK: { value: 1 }, warm: { value: 0 }, dayK: { value: num(o.day, 1.55) }, atm: { value: new T3.Color(o.atmosphere || "#5aa0ff") } },
+    vertexShader: EARTH_VS,
+    fragmentShader: `uniform sampler2D day, night, spec; uniform vec3 sunDir; uniform float nightK, warm, dayK; uniform vec3 atm;
+varying vec2 vUv; varying vec3 vN; varying vec3 vV;
+void main() {
+  vec3 n = normalize(vN), v = normalize(vV); float d = dot(n, sunDir);
+  vec3 dc = texture2D(day, vUv).rgb * dayK;
+  vec3 col = dc * (0.012 + 1.05 * smoothstep(-0.12, 0.85, d));
+  vec3 nl = max(texture2D(night, vUv).rgb - vec3(0.035, 0.04, 0.075), 0.0);
+  col += nl * vec3(1.9, 1.55, 1.05) * nightK * 5.0 * (1.0 - smoothstep(-0.22, 0.12, d));
+  float water = texture2D(spec, vUv).r; vec3 h = normalize(sunDir + v);
+  col += water * pow(max(dot(n, h), 0.0), 70.0) * 0.55 * smoothstep(0.0, 0.2, d) * vec3(1.0, 0.95, 0.85);
+  float fr = pow(1.0 - max(dot(n, v), 0.0), 2.6);
+  col = mix(col, atm * (0.05 + 1.15 * smoothstep(-0.35, 0.6, d)), clamp(fr * 0.75, 0.0, 1.0));
+  col *= mix(vec3(1.0), vec3(1.0, 0.45, 0.2), warm);
+  gl_FragColor = vec4(col, 1.0);
+  #include <tonemapping_fragment>
+  #include <colorspace_fragment>
+}`,
+  });
+}
+function realCloudMat(o) {
+  return new T3.ShaderMaterial({
+    uniforms: { brc: { value: imgTex("assets/earth/brc.jpg", false) }, sunDir: { value: new T3.Vector3(1, 0.3, 0.6).normalize() }, k: { value: num(o.clouds, 0.85) } },
+    vertexShader: EARTH_VS, transparent: true, depthWrite: false,
+    fragmentShader: `uniform sampler2D brc; uniform vec3 sunDir; uniform float k; varying vec2 vUv; varying vec3 vN; varying vec3 vV;
+void main() {
+  vec3 n = normalize(vN); float d = dot(n, sunDir);
+  float a = smoothstep(0.18, 0.75, texture2D(brc, vUv).b) * k;
+  vec3 col = vec3(1.0) * (0.015 + 1.1 * smoothstep(-0.1, 0.8, d));
+  gl_FragColor = vec4(col, a * (0.35 + 0.65 * smoothstep(-0.3, 0.2, d)));
+  #include <tonemapping_fragment>
+  #include <colorspace_fragment>
+}`,
+  });
+}
 KIT.earth = (o) => {
   const R = num(o.r, 20), g = new THREE.Group();
   const W = 1024, H = 512, c = document.createElement("canvas"); c.width = W; c.height = H;
@@ -2127,8 +2316,17 @@ KIT.earth = (o) => {
   }
   ctx.putImageData(img, 0, 0);
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
-  const mt = new THREE.MeshLambertMaterial({ map: tex });
-  const sph = new THREE.Mesh(new THREE.SphereGeometry(R, 64, 40), mt); g.add(sph);
+  // o.real: NASA day map lit by the sun, city lights on the night side (o.lights [{at, v}]), real clouds, ocean glint
+  // and an atmosphere rim; the arcs then join real cities (bright pixels of the night map)
+  const real = !!o.real && IMG["assets/earth/day.jpg"];
+  const mt = real ? realEarthMat(o) : new THREE.MeshLambertMaterial({ map: tex });
+  const sph = new THREE.Mesh(new THREE.SphereGeometry(R, real ? 128 : 64, real ? 80 : 40), mt); g.add(sph);
+  if (real) {
+    const nc = document.createElement("canvas"); nc.width = W; nc.height = H;
+    const nx = nc.getContext("2d"); nx.drawImage(IMG["assets/earth/night.jpg"], 0, 0, W, H);
+    const nd = nx.getImageData(0, 0, W, H).data;
+    for (let k = 0; k < W * H; k++) { const lum = (nd[k * 4] + nd[k * 4 + 1] - nd[k * 4 + 2] * 0.6) / 255; hmap[k] = 0.5 + (lum - 0.32); }
+  }
   // network: o.arcs {count, seed, color, power: [{at, p}]} draws glowing links between land points with pulses running
   // along them; power is the share of links alive (0..1), so the network can go dark and come back
   const arcs = [];
@@ -2158,18 +2356,31 @@ KIT.earth = (o) => {
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const a = clamp((n3(x / W * 10, y / H * 5, 6) - 0.5) * 3.2); const k = 4 * (y * W + x); ci.data[k] = ci.data[k + 1] = ci.data[k + 2] = 255; ci.data[k + 3] = Math.round(a * 170); }
   cx.putImageData(ci, 0, 0);
   const ctex = new THREE.CanvasTexture(cc);
-  const clouds = new THREE.Mesh(new THREE.SphereGeometry(R * 1.015, 48, 32), new THREE.MeshLambertMaterial({ map: ctex, transparent: true, depthWrite: false })); g.add(clouds);
-  const halo = glow(o.halo || "#6fb1ff", R * 2.7); halo.material.opacity = 0.55; halo.material.depthWrite = false; g.add(halo);
+  const clouds = new THREE.Mesh(new THREE.SphereGeometry(R * (real ? 1.008 : 1.015), real ? 96 : 48, real ? 64 : 32),
+    real ? realCloudMat(o) : new THREE.MeshLambertMaterial({ map: ctex, transparent: true, depthWrite: false })); g.add(clouds);
+  const halo = glow(o.halo || "#6fb1ff", R * (real ? 2.45 : 2.7)); halo.material.opacity = real ? 0.38 : 0.55; halo.material.depthWrite = false; g.add(halo);
   if (o.halo === false) halo.visible = false;
   // city lights on the night side are faked by a faint warm sprite on the far hemisphere: skipped for simplicity
   const p0 = vec(o.pos); g.position.set(p0[0], p0[1], p0[2]); g.userData.abs = true;
   const tint = (o.tint || []).map((k) => ({ at: num(k.at, 0), warm: num(k.warm, 0) })).sort((a, b) => a.at - b.at);
   const warmAt = (t) => { if (!tint.length) return 0; let i = 0; while (i < tint.length - 1 && t > tint[i + 1].at) i++; const a = tint[i], b = tint[Math.min(i + 1, tint.length - 1)]; return lerp(a.warm, b.warm, b === a ? 0 : easeInOut(clamp((t - a.at) / Math.max(1e-6, b.at - a.at)))); };
   const spin = num(o.spin, 0.02);
+  // o.face_lon: the longitude that faces +z (towards a camera on the +z side) at t = 0
+  let rot0 = 0;
+  if (o.face_lon !== undefined) { const phi = 2 * Math.PI * (num(o.face_lon, 0) + 180) / 360; rot0 = Math.atan2(Math.cos(phi), Math.sin(phi)); }
+  const lightKeys = (o.lights || [{ at: 0, v: 1 }]).map((k) => ({ at: num(k.at, 0), v: num(k.v, 1) })).sort((a, b) => a.at - b.at);
+  const lightsAt = (t) => { let i = 0; while (i < lightKeys.length - 1 && t > lightKeys[i + 1].at) i++; const a = lightKeys[i], b = lightKeys[Math.min(i + 1, lightKeys.length - 1)]; return lerp(a.v, b.v, b === a ? 0 : clamp((t - a.at) / Math.max(1e-6, b.at - a.at))); };
+  const SUN = new THREE.Vector3();
   g.userData.tick = (t) => {
-    sph.rotation.y = t * spin; clouds.rotation.y = t * spin * 1.3; g.rotation.z = num(o.tilt, 23) * DEG;
+    sph.rotation.y = rot0 + t * spin; clouds.rotation.y = rot0 + t * spin * 1.3; g.rotation.z = num(o.tilt, 23) * DEG;
     const w = warmAt(t);
-    mt.color.setRGB(1, 1 - w * 0.55, 1 - w * 0.8); clouds.material.opacity = 1 - w * 0.6; halo.material.color.set(o.halo || "#6fb1ff").lerp(C2.set("#ff7a3a"), w);
+    if (real) {
+      const d = o.sun_dir || LIGHTS.sunDir || [60, 20, 40];
+      SUN.set(d[0], d[1], d[2]).normalize();
+      mt.uniforms.sunDir.value.copy(SUN); clouds.material.uniforms.sunDir.value.copy(SUN);
+      mt.uniforms.nightK.value = lightsAt(t); mt.uniforms.warm.value = w; clouds.material.uniforms.k.value = num(o.clouds, 0.85) * (1 - w * 0.6);
+    } else { mt.color.setRGB(1, 1 - w * 0.55, 1 - w * 0.8); clouds.material.opacity = 1 - w * 0.6; }
+    halo.material.color.set(o.halo || "#6fb1ff").lerp(C2.set("#ff7a3a"), w);
     if (arcs.length) {
       const p = powerAt(t);
       for (const a of arcs) {
@@ -3335,7 +3546,8 @@ function makeCamera(keys, W, H, far = 400) {
 // ------------------------------------------------------------------ world
 let R = null, SCENE = null, CAM = null, TERRAIN = null, ITEMS = [], QUALITY = 0.9;
 
-function setup(world, opts = {}) {
+const TONE = { neutral: T3.NeutralToneMapping, aces: T3.ACESFilmicToneMapping, agx: T3.AgXToneMapping };
+async function setup(world, opts = {}) {
   const W = Math.round(num(opts.width, 1080)), H = Math.round(num(opts.height, 1920));
   QUALITY = num(opts.quality, 0.9);
   const canvas = document.getElementById("c");
@@ -3346,6 +3558,11 @@ function setup(world, opts = {}) {
     R.outputColorSpace = THREE.SRGBColorSpace;
     R.toneMapping = THREE.NeutralToneMapping;
   }
+  const look = world.look || {};
+  if (!!look.pbr !== PBR) MAT.clear();
+  LOOK = look; PBR = !!look.pbr;
+  R.toneMapping = TONE[look.tone] || T3.NeutralToneMapping;
+  await preload(world);
   R.setPixelRatio(1);
   R.setSize(W, H, false);
   R.shadowMap.enabled = world.shadows !== false;
@@ -3363,6 +3580,7 @@ function setup(world, opts = {}) {
   Object.assign(sun.shadow.camera, { left: -ext, right: ext, top: ext, bottom: -ext, near: 1, far: 140 });
   sun.shadow.bias = -0.0006;
   sun.shadow.normalBias = 0.02;
+  if (look.soft) sun.shadow.radius = num(look.soft, 3);
   if (num(world._extent, 0) > ext) Object.assign(sun.shadow.camera, { left: -world._extent, right: world._extent, top: world._extent, bottom: -world._extent, far: 220 });
   sun.target.position.set(0, -2, -10);
   SCENE.add(sun); SCENE.add(sun.target);
@@ -3455,5 +3673,52 @@ function bench(mode) {   // profiling switches: "base", "noshadow", "noaa" (need
   if (mode === "base") { R.shadowMap.enabled = true; SCENE.traverse((m) => { if (m.material) m.material.needsUpdate = true; }); }
   return { calls: R.info.render.calls, tris: R.info.render.triangles, meshes: (() => { let n = 0; SCENE.traverse((m) => { if (m.isMesh) n++; }); return n; })() };
 }
+
+// ---------------- tag: a small pill label pinned to a point in the world (or to a moving object), drawn on top at a
+// constant screen size. o.text, o.pos | o.follow (object id) + o.offset, o.show [{from, to}], o.size (share of frame
+// height), o.bg, o.color, o.dot (draw a small anchor dot), o.lift (how far above the anchor, in label heights)
+const TAGV = new T3.Vector3();
+KIT.tag = (o) => {
+  const c = document.createElement("canvas"), x = c.getContext("2d"), fs = 72, text = String(o.text || "");
+  x.font = `600 ${fs}px Poppins, sans-serif`;
+  const tw = x.measureText(text).width, padX = fs * 0.55, h = Math.ceil(fs * 1.55), dotH = o.dot ? Math.ceil(fs * 1.25) : 0;
+  c.width = Math.ceil(tw + padX * 2); c.height = h + dotH;
+  x.font = `600 ${fs}px Poppins, sans-serif`;
+  const r = h * 0.28;
+  x.fillStyle = o.bg || "rgba(18,22,30,0.88)";
+  x.beginPath(); x.roundRect(0, 0, c.width, h, r); x.fill();
+  if (o.accent) { x.fillStyle = o.accent; x.beginPath(); x.roundRect(0, 0, fs * 0.16, h, [r, 0, 0, r]); x.fill(); }
+  x.fillStyle = o.color || "#ffffff"; x.textBaseline = "middle"; x.textAlign = "center";
+  x.fillText(text, c.width / 2 + (o.accent ? fs * 0.06 : 0), h * 0.53);
+  if (o.dot) {
+    x.strokeStyle = o.bg || "rgba(18,22,30,0.88)"; x.lineWidth = fs * 0.08;
+    x.beginPath(); x.moveTo(c.width / 2, h); x.lineTo(c.width / 2, h + dotH - fs * 0.22); x.stroke();
+    x.fillStyle = o.dot === true ? "#ffd54a" : o.dot; x.beginPath(); x.arc(c.width / 2, h + dotH - fs * 0.2, fs * 0.17, 0, Math.PI * 2); x.fill();
+  }
+  const tex = new T3.CanvasTexture(c); tex.colorSpace = T3.SRGBColorSpace; tex.anisotropy = 4;
+  const sp = new T3.Sprite(new T3.SpriteMaterial({ map: tex, sizeAttenuation: false, depthTest: false, depthWrite: false, transparent: true, toneMapped: false, fog: false }));
+  sp.renderOrder = 999;
+  sp.center.set(0.5, o.dot ? 0 : -num(o.lift, 0.15));
+  const g = new T3.Group(); g.add(sp); g.userData.abs = true;
+  const wins = (o.show || [{ from: o.from === undefined ? -1e9 : o.from, to: o.to === undefined ? 1e9 : o.to }]).map((w) => ({ from: num(w.from, -1e9), to: num(w.to, 1e9) }));
+  const off = vec(o.offset), aspect = c.width / c.height;
+  POST.push((t) => {
+    let k = 0;
+    for (const w of wins) {
+      if (t < w.from || t > w.to + 0.2) continue;
+      const a = clamp((t - w.from) / 0.28), b = clamp((w.to - t) / 0.18 + 0.0001);
+      k = Math.max(k, Math.min(easeOutBack(a), t > w.to ? 0 : 1) * (t > w.to - 0.18 ? b : 1));
+    }
+    sp.visible = k > 0.01;
+    if (!sp.visible) return;
+    if (o.follow !== undefined && FOLLOW.has(String(o.follow))) { FOLLOW.get(String(o.follow)).getWorldPosition(TAGV); sp.position.set(TAGV.x + off[0], TAGV.y + off[1], TAGV.z + off[2]); }
+    else { const p = vec(o.pos); sp.position.set(p[0] + off[0], p[1] + off[1], p[2] + off[2]); }
+    const hh = num(o.size, 0.026) * (c.height / h) * 2 * Math.tan((CAM.cam.fov * Math.PI) / 360);
+    sp.scale.set(hh * aspect * k, hh * k, 1);
+    sp.material.opacity = clamp(k * 1.2);
+  });
+  return g;
+};
+FLIGHT_KIT.add("tag");
 
 export const VF = { setup, frame, renderOnly, bench, benchSplit, kit: Object.keys(KIT), styles: Object.keys(STYLES), info: () => ({ calls: R ? R.info.render.calls : 0, triangles: R ? R.info.render.triangles : 0 }) };

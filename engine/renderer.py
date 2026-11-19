@@ -82,10 +82,12 @@ class Renderer:
             active = a <= t < b or (j == len(cur) - 1 and t >= b)
             runs.append((txt + (" " if j < len(cur) - 1 else ""), hi if active and cap.get("style") == "karaoke" else base))
         size = float(cap.get("size", 0.078)) * self.W
-        blk = text_block(tuple(runs), self.W * 0.9, size, style="caption", stroke=size * 0.2,
+        clean = cap.get("style") == "clean"   # the explainer look: plain white, soft drop shadow, no outline
+        blk = text_block(tuple(runs), self.W * float(cap.get("width", 0.9)), size, style="caption",
+                         stroke=size * float(cap.get("stroke_width", 0.0 if clean else 0.2)),
                          stroke_color=cap.get("stroke", "#000000"), line_height=1.15)
-        pop = clamp((t - cur[0][1] + 0.05) / 0.14)
-        s = 0.82 + 0.18 * ease("back", pop)
+        pop = clamp((t - cur[0][1] + 0.05) / (0.1 if clean else 0.14))
+        s = (0.94 + 0.06 * ease("out", pop)) if clean else (0.82 + 0.18 * ease("back", pop))
         cx, cy = self.W / 2, float(cap.get("y", 0.74)) * self.H
         cv.save()
         cv.translate(cx, cy)
@@ -96,7 +98,14 @@ class Renderer:
             h2 = blk.height / 2 + pad * 0.6
             cv.drawRRect(skia.RRect.MakeRectXY(skia.Rect(-w2, -h2, w2, h2), size * 0.35, size * 0.35),
                          D.fill(cap["box"], float(cap.get("box_alpha", 0.55))))
-        blk.paint(cv, 0, 0)
+        if clean or cap.get("shadow"):
+            sh = skia.Paint(ImageFilter=skia.ImageFilters.DropShadow(0, size * 0.05, size * 0.11, size * 0.11,
+                                                                     skia.ColorSetARGB(int(255 * float(cap.get("shadow_alpha", 0.75))), 0, 0, 0)))
+            cv.saveLayer(None, sh)
+            blk.paint(cv, 0, 0)
+            cv.restore()
+        else:
+            blk.paint(cv, 0, 0)
         cv.restore()
 
     # ---------------------------------------------------------- elements
