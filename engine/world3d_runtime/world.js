@@ -119,6 +119,7 @@ const lerp = (a, b, u) => a + (b - a) * u;
 const easeInOut = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 const easeOut = (x) => 1 - Math.pow(1 - x, 3);
 const easeOutBack = (x) => { const c1 = 1.4, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const smooth = (x) => x * x * (3 - 2 * x);
 const num = (v, d) => (typeof v === "number" && isFinite(v) ? v : d);
 const vec = (a, d = [0, 0, 0]) => (Array.isArray(a) ? [num(a[0], d[0]), num(a[1], d[1]), num(a[2], d[2])] : d.slice());
 
@@ -2392,6 +2393,74 @@ KIT.earth = (o) => {
       }
     }
   };
+  // ---- geography on the globe (all children of the sphere, so they turn with it):
+  // o.lines [{pts: [[lat, lon], ...], color, width, reveal: [{at, p}]}]  a glowing line (a fault, a route)
+  // o.pins [{id, lat, lon, h}]  invisible anchors that tags can follow (tag.follow = id)
+  // o.ripples [{lat, lon, from, speed (deg/s), max (deg), color, width (deg)}]  a ring spreading over the surface
+  const geo = (lat, lon, rr) => {
+    const phi = ((lon + 180) / 360) * Math.PI * 2, th = (90 - lat) * DEG;
+    return new THREE.Vector3(-rr * Math.cos(phi) * Math.sin(th), rr * Math.cos(th), rr * Math.sin(phi) * Math.sin(th));
+  };
+  const geoTicks = [];
+  for (const L of o.lines || []) {
+    const pts = [];
+    const P = L.pts || [];
+    for (let k = 0; k + 1 < P.length; k++) {
+      const a = geo(P[k][0], P[k][1], 1), b = geo(P[k + 1][0], P[k + 1][1], 1);
+      for (let j = 0; j < 12; j++) pts.push(a.clone().lerp(b, j / 12).normalize().multiplyScalar(R * 1.004));
+    }
+    if (P.length) pts.push(geo(P[P.length - 1][0], P[P.length - 1][1], R * 1.004));
+    if (pts.length < 2) continue;
+    const curve = new THREE.CatmullRomCurve3(pts);
+    const tg = new THREE.TubeGeometry(curve, pts.length * 3, num(L.width, R * 0.006), 6, false);
+    const lm = new T3.MeshBasicMaterial({ color: L.color || "#ff3b30", transparent: true, opacity: 0.95, toneMapped: false });
+    const tube = new T3.Mesh(tg, lm); sph.add(tube);
+    const glowM = new T3.MeshBasicMaterial({ color: L.color || "#ff3b30", transparent: true, opacity: 0.25, depthWrite: false, toneMapped: false });
+    const halo2 = new T3.Mesh(new THREE.TubeGeometry(curve, pts.length * 3, num(L.width, R * 0.006) * 2.6, 6, false), glowM); sph.add(halo2);
+    const keys = (L.reveal || [{ at: 0, p: 1 }]).map((k) => ({ at: num(k.at, 0), p: num(k.p, 1) })).sort((a, b) => a.at - b.at);
+    const total = tg.index.count, total2 = halo2.geometry.index.count;
+    geoTicks.push((t) => {
+      let i = 0; while (i < keys.length - 1 && t > keys[i + 1].at) i++;
+      const a = keys[i], b = keys[Math.min(i + 1, keys.length - 1)];
+      const pr = b === a ? a.p : lerp(a.p, b.p, smooth(clamp((t - a.at) / Math.max(1e-6, b.at - a.at))));
+      const n6 = (x) => Math.floor((x * pr) / 6) * 6;
+      tg.setDrawRange(0, n6(total)); halo2.geometry.setDrawRange(0, n6(total2));
+      tube.visible = halo2.visible = pr > 0.002;
+      glowM.opacity = 0.18 + 0.12 * Math.sin(t * 6);
+    });
+  }
+  for (const P of o.pins || []) {
+    const h = new THREE.Object3D(); h.position.copy(geo(num(P.lat, 0), num(P.lon, 0), R * (1 + num(P.h, 0.01)))); sph.add(h);
+    if (P.id !== undefined) FOLLOW.set(String(P.id), h);
+  }
+  for (const Rp of o.ripples || []) {
+    const N = 160, src = geo(num(Rp.lat, 0), num(Rp.lon, 0), 1).normalize();
+    const e1 = new THREE.Vector3(0, 1, 0).cross(src); if (e1.lengthSq() < 1e-6) e1.set(1, 0, 0); e1.normalize();
+    const e2 = src.clone().cross(e1).normalize();
+    const pos = new Float32Array(N * 2 * 3), idx = [];
+    for (let k = 0; k < N; k++) { const a = k * 2, b = ((k + 1) % N) * 2; idx.push(a, a + 1, b, b, a + 1, b + 1); }
+    const rg = new THREE.BufferGeometry(); rg.setAttribute("position", new THREE.BufferAttribute(pos, 3)); rg.setIndex(idx);
+    const rm = new T3.MeshBasicMaterial({ color: Rp.color || "#7fe3ff", transparent: true, opacity: 0, side: T3.DoubleSide, depthWrite: false, toneMapped: false });
+    const ring = new T3.Mesh(rg, rm); ring.frustumCulled = false; sph.add(ring);
+    const from = num(Rp.from, 0), speed = num(Rp.speed, 8), maxA = num(Rp.max, 90), wd = num(Rp.width, 1.6) * DEG;
+    const V = new THREE.Vector3();
+    geoTicks.push((t) => {
+      const ang = (t - from) * speed * DEG;
+      ring.visible = t >= from && ang < maxA * DEG;
+      if (!ring.visible) return;
+      for (let k = 0; k < N; k++) {
+        const ph = (k / N) * Math.PI * 2;
+        for (let j = 0; j < 2; j++) {
+          const th = Math.max(0.001, ang - j * wd);
+          V.copy(src).multiplyScalar(Math.cos(th)).addScaledVector(e1, Math.sin(th) * Math.cos(ph)).addScaledVector(e2, Math.sin(th) * Math.sin(ph)).multiplyScalar(R * 1.005);
+          pos[(k * 2 + j) * 3] = V.x; pos[(k * 2 + j) * 3 + 1] = V.y; pos[(k * 2 + j) * 3 + 2] = V.z;
+        }
+      }
+      rg.attributes.position.needsUpdate = true;
+      rm.opacity = 0.85 * clamp((t - from) / 0.4) * (1 - 0.6 * (ang / (maxA * DEG)));
+    });
+  }
+  if (geoTicks.length) { const base = g.userData.tick; g.userData.tick = (t, cp) => { base(t, cp); for (const f of geoTicks) f(t); }; }
   g.traverse((x) => { if (x.isMesh) x.castShadow = false; });
   return g;
 };
@@ -3673,6 +3742,147 @@ function bench(mode) {   // profiling switches: "base", "noshadow", "noaa" (need
   if (mode === "base") { R.shadowMap.enabled = true; SCENE.traverse((m) => { if (m.material) m.material.needsUpdate = true; }); }
   return { calls: R.info.render.calls, tris: R.info.render.triangles, meshes: (() => { let n = 0; SCENE.traverse((m) => { if (m.isMesh) n++; }); return n; })() };
 }
+
+// ---------------- subduction: a cutaway block of a subduction zone, the way geology diagrams draw it: an ocean plate
+// sliding under a continent, the sea on top, a coastal town and forest. Local units (block 120 wide, front face at
+// z = +depth); o.scale scales it. o.strain [{at, s}] 0..1: the locked edge is dragged down and the coast bulges;
+// o.slip: the time the fault lets go (edge springs up, coast drops, the sea is lifted and a wave runs both ways);
+// o.wave_speed (units/s), o.ghost [{at, g}] (coastal trees die back to grey), o.arrows (plate-motion chevrons).
+KIT.subduction = (o) => {
+  const g = new THREE.Group();
+  const X0 = -60, X1 = 60, XT = -14, XC = 14, DZ = num(o.depth, 16), BOT = -40, TH = 6;
+  const oceanTop = (x) => (x < XT ? -8 : -8 - 0.2 * (x - XT) - 0.0045 * (x - XT) * (x - XT));
+  const contTop = (x) => {
+    if (x < XC - 3) return lerp(-8.2, -1.2, smooth(clamp((x - XT) / (XC - 3 - XT))));
+    if (x < XC) return lerp(-1.2, 0.35, (x - (XC - 3)) / 3);
+    return 0.35 + 2.0 * smooth(clamp((x - XC) / 16)) + 1.8 * smooth(clamp((x - XC - 16) / 26)) + 0.35 * Math.sin(x * 0.42) * clamp((x - XC - 6) / 10);
+  };
+  const Sx = (x) => { const u = x - XT; return -1.7 * Math.exp(-(((u - 5) / 7) ** 2)) + 1.1 * Math.exp(-(((u - 27) / 9) ** 2)); };
+  const Rx = (x) => { const u = x - XT; return 2.4 * Math.exp(-(((u - 7) / 8) ** 2)) - 1.5 * Math.exp(-(((u - 28) / 8) ** 2)); };
+  const strainK = (o.strain || [{ at: 0, s: 0 }]).map((k) => ({ at: num(k.at, 0), v: num(k.s, 0) })).sort((a, b) => a.at - b.at);
+  const ghostK = (o.ghost || [{ at: 0, g: 0 }]).map((k) => ({ at: num(k.at, 0), v: num(k.g, 0) })).sort((a, b) => a.at - b.at);
+  const keyAt = (K, t) => { let i = 0; while (i < K.length - 1 && t > K[i + 1].at) i++; const a = K[i], b = K[Math.min(i + 1, K.length - 1)]; return b === a ? a.v : lerp(a.v, b.v, smooth(clamp((t - a.at) / Math.max(1e-6, b.at - a.at)))); };
+  const slip = num(o.slip, 1e9);
+  // o.arrive: when the wave should reach the beach (sets the wave speed); otherwise o.wave_speed
+  const c = o.arrive !== undefined ? (XC - (XT + 7)) / Math.max(0.5, num(o.arrive, slip + 3) - slip - 0.5) : num(o.wave_speed, 9);
+  const SXQ = num(o.sx, 1);   // squash along x (portrait framing); instances are counter-scaled so houses stay square
+  let sNow = 0, rNow = 0, tau = -1;
+  const D = (x) => (x < XT - 2 ? 0 : (1 - rNow) * sNow * Sx(x) + rNow * Rx(x));
+  const H0 = (x) => (x < XC ? 0.95 * Math.max(0, Rx(x)) : 0);
+  const shoal = (x) => 1 + 2.4 * smooth(clamp((x - (XC - 16)) / 16));
+  const sea = (x, t) => {
+    const amb = 0.05 * Math.sin(x * 0.7 + t * 2.1) + 0.03 * Math.sin(x * 1.9 - t * 3.3);
+    if (tau < 0) return amb;
+    const tp = Math.max(0, tau - 0.5);
+    if (tp === 0) return amb + rNow * H0(x);
+    return amb + 0.5 * H0(x + c * tp) + 0.5 * H0(x - c * tp) * shoal(x);
+  };
+  const W = (y) => Math.pow(clamp((y + 25) / 25), 0.8);
+  const range = (a, b, step) => { const r = []; for (let x = a; x < b; x += step) r.push(x); r.push(b); return r; };
+  const shapeOf = (top, bot) => {
+    const sh = new THREE.Shape(); sh.moveTo(top[0][0], top[0][1]);
+    for (let k = 1; k < top.length; k++) sh.lineTo(top[k][0], top[k][1]);
+    for (let k = bot.length - 1; k >= 0; k--) sh.lineTo(bot[k][0], bot[k][1]);
+    return sh;
+  };
+  const extrude = (sh, z0, z1) => { const ge = new THREE.ExtrudeGeometry(sh, { depth: z1 - z0, bevelEnabled: false, steps: 1 }); ge.translate(0, 0, z0); return ge; };
+  const deformables = [];
+  const addMesh = (geo, mat, mode) => {
+    const m = new THREE.Mesh(geo, mat); g.add(m);
+    if (mode) deformables.push({ m, base: Float32Array.from(geo.attributes.position.array), mode });
+    return m;
+  };
+  // mantle below the slab, the ocean plate (crust + lithosphere), the continent, its soil, the sea
+  const xsDip = range(XT, X1, 1).filter((x) => oceanTop(x) - TH > BOT + 0.5);
+  const xEnd = xsDip[xsDip.length - 1];
+  const oTop = range(X0, xEnd, 1).map((x) => [x, oceanTop(x)]);
+  const crustBot = oTop.map(([x, y]) => [x, y - 1.4]);
+  const lithBot = oTop.map(([x, y]) => [x, y - TH]);
+  addMesh(extrude(shapeOf([[X0, -8 - TH], ...lithBot.slice(1), [X1, BOT + 0.1]].map((p) => p), [[X0, BOT], [X1, BOT]]), -DZ, DZ),
+    new THREE.MeshLambertMaterial({ color: o.mantle || "#5a3428" }), null);
+  addMesh(extrude(shapeOf(oTop, crustBot), -DZ, DZ), new THREE.MeshLambertMaterial({ color: o.crust || "#4d5966" }), null);
+  addMesh(extrude(shapeOf(crustBot, lithBot), -DZ, DZ), new THREE.MeshLambertMaterial({ color: o.lith || "#343c47" }), null);
+  const cTop = range(XT, X1, 0.5).map((x) => [x, contTop(x)]);
+  const cBot = range(XT, X1, 1).map((x) => [x, Math.max(BOT + 0.2, oceanTop(x) + 0.1)]);
+  addMesh(extrude(shapeOf(cTop, cBot), -DZ, DZ + 0.06), new THREE.MeshLambertMaterial({ color: o.continent || "#a07c58" }), "solid");
+  const soilTop = range(XC, X1, 0.5).map((x) => [x, contTop(x) + 0.02]);
+  addMesh(extrude(shapeOf(soilTop, soilTop.map(([x, y]) => [x, y - 0.9])), -DZ, DZ + 0.09), new THREE.MeshLambertMaterial({ color: o.soil || "#5f8a3c" }), "solid");
+  const wTop = range(X0, XC - 0.6, 0.4).map((x) => [x, 0]);
+  const wBot = range(X0, XC - 0.6, 0.5).map((x) => [x, x < XT ? oceanTop(x) + 0.02 : contTop(x) + 0.02]);
+  const waterMat = new T3.MeshStandardMaterial({ color: o.water || "#2a7cc4", transparent: true, opacity: num(o.water_op, 0.62), roughness: 0.12, metalness: 0, envMapIntensity: 0.8 });
+  const water = addMesh(extrude(shapeOf(wTop, wBot), -DZ, DZ + 0.12), waterMat, "water");
+  water.renderOrder = 2;
+  // the run-up over the land after the wave arrives
+  const fg = new THREE.PlaneGeometry(26, 2 * DZ, 80, 1); fg.rotateX(-Math.PI / 2); fg.translate(XC + 13, 0, 0.1);
+  const flood = new T3.Mesh(fg, new T3.MeshStandardMaterial({ color: o.water || "#2a7cc4", transparent: true, opacity: 0.72, roughness: 0.15, metalness: 0 }));
+  flood.renderOrder = 3; g.add(flood);
+  const fBase = Float32Array.from(fg.attributes.position.array);
+  // town and forest
+  const rnd = rng(num(o.seed, 5));
+  const houses = [], trees = [];
+  const hg = new THREE.BoxGeometry(1.1, 0.9, 1.2), tgeo = new THREE.ConeGeometry(0.55, 2.2, 7);
+  const hm = new THREE.InstancedMesh(hg, new THREE.MeshLambertMaterial({ color: "#ffffff" }), num(o.houses, 46));
+  const tm = new THREE.InstancedMesh(tgeo, new THREE.MeshLambertMaterial({ color: "#ffffff" }), num(o.trees, 150));
+  const houseCols = ["#e8e2d6", "#d9c3a5", "#c97b63", "#9fb7c9", "#f2efe8"];
+  for (let k = 0; k < hm.count; k++) { houses.push({ x: XC + 1.5 + rnd() * 10.5, z: -DZ + 1.2 + rnd() * (2 * DZ - 2.4), r: rnd() * Math.PI, s: 0.8 + rnd() * 0.5 }); hm.setColorAt(k, new THREE.Color(houseCols[k % houseCols.length])); }
+  for (let k = 0; k < tm.count; k++) trees.push({ x: XC + 11 + rnd() * (X1 - XC - 13), z: -DZ + 0.8 + rnd() * (2 * DZ - 1.6), s: 0.7 + rnd() * 0.6 });
+  g.add(hm); g.add(tm);
+  const M4 = new THREE.Matrix4(), Q = new THREE.Quaternion(), SV = new THREE.Vector3(), PV = new THREE.Vector3(), E1 = new THREE.Euler(), TC = new THREE.Color();
+  const green = new THREE.Color(o.tree || "#2f6a33"), grey = new THREE.Color("#8d8a80");
+  // plate-motion chevrons on the ocean plate
+  const chev = [];
+  if (o.arrows !== false) {
+    const cg = new THREE.ConeGeometry(0.8, 1.6, 3); cg.rotateZ(-Math.PI / 2); cg.scale(1, 0.25, 1);
+    const cm = new T3.MeshBasicMaterial({ color: o.arrow || "#ffd54a", toneMapped: false });
+    for (let k = 0; k < 7; k++) { const m = new T3.Mesh(cg, cm); m.position.z = DZ * 0.55; g.add(m); chev.push(m); }
+  }
+  g.userData.tick = (t) => {
+    sNow = keyAt(strainK, t);
+    tau = t >= slip ? t - slip : -1;
+    rNow = tau < 0 ? 0 : smooth(clamp(tau / 0.6));
+    for (const d of deformables) {
+      const pa = d.m.geometry.attributes.position, A = pa.array, B = d.base;
+      for (let k = 0; k < pa.count; k++) {
+        const x = B[k * 3], y = B[k * 3 + 1];
+        if (d.mode === "water") A[k * 3 + 1] = Math.abs(y) < 1e-4 ? sea(x, t) : y + (x > XT ? D(x) : 0);
+        else A[k * 3 + 1] = y + D(x) * W(y);
+      }
+      pa.needsUpdate = true;
+      if (d.mode === "water") d.m.geometry.computeVertexNormals();
+    }
+    // run-up: a wedge of water advancing inland once the wave reaches the beach
+    const ta = (XC - (XT + 7)) / c + 0.5, ph = tau - ta;
+    const A = ph < 0 ? 0 : 2.4 * smooth(clamp(ph / 0.5)) * (1 - smooth(clamp((ph - 2.4) / 2.0)));
+    const reach = 22 * smooth(clamp(ph / 1.6));
+    const FA = fg.attributes.position.array;
+    for (let k = 0; k < FA.length / 3; k++) {
+      const x = fBase[k * 3], f = A * clamp(1 - (x - XC) / Math.max(0.1, reach));
+      FA[k * 3 + 1] = contTop(x) + D(x) + (f > 0.03 ? f : -0.4);
+    }
+    fg.attributes.position.needsUpdate = true; fg.computeVertexNormals();
+    flood.visible = A > 0.03;
+    for (let k = 0; k < houses.length; k++) {
+      const h = houses[k]; PV.set(h.x, contTop(h.x) + D(h.x) + 0.45 * h.s, h.z); Q.setFromEuler(E1.set(0, h.r, 0)); SV.set(h.s / SXQ, h.s, h.s);
+      hm.setMatrixAt(k, M4.compose(PV, Q, SV));
+    }
+    hm.instanceMatrix.needsUpdate = true;
+    const gh = keyAt(ghostK, t);
+    for (let k = 0; k < trees.length; k++) {
+      const tr = trees[k]; PV.set(tr.x, contTop(tr.x) + D(tr.x) + 1.1 * tr.s, tr.z); Q.identity(); SV.set(tr.s / SXQ, tr.s, tr.s);
+      tm.setMatrixAt(k, M4.compose(PV, Q, SV));
+      tm.setColorAt(k, TC.copy(green).lerp(grey, gh * clamp(1 - (tr.x - XC - 11) / 12)));
+    }
+    tm.instanceMatrix.needsUpdate = true; if (tm.instanceColor) tm.instanceColor.needsUpdate = true;
+    for (let k = 0; k < chev.length; k++) {
+      const L = (XT + 16) - (X0 + 4), u = ((t * 2.2 + (k * L) / chev.length) % L), x = X0 + 4 + u;
+      const y = oceanTop(x) + 0.32, dy = oceanTop(x + 0.5) - oceanTop(x - 0.5);
+      chev[k].position.set(x, y, DZ * 0.55); chev[k].rotation.z = Math.atan2(dy, 1); chev[k].scale.set(1 / SXQ, 1, 1);
+    }
+  };
+  g.scale.set(SXQ, 1, 1);
+  return g;
+};
+FLIGHT_KIT.add("subduction");
 
 // ---------------- tag: a small pill label pinned to a point in the world (or to a moving object), drawn on top at a
 // constant screen size. o.text, o.pos | o.follow (object id) + o.offset, o.show [{from, to}], o.size (share of frame

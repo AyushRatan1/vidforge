@@ -38,11 +38,11 @@ log = logging.getLogger("vidforge.world3d")
 HERE = os.path.dirname(os.path.abspath(__file__))
 RUNTIME = os.path.join(HERE, "world3d_runtime")
 FALLBACK = {"type": "sunburst", "colors": ["#e7d5b5", "#d4b98c"]}
-TIME_KEYS = {"at", "from", "to", "rope_start", "rope_end", "until"}
+TIME_KEYS = {"at", "from", "to", "rope_start", "rope_end", "until", "slip", "arrive"}
 KIT = {"box", "slab", "cylinder", "cone", "pyramid", "dome", "sphere", "mound", "wall", "stairs", "pillar", "pavilion",
        "spire", "arch", "water", "tree", "trees", "grass", "rocks", "house", "ladder", "well", "person", "people",
        "hill", "cliff", "ramp", "blocks", "sledge", "minaret", "tomb", "bastion", "palace", "boat", "flag", "gate", "town",
-       "frustum", "airliner", "ocean", "clouds", "cumulus", "streaks", "splash", "debris", "ship", "seabed", "wreck", "tanker", "mine", "missile", "blast", "stars", "earth", "towers", "crowd", "racks", "starship", "tower", "mount", "plume", "starlink", "liner", "fish", "diver", "flotilla", "foam", "bizjet", "wreckage", "crater", "part", "mapboard", "airfoil", "flow", "ring", "gauge", "plot", "gridfloor", "pole", "tvroom", "datacube", "pipe", "palm", "palms", "tag", "satmap",
+       "frustum", "airliner", "ocean", "clouds", "cumulus", "streaks", "splash", "debris", "ship", "seabed", "wreck", "tanker", "mine", "missile", "blast", "stars", "earth", "towers", "crowd", "racks", "starship", "tower", "mount", "plume", "starlink", "liner", "fish", "diver", "flotilla", "foam", "bizjet", "wreckage", "crater", "part", "mapboard", "airfoil", "flow", "ring", "gauge", "plot", "gridfloor", "pole", "tvroom", "datacube", "pipe", "palm", "palms", "tag", "satmap", "subduction",
        "recorder", "auv"}
 MACROS = {"stepwell", "pyramid", "fort", "temple"}
 STYLES = {"desert", "golden", "green", "overcast", "night"}
