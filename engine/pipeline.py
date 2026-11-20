@@ -236,6 +236,15 @@ def _engine_version() -> str:
 ENGINE_VERSION = _engine_version()
 
 
+def _stat(path):
+    """Size and mtime of a background clip, so a re-rendered clip with the same name re-composites its scene."""
+    try:
+        st = os.stat(path)
+        return [st.st_size, int(st.st_mtime)]
+    except (TypeError, OSError):
+        return None
+
+
 def _scene_key(spec, i, tl, voice):
     prev = spec["scenes"][i - 1] if i > 0 else None
     blob = json.dumps({
@@ -245,6 +254,7 @@ def _scene_key(spec, i, tl, voice):
         "ov": spec.get("overlay"), "tr": spec.get("transition"), "bg": spec.get("background"),
         "total": sum(s["frames"] for s in tl), "v": hashlib.sha1(voice.tobytes()).hexdigest(),
         "clip": (spec["scenes"][i].get("background") or {}).get("_clip"),
+        "clipstat": _stat((spec["scenes"][i].get("background") or {}).get("_clip")),
     }, sort_keys=True, default=str)
     return hashlib.sha1(blob.encode()).hexdigest()[:16]
 

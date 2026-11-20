@@ -75,8 +75,8 @@ P_WIDE, L_WIDE = gcam(42, -118, 78, 0)
 P_WIDE2, L_WIDE2 = gcam(44, -121, 66, 0)
 P_PNW, L_PNW = gcam(45.5, -123, 46, R_E * 0.92)
 P_PNW2, L_PNW2 = gcam(45.5, -123.5, 42, R_E * 0.92)
-P_PAC, L_PAC = gcam(36, -172, 82, 0)
-P_PAC2, L_PAC2 = gcam(36, -176, 76, 0)
+P_PAC, L_PAC = gcam(36, 178, 112, 0)
+P_PAC2, L_PAC2 = gcam(36, 176, 104, 0)
 
 # ---------------------------------------------------------------- the cutaway (local units, squashed 0.35 along x)
 CX, SX, DZF = 5000, 0.35, 16.3
