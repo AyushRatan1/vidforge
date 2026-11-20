@@ -55,12 +55,13 @@ def load_audio(video, sr=16000):
     return a, sr
 
 
-def transcribe(audio, sr):
+def transcribe(audio, sr, size="base", t_offset=0.0):
+    """size "base" for scanning whole chunks, "small" (slower, much better on noisy streams) for the clips' captions."""
     import sherpa_onnx
-    d = os.path.join(MODELS, "sherpa-onnx-whisper-base.en")
+    d = os.path.join(MODELS, f"sherpa-onnx-whisper-{size}.en")
     rec = sherpa_onnx.OfflineRecognizer.from_whisper(
-        encoder=os.path.join(d, "base.en-encoder.int8.onnx"), decoder=os.path.join(d, "base.en-decoder.int8.onnx"),
-        tokens=os.path.join(d, "base.en-tokens.txt"), num_threads=os.cpu_count() or 2, language="en", task="transcribe")
+        encoder=os.path.join(d, f"{size}.en-encoder.int8.onnx"), decoder=os.path.join(d, f"{size}.en-decoder.int8.onnx"),
+        tokens=os.path.join(d, f"{size}.en-tokens.txt"), num_threads=os.cpu_count() or 2, language="en", task="transcribe")
     cfg = sherpa_onnx.VadModelConfig()
     cfg.silero_vad.model = os.path.join(MODELS, "silero_vad.onnx")
     cfg.silero_vad.min_silence_duration = 0.25
@@ -94,10 +95,40 @@ def transcribe(audio, sr):
         if not text or re.fullmatch(r"[\W_]*", text) or text.lower() in ("you", "thank you.", "[music]", "(music)"):
             continue
         t1 = t0 + len(samples) / sr
-        out.append({"start": round(t0, 3), "end": round(t1, 3), "text": text, "words": spread_words(text, t0, t1)})
+        text = clean_text(text)
+        if not text or text.lower().strip(".,!? ") in NOISE_ALONE:
+            continue
+        t0o, t1o = t0 + t_offset, t1 + t_offset
+        out.append({"start": round(t0o, 3), "end": round(t1o, 3), "text": text, "words": spread_words(text, t0o, t1o)})
         if n % 25 == 0:
             print(f"   transcribed {t1 / 60:.1f} min", flush=True)
     return out
+
+
+# Whisper on game streams hears noise as "(buzzer buzzing)" and loops; it can also mis-hear slurs. Captions keep only
+# speech, collapse loops, soften swearing and drop slurs outright.
+SLURS = re.compile(r"\b(f[a@]g\w*|n[i1]gg\w*|retard\w*|tr[a@]nn(y|ie)s?)\b", re.I)
+SWEARS = {"fuck": "f*ck", "fucking": "f*cking", "fucked": "f*cked", "shit": "sh*t", "bitch": "b*tch", "motherfucker": "m*therf*cker"}
+
+
+NOISE_ALONE = {"gay", "you", "the", "a", "uh", "um", "hmm", "bye", "so"}   # one-word "phrases" that are usually noise
+
+
+def clean_text(text):
+    text = re.sub(r"[\(\[][^\)\]]*[\)\]]", " ", text)         # (buzzer), [music]
+    text = SLURS.sub(" ", text)
+    words, out = text.split(), []
+    for w in words:
+        if len(out) >= 2 and w.lower().strip(".,!?") == out[-1].lower().strip(".,!?") == out[-2].lower().strip(".,!?"):
+            continue                                              # "ship ship ship ship" -> "ship ship"
+        key = re.sub(r"[^a-z]", "", w.lower())
+        if key in SWEARS:
+            w = re.sub(key, SWEARS[key], w, flags=re.I)
+        out.append(w)
+    text = " ".join(w for w in out if w not in ("'s", "'s.", "'s,")).strip(" -")
+    text = re.sub(r"\s+([.,!?])", r"\1", text)
+    text = re.sub(r"([,.!?])(\s*[,.!?])+", r"\1", text).strip(" ,")
+    return "" if not re.search(r"[A-Za-z0-9]", text) else text
 
 
 def spread_words(text, t0, t1):
@@ -121,6 +152,8 @@ HYPE = re.compile(r"\b(no way|oh my god|omg|what+|bro+|yo+|let'?s go+|wait|no+|y
 def features(video, audio, sr, transcript, dur):
     n = int(math.ceil(dur))
     hop = sr
+    if len(audio) < n * hop:                       # audio a little shorter than the video: pad, never NaN
+        audio = np.concatenate([audio, np.zeros(n * hop - len(audio), dtype=np.float32)])
     rms = np.array([np.sqrt(np.mean(audio[i * hop:(i + 1) * hop] ** 2) + 1e-9) for i in range(n)])
     db = 20 * np.log10(rms + 1e-9)
     base = np.array([np.median(db[max(0, i - 60):i + 60]) for i in range(n)])
@@ -139,7 +172,8 @@ def features(video, audio, sr, transcript, dur):
         hype[a:b + 1] += min(3, h) / 3
     scene = scene_rate(video, n)
     score = 0.38 * spike + 0.2 * shout + 0.22 * np.clip(hype, 0, 1) + 0.12 * scene + 0.08 * talk
-    return {"db": db.tolist(), "score": score.tolist()}
+    score = np.nan_to_num(score) * (0.35 + 0.65 * talk)   # silence (menus, "starting soon") is never a clip
+    return {"db": np.nan_to_num(db).tolist(), "score": score.tolist()}
 
 
 def scene_rate(video, n):
@@ -177,6 +211,8 @@ def candidates(transcript, score, dur, k=12, lmin=15, lmax=45):
         s0 = max([s for s in starts if s <= a + 0.5] or [a]) - 0.25
         e0 = min([e for e in ends if e >= b - 0.5] or [b]) + 0.35
         s0, e0 = max(0.0, s0), min(dur, e0)
+        if any(not (e0 <= p["start"] or s0 >= p["end"]) for p in picks):
+            continue
         if e0 - s0 < lmin:
             e0 = min(dur, s0 + lmin)
         if e0 - s0 > lmax:
@@ -193,8 +229,12 @@ def analyze(video, outdir):
     info = probe(video)
     print(f"source {info['w']}x{info['h']} {info['dur'] / 60:.1f} min", flush=True)
     audio, sr = load_audio(video)
-    tr = transcribe(audio, sr)
-    json.dump(tr, open(os.path.join(outdir, "transcript.json"), "w"), indent=1)
+    tpath = os.path.join(outdir, "transcript.json")
+    if os.path.exists(tpath):                      # re-scoring: keep the transcript we already have
+        tr = json.load(open(tpath))
+    else:
+        tr = transcribe(audio, sr)
+        json.dump(tr, open(tpath, "w"), indent=1)
     f = features(video, audio, sr, tr, info["dur"])
     cands = candidates(tr, f["score"], info["dur"])
     json.dump({"source": os.path.abspath(video), "info": info, "candidates": cands},
@@ -249,7 +289,7 @@ def build_ass(transcript, start, end, hook, ad, cap_y, path, font="Inter Display
 ScriptType: v4.00+
 PlayResX: {W}
 PlayResY: {H}
-WrapStyle: 2
+WrapStyle: 0
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
@@ -291,9 +331,22 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 
 # ------------------------------------------------------------------------------------------------ render
+def clip_transcript(video, start, end, size="small"):
+    """Re-transcribe just the clip window with the better model (times are in the source's clock)."""
+    with tempfile.TemporaryDirectory() as d:
+        wav = os.path.join(d, "a.wav")
+        run(["ffmpeg", "-v", "error", "-y", "-ss", f"{start:.3f}", "-t", f"{end - start:.3f}", "-i", video, "-vn",
+             "-ac", "1", "-ar", "16000", wav])
+        a, sr = sf.read(wav, dtype="float32")
+    return transcribe(a, sr, size=size, t_offset=start)
+
+
 def render_clip(video, transcript, clip, outdir, src):
     start, end = float(clip["start"]), float(clip["end"])
     dur = end - start
+    if clip.get("asr", "small") != "base":
+        transcript = clip_transcript(video, start, end, clip.get("asr", "small"))
+        json.dump(transcript, open(os.path.join(outdir, (clip.get("name") or f"clip_{int(start)}") + ".words.json"), "w"), indent=1)
     name = clip.get("name") or f"clip_{int(start)}"
     layout = clip.get("layout", "auto")
     cam = clip.get("facecam")
@@ -302,20 +355,32 @@ def render_clip(video, transcript, clip, outdir, src):
     split = cam is not None and layout != "fit"
     with tempfile.TemporaryDirectory() as d:
         ass = os.path.join(d, "c.ass")
-        build_ass(transcript, start, end, clip.get("hook", ""), clip.get("ad", "#ad"), 0.66 if not split else 0.555, ass)
+        cap_y = clip.get("cap_y") or (0.555 if split else 0.75 if layout == "square" else 0.66)
+        build_ass(transcript, start, end, clip.get("hook", ""), clip.get("ad", "#ad"), cap_y, ass)
         if split:
             x, y, w, h = cam
-            top_h = int(H * 0.40)
-            # gameplay: centre crop of the full frame (the cam stays out of the middle), 1080 x (1920-top_h)
+            top_h = int(H * float(clip.get("cam_share", 0.40))) // 2 * 2   # even heights for 4:2:0
+            # gameplay: a crop of the full frame (centre by default; game_cx moves it, e.g. away from the cam)
             gh = H - top_h
             gw_src = int(src["h"] * W / gh)
-            gx = int(max(0, (src["w"] - gw_src) / 2))
-            fc = (f"[0:v]crop={w}:{h}:{x}:{y},scale={W}:{top_h}:force_original_aspect_ratio=increase,crop={W}:{top_h}[cam];"
-                  f"[0:v]crop={min(gw_src, src['w'])}:{src['h']}:{gx}:0,scale={W}:{gh}[game];"
+            gcx = float(clip.get("game_cx", 0.5)) * src["w"]
+            gx = int(min(max(0, gcx - gw_src / 2), src["w"] - gw_src))
+            fc = (f"[0:v]fps={FPS},split=2[s1][s2];"
+                  f"[s1]crop={w}:{h}:{x}:{y},scale={W}:{top_h}:force_original_aspect_ratio=increase,crop={W}:{top_h}[cam];"
+                  f"[s2]crop={min(gw_src, src['w'])}:{src['h']}:{gx}:0,scale={W}:{gh}[game];"
                   f"[cam][game]vstack=inputs=2,setsar=1[v0]")
+        elif layout == "square":
+            # IRL / camera shots: a square crop around the action (cx = its centre, share of width) over a blurred copy
+            side = src["h"]
+            cx = float(clip.get("cx", 0.5)) * src["w"]
+            sx = int(min(max(0, cx - side / 2), src["w"] - side))
+            fc = (f"[0:v]fps={FPS},split=2[s1][s2];"
+                  f"[s1]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=28:2,eq=brightness=-0.15[bg];"
+                  f"[s2]crop={side}:{side}:{sx}:0,scale={W}:{W}[fg];[bg][fg]overlay=0:(H-h)/2-150,setsar=1[v0]")
         else:
-            fc = (f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=28:2,eq=brightness=-0.12[bg];"
-                  f"[0:v]scale={W}:-2[fg];[bg][fg]overlay=0:(H-h)/2-140,setsar=1[v0]")
+            fc = (f"[0:v]fps={FPS},split=2[s1][s2];"
+                  f"[s1]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=28:2,eq=brightness=-0.12[bg];"
+                  f"[s2]scale={W}:-2[fg];[bg][fg]overlay=0:(H-h)/2-140,setsar=1[v0]")
         inputs = ["-ss", f"{start:.3f}", "-t", f"{dur:.3f}", "-i", video]
         last = "[v0]"
         if clip.get("overlay"):
@@ -323,12 +388,12 @@ def render_clip(video, transcript, clip, outdir, src):
             fc += f";[1:v]scale={W}:{H}:force_original_aspect_ratio=decrease[ov];{last}[ov]overlay=(W-w)/2:(H-h)/2[v1]"
             last = "[v1]"
         fontsdir = os.path.join(os.path.dirname(HERE), "assets", "fonts")
-        fc += f";{last}fps={FPS},subtitles={ass}:fontsdir={fontsdir}[v]"
+        fc += f";{last}subtitles={ass}:fontsdir={fontsdir}[v]"
         out = os.path.join(outdir, name + ".mp4")
         tmp = out[:-4] + ".part.mp4"
         run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", fc, "-map", "[v]", "-map", "0:a:0?",
              "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", "-profile:v", "high",
-             "-c:a", "aac", "-b:a", "160k", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-movflags", "+faststart", tmp])
+             "-c:a", "aac", "-b:a", "160k", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-shortest", "-movflags", "+faststart", tmp])
         os.replace(tmp, out)
     print(f"rendered {out} ({dur:.1f}s, {'split' if split else 'fit'})", flush=True)
     return out
